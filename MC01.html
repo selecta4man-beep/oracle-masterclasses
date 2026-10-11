@@ -82,15 +82,16 @@ a{color:inherit}
 .obj .card .ico{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--oracle-cream),#fff);border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:28px}
 .obj .card h3{font-size:19px;color:var(--oracle-teal-dark);margin-bottom:10px;font-weight:700}
 .obj .card p{color:var(--ink-soft);line-height:1.55;font-size:15px}
-.obj .duree{grid-column:1/-1;margin-top:26px;background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:var(--radius);padding:20px 24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center;box-shadow:var(--shadow-sm);border:1px dashed var(--oracle-teal-light)}
-.obj .duree div{text-align:center}
-.obj .duree strong{display:block;color:var(--oracle-teal);font-size:22px;font-weight:800}
-.obj .duree span{color:var(--ink-soft);font-size:12px;text-transform:uppercase;letter-spacing:1.5px}
+.duree{margin-top:26px;background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:var(--radius);padding:20px 24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center;box-shadow:var(--shadow-sm);border:1px dashed var(--oracle-teal-light)}
+.duree>div{text-align:center;min-width:90px}
+.duree strong{display:block;color:var(--oracle-teal);font-size:28px;font-weight:900;line-height:1}
+.duree span{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-top:6px}
 
 /* ===== Fiche interactive (slide 3) ===== */
 .fiche-wrap{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;flex:1;margin-top:16px;min-height:0}
-.fiche-img{position:relative;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;display:flex;align-items:center;justify-content:center}
-.fiche-img img{width:100%;height:auto;max-height:100%;display:block;object-fit:contain}
+.fiche-img{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;display:flex;align-items:center;justify-content:center;padding:12px}
+.fiche-img .ficheHolder{position:relative;height:100%;display:inline-block;max-width:100%}
+.fiche-img .ficheHolder img{height:100%;width:auto;max-width:100%;display:block;object-fit:contain}
 .hot{position:absolute;width:44px;height:44px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;font-size:18px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25);transition:all .25s;z-index:2;animation:pulse 2s infinite}
 .hot:hover{transform:scale(1.18);background:var(--oracle-pink);color:#fff;z-index:3}
 @keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25)}50%{box-shadow:0 4px 16px rgba(245,183,0,.7),0 0 0 10px rgba(245,183,0,0)}}
@@ -331,16 +332,18 @@ a{color:inherit}
     <div class="head"><div class="num">2</div><h2>Le champ de compétence en 8 points<small>Cliquez sur chaque pastille dorée pour explorer la section</small></h2></div>
     <div class="fiche-wrap">
       <div class="fiche-img">
-        <img src="assets/fiche-competences.webp" alt="Fiche Champ de Compétences ORACLE" id="ficheImg">
-        <!-- Hotspots positioned by percentage over the fiche -->
-        <button class="hot" style="top:14%;left:19%" onclick="openModal(1)">1</button>
-        <button class="hot" style="top:14%;left:72%" onclick="openModal(2)">2</button>
-        <button class="hot" style="top:38%;left:19%" onclick="openModal(3)">3</button>
-        <button class="hot" style="top:38%;left:72%" onclick="openModal(4)">4</button>
-        <button class="hot" style="top:56%;left:19%" onclick="openModal(5)">5</button>
-        <button class="hot" style="top:56%;left:72%" onclick="openModal(6)">6</button>
-        <button class="hot" style="top:78%;left:19%" onclick="openModal(7)">7</button>
-        <button class="hot" style="top:78%;left:72%" onclick="openModal(8)">8</button>
+        <div class="ficheHolder">
+          <img src="assets/fiche-competences.webp" alt="Fiche Champ de Compétences ORACLE" id="ficheImg">
+          <!-- Hotspots positioned by percentage over the fiche image itself -->
+          <button class="hot" style="top:13%;left:14%" onclick="openModal(1)">1</button>
+          <button class="hot" style="top:13%;left:62%" onclick="openModal(2)">2</button>
+          <button class="hot" style="top:37%;left:14%" onclick="openModal(3)">3</button>
+          <button class="hot" style="top:37%;left:62%" onclick="openModal(4)">4</button>
+          <button class="hot" style="top:56%;left:14%" onclick="openModal(5)">5</button>
+          <button class="hot" style="top:56%;left:62%" onclick="openModal(6)">6</button>
+          <button class="hot" style="top:78%;left:14%" onclick="openModal(7)">7</button>
+          <button class="hot" style="top:78%;left:62%" onclick="openModal(8)">8</button>
+        </div>
       </div>
       <div class="fiche-side">
         <h3>Fiche de révision ORACLE</h3>
