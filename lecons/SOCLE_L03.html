@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOCLE · SOCLE_L03 · Pathologies respiratoires — ORACLE VAE AS</title>
+<style>
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
+.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
+.hero .accroche{font-size:17px;color:var(--ink-s)}
+section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
+section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section ul,section ol{margin:12px 0 12px 24px}
+section ul li,section ol li{margin-bottom:8px}
+.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:decimal}
+.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
+.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
+.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
+@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
+</style></head><body>
+<div class="bar">
+  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
+  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+</div>
+<div class="container">
+  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L03</div>
+  <div class="hero">
+    <div class="meta"><span class="bloc">Socle</span><span>Leçon 3</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
+    <h1>Pathologies respiratoires</h1>
+    <div class="accroche"><p>Principales situations : <strong>BPCO</strong> (bronchopneumopathie chronique obstructive, souvent liée au tabac), <strong>asthme</strong>, <strong>pneumopathie</strong> (infection), <strong>insuffisance respiratoire</strong>, <strong>embolie pulmonaire</strong> (urgence). Toutes peuvent entraîner une <strong>hypoxie</strong> (manque d’oxygène).</p></div>
+  </div>
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Citer les principales pathologies respiratoires rencontrées et le risque d’hypoxie qu’elles partagent.</li><li>Repérer les signes d’alerte respiratoires : dyspnée, polypnée, cyanose, SpO₂ basse, tirage, toux productive.</li><li>Installer la personne et surveiller une oxygénothérapie sans jamais toucher au débit.</li><li>Transmettre une aggravation respiratoire en DAR, avec les chiffres et le contexte.</li><li>Situer les nouveaux gestes AS issus de la réforme 2021 autour de la respiration.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Les grandes pathologies respiratoires en gériatrie</h3></section><section class="partie"><h3>Repérer les signes d’alerte</h3></section><section class="partie"><h3>Le rôle de surveillance de l’AS</h3></section><section class="partie"><h3>Transmettre &amp; tracer</h3></section><section class="partie"><h3>Anatomie respiratoire &amp; oxygénothérapie (rôle AS)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Détresse respiratoire : installer assis, ou penché en avant, avant tout autre geste.</li><li>La position semi-assise (Fowler) libère le diaphragme.</li><li>Ne jamais modifier le débit d’O₂ : vérifier seulement le débit prescrit et la place des lunettes.</li><li>Sous oxygène : aucun corps gras, aucune crème, aucune flamme à proximité.</li><li>L’O₂ assèche — soins de bouche fréquents, surveillance des ailes du nez et des oreilles.</li><li>Alerter sans délai : cyanose, SpO₂ &lt; 90 %, confusion, sueurs, phrases impossibles à finir.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>BPCO, asthme, pneumopathie, insuffisance respiratoire, embolie pulmonaire : toutes exposent à l’hypoxie.</li><li>Fréquence respiratoire normale chez l’adulte : 12–20/min ; au-delà, polypnée.</li><li>SpO₂ : 95 % est la norme, en dessous de 90 % c’est l’alerte.</li><li>Cyanose : lèvres et ongles bleutés — signe de mauvaise oxygénation.</li><li>Chez le BPCO, un excès d’O₂ peut être dangereux : le débit est une décision médicale.</li><li>Les échanges gazeux O₂/CO₂ ont lieu dans les alvéoles.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. La SpO₂ qui doit alerter en urgence est…</p><ol class="opts"><li class="ok">100 %</li><li class="">&lt; 98 %</li><li class="">&lt; 95 %</li><li class="">&lt; 90 %</li></ol></div><div class="qblock"><p class="q">2. La position recommandée pour faciliter la respiration est…</p><ol class="opts"><li class="ok">Allongée à plat</li><li class="">Semi-assise (Fowler)</li><li class="">Décubitus latéral strict</li><li class="">Tête en bas</li></ol></div><div class="qblock"><p class="q">3. Face à un BPCO en détresse, l’AS…</p><ol class="opts"><li class="ok">Augmente l’oxygène</li><li class="">Donne un médicament</li><li class="">N’augmente jamais le débit d’O₂ et alerte</li><li class="">Attend la fin du tour</li></ol></div><div class="qblock"><p class="q">4. La « cyanose » se repère par…</p><ol class="opts"><li class="ok">Une pâleur</li><li class="">Une transpiration</li><li class="">Une coloration bleutée des lèvres et ongles</li><li class="">Une rougeur du visage</li></ol></div><div class="qblock"><p class="q">5. Sous oxygénothérapie, l’AS réalise des soins de bouche fréquents car…</p><ol class="opts"><li class="ok">Le médecin l’a prescrit pour tous</li><li class="">Cela augmente la SpO₂</li><li class="">C’est obligatoire toutes les heures</li><li class="">L’O₂ assèche les muqueuses</li></ol></div><div class="qblock"><p class="q">6. Une fréquence respiratoire normale chez l’adulte est…</p><ol class="opts"><li class="ok">30–40 /min</li><li class="">60–80 /min</li><li class="">12–20 /min</li><li class="">4–8 /min</li></ol></div><div class="qblock"><p class="q">7. Les échanges gazeux O₂/CO₂ ont lieu dans…</p><ol class="opts"><li class="ok">La trachée</li><li class="">Le pharynx</li><li class="">Les alvéoles pulmonaires</li><li class="">Le larynx</li></ol></div><div class="qblock"><p class="q">8. Le recueil de la SpO₂ par l’AS…</p><ol class="opts"><li class="ok">Est un nouveau geste AS (réforme 2021)</li><li class="">Est interdit</li><li class="">Nécessite un acte stérile</li><li class="">Relève du seul médecin</li></ol></div><div class="qblock"><p class="q">9. À proximité de l’oxygène, il faut éviter…</p><ol class="opts"><li class="ok">Les corps gras et toute flamme</li><li class="">L’humidificateur</li><li class="">Les lunettes nasales</li><li class="">La surveillance</li></ol></div></div></section>
+  <div class="footer-nav"><a href="SOCLE_L02.html" class="back">← SOCLE_L02</a><a href="SOCLE_L04.html">SOCLE_L04 →</a></div>
+</div>
+</body></html>

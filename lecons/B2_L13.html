@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B2 · B2_L13 · Prélèvements &amp; recueils dans le champ AS — ORACLE VAE AS</title>
+<style>
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
+.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
+.hero .accroche{font-size:17px;color:var(--ink-s)}
+section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
+section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section ul,section ol{margin:12px 0 12px 24px}
+section ul li,section ol li{margin-bottom:8px}
+.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:decimal}
+.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
+.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
+.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
+@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
+</style></head><body>
+<div class="bar">
+  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
+  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+</div>
+<div class="container">
+  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L13</div>
+  <div class="hero">
+    <div class="meta"><span class="bloc">Bloc 2</span><span>Leçon 13</span><span>⏱ 25 min</span><span>VAE DEAS</span></div>
+    <h1>Prélèvements &amp; recueils dans le champ AS</h1>
+    <div class="accroche"><p>Dans le cadre prévu et en collaboration avec l&#x27;IDE, l&#x27;AS contribue à certains <strong>recueils</strong> : urines (hors sonde selon protocole), selles, expectorations, recueil aseptique des urines selon les consignes. Chaque recueil suit une technique précise et se trace.</p></div>
+  </div>
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer les recueils que l’AS réalise dans le cadre prévu, en collaboration avec l’IDE.</li><li>Distinguer ces recueils de ceux qui relèvent de l’IDE : recueil stérile, prise de sang, prélèvement sur sonde.</li><li>Appliquer l’identitovigilance et l’asepsie à chaque recueil.</li><li>Réaliser une bandelette urinaire dans les conditions qui rendent la lecture valable.</li><li>Transmettre l’aspect anormal d’un recueil avec l’heure et les conditions.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Les recueils réalisables par l&#x27;AS</h3></section><section class="partie"><h3>Vigilance &amp; transmission</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Vérifier l’identité avant tout ; étiqueter nom, prénom, date.</li><li>Expliquer le recueil à la personne, hygiène des mains, gants non stériles.</li><li>Petite toilette intime avant un recueil urinaire stérile.</li><li>Acheminer rapidement au laboratoire, avec la prescription.</li><li>Noter l’heure et les conditions de recueil ; tracer le résultat de la bandelette.</li><li>Signaler : urines troubles ou malodorantes, selles ou expectorations d’aspect anormal.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Recueils dans le champ AS : urines hors sonde selon protocole, selles, expectorations — dans le cadre prévu.</li><li>L’ECBU est un recueil stérile — 20 à 30 ml au milieu du jet, après toilette intime — réalisé par l’IDE ; l’AS assure la toilette préalable.</li><li>Une erreur d’identité ou de technique rend le résultat ininterprétable.</li><li>Bandelette urinaire : lecture colorimétrique, péremption vérifiée, urines du matin de préférence, pas d’envoi au laboratoire.</li><li>Prise de sang, ECBC et test PCR sortent du champ AS : installation, réassurance, transmissions.</li><li>Un aspect anormal se signale à l’IDE, jamais un flacon jeté sans un mot.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Avant un recueil, l&#x27;AS vérifie surtout…</p><ol class="opts"><li class="ok">La météo</li><li class="">L&#x27;identité de la personne et respecte l&#x27;asepsie</li><li class="">Rien</li><li class="">La couleur du flacon</li></ol></div><div class="qblock"><p class="q">2. Une erreur d&#x27;identification de l&#x27;échantillon…</p><ol class="opts"><li class="ok">N&#x27;a pas d&#x27;importance</li><li class="">Rend le résultat ininterprétable</li><li class="">Se corrige plus tard</li><li class="">Est sans conséquence</li></ol></div><div class="qblock"><p class="q">3. Les recueils AS se font…</p><ol class="opts"><li class="ok">Dans le cadre prévu, en collaboration avec l&#x27;IDE</li><li class="">Sans cadre</li><li class="">Jamais</li><li class="">Sur décision de la famille</li></ol></div><div class="qblock"><p class="q">4. Des urines troubles et malodorantes doivent être…</p><ol class="opts"><li class="ok">Signalées à l&#x27;IDE</li><li class="">Jetées sans rien dire</li><li class="">Ignorées</li><li class="">Recueillies sans étiquette</li></ol></div><div class="qblock"><p class="q">5. L’ECBU (recueil stérile) est réalisé par…</p><ol class="opts"><li class="ok">La famille</li><li class="">L’AS</li><li class="">Le laboratoire à domicile</li><li class="">L’IDE</li></ol></div><div class="qblock"><p class="q">6. Avant tout prélèvement, l’AS vérifie d’abord…</p><ol class="opts"><li class="ok">L’heure du repas</li><li class="">L’identité de la personne (identitovigilance)</li><li class="">La météo</li><li class="">Le stock de gants</li></ol></div></div></section>
+  <div class="footer-nav"><a href="B2_L12.html" class="back">← B2_L12</a><a href="B2_L14.html">B2_L14 →</a></div>
+</div>
+</body></html>

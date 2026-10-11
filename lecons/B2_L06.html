@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B2 · B2_L06 · Paramètres vitaux — ORACLE VAE AS</title>
+<style>
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
+.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
+.hero .accroche{font-size:17px;color:var(--ink-s)}
+section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
+section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section ul,section ol{margin:12px 0 12px 24px}
+section ul li,section ol li{margin-bottom:8px}
+.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:decimal}
+.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
+.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
+.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
+@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
+</style></head><body>
+<div class="bar">
+  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
+  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+</div>
+<div class="container">
+  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L06</div>
+  <div class="hero">
+    <div class="meta"><span class="bloc">Bloc 2</span><span>Leçon 6</span><span>⏱ 45 min</span><span>VAE DEAS</span></div>
+    <h1>Paramètres vitaux</h1>
+    <div class="accroche"><p>Les <strong>paramètres vitaux</strong> (T°, pouls, PA, FR, SpO₂) renseignent sur les grandes fonctions de l&#x27;organisme. On y associe la <strong>douleur, « 5ᵉ signe »</strong> à évaluer systématiquement. L&#x27;AS, au plus près du patient, les mesure et repère les écarts.</p></div>
+  </div>
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Mesurer température, pouls, fréquence respiratoire, pression artérielle et SpO₂ dans de bonnes conditions.</li><li>Situer chaque valeur par rapport à la norme et à l’habituel de la personne.</li><li>Réagir à une valeur anormale associée à un symptôme, dans votre champ.</li><li>Transmettre une anomalie en DAR, avec valeur, heure et contexte.</li><li>Situer les gestes ouverts à l’AS par la réforme de 2021 et ceux qui restent à l’IDE.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Les paramètres vitaux : l&#x27;AS en première ligne</h3></section><section class="partie"><h3>Repères chiffrés essentiels (adulte)</h3></section><section class="partie"><h3>Mesurer dans de bonnes conditions</h3></section><section class="partie"><h3>Transmettre &amp; tracer (DAR)</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section><section class="partie"><h3>Les nouveaux gestes de l’AS (réforme 2021)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Compter la fréquence respiratoire sans prévenir la personne, sinon elle modifie son rythme.</li><li>Pression artérielle : 10 minutes de repos, brassard adapté 2 cm au-dessus du pli, bras au niveau du cœur.</li><li>SpO₂ : capteur propre, doigt réchauffé, sans vernis.</li><li>Température : toujours la même voie, jamais après un repas chaud ou froid ; en axillaire, +0,5 °C.</li><li>Malaise au lever : ne pas poursuivre, rasseoir ou allonger, rassurer, remesurer, alerter l’IDE, ne pas laisser seul.</li><li>Transmettre la valeur, l’heure, le contexte et les signes associés — des faits, jamais une interprétation.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Température 36–37,5 °C · pouls 60–100/min · fréquence respiratoire 12–20/min · pression artérielle ≤ 140/90 mmHg.</li><li>SpO₂ 95–100 % : en dessous de 90 %, urgence vitale. Glycémie capillaire 0,70–1,10 g/L.</li><li>Une valeur très haute ou très basse, associée à un symptôme, impose une alerte immédiate.</li><li>Un chiffre ne s’interprète jamais seul — c’est l’écart à l’habituel qui alerte.</li><li>L’AS observe, mesure, note, sécurise et transmet ; il ne diagnostique pas et ne modifie aucun traitement.</li><li>Le recueil des paramètres vitaux relève du rôle propre de l’IDE ; l’AS le réalise en collaboration.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. La SpO₂ normale de l&#x27;adulte est…</p><ol class="opts"><li class="ok">80–85 %</li><li class="">Exactement 100 %</li><li class="">L&#x27;AS ne la mesure pas</li><li class="">≥ 95 %</li></ol></div><div class="qblock"><p class="q">2. « Un chiffre ne s&#x27;interprète jamais seul » signifie…</p><ol class="opts"><li class="ok">Seul le médecin voit les valeurs</li><li class="">Relier la valeur aux symptômes et au contexte avant d&#x27;alerter</li><li class="">Ne pas noter les chiffres</li><li class="">Il faut deux soignants</li></ol></div><div class="qblock"><p class="q">3. La FR se compte…</p><ol class="opts"><li class="ok">Après un effort</li><li class="">Discrètement, sans que la personne le sache</li><li class="">En prévenant la personne</li><li class="">En 10 secondes ×2</li></ol></div><div class="qblock"><p class="q">4. Le pouls normal de l&#x27;adulte au repos est…</p><ol class="opts"><li class="ok">60–100 /min</li><li class="">120–150 /min</li><li class="">30–50 /min</li><li class="">Variable, sans repère</li></ol></div><div class="qblock"><p class="q">5. Dans DAR, le « R » correspond à…</p><ol class="opts"><li class="ok">Risque</li><li class="">Rendez-vous</li><li class="">Rapport médical</li><li class="">Résultats : l&#x27;évolution observée</li></ol></div><div class="qblock"><p class="q">6. Une SpO₂ à 88 % chez une personne essoufflée :</p><ol class="opts"><li class="ok">Hors champ AS</li><li class="">Urgence (&lt;90 %) → installer, alerter l&#x27;IDE, surveiller</li><li class="">Valeur normale</li><li class="">À recontrôler demain</li></ol></div><div class="qblock"><p class="q">7. Le recueil des paramètres vitaux relève…</p><ol class="opts"><li class="ok">Du rôle propre de l’IDE, l’AS en collaboration</li><li class="">Du médecin uniquement</li><li class="">Du rôle propre de l’AS seul</li><li class="">Du brancardier</li></ol></div><div class="qblock"><p class="q">8. Lequel est un nouveau geste AS (réforme 2021) ?</p><ol class="opts"><li class="ok">Réaliser un pansement complexe</li><li class="">Poser une perfusion</li><li class="">Recueillir la SpO₂ et calculer l’IMC</li><li class="">Prescrire un traitement</li></ol></div></div></section>
+  <div class="footer-nav"><a href="B2_L05.html" class="back">← B2_L05</a><a href="B2_L07.html">B2_L07 →</a></div>
+</div>
+</body></html>

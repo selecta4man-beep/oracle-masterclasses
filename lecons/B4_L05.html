@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B4 · B4_L05 · Circuit stérilisation — ORACLE VAE AS</title>
+<style>
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
+.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
+.hero .accroche{font-size:17px;color:var(--ink-s)}
+section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
+section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section ul,section ol{margin:12px 0 12px 24px}
+section ul li,section ol li{margin-bottom:8px}
+.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:decimal}
+.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
+.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
+.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
+@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
+</style></head><body>
+<div class="bar">
+  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
+  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+</div>
+<div class="container">
+  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 4</strong> › B4_L05</div>
+  <div class="hero">
+    <div class="meta"><span class="bloc">Bloc 4</span><span>Leçon 5</span><span>⏱ 30 min</span><span>VAE DEAS</span></div>
+    <h1>Circuit stérilisation</h1>
+    <div class="accroche"><p>Tout matériel de soin partagé doit être <strong>traité entre deux utilisations</strong>. Selon le niveau de risque, le traitement va du simple nettoyage à la stérilisation. L&#x27;AS intervient surtout au niveau <strong>nettoyage-désinfection</strong> ; la stérilisation relève de secteurs spécialisés.</p></div>
+  </div>
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer les trois niveaux de traitement du matériel et celui qui relève de vous.</li><li>Dérouler la chaîne de traitement d’un matériel partagé, de la pré-désinfection au stockage.</li><li>Appliquer la marche en avant dans l’organisation du circuit.</li><li>Écarter et signaler un matériel douteux ou impossible à désinfecter.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Du matériel propre au matériel sûr</h3></section><section class="partie"><h3>Les 3 niveaux de traitement du matériel</h3></section><section class="partie"><h3>La chaîne de traitement</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>La chaîne : pré-désinfection, nettoyage, rinçage, séchage, désinfection, stockage propre.</li><li>Respecter la dilution et le temps de contact indiqués au protocole.</li><li>Sécher : un matériel humide favorise la recontamination.</li><li>Ranger en zone propre, séparée du circuit sale.</li><li>Fauteuil ou aide technique visiblement souillé : ne pas l’utiliser, nettoyer puis désinfecter avant usage.</li><li>Matériel douteux ou non désinfectable : l’écarter, prévenir l’IDE ou le responsable, tracer l’anomalie.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Tout matériel de soin partagé se traite entre deux utilisations.</li><li>On ne désinfecte jamais un matériel sale : le nettoyage vient toujours en premier.</li><li>Marche en avant : du sale vers le propre, sans retour ni croisement.</li><li>Usage unique : jamais réutilisé.</li><li>L’aide-soignant nettoie et désinfecte ; la stérilisation des dispositifs invasifs relève d’un secteur spécialisé.</li><li>Emballage ouvert, humide ou périmé : le contenu n’est plus considéré comme stérile.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le matériel de soin partagé doit être :</p><ol class="opts"><li class="ok">Utilisé tel quel pour gagner du temps</li><li class="">Jeté après chaque usage</li><li class="">Désinfecté sans nettoyer</li><li class="">Nettoyé puis désinfecté entre deux personnes</li></ol></div><div class="qblock"><p class="q">2. La stérilisation des dispositifs invasifs réutilisables relève :</p><ol class="opts"><li class="ok">De l&#x27;AS seul</li><li class="">Du résident</li><li class="">D&#x27;un secteur spécialisé (hors rôle AS)</li><li class="">De personne</li></ol></div><div class="qblock"><p class="q">3. On ne désinfecte/stérilise jamais :</p><ol class="opts"><li class="ok">Un matériel sale</li><li class="">Un matériel propre</li><li class="">Un matériel rangé</li><li class="">Un matériel sec</li></ol></div><div class="qblock"><p class="q">4. Le matériel d&#x27;entretien suit la marche en avant :</p><ol class="opts"><li class="ok">Du sale vers le propre, sans revenir en arrière</li><li class="">Dans tous les sens</li><li class="">Peu importe</li><li class="">Du propre vers le sale puis retour</li></ol></div><div class="qblock"><p class="q">5. Que faites-vous d&#x27;un matériel impossible à désinfecter ?</p><ol class="opts"><li class="ok">Je le signale</li><li class="">Je l&#x27;utilise quand même</li><li class="">Je le cache</li><li class="">Je le range tel quel</li></ol></div><div class="qblock"><p class="q">6. Avant toute désinfection, il faut d’abord…</p><ol class="opts"><li class="ok">Nettoyer (détersion)</li><li class="">Rien</li><li class="">Sécher 24 h</li><li class="">Stériliser</li></ol></div><div class="qblock"><p class="q">7. Un matériel marqué « usage unique »…</p><ol class="opts"><li class="ok">Se partage</li><li class="">Se stérilise à domicile</li><li class="">Ne se réutilise jamais</li><li class="">Se redésinfecte</li></ol></div></div></section>
+  <div class="footer-nav"><a href="B4_L04.html" class="back">← B4_L04</a><a href="B4_L06.html">B4_L06 →</a></div>
+</div>
+</body></html>

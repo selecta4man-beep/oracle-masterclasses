@@ -1,0 +1,430 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Catalogue des 113 leçons — ORACLE VAE AS</title>
+<style>
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
+.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
+.hero .accroche{font-size:17px;color:var(--ink-s)}
+section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
+section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section ul,section ol{margin:12px 0 12px 24px}
+section ul li,section ol li{margin-bottom:8px}
+.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:decimal}
+.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
+.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
+.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
+@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
+
+.chapitre h2 .count{color:var(--gold);font-size:14px;font-weight:600;background:var(--teal-d);padding:4px 10px;border-radius:999px;margin-left:10px;vertical-align:middle}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.lecon-card{background:linear-gradient(135deg,#fff,var(--cream));border-radius:12px;padding:14px;text-decoration:none;color:var(--ink);display:flex;gap:12px;box-shadow:0 2px 8px rgba(13,115,119,.08);transition:all .2s;border-left:4px solid var(--teal)}
+.lecon-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,115,119,.15);border-left-color:var(--gold)}
+.lecon-card .num{background:var(--teal);color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.lecon-card .info h3{color:var(--teal-d);font-size:14px;margin-bottom:6px;line-height:1.3}
+.lecon-card .info .meta{display:flex;gap:8px;font-size:11px;color:var(--ink-s)}
+.lecon-card .info .meta span{background:var(--cream);padding:2px 8px;border-radius:999px}
+.hero-index{background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;text-align:center;padding:40px 24px;border-left:0}
+.hero-index h1{color:#fff;font-size:38px}
+.hero-index p{color:#fff;opacity:.95;font-size:17px;max-width:600px;margin:0 auto}
+.hero-index .stats{display:flex;justify-content:center;gap:24px;margin-top:20px;flex-wrap:wrap}
+.hero-index .stats div{background:rgba(255,255,255,.1);padding:10px 20px;border-radius:12px;backdrop-filter:blur(6px)}
+.hero-index .stats strong{color:var(--gold);font-size:24px;font-weight:900;display:block}
+.nav-chapitres{position:sticky;top:60px;background:#fff;padding:14px 20px;z-index:40;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;gap:8px;overflow-x:auto}
+.nav-chapitres a{background:var(--cream);color:var(--teal-d);padding:7px 14px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+.nav-chapitres a:hover{background:var(--teal);color:#fff}
+</style></head><body>
+<div class="bar"><div class="brand"><span>🫀</span> ORACLE VAE AS</div><a href="index.html">← Masterclasses</a></div>
+<div class="nav-chapitres"><a href="#INTRO">📚 Démarrage</a><a href="#SOCLE">🏛 Socle</a><a href="#B1">🤝 Bloc 1 — Vie quotidienne</a><a href="#B2">🩺 Bloc 2 — État clinique</a><a href="#B3">💬 Bloc 3 — Information</a><a href="#B4">🧹 Bloc 4 — Environnement</a><a href="#B5">👥 Bloc 5 — Équipe</a><a href="#LIV2">📝 Livret 2</a><a href="#ORAL">🎤 Oral</a></div>
+<div class="container">
+<div class="hero hero-index"><h1>Catalogue des 113 leçons</h1>
+<p>Le parcours complet VAE DEAS — Démarrage, Socle, 5 Blocs de compétences, Livret 2 et Oral jury.</p>
+<div class="stats"><div><strong>113</strong>leçons</div><div><strong>9</strong>chapitres</div><div><strong>35h+</strong>contenu</div><div><strong>DEAS</strong>Niveau 4</div></div></div>
+<section class="chapitre" id="INTRO">
+<h2>📚 Démarrage <span class="count">5 leçons</span></h2>
+<div class="grid"><a href="lecons/INTRO_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Guide de démarrage — vos 30 premiers jours</h3>
+<div class="meta"><span>⏱ 35 min</span><span>INTRO_L01</span></div></div></a><a href="lecons/INTRO_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Parcours semaine par semaine</h3>
+<div class="meta"><span>⏱ 30 min</span><span>INTRO_L02</span></div></div></a><a href="lecons/INTRO_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>Règles VAE &amp; objectifs du dossier</h3>
+<div class="meta"><span>⏱ 30 min</span><span>INTRO_L03</span></div></div></a><a href="lecons/INTRO_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Choisir mon parcours &amp; plan 30 jours</h3>
+<div class="meta"><span>⏱ 25 min</span><span>INTRO_L04</span></div></div></a><a href="lecons/INTRO_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Avant la VAE — recevabilité, Livret 1 &amp; France VAE</h3>
+<div class="meta"><span>⏱ 30 min</span><span>INTRO_L05</span></div></div></a></div></section><section class="chapitre" id="SOCLE">
+<h2>🏛 Socle <span class="count">13 leçons</span></h2>
+<div class="grid"><a href="lecons/SOCLE_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Care vs Cure — Prendre soin vs guérir</h3>
+<div class="meta"><span>⏱ 30 min</span><span>SOCLE_L01</span></div></div></a><a href="lecons/SOCLE_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Vocabulaire médical &amp; Échelles d&#x27;évaluation</h3>
+<div class="meta"><span>⏱ 30 min</span><span>SOCLE_L02</span></div></div></a><a href="lecons/SOCLE_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>Pathologies respiratoires</h3>
+<div class="meta"><span>⏱ 35 min</span><span>SOCLE_L03</span></div></div></a><a href="lecons/SOCLE_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Pathologies cardiovasculaires</h3>
+<div class="meta"><span>⏱ 35 min</span><span>SOCLE_L04</span></div></div></a><a href="lecons/SOCLE_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Pathologies neurologiques</h3>
+<div class="meta"><span>⏱ 35 min</span><span>SOCLE_L05</span></div></div></a><a href="lecons/SOCLE_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Diabète — Surveillance et soins</h3>
+<div class="meta"><span>⏱ 45 min</span><span>SOCLE_L06</span></div></div></a><a href="lecons/SOCLE_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>Pathologies urinaires</h3>
+<div class="meta"><span>⏱ 30 min</span><span>SOCLE_L07</span></div></div></a><a href="lecons/SOCLE_L08.html" class="lecon-card">
+<div class="num">8</div>
+<div class="info"><h3>Pathologies digestives</h3>
+<div class="meta"><span>⏱ 30 min</span><span>SOCLE_L08</span></div></div></a><a href="lecons/SOCLE_L09.html" class="lecon-card">
+<div class="num">9</div>
+<div class="info"><h3>Appareil locomoteur</h3>
+<div class="meta"><span>⏱ 30 min</span><span>SOCLE_L09</span></div></div></a><a href="lecons/SOCLE_L10.html" class="lecon-card">
+<div class="num">10</div>
+<div class="info"><h3>Pathologies de la peau — l’escarre</h3>
+<div class="meta"><span>⏱ 40 min</span><span>SOCLE_L10</span></div></div></a><a href="lecons/SOCLE_L11.html" class="lecon-card">
+<div class="num">11</div>
+<div class="info"><h3>Psychiatrie et troubles psychiques</h3>
+<div class="meta"><span>⏱ 30 min</span><span>SOCLE_L11</span></div></div></a><a href="lecons/SOCLE_L12.html" class="lecon-card">
+<div class="num">12</div>
+<div class="info"><h3>Cancérologie — Accompagnement du patient</h3>
+<div class="meta"><span>⏱ 30 min</span><span>SOCLE_L12</span></div></div></a><a href="lecons/SOCLE_L13.html" class="lecon-card">
+<div class="num">13</div>
+<div class="info"><h3>Les 14 besoins fondamentaux (Virginia Henderson)</h3>
+<div class="meta"><span>⏱ 35 min</span><span>SOCLE_L13</span></div></div></a></div></section><section class="chapitre" id="B1">
+<h2>🤝 Bloc 1 — Vie quotidienne <span class="count">19 leçons</span></h2>
+<div class="grid"><a href="lecons/B1_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Accueil et Projet d&#x27;Accompagnement Personnalisé</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B1_L01</span></div></div></a><a href="lecons/B1_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Toilette, change &amp; soins d&#x27;hygiène</h3>
+<div class="meta"><span>⏱ 60 min</span><span>B1_L02</span></div></div></a><a href="lecons/B1_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>Soins bucco-dentaires</h3>
+<div class="meta"><span>⏱ 25 min</span><span>B1_L03</span></div></div></a><a href="lecons/B1_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Mobilisation, Transferts &amp; Manutention</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B1_L04</span></div></div></a><a href="lecons/B1_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Aide au sommeil chez la personne âgée</h3>
+<div class="meta"><span>⏱ 45 min</span><span>B1_L05</span></div></div></a><a href="lecons/B1_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Activités &amp; animations en EHPAD</h3>
+<div class="meta"><span>⏱ 45 min</span><span>B1_L06</span></div></div></a><a href="lecons/B1_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>Aide à l&#x27;élimination : urinal, bassin, diurèse</h3>
+<div class="meta"><span>⏱ 40 min</span><span>B1_L07</span></div></div></a><a href="lecons/B1_L08.html" class="lecon-card">
+<div class="num">8</div>
+<div class="info"><h3>Alimentation &amp; hydratation de la personne âgée</h3>
+<div class="meta"><span>⏱ 55 min</span><span>B1_L08</span></div></div></a><a href="lecons/B1_L09.html" class="lecon-card">
+<div class="num">9</div>
+<div class="info"><h3>Aide à l&#x27;habillage et au déshabillage</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B1_L09</span></div></div></a><a href="lecons/B1_L10.html" class="lecon-card">
+<div class="num">10</div>
+<div class="info"><h3>Confort, installation au fauteuil &amp; prévention des complications</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B1_L10</span></div></div></a><a href="lecons/B1_L11.html" class="lecon-card">
+<div class="num">11</div>
+<div class="info"><h3>Soins post-mortem : respect, rites et traçabilité</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B1_L11</span></div></div></a><a href="lecons/B1_L12.html" class="lecon-card">
+<div class="num">12</div>
+<div class="info"><h3>Refus de soin : comprendre, négocier et adapter</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B1_L12</span></div></div></a><a href="lecons/B1_L13.html" class="lecon-card">
+<div class="num">13</div>
+<div class="info"><h3>Éthique &amp; déontologie du soignant</h3>
+<div class="meta"><span>⏱ 50 min</span><span>B1_L13</span></div></div></a><a href="lecons/B1_L14.html" class="lecon-card">
+<div class="num">14</div>
+<div class="info"><h3>Prévenir la maltraitance et savoir signaler</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B1_L14</span></div></div></a><a href="lecons/B1_L15.html" class="lecon-card">
+<div class="num">15</div>
+<div class="info"><h3>Fin de vie et deuil</h3>
+<div class="meta"><span>⏱ 45 min</span><span>B1_L15</span></div></div></a><a href="lecons/B1_L16.html" class="lecon-card">
+<div class="num">16</div>
+<div class="info"><h3>Handicap &amp; spécificités de prise en charge</h3>
+<div class="meta"><span>⏱ 55 min</span><span>B1_L16</span></div></div></a><a href="lecons/B1_L17.html" class="lecon-card">
+<div class="num">17</div>
+<div class="info"><h3>Sexualité, intimité &amp; vie affective en EHPAD</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B1_L17</span></div></div></a><a href="lecons/B1_L18.html" class="lecon-card">
+<div class="num">18</div>
+<div class="info"><h3>Contention &amp; alternatives : cadre légal et pratiques</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B1_L18</span></div></div></a><a href="lecons/B1_L19.html" class="lecon-card">
+<div class="num">19</div>
+<div class="info"><h3>Prévention des risques &amp; conduite d&#x27;urgence</h3>
+<div class="meta"><span>⏱ 50 min</span><span>B1_L19</span></div></div></a></div></section><section class="chapitre" id="B2">
+<h2>🩺 Bloc 2 — État clinique <span class="count">26 leçons</span></h2>
+<div class="grid"><a href="lecons/B2_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Observation clinique de base</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B2_L01</span></div></div></a><a href="lecons/B2_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Observation par appareil &amp; signes d&#x27;alerte</h3>
+<div class="meta"><span>⏱ 40 min</span><span>B2_L02</span></div></div></a><a href="lecons/B2_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>Surveillance de la conscience</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L03</span></div></div></a><a href="lecons/B2_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Fausse route &amp; troubles de la déglutition</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B2_L04</span></div></div></a><a href="lecons/B2_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Glycémie capillaire &amp; hypoglycémie</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L05</span></div></div></a><a href="lecons/B2_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Paramètres vitaux</h3>
+<div class="meta"><span>⏱ 45 min</span><span>B2_L06</span></div></div></a><a href="lecons/B2_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>Aide à la prise de médicaments &amp; règle des 5B</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B2_L07</span></div></div></a><a href="lecons/B2_L08.html" class="lecon-card">
+<div class="num">8</div>
+<div class="info"><h3>Surveillance pré et post-opératoire</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B2_L08</span></div></div></a><a href="lecons/B2_L09.html" class="lecon-card">
+<div class="num">9</div>
+<div class="info"><h3>Plaies &amp; cicatrisation</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B2_L09</span></div></div></a><a href="lecons/B2_L10.html" class="lecon-card">
+<div class="num">10</div>
+<div class="info"><h3>Dispositifs médicaux : surveillance AS</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L10</span></div></div></a><a href="lecons/B2_L11.html" class="lecon-card">
+<div class="num">11</div>
+<div class="info"><h3>Escarres — prévention &amp; soins</h3>
+<div class="meta"><span>⏱ 40 min</span><span>B2_L11</span></div></div></a><a href="lecons/B2_L12.html" class="lecon-card">
+<div class="num">12</div>
+<div class="info"><h3>Bas de contention veineuse</h3>
+<div class="meta"><span>⏱ 25 min</span><span>B2_L12</span></div></div></a><a href="lecons/B2_L13.html" class="lecon-card">
+<div class="num">13</div>
+<div class="info"><h3>Prélèvements &amp; recueils dans le champ AS</h3>
+<div class="meta"><span>⏱ 25 min</span><span>B2_L13</span></div></div></a><a href="lecons/B2_L14.html" class="lecon-card">
+<div class="num">14</div>
+<div class="info"><h3>Soins non médicamenteux &amp; confort</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L14</span></div></div></a><a href="lecons/B2_L15.html" class="lecon-card">
+<div class="num">15</div>
+<div class="info"><h3>Perfusion : surveillance dans le champ AS</h3>
+<div class="meta"><span>⏱ 25 min</span><span>B2_L15</span></div></div></a><a href="lecons/B2_L16.html" class="lecon-card">
+<div class="num">16</div>
+<div class="info"><h3>Oxygénothérapie &amp; sonde nasogastrique</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L16</span></div></div></a><a href="lecons/B2_L17.html" class="lecon-card">
+<div class="num">17</div>
+<div class="info"><h3>Courbe de surveillance &amp; traçabilité</h3>
+<div class="meta"><span>⏱ 25 min</span><span>B2_L17</span></div></div></a><a href="lecons/B2_L18.html" class="lecon-card">
+<div class="num">18</div>
+<div class="info"><h3>Réfection du lit &amp; confort</h3>
+<div class="meta"><span>⏱ 20 min</span><span>B2_L18</span></div></div></a><a href="lecons/B2_L19.html" class="lecon-card">
+<div class="num">19</div>
+<div class="info"><h3>Troubles cognitifs : comprendre &amp; accompagner</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B2_L19</span></div></div></a><a href="lecons/B2_L20.html" class="lecon-card">
+<div class="num">20</div>
+<div class="info"><h3>Communication adaptée au soin</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L20</span></div></div></a><a href="lecons/B2_L21.html" class="lecon-card">
+<div class="num">21</div>
+<div class="info"><h3>Méthode de validation (Naomi Feil)</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L21</span></div></div></a><a href="lecons/B2_L22.html" class="lecon-card">
+<div class="num">22</div>
+<div class="info"><h3>Douleur — évaluation &amp; soulagement</h3>
+<div class="meta"><span>⏱ 40 min</span><span>B2_L22</span></div></div></a><a href="lecons/B2_L23.html" class="lecon-card">
+<div class="num">23</div>
+<div class="info"><h3>Vocabulaire médical approfondi</h3>
+<div class="meta"><span>⏱ 25 min</span><span>B2_L23</span></div></div></a><a href="lecons/B2_L24.html" class="lecon-card">
+<div class="num">24</div>
+<div class="info"><h3>Aide au sommeil : approfondissement</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L24</span></div></div></a><a href="lecons/B2_L25.html" class="lecon-card">
+<div class="num">25</div>
+<div class="info"><h3>Psychotropes : surveillance par l&#x27;AS</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B2_L25</span></div></div></a><a href="lecons/B2_L26.html" class="lecon-card">
+<div class="num">26</div>
+<div class="info"><h3>Pharmacologie — pathologie, traitement &amp; grandes classes</h3>
+<div class="meta"><span>⏱ 45 min</span><span>B2_L26</span></div></div></a></div></section><section class="chapitre" id="B3">
+<h2>💬 Bloc 3 — Information <span class="count">11 leçons</span></h2>
+<div class="grid"><a href="lecons/B3_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Communication bienveillante</h3>
+<div class="meta"><span>⏱ 40 min</span><span>B3_L01</span></div></div></a><a href="lecons/B3_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Relation avec la famille &amp; l&#x27;entourage</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B3_L02</span></div></div></a><a href="lecons/B3_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>Tutorat &amp; transmission d&#x27;un savoir-faire</h3>
+<div class="meta"><span>⏱ 40 min</span><span>B3_L03</span></div></div></a><a href="lecons/B3_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Relation d&#x27;aide &amp; écoute active</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B3_L04</span></div></div></a><a href="lecons/B3_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Transmissions &amp; information de l&#x27;équipe</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B3_L05</span></div></div></a><a href="lecons/B3_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Secret professionnel, droits &amp; bientraitance</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B3_L06</span></div></div></a><a href="lecons/B3_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>Travail en équipe &amp; collaboration</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B3_L07</span></div></div></a><a href="lecons/B3_L08.html" class="lecon-card">
+<div class="num">8</div>
+<div class="info"><h3>Gérer un conflit en équipe</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B3_L08</span></div></div></a><a href="lecons/B3_L09.html" class="lecon-card">
+<div class="num">9</div>
+<div class="info"><h3>Éducation &amp; information de la personne</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B3_L09</span></div></div></a><a href="lecons/B3_L10.html" class="lecon-card">
+<div class="num">10</div>
+<div class="info"><h3>Religions, laïcité &amp; spiritualité dans le soin</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B3_L10</span></div></div></a><a href="lecons/B3_L11.html" class="lecon-card">
+<div class="num">11</div>
+<div class="info"><h3>Accueillir &amp; décoder les émotions</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B3_L11</span></div></div></a></div></section><section class="chapitre" id="B4">
+<h2>🧹 Bloc 4 — Environnement <span class="count">8 leçons</span></h2>
+<div class="grid"><a href="lecons/B4_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Hygiène des mains &amp; EPI</h3>
+<div class="meta"><span>⏱ 40 min</span><span>B4_L01</span></div></div></a><a href="lecons/B4_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Bionettoyage</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B4_L02</span></div></div></a><a href="lecons/B4_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>IAS &amp; Prévention</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B4_L03</span></div></div></a><a href="lecons/B4_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Précautions standard</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B4_L04</span></div></div></a><a href="lecons/B4_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Circuit stérilisation</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B4_L05</span></div></div></a><a href="lecons/B4_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Entretien matériel</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B4_L06</span></div></div></a><a href="lecons/B4_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>Circuits des déchets &amp; linge (DASRI)</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B4_L07</span></div></div></a><a href="lecons/B4_L08.html" class="lecon-card">
+<div class="num">8</div>
+<div class="info"><h3>Risques professionnels &amp; AES</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B4_L08</span></div></div></a></div></section><section class="chapitre" id="B5">
+<h2>👥 Bloc 5 — Équipe <span class="count">12 leçons</span></h2>
+<div class="grid"><a href="lecons/B5_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Pourquoi &amp; quoi transmettre</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L01</span></div></div></a><a href="lecons/B5_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>La transmission orale : la relève</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L02</span></div></div></a><a href="lecons/B5_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>La transmission écrite &amp; le dossier de soins</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L03</span></div></div></a><a href="lecons/B5_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>La transmission ciblée : méthode DAR</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B5_L04</span></div></div></a><a href="lecons/B5_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Outils numériques &amp; traçabilité</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L05</span></div></div></a><a href="lecons/B5_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Confidentialité &amp; secret professionnel partagé</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L06</span></div></div></a><a href="lecons/B5_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>L&#x27;équipe pluriprofessionnelle &amp; les rôles</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L07</span></div></div></a><a href="lecons/B5_L08.html" class="lecon-card">
+<div class="num">8</div>
+<div class="info"><h3>Situer son rôle, ses limites &amp; coopérer</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L08</span></div></div></a><a href="lecons/B5_L09.html" class="lecon-card">
+<div class="num">9</div>
+<div class="info"><h3>Les temps de l&#x27;équipe &amp; la collaboration</h3>
+<div class="meta"><span>⏱ 30 min</span><span>B5_L09</span></div></div></a><a href="lecons/B5_L10.html" class="lecon-card">
+<div class="num">10</div>
+<div class="info"><h3>La démarche qualité &amp; l&#x27;amélioration continue</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B5_L10</span></div></div></a><a href="lecons/B5_L11.html" class="lecon-card">
+<div class="num">11</div>
+<div class="info"><h3>Gestion des risques &amp; événement indésirable</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B5_L11</span></div></div></a><a href="lecons/B5_L12.html" class="lecon-card">
+<div class="num">12</div>
+<div class="info"><h3>Responsabilité, posture réflexive &amp; VAE</h3>
+<div class="meta"><span>⏱ 35 min</span><span>B5_L12</span></div></div></a></div></section><section class="chapitre" id="LIV2">
+<h2>📝 Livret 2 <span class="count">12 leçons</span></h2>
+<div class="grid"><a href="lecons/LIV2_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Plan type d’une activité VAE</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L01</span></div></div></a><a href="lecons/LIV2_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Méthode d’écriture — structure, preuves, résultats</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L02</span></div></div></a><a href="lecons/LIV2_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>Rédaction Livret 2 — Bloc 1</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L03</span></div></div></a><a href="lecons/LIV2_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Rédaction Livret 2 — Bloc 2</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L04</span></div></div></a><a href="lecons/LIV2_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Rédaction Livret 2 — Bloc 3</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L05</span></div></div></a><a href="lecons/LIV2_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Rédaction Livret 2 — Bloc 4</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L06</span></div></div></a><a href="lecons/LIV2_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>Rédaction Livret 2 — Bloc 5</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L07</span></div></div></a><a href="lecons/LIV2_L08.html" class="lecon-card">
+<div class="num">8</div>
+<div class="info"><h3>Check-list finale du dossier</h3>
+<div class="meta"><span>⏱ 30 min</span><span>LIV2_L08</span></div></div></a><a href="lecons/LIV2_L09.html" class="lecon-card">
+<div class="num">9</div>
+<div class="info"><h3>Atelier — Trame d’activité à remplir</h3>
+<div class="meta"><span>⏱ 40 min</span><span>LIV2_L09</span></div></div></a><a href="lecons/LIV2_L10.html" class="lecon-card">
+<div class="num">10</div>
+<div class="info"><h3>Atelier — Situation faible vs excellente</h3>
+<div class="meta"><span>⏱ 35 min</span><span>LIV2_L10</span></div></div></a><a href="lecons/LIV2_L11.html" class="lecon-card">
+<div class="num">11</div>
+<div class="info"><h3>Atelier — Banque de verbes d’action &amp; formulations</h3>
+<div class="meta"><span>⏱ 25 min</span><span>LIV2_L11</span></div></div></a><a href="lecons/LIV2_L12.html" class="lecon-card">
+<div class="num">12</div>
+<div class="info"><h3>Carnet de preuves — capturer mes situations</h3>
+<div class="meta"><span>⏱ 20 min</span><span>LIV2_L12</span></div></div></a></div></section><section class="chapitre" id="ORAL">
+<h2>🎤 Oral <span class="count">7 leçons</span></h2>
+<div class="grid"><a href="lecons/ORAL_L01.html" class="lecon-card">
+<div class="num">1</div>
+<div class="info"><h3>Pitch 2 minutes — Se présenter devant le jury</h3>
+<div class="meta"><span>⏱ 30 min</span><span>ORAL_L01</span></div></div></a><a href="lecons/ORAL_L02.html" class="lecon-card">
+<div class="num">2</div>
+<div class="info"><h3>Questions Fréquentes &amp; Pièges du Jury</h3>
+<div class="meta"><span>⏱ 30 min</span><span>ORAL_L02</span></div></div></a><a href="lecons/ORAL_L03.html" class="lecon-card">
+<div class="num">3</div>
+<div class="info"><h3>Comprendre les Attentes du Jury VAE</h3>
+<div class="meta"><span>⏱ 30 min</span><span>ORAL_L03</span></div></div></a><a href="lecons/ORAL_L04.html" class="lecon-card">
+<div class="num">4</div>
+<div class="info"><h3>Jour J — Posture, Stress &amp; Réussir son Oral</h3>
+<div class="meta"><span>⏱ 30 min</span><span>ORAL_L04</span></div></div></a><a href="lecons/ORAL_L05.html" class="lecon-card">
+<div class="num">5</div>
+<div class="info"><h3>Banque de questions du jury (par bloc)</h3>
+<div class="meta"><span>⏱ 40 min</span><span>ORAL_L05</span></div></div></a><a href="lecons/ORAL_L06.html" class="lecon-card">
+<div class="num">6</div>
+<div class="info"><h3>Modèles de réponses &amp; structure</h3>
+<div class="meta"><span>⏱ 30 min</span><span>ORAL_L06</span></div></div></a><a href="lecons/ORAL_L07.html" class="lecon-card">
+<div class="num">7</div>
+<div class="info"><h3>Simulation guidée d’oral</h3>
+<div class="meta"><span>⏱ 45 min</span><span>ORAL_L07</span></div></div></a></div></section>
+</div></body></html>
