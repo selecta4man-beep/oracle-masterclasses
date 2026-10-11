@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B4 · B4_L04 · Précautions standard — ORACLE VAE AS</title>
+<title>Bloc 4 · B4_L04 · Précautions standard — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 4</strong> › B4_L04</div>
@@ -56,7 +79,248 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Précautions standard</h1>
     <div class="accroche"><p>Le <strong>masque se retire en dernier</strong> (en le tenant par les élastiques, sans toucher la face avant) et on termine <strong>toujours</strong> par une hygiène des mains.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Définir les précautions standard et le champ auquel elles s’appliquent.</li><li>Nommer les 8 composantes et ce qu’elles imposent au quotidien.</li><li>Choisir les précautions complémentaires selon le mode de transmission.</li><li>Dérouler l’ordre d’habillage et de retrait des équipements de protection.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Le socle : à tous, tout le temps</h3></section><section class="partie"><h3>Les 8 composantes des précautions standard</h3></section><section class="partie"><h3>Précautions complémentaires d’hygiène (PCH)</h3></section><section class="partie"><h3>Habillage &amp; retrait des EPI : l’ordre</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Habillage : mains → surblouse ou tablier → masque → lunettes → gants.</li><li>Retrait : gants → mains → lunettes → surblouse → masque → mains.</li><li>Tenir le masque par les élastiques, sans toucher la face avant.</li><li>Ne jamais recapuchonner une aiguille ; collecteur OPCT pour les objets piquants.</li><li>Terminer la tournée par les chambres en précautions complémentaires.</li><li>Ne pas utiliser ailleurs le matériel dédié à une chambre en précautions.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Pour tout patient, tout soin, tout lieu, tout professionnel — quel que soit le statut infectieux.</li><li>Toute personne est potentiellement porteuse de micro-organismes transmissibles.</li><li>L’hygiène des mains est la mesure n°1 : 5 moments OMS, friction 30 secondes.</li><li>Mains souillées ou lésées, C. difficile, gale : lavage à l’eau et au savon.</li><li>Contact : gants et surblouse à l’entrée, matériel dédié · Gouttelettes : masque médical · Air : FFP2, porte fermée.</li><li>Les gants ne se désinfectent pas : un soin, une paire.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Les précautions standard s&#x27;appliquent :</p><ol class="opts"><li class="ok">Seulement la nuit</li><li class="">Seulement aux personnes contagieuses connues</li><li class="">Uniquement en réanimation</li><li class="">À toutes les personnes, tout le temps</li></ol></div><div class="qblock"><p class="q">2. La règle « zéro noso » signifie :</p><ol class="opts"><li class="ok">On isole tout le monde</li><li class="">Il n&#x27;y a jamais d&#x27;infection</li><li class="">On peut négliger l&#x27;hygiène si le risque est faible</li><li class="">On applique systématiquement les précautions à chaque contact</li></ol></div><div class="qblock"><p class="q">3. Quelle est la mesure n°1 des précautions standard ?</p><ol class="opts"><li class="ok">L&#x27;hygiène des mains</li><li class="">La désinfection des sols</li><li class="">Le tablier</li><li class="">Le masque</li></ol></div><div class="qblock"><p class="q">4. En chambre d&#x27;isolement, le matériel est :</p><ol class="opts"><li class="ok">Partagé avec les autres chambres</li><li class="">Inutile</li><li class="">Sorti dès qu&#x27;on est pressé</li><li class="">Dédié à la chambre</li></ol></div><div class="qblock"><p class="q">5. Les précautions complémentaires de type « contact » concernent par exemple :</p><ol class="opts"><li class="ok">Seulement la grippe</li><li class="">La tuberculose</li><li class="">La gale, une BMR, une gastro-entérite</li><li class="">Rien de précis</li></ol></div><div class="qblock"><p class="q">6. Pour s’équiper avant un soin à risque, l’ordre correct d’habillage des équipements de protection est…</p><ol class="opts"><li class="ok">Hygiène des mains → surblouse/tablier → masque → lunettes → gants</li><li class="">Gants → masque → surblouse → hygiène des mains</li><li class="">Masque → gants → surblouse, sans hygiène des mains au départ</li><li class="">Surblouse → gants → masque, l’hygiène des mains seulement à la fin</li></ol></div><div class="qblock"><p class="q">7. Devant une gale ou une infection à C. difficile, l’hygiène des mains recommandée est :</p><ol class="opts"><li class="ok">La friction hydro-alcoolique (SHA) suffit</li><li class="">Le lavage à l’eau et au savon</li><li class="">Aucune hygiène des mains spécifique</li><li class="">Le port de gants seul, sans lavage</li></ol></div><div class="qblock"><p class="q">8. Pour une tuberculose (transmission air), quel masque ?</p><ol class="opts"><li class="ok">Masque FFP2</li><li class="">Une visière seule</li><li class="">Aucun</li><li class="">Masque à usage médical</li></ol></div><div class="qblock"><p class="q">9. Pour une grippe (gouttelettes), la mesure ajoutée est…</p><ol class="opts"><li class="ok">Rien de plus</li><li class="">Masque FFP2</li><li class="">Masque à usage médical + chambre individuelle</li><li class="">Stérilisation de la chambre</li></ol></div><div class="qblock"><p class="q">10. Au retrait des EPI, que retire-t-on en DERNIER ?</p><ol class="opts"><li class="ok">Les lunettes</li><li class="">Les gants</li><li class="">La surblouse</li><li class="">Le masque</li></ol></div><div class="qblock"><p class="q">11. Les gants à usage unique…</p><ol class="opts"><li class="ok">Se portent toute la journée</li><li class="">Remplacent l’hygiène des mains</li><li class="">Ne se désinfectent pas : 1 soin = 1 paire</li><li class="">Peuvent être désinfectés à la SHA</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B4_L03.html" class="back">← B4_L03</a><a href="B4_L05.html">B4_L05 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Définir les précautions standard et le champ auquel elles s’appliquent.</li><li>Nommer les 8 composantes et ce qu’elles imposent au quotidien.</li><li>Choisir les précautions complémentaires selon le mode de transmission.</li><li>Dérouler l’ordre d’habillage et de retrait des équipements de protection.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Le socle : à tous, tout le temps</h3>
+<aside class="encadre"><h4>📖 Précautions standard</h4><p>Ensemble de mesures appliquées à <strong>toutes les personnes, tout le temps</strong>, quel que soit leur statut infectieux : hygiène des mains, port de gants/tablier/masque selon le risque, gestion du matériel et des surfaces, gestion des déchets. Elles protègent la personne, les autres et le soignant.</p></aside>
+<aside class="encadre"><h4>Socle de la prévention des IAS</h4><p>à appliquer <strong>pour tout soin, en tout lieu, par tout professionnel, pour tout patient</strong> quel que soit son statut infectieux — dans les 3 secteurs (sanitaire, médico-social, ville). Principe : toute personne est potentiellement porteuse de micro-organismes transmissibles.</p></aside>
+<aside class="vigilance"><h4>⚠ 🚨 Règle « ZÉRO NOSO »</h4><p>Le risque zéro n'existe pas : on applique <strong>systématiquement</strong> les précautions standard à chaque contact, pour toute personne — <strong>pas seulement</strong> celles « connues » comme à risque.</p></aside>
+</section><section class="partie"><h3>Les 8 composantes des précautions standard</h3>
+<p>Les précautions standard regroupent <strong>8 composantes</strong> :</p>
+<div class="tableau"><table><thead><tr>
+<th>Composante</th>
+<th>Ce que fait l’AS</th>
+</tr></thead><tbody>
+<tr>
+<td>🖐️ Hygiène des mains</td>
+<td>Mesure n°1 : 5 moments OMS · FHA 30 s (référence) · lavage si mains souillées/lésées, <em>C. difficile</em> ou gale</td>
+</tr>
+<tr>
+<td>🧤 EPI (gants, tablier/surblouse)</td>
+<td>Selon le risque de contact avec un liquide biologique · 1 soin = 1 paire de gants · retrait + hygiène des mains</td>
+</tr>
+<tr>
+<td>😷 Masque / lunettes / visière</td>
+<td>Si risque de projection (sang, sécrétions)</td>
+</tr>
+<tr>
+<td>🗣️ Hygiène respiratoire</td>
+<td>Faire porter un masque à la personne qui tousse, mouchoir à usage unique</td>
+</tr>
+<tr>
+<td>🚽 Gestion des excreta</td>
+<td>Bassin couvert → lave-bassin · pas de projection · tri des déchets</td>
+</tr>
+<tr>
+<td>🧽 Gestion de l’environnement</td>
+<td>Bionettoyage : bon produit, dilution et temps de contact respectés</td>
+</tr>
+<tr>
+<td>🧺 Linge &amp; déchets</td>
+<td>Circuits séparés · linge sale non plaqué contre soi · DASRI si risque infectieux</td>
+</tr>
+<tr>
+<td>💉 Prévention des AES</td>
+<td>Ne jamais recapuchonner une aiguille · collecteur OPCT · conduite à tenir en cas d’AES</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>Rappel</h4><p><strong>les gants ne se désinfectent pas</strong> (la SHA les détériore) — on les change entre deux soins, puis hygiène des mains.</p></aside>
+</section><section class="partie"><h3>Précautions complémentaires d’hygiène (PCH)</h3>
+<p>Quand les précautions standard ne suffisent pas (germe particulier, épidémie), on <strong>ajoute</strong> des précautions complémentaires selon le <strong>mode de transmission</strong> :</p>
+<div class="tableau"><table><thead><tr>
+<th>Type</th>
+<th>Exemples</th>
+<th>Mesures renforcées</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Contact (C)</strong></td>
+<td>Gale, BMR/BHRe, gastro-entérite, <em>C. difficile</em></td>
+<td>Chambre individuelle si possible · tablier/surblouse + gants à l’entrée · <strong>matériel dédié</strong> · renfort hygiène des mains</td>
+</tr>
+<tr>
+<td><strong>Gouttelettes (G)</strong></td>
+<td>Grippe, COVID, méningocoque, coqueluche</td>
+<td><strong>Masque à usage médical</strong> (soignant + visiteurs) · chambre individuelle</td>
+</tr>
+<tr>
+<td><strong>Air (A)</strong></td>
+<td>Tuberculose, rougeole, varicelle</td>
+<td><strong>Masque FFP2</strong> · chambre individuelle <strong>porte fermée</strong></td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>Organisation</h4><p>terminer la tournée par les chambres en précautions complémentaires · les mesures sont <strong>affichées</strong> à la porte.</p></aside>
+</section><section class="partie"><h3>Habillage &amp; retrait des EPI : l’ordre</h3>
+<p>L’ordre protège du risque de contamination en retirant les EPI.</p>
+<p>Le <strong>masque se retire en dernier</strong> (en le tenant par les élastiques, sans toucher la face avant) et on termine <strong>toujours</strong> par une hygiène des mains.</p>
+<aside class="encadre"><h4>Habillage (avant le soin)</h4><p>hygiène des mains → surblouse/tablier → masque → lunettes/visière → gants.</p>
+<p><strong>Retrait (après le soin) :</strong> gants → hygiène des mains → lunettes → surblouse → masque → <strong>hygiène des mains</strong>.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 8 (SOCLE / OMS).</p>
+<p>Précautions standard = socle appliqué <strong>à TOUS, en permanence</strong> (quel que soit le statut connu).</p>
+<p>Hygiène des mains (5 moments), <strong>EPI selon le risque</strong>, gestion du matériel/surfaces, conduite AES.</p>
+<p>Complétées si besoin par les précautions complémentaires.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Insister : les précautions standard s’appliquent à tous, tout le temps.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Limites du rôle &amp; cas pratique</h2>
+<p>🧩 Cas pratique n°4 · Épidémie de gastro-entérite</p>
+<p><strong>Situation.</strong> Plusieurs résidents sont touchés ; des précautions complémentaires « contact » sont mises en place.</p>
+<p><strong>Questions :</strong></p>
+<p>Comment adaptez-vous l'entretien ?</p>
+<p>Que respectez-vous ?</p>
+<p>Quel piège éviter ?</p>
+<p>▾ Voir le corrigé détaillé<strong>Adaptation.</strong> Entretien renforcé (fréquence accrue), matériel dédié aux chambres concernées, EPI selon protocole, hygiène des mains rigoureuse, produit adapté.</p>
+<p><strong>Respect.</strong> Précautions complémentaires affichées, circuits, gestion linge/déchets.</p>
+<p><strong>Piège à éviter.</strong> Utiliser le matériel d'une chambre touchée ailleurs, relâcher l'hygiène des mains.</p>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — M. T., diagnostic de gale</p></p>
+<div class="cas-piste"><p><em>Une gale est confirmée chez M. T. ; des précautions « contact » sont affichées.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Appliquer les PS + précautions <strong>contact</strong> : surblouse + gants à l’entrée.</li>
+<li>Utiliser du <strong>matériel dédié</strong> à la chambre ; renforcer l’hygiène des mains.</li>
+<li>Pour la gale : <strong>lavage des mains à l’eau et au savon</strong> (la SHA est inefficace).</li>
+<li>Le linge et les déchets suivent les circuits adaptés ; tracer et transmettre.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Habillage : mains → surblouse ou tablier → masque → lunettes → gants.</li><li>Retrait : gants → mains → lunettes → surblouse → masque → mains.</li><li>Tenir le masque par les élastiques, sans toucher la face avant.</li><li>Ne jamais recapuchonner une aiguille ; collecteur OPCT pour les objets piquants.</li><li>Terminer la tournée par les chambres en précautions complémentaires.</li><li>Ne pas utiliser ailleurs le matériel dédié à une chambre en précautions.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Pour tout patient, tout soin, tout lieu, tout professionnel — quel que soit le statut infectieux.</li><li>Toute personne est potentiellement porteuse de micro-organismes transmissibles.</li><li>L’hygiène des mains est la mesure n°1 : 5 moments OMS, friction 30 secondes.</li><li>Mains souillées ou lésées, C. difficile, gale : lavage à l’eau et au savon.</li><li>Contact : gants et surblouse à l’entrée, matériel dédié · Gouttelettes : masque médical · Air : FFP2, porte fermée.</li><li>Les gants ne se désinfectent pas : un soin, une paire.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Les précautions standard s'appliquent :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Seulement la nuit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Seulement aux personnes contagieuses connues</li>
+<li data-cle="c" onclick="window._pickQ(this)">Uniquement en réanimation</li>
+<li data-cle="d" onclick="window._pickQ(this)">À toutes les personnes, tout le temps</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Précautions standard : à toutes les personnes, tout le temps.<strong> 🎓 À l’oral VAE :</strong> systématiques.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> La règle « zéro noso » signifie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">On isole tout le monde</li>
+<li data-cle="b" onclick="window._pickQ(this)">Il n'y a jamais d'infection</li>
+<li data-cle="c" onclick="window._pickQ(this)">On peut négliger l'hygiène si le risque est faible</li>
+<li data-cle="d" onclick="window._pickQ(this)">On applique systématiquement les précautions à chaque contact</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>« Zéro noso » : appliquer systématiquement les précautions à chaque contact.<strong> 🎓 À l’oral VAE :</strong> réflexe permanent.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Quelle est la mesure n°1 des précautions standard ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L'hygiène des mains</li>
+<li data-cle="b" onclick="window._pickQ(this)">La désinfection des sols</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le tablier</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le masque</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Mesure n°1 des précautions standard : l’hygiène des mains.<strong> 🎓 À l’oral VAE :</strong> toujours en tête.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> En chambre d'isolement, le matériel est :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Partagé avec les autres chambres</li>
+<li data-cle="b" onclick="window._pickQ(this)">Inutile</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sorti dès qu'on est pressé</li>
+<li data-cle="d" onclick="window._pickQ(this)">Dédié à la chambre</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Chambre d’isolement : matériel dédié à la chambre.<strong> 🎓 À l’oral VAE :</strong> pas de partage.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> Les précautions complémentaires de type « contact » concernent par exemple :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Seulement la grippe</li>
+<li data-cle="b" onclick="window._pickQ(this)">La tuberculose</li>
+<li data-cle="c" onclick="window._pickQ(this)">La gale, une BMR, une gastro-entérite</li>
+<li data-cle="d" onclick="window._pickQ(this)">Rien de précis</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Précautions « contact » : gale, BMR, gastro-entérite.<strong> 🎓 À l’oral VAE :</strong> exemples types.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> Pour s’équiper avant un soin à risque, l’ordre correct d’habillage des équipements de protection est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Hygiène des mains → surblouse/tablier → masque → lunettes → gants</li>
+<li data-cle="b" onclick="window._pickQ(this)">Gants → masque → surblouse → hygiène des mains</li>
+<li data-cle="c" onclick="window._pickQ(this)">Masque → gants → surblouse, sans hygiène des mains au départ</li>
+<li data-cle="d" onclick="window._pickQ(this)">Surblouse → gants → masque, l’hygiène des mains seulement à la fin</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Habillage : hygiène des mains → surblouse/tablier → masque → lunettes/visière → gants.<strong> 🎓 À l’oral VAE :</strong> citez l’ordre dans les deux sens : habillage et retrait.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> Devant une gale ou une infection à C. difficile, l’hygiène des mains recommandée est :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La friction hydro-alcoolique (SHA) suffit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le lavage à l’eau et au savon</li>
+<li data-cle="c" onclick="window._pickQ(this)">Aucune hygiène des mains spécifique</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le port de gants seul, sans lavage</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Gale et C. difficile : lavage des mains à l’eau et au savon (la SHA est inefficace sur ces germes).<strong> 🎓 À l’oral VAE :</strong> ne confondez pas avec la friction habituelle.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q7">
+<p class="q"><strong>Q8.</strong> Pour une tuberculose (transmission air), quel masque ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Masque FFP2</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une visière seule</li>
+<li data-cle="c" onclick="window._pickQ(this)">Aucun</li>
+<li data-cle="d" onclick="window._pickQ(this)">Masque à usage médical</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Transmission <strong>air</strong> = masque <strong>FFP2</strong> + chambre individuelle porte fermée.<strong> 🎓 À l’oral VAE :</strong> ne confondez pas gouttelettes (masque médical) et air (FFP2).</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q8">
+<p class="q"><strong>Q9.</strong> Pour une grippe (gouttelettes), la mesure ajoutée est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Rien de plus</li>
+<li data-cle="b" onclick="window._pickQ(this)">Masque FFP2</li>
+<li data-cle="c" onclick="window._pickQ(this)">Masque à usage médical + chambre individuelle</li>
+<li data-cle="d" onclick="window._pickQ(this)">Stérilisation de la chambre</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Gouttelettes = <strong>masque à usage médical</strong> (soignant et visiteurs) + chambre individuelle.<strong> 🎓 À l’oral VAE :</strong> réservez le FFP2 à la transmission aérienne.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q9">
+<p class="q"><strong>Q10.</strong> Au retrait des EPI, que retire-t-on en DERNIER ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Les lunettes</li>
+<li data-cle="b" onclick="window._pickQ(this)">Les gants</li>
+<li data-cle="c" onclick="window._pickQ(this)">La surblouse</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le masque</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>On retire d’abord les gants (les plus contaminés) et le <strong>masque en dernier</strong> , puis hygiène des mains.<strong> 🎓 À l’oral VAE :</strong> tenez le masque par les élastiques, sans toucher la face avant.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q10">
+<p class="q"><strong>Q11.</strong> Les gants à usage unique…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Se portent toute la journée</li>
+<li data-cle="b" onclick="window._pickQ(this)">Remplacent l’hygiène des mains</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ne se désinfectent pas : 1 soin = 1 paire</li>
+<li data-cle="d" onclick="window._pickQ(this)">Peuvent être désinfectés à la SHA</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La SHA détériore les gants : on les <strong>change entre deux soins</strong> , puis hygiène des mains.<strong> 🎓 À l’oral VAE :</strong> le gant ne remplace jamais l’hygiène des mains.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B4_L03.html" class="back">← B4_L03</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B4_L05.html">B4_L05 →</a></div>
 </div>
 </body></html>

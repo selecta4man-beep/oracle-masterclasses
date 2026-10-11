@@ -1,62 +1,222 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B4 · B4_L02 · Bionettoyage — ORACLE VAE AS</title>
+<title>Bloc 4 · B4_L02 · Bionettoyage — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 4</strong> › B4_L02</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 4</span><span>Leçon 2</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Bionettoyage</h1>
-    <div class="accroche"><p>L&#x27;entretien de l&#x27;environnement n&#x27;a rien d&#x27;un « ménage » ordinaire : c&#x27;est un <strong>soin d&#x27;hygiène</strong> qui protège directement les personnes contre les infections associées aux soins.</p></div>
+    <div class="accroche"><p>L'entretien de l'environnement n'a rien d'un « ménage » ordinaire : c'est un <strong>soin d'hygiène</strong> qui protège directement les personnes contre les infections associées aux soins.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Distinguer détergent, désinfectant, détergent-désinfectant et bionettoyage.</li><li>Conduire l’entretien d’une chambre dans le bon ordre et le bon sens.</li><li>Réunir les trois composantes du bionettoyage : action mécanique, action chimique, temps de contact.</li><li>Utiliser le code couleur du matériel pour éviter la contamination croisée.</li><li>Défendre l’entretien de l’environnement comme un soin, et non comme un ménage.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>L&#x27;hygiène de l&#x27;environnement est un soin</h3></section><section class="partie"><h3>Nettoyer, déterger, désinfecter</h3></section><section class="partie"><h3>L&#x27;ordre et le sens du bionettoyage</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Lire le protocole : dilution et temps de contact du produit.</li><li>Ne pas essuyer trop vite — sans temps de contact, le produit n’a pas agi.</li><li>Un chiffon passé sur une zone sale ne revient jamais sur une surface propre.</li><li>Respecter le code couleur : sanitaires et surfaces ne partagent pas le même matériel.</li><li>Ne jamais mélanger deux produits ; les fiches de données de sécurité se lisent.</li><li>Aérer, puis tracer l’entretien réalisé.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’entretien de l’environnement est un soin d’hygiène : il protège des infections associées aux soins.</li><li>On nettoie d’abord, on désinfecte ensuite — une surface sale ne se désinfecte pas efficacement.</li><li>Du plus haut vers le plus bas, du plus propre vers le plus sale, du plus loin vers le plus près.</li><li>Les sanitaires, zone la plus contaminée, se font en dernier.</li><li>Le bionettoyage n’agit que si les trois éléments sont réunis : frotter, le produit, le temps de contact.</li><li>Détergent pour les salissures, désinfectant pour les micro-organismes, détergent-désinfectant pour les deux.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Dans le bionettoyage, on doit :</p><ol class="opts"><li class="ok">Seulement aérer</li><li class="">Seulement désinfecter</li><li class="">Désinfecter puis nettoyer</li><li class="">Nettoyer puis désinfecter</li></ol></div><div class="qblock"><p class="q">2. Le bionettoyage associe trois actions :</p><ol class="opts"><li class="ok">Une seule : frotter</li><li class="">Mécanique, chimique, temps de contact</li><li class="">Eau, air, lumière</li><li class="">Vapeur, froid, pression</li></ol></div><div class="qblock"><p class="q">3. On entretient une chambre :</p><ol class="opts"><li class="ok">Du plus sale vers le plus propre</li><li class="">Dans n&#x27;importe quel ordre</li><li class="">Sanitaires en premier</li><li class="">Du plus propre vers le plus sale, haut vers bas</li></ol></div><div class="qblock"><p class="q">4. Un détergent sert à :</p><ol class="opts"><li class="ok">Parfumer la pièce</li><li class="">Réduire les micro-organismes</li><li class="">Enlever les salissures</li><li class="">Stériliser le matériel</li></ol></div><div class="qblock"><p class="q">5. Pourquoi respecter le temps de contact d&#x27;un produit ?</p><ol class="opts"><li class="ok">Pour aller plus vite</li><li class="">Ce n&#x27;est pas important</li><li class="">Pour économiser le produit</li><li class="">Car le produit n&#x27;agit que s&#x27;il reste en contact le temps prévu</li></ol></div><div class="qblock"><p class="q">6. Le code couleur du matériel d&#x27;entretien sert à :</p><ol class="opts"><li class="ok">Distinguer les zones (sanitaires vs surfaces)</li><li class="">Faire joli</li><li class="">Rien de particulier</li><li class="">Indiquer la marque</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B4_L01.html" class="back">← B4_L01</a><a href="B4_L03.html">B4_L03 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Distinguer détergent, désinfectant, détergent-désinfectant et bionettoyage.</li><li>Conduire l’entretien d’une chambre dans le bon ordre et le bon sens.</li><li>Réunir les trois composantes du bionettoyage : action mécanique, action chimique, temps de contact.</li><li>Utiliser le code couleur du matériel pour éviter la contamination croisée.</li><li>Défendre l’entretien de l’environnement comme un soin, et non comme un ménage.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>L&#x27;hygiène de l&#x27;environnement est un soin</h3>
+<p>L'entretien de l'environnement n'a rien d'un « ménage » ordinaire : c'est un <strong>soin d'hygiène</strong> qui protège directement les personnes contre les infections associées aux soins. Une chambre mal entretenue, un circuit propre/sale non respecté : autant de portes ouvertes à la transmission des micro-organismes.</p>
+<aside class="encadre"><h4></h4><p><strong>📘 Référence livre ORACLE — l'idée centrale du module</strong></p>
+<p>L'hygiène de l'environnement repose sur <strong>trois principes</strong> : nettoyer puis désinfecter (le bionettoyage), respecter les circuits (du propre vers le sale, jamais l'inverse) et protéger (précautions standard, hygiène des mains).</p></aside>
+</section><section class="partie"><h3>Nettoyer, déterger, désinfecter</h3>
+<p>On <strong>nettoie d'abord</strong> (retirer les salissures avec un détergent), <strong>puis on désinfecte</strong> : on ne désinfecte jamais efficacement une surface sale.</p>
+<aside class="encadre"><h4>📖 Les 4 mots-clés</h4><p><strong>Détergent</strong> : enlève les salissures. <strong>Désinfectant</strong> : réduit les micro-organismes. <strong>Détergent-désinfectant (DD)</strong> : combine les deux actions. <strong>Bionettoyage</strong> : procédé combinant nettoyage et désinfection des surfaces.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>🩺 Le « cercle » du bionettoyage</strong></p>
+<p>Le bionettoyage associe l'<strong>action mécanique</strong> (frotter), l'<strong>action chimique</strong> (le produit) et le respect du <strong>temps de contact</strong>. Les trois sont indispensables : essuyer trop vite = le produit n'a pas agi.</p></aside>
+</section><section class="partie"><h3>L&#x27;ordre et le sens du bionettoyage</h3>
+<p>Le matériel d'entretien (chiffonnettes, bandeaux) utilise souvent un <strong>code couleur</strong> pour distinguer les zones (par ex. sanitaires vs surfaces). Ne jamais reposer un chiffon ayant servi sur une zone sale sur une surface propre.</p>
+<aside class="encadre"><h4>💡 Réflexe professionnel</h4><p>Toujours du <strong>plus propre vers le plus sale</strong> et du <strong>haut vers le bas</strong>. Les sanitaires (zone la plus contaminée) se font <strong>en dernier</strong>. Respecter la dilution et le temps de contact du produit (lire le protocole).</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠️ Points de vigilance</h4><p>Ne pas désinfecter une surface sale ; ne pas négliger le temps de contact ; ne pas réutiliser le même chiffon d'une zone sale vers une zone propre.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 8 (ACTIVITÉ 24).</p>
+<p><strong>Bionettoyage = nettoyage (détergent) + désinfection (désinfectant)</strong> ; respecter le <strong>temps de contact</strong>.</p>
+<p>Sens : <strong>du propre vers le sale, du haut vers le bas</strong>.</p>
+<p>Produits : virucide, bactéricide, fongicide ; respecter les dosages, lire les FDS, <strong>ne jamais mélanger</strong>.</p>
+<p><strong>🎓 À l’oral / piège :</strong> « Du propre vers le sale, du haut vers le bas » : la règle de geste à citer.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>Connaître les <strong>protocoles</strong> d’entretien/bionettoyage : produits, dosage, fréquence · répartition des tâches (environnement du patient = AS).</p>
+<p><strong>3 règles</strong> : du plus haut au plus bas · du plus propre au plus sale · du plus loin au plus près.</p>
+<p>Types de produits : virucide, fongicide, bactéricide, <strong>détergent-désinfectant</strong> · précautions standard (mains, gants, circuits, EPI, AES).</p>
+<p>Isolements : <strong>protecteur</strong> (personne immunodéprimée) vs <strong>septique</strong> (germe) · précautions complémentaires contact ou respiratoires.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas pratique — bionettoyage de chambre</h2>
+<p>🧩 Cas pratique n°1 · EHPAD · bionettoyage de chambre</p>
+<p><strong>Situation.</strong> Vous devez réaliser l'entretien quotidien d'une chambre. Le temps est compté et un collègue vous suggère de « commencer par les toilettes pour s'en débarrasser », puis de passer un coup sur le reste.</p>
+<p><strong>Questions :</strong></p>
+<p>Dans quel ordre réalisez-vous l'entretien et pourquoi ?</p>
+<p>Quel matériel et quels principes appliquez-vous ?</p>
+<p>Quelle erreur le conseil du collègue contient-il ?</p>
+<p>▾ Voir le corrigé détaillé<strong>1. Ordre.</strong> Du plus propre au plus sale, du haut vers le bas, sanitaires en dernier. On nettoie puis on désinfecte.</p>
+<p><strong>2. Matériel / principes.</strong> Matériel par code couleur (sanitaires distincts), produit à la bonne dilution, temps de contact respecté, hygiène des mains.</p>
+<p><strong>3. Erreur du conseil.</strong> Commencer par les toilettes puis repasser sur les surfaces propres transporte la contamination du sale vers le propre : c'est l'inverse de la marche en avant.</p>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Bionettoyage d’une chambre</p></p>
+<div class="cas-piste"><p><em>Bionettoyer après le départ d’un résident.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Du plus propre au plus sale, haut→bas.</li>
+<li>Bon produit/dosage (codes couleur).</li>
+<li>Aérer, temps de contact.</li>
+<li>Tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Lire le protocole : dilution et temps de contact du produit.</li><li>Ne pas essuyer trop vite — sans temps de contact, le produit n’a pas agi.</li><li>Un chiffon passé sur une zone sale ne revient jamais sur une surface propre.</li><li>Respecter le code couleur : sanitaires et surfaces ne partagent pas le même matériel.</li><li>Ne jamais mélanger deux produits ; les fiches de données de sécurité se lisent.</li><li>Aérer, puis tracer l’entretien réalisé.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’entretien de l’environnement est un soin d’hygiène : il protège des infections associées aux soins.</li><li>On nettoie d’abord, on désinfecte ensuite — une surface sale ne se désinfecte pas efficacement.</li><li>Du plus haut vers le plus bas, du plus propre vers le plus sale, du plus loin vers le plus près.</li><li>Les sanitaires, zone la plus contaminée, se font en dernier.</li><li>Le bionettoyage n’agit que si les trois éléments sont réunis : frotter, le produit, le temps de contact.</li><li>Détergent pour les salissures, désinfectant pour les micro-organismes, détergent-désinfectant pour les deux.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Dans le bionettoyage, on doit :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Seulement aérer</li>
+<li data-cle="b" onclick="window._pickQ(this)">Seulement désinfecter</li>
+<li data-cle="c" onclick="window._pickQ(this)">Désinfecter puis nettoyer</li>
+<li data-cle="d" onclick="window._pickQ(this)">Nettoyer puis désinfecter</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Bionettoyage : nettoyer PUIS désinfecter.<strong> 🎓 À l’oral VAE :</strong> l’ordre compte.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Le bionettoyage associe trois actions :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une seule : frotter</li>
+<li data-cle="b" onclick="window._pickQ(this)">Mécanique, chimique, temps de contact</li>
+<li data-cle="c" onclick="window._pickQ(this)">Eau, air, lumière</li>
+<li data-cle="d" onclick="window._pickQ(this)">Vapeur, froid, pression</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>3 actions : mécanique, chimique, temps de contact.<strong> 🎓 À l’oral VAE :</strong> les trois ensemble.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q2">
+<p class="q"><strong>Q3.</strong> On entretient une chambre :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Du plus sale vers le plus propre</li>
+<li data-cle="b" onclick="window._pickQ(this)">Dans n'importe quel ordre</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sanitaires en premier</li>
+<li data-cle="d" onclick="window._pickQ(this)">Du plus propre vers le plus sale, haut vers bas</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Chambre : du plus propre au plus sale, haut vers bas.<strong> 🎓 À l’oral VAE :</strong> sens du nettoyage.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un détergent sert à :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Parfumer la pièce</li>
+<li data-cle="b" onclick="window._pickQ(this)">Réduire les micro-organismes</li>
+<li data-cle="c" onclick="window._pickQ(this)">Enlever les salissures</li>
+<li data-cle="d" onclick="window._pickQ(this)">Stériliser le matériel</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Détergent = enlève les salissures.<strong> 🎓 À l’oral VAE :</strong> avant la désinfection.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Pourquoi respecter le temps de contact d'un produit ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Pour aller plus vite</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ce n'est pas important</li>
+<li data-cle="c" onclick="window._pickQ(this)">Pour économiser le produit</li>
+<li data-cle="d" onclick="window._pickQ(this)">Car le produit n'agit que s'il reste en contact le temps prévu</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Respecter le temps de contact : le produit n’agit que s’il reste en place.<strong> 🎓 À l’oral VAE :</strong> ne pas essuyer trop vite.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> Le code couleur du matériel d'entretien sert à :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Distinguer les zones (sanitaires vs surfaces)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Faire joli</li>
+<li data-cle="c" onclick="window._pickQ(this)">Rien de particulier</li>
+<li data-cle="d" onclick="window._pickQ(this)">Indiquer la marque</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Code couleur : distinguer les zones (sanitaires vs surfaces).<strong> 🎓 À l’oral VAE :</strong> éviter la contamination croisée.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B4_L01.html" class="back">← B4_L01</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B4_L03.html">B4_L03 →</a></div>
 </div>
 </body></html>

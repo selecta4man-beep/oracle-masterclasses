@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOCLE · SOCLE_L04 · Pathologies cardiovasculaires — ORACLE VAE AS</title>
+<title>Socle · SOCLE_L04 · Pathologies cardiovasculaires — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L04</div>
@@ -56,7 +79,190 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Pathologies cardiovasculaires</h1>
     <div class="accroche"><p>On retrouve l’<strong>insuffisance cardiaque</strong>, l’<strong>HTA</strong> (hypertension artérielle), les <strong>troubles du rythme</strong> (ex. fibrillation auriculaire), l’<strong>angor</strong> et l’<strong>infarctus</strong> (IDM), l’<strong>AOMI</strong> et les <strong>troubles veineux</strong>.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Nommer les principales pathologies cardiovasculaires rencontrées auprès des personnes accompagnées.</li><li>Relier un mécanisme — pompe qui faiblit, artère qui s’obstrue, retour veineux difficile — aux signes qu’il produit.</li><li>Repérer les signes d’alerte qui imposent d’arrêter l’effort et d’alerter sans attendre.</li><li>Conduire la surveillance qui revient à l’aide-soignant : poids, œdèmes, pouls et pression artérielle sous protocole.</li><li>Transmettre une situation cardiovasculaire en ciblé DAR.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Les pathologies cardiovasculaires fréquentes</h3></section><section class="partie"><h3>Anatomie &amp; physiologie — comprendre pour mieux surveiller</h3></section><section class="partie"><h3>Signes à surveiller</h3></section><section class="partie"><h3>Le rôle de l’AS</h3></section><section class="partie"><h3>Transmettre &amp; tracer</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Peser régulièrement : une prise rapide signe une rétention d’eau, pas une récupération.</li><li>Observer chevilles et mollets — c’est là que les œdèmes apparaissent d’abord.</li><li>Douleur thoracique : arrêter l’effort, installer assis ou demi-assis, alerter l’IDE ou le 15 immédiatement.</li><li>Ne rien donner à boire ni à manger devant une suspicion d’infarctus.</li><li>Devant un mollet suspect, alerter — ne pas masser.</li><li>Transmettre les chiffres : poids, écart en jours, essoufflement, début et type de la douleur.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Insuffisance cardiaque, HTA, troubles du rythme, angor et infarctus, AOMI, troubles veineux : les grandes familles.</li><li>La pompe faiblit, le sang stagne : œdèmes, prise de poids, essoufflement.</li><li>La courbe de poids est l’outil de surveillance majeur de l’insuffisance cardiaque.</li><li>L’HTA est souvent silencieuse ; la norme OMS est ≤ 14/9.</li><li>Douleur thoracique constrictive avec sueurs : urgence, jamais banale.</li><li>Mollet chaud, rouge, douloureux et dur : phlébite.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Une prise de poids rapide chez un insuffisant cardiaque traduit souvent…</p><ol class="opts"><li class="ok">Une bonne récupération</li><li class="">Rien d’important</li><li class="">Une rétention d’eau à signaler</li><li class="">Un gain musculaire</li></ol></div><div class="qblock"><p class="q">2. Face à une douleur thoracique constrictive avec sueurs, l’AS…</p><ol class="opts"><li class="ok">Attend de voir si ça passe</li><li class="">Fait marcher la personne</li><li class="">Installe la personne et alerte en urgence</li><li class="">Donne à boire</li></ol></div><div class="qblock"><p class="q">3. Un signe de phlébite (TVP) au mollet est…</p><ol class="opts"><li class="ok">Mollet insensible</li><li class="">Mollet chaud, rouge, douloureux et dur</li><li class="">Mollet froid et pâle</li><li class="">Crampe banale sans gravité</li></ol></div><div class="qblock"><p class="q">4. L’outil de surveillance majeur de l’insuffisance cardiaque est…</p><ol class="opts"><li class="ok">La glycémie</li><li class="">La courbe de température</li><li class="">La courbe de poids</li><li class="">La SpO₂ uniquement</li></ol></div><div class="qblock"><p class="q">5. Les œdèmes liés à l’insuffisance cardiaque apparaissent surtout…</p><ol class="opts"><li class="ok">Au dos</li><li class="">Aux mains</li><li class="">Aux chevilles et mollets</li><li class="">Au visage</li></ol></div><div class="qblock"><p class="q">6. Devant une suspicion d’infarctus, on…</p><ol class="opts"><li class="ok">Limite l’effort et alerte immédiatement</li><li class="">Fait patienter la personne debout</li><li class="">Donne un repas</li><li class="">Reporte la transmission</li></ol></div><div class="qblock"><p class="q">7. L’insuffisance cardiaque entraîne une stagnation du sang qui se traduit par…</p><ol class="opts"><li class="ok">Une perte de poids</li><li class="">Des œdèmes et une prise de poids rapide</li><li class="">Une soif intense</li><li class="">Une hypothermie</li></ol></div><div class="qblock"><p class="q">8. L’athérome (dépôts dans les artères) expose surtout à…</p><ol class="opts"><li class="ok">Un infarctus ou un AVC</li><li class="">Une mycose</li><li class="">Une escarre</li><li class="">Une fracture</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L03.html" class="back">← SOCLE_L03</a><a href="SOCLE_L05.html">SOCLE_L05 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Nommer les principales pathologies cardiovasculaires rencontrées auprès des personnes accompagnées.</li><li>Relier un mécanisme — pompe qui faiblit, artère qui s’obstrue, retour veineux difficile — aux signes qu’il produit.</li><li>Repérer les signes d’alerte qui imposent d’arrêter l’effort et d’alerter sans attendre.</li><li>Conduire la surveillance qui revient à l’aide-soignant : poids, œdèmes, pouls et pression artérielle sous protocole.</li><li>Transmettre une situation cardiovasculaire en ciblé DAR.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Les pathologies cardiovasculaires fréquentes</h3>
+<p>On retrouve l’<strong>insuffisance cardiaque</strong>, l’<strong>HTA</strong> (hypertension artérielle), les <strong>troubles du rythme</strong> (ex. fibrillation auriculaire), l’<strong>angor</strong> et l’<strong>infarctus</strong> (IDM), l’<strong>AOMI</strong> et les <strong>troubles veineux</strong>.</p>
+<aside class="encadre"><h4>📘 Référence livre ORACLE</h4><p>Le cœur et les vaisseaux conditionnent l’oxygénation de tout l’organisme. Une douleur thoracique n’est jamais banale.</p></aside>
+</section><section class="partie"><h3>Anatomie &amp; physiologie — comprendre pour mieux surveiller</h3>
+<p>Le <strong>cœur</strong> est une pompe à 4 cavités (2 oreillettes, 2 ventricules) qui propulse le sang : circulation <strong>pulmonaire</strong> (s’oxygéner) et <strong>systémique</strong> (oxygéner les organes).</p>
+<p><strong>Comprendre les mécanismes :</strong></p>
+<ul>
+<li><strong>Insuffisance cardiaque</strong> : la pompe faiblit → le sang stagne → <strong>œdèmes, prise de poids, essoufflement</strong>.</li>
+</ul>
+<ul>
+<li><strong>HTA</strong> : pression trop élevée (norme OMS ≤ 14/9) → risque d’AVC et d’infarctus.</li>
+</ul>
+<ul>
+<li><strong>Athérome</strong> : dépôts de gras dans les artères → obstruction → infarctus / AVC.</li>
+</ul>
+<ul>
+<li><strong>Insuffisance veineuse</strong> : retour du sang difficile → œdèmes, risque de phlébite.</li>
+</ul>
+<aside class="encadre"><h4></h4><p>L’AS relie ce mécanisme à sa surveillance : la <strong>courbe de poids</strong> dépiste la rétention d’eau ; une douleur thoracique + sueurs = urgence.</p></aside>
+</section><section class="partie"><h3>Signes à surveiller</h3>
+<div class="tableau"><table><thead><tr>
+<th>Situation</th>
+<th>Signes</th>
+</tr></thead><tbody>
+<tr>
+<td>Insuffisance cardiaque</td>
+<td>Œdèmes des jambes, prise de poids rapide, essoufflement</td>
+</tr>
+<tr>
+<td>HTA</td>
+<td>Céphalées, vertiges (souvent silencieuse)</td>
+</tr>
+<tr>
+<td>Infarctus</td>
+<td>Douleur thoracique constrictive, irradiant bras/mâchoire, sueurs</td>
+</tr>
+<tr>
+<td>Phlébite (TVP)</td>
+<td>Mollet chaud, rouge, douloureux, dur</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🚨 signes d’alerte — on alerte l’IDE</strong></p>
+<p>Douleur thoracique intense, oppression, sueurs, malaise : suspicion d’infarctus → la personne s’arrête, s’assoit/s’allonge, on alerte l’IDE/le 15 <strong>immédiatement</strong>. Le temps, c’est du muscle cardiaque.</p></aside>
+</section><section class="partie"><h3>Le rôle de l’AS</h3>
+<aside class="encadre"><h4>🩺 le rôle concret de l’AS</h4><p><strong>Poids</strong> : pesée régulière (une prise rapide signe une rétention d’eau). <strong>Œdèmes</strong> : observer chevilles/mollets. <strong>PA et pouls</strong> : mesure sous protocole, signaler les écarts. <strong>Régime</strong> : aide au respect du sans-sel si prescrit. <strong>Repos / effort</strong> : adapter, surélever les jambes.</p></aside>
+</section><section class="partie"><h3>Transmettre &amp; tracer</h3>
+<div class="exemples">
+<div class="ex"><p>📖 transmission ciblée DAR — <strong>D</strong> : « +1,5 kg en 2 jours, chevilles gonflées, M. L. plus essoufflé ». <strong>A</strong> : « Jambes surélevées, alerte IDE ». <strong>R</strong> : « Diurétique ajusté par le médecin, surveillance diurèse ». La courbe de poids est un outil de surveillance majeur.</p></div>
+</div>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas pratique corrigé — Douleur thoracique de M. D.</strong></p></p>
+<div class="cas-piste"><p><em>M. D. porte la main à sa poitrine, dit avoir « un poids » qui serre, transpire et a le teint gris. Cela dure depuis quelques minutes.</em></p>
+<p><strong>Conduite à tenir :</strong></p>
+<ul>
+<li>Faire cesser tout effort, installer en position assise/demi-assise, rassurer.</li>
+<li>Ne pas faire boire ni manger, ne rien donner de sa propre initiative.</li>
+<li>Alerter l’IDE et le médecin / le 15 <strong>en urgence absolue</strong>.</li>
+<li>Surveiller, transmettre : début, type de douleur, irradiation, sueurs, pouls.</li>
+</ul>
+<p>On ne minimise jamais une douleur thoracique.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — M. L. a pris 1,5 kg en 2 jours</p></p>
+<div class="cas-piste"><p><em>Chevilles gonflées, plus essoufflé.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Reconnaître une rétention d’eau (insuffisance cardiaque).</li>
+<li>Surélever les jambes, limiter l’effort.</li>
+<li>Alerter l’IDE, surveiller la diurèse, tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Peser régulièrement : une prise rapide signe une rétention d’eau, pas une récupération.</li><li>Observer chevilles et mollets — c’est là que les œdèmes apparaissent d’abord.</li><li>Douleur thoracique : arrêter l’effort, installer assis ou demi-assis, alerter l’IDE ou le 15 immédiatement.</li><li>Ne rien donner à boire ni à manger devant une suspicion d’infarctus.</li><li>Devant un mollet suspect, alerter — ne pas masser.</li><li>Transmettre les chiffres : poids, écart en jours, essoufflement, début et type de la douleur.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Insuffisance cardiaque, HTA, troubles du rythme, angor et infarctus, AOMI, troubles veineux : les grandes familles.</li><li>La pompe faiblit, le sang stagne : œdèmes, prise de poids, essoufflement.</li><li>La courbe de poids est l’outil de surveillance majeur de l’insuffisance cardiaque.</li><li>L’HTA est souvent silencieuse ; la norme OMS est ≤ 14/9.</li><li>Douleur thoracique constrictive avec sueurs : urgence, jamais banale.</li><li>Mollet chaud, rouge, douloureux et dur : phlébite.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> Une prise de poids rapide chez un insuffisant cardiaque traduit souvent…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une bonne récupération</li>
+<li data-cle="b" onclick="window._pickQ(this)">Rien d’important</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une rétention d’eau à signaler</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un gain musculaire</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Prise de poids rapide = rétention d’eau → signaler.<strong> 🎓 À l’oral VAE :</strong> la courbe de poids est l’alerte précoce.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q1">
+<p class="q"><strong>Q2.</strong> Face à une douleur thoracique constrictive avec sueurs, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Attend de voir si ça passe</li>
+<li data-cle="b" onclick="window._pickQ(this)">Fait marcher la personne</li>
+<li data-cle="c" onclick="window._pickQ(this)">Installe la personne et alerte en urgence</li>
+<li data-cle="d" onclick="window._pickQ(this)">Donne à boire</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Douleur thoracique constrictive + sueurs = urgence : installer, alerter.<strong> 🎓 À l’oral VAE :</strong> ne minimisez jamais une douleur thoracique.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Un signe de phlébite (TVP) au mollet est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Mollet insensible</li>
+<li data-cle="b" onclick="window._pickQ(this)">Mollet chaud, rouge, douloureux et dur</li>
+<li data-cle="c" onclick="window._pickQ(this)">Mollet froid et pâle</li>
+<li data-cle="d" onclick="window._pickQ(this)">Crampe banale sans gravité</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Phlébite : mollet chaud, rouge, douloureux, dur.<strong> 🎓 À l’oral VAE :</strong> risque d’embolie pulmonaire → alerter, ne pas masser.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> L’outil de surveillance majeur de l’insuffisance cardiaque est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La glycémie</li>
+<li data-cle="b" onclick="window._pickQ(this)">La courbe de température</li>
+<li data-cle="c" onclick="window._pickQ(this)">La courbe de poids</li>
+<li data-cle="d" onclick="window._pickQ(this)">La SpO₂ uniquement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’outil majeur de surveillance de l’insuffisance cardiaque = la courbe de poids.<strong> 🎓 À l’oral VAE :</strong> pesée régulière à heure fixe.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> Les œdèmes liés à l’insuffisance cardiaque apparaissent surtout…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Au dos</li>
+<li data-cle="b" onclick="window._pickQ(this)">Aux mains</li>
+<li data-cle="c" onclick="window._pickQ(this)">Aux chevilles et mollets</li>
+<li data-cle="d" onclick="window._pickQ(this)">Au visage</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Les œdèmes apparaissent surtout aux chevilles/mollets (déclive).<strong> 🎓 À l’oral VAE :</strong> observez en fin de journée.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> Devant une suspicion d’infarctus, on…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Limite l’effort et alerte immédiatement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Fait patienter la personne debout</li>
+<li data-cle="c" onclick="window._pickQ(this)">Donne un repas</li>
+<li data-cle="d" onclick="window._pickQ(this)">Reporte la transmission</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Suspicion d’infarctus : limiter l’effort, alerter immédiatement.<strong> 🎓 À l’oral VAE :</strong> repos strict + alerte 15/IDE.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> L’insuffisance cardiaque entraîne une stagnation du sang qui se traduit par…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une perte de poids</li>
+<li data-cle="b" onclick="window._pickQ(this)">Des œdèmes et une prise de poids rapide</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une soif intense</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une hypothermie</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La pompe faiblit → rétention d’eau → œdèmes + poids.<strong> 🎓 À l’oral VAE :</strong> la courbe de poids est l’alerte précoce.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q7">
+<p class="q"><strong>Q8.</strong> L’athérome (dépôts dans les artères) expose surtout à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un infarctus ou un AVC</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une mycose</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une escarre</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une fracture</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’obstruction artérielle peut provoquer infarctus/AVC.<strong> 🎓 À l’oral VAE :</strong> facteurs : gras, sucre, tabac, HTA.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L03.html" class="back">← SOCLE_L03</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L05.html">SOCLE_L05 →</a></div>
 </div>
 </body></html>

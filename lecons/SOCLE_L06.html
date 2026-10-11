@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOCLE · SOCLE_L06 · Diabète — Surveillance et soins — ORACLE VAE AS</title>
+<title>Socle · SOCLE_L06 · Diabète — Surveillance et soins — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L06</div>
@@ -56,7 +79,251 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Diabète — Surveillance et soins</h1>
     <div class="accroche"><p>le diabète est une <strong>hyperglycémie chronique</strong> (trop de sucre dans le sang en permanence), par manque d’insuline ou parce que le corps y résiste.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Distinguer le diabète de type 1 du type 2 et le traitement que chacun impose.</li><li>Réaliser une glycémie capillaire dans les règles, sur protocole écrit et délégation IDE.</li><li>Reconnaître une hypoglycémie d’une hyperglycémie et appliquer la conduite qui convient.</li><li>Repérer au quotidien les complications, à commencer par le pied diabétique.</li><li>Situer la limite du rôle aide-soignant autour de l’insuline.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>1 · Comprendre le diabète</h3></section><section class="partie"><h3>2 · La glycémie : les chiffres clés</h3></section><section class="partie"><h3>3 · Hypo ou hyper ? Que faire concrètement</h3></section><section class="partie"><h3>4 · Complications à repérer au quotidien</h3></section><section class="partie"><h3>5 · La surveillance quotidienne de l’AS</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Doigt lavé à l’eau tiède savonneuse puis séché — jamais d’alcool, il fausse le résultat.</li><li>Piquer sur le côté du majeur, de l’annulaire ou de l’auriculaire en alternant, et éliminer la première goutte.</li><li>Malaise chez un conscient : resucrer — 3 sucres ou un jus —, rester près de lui, recontrôler à 15 minutes.</li><li>Inconscient : PLS et 15, urgence vitale. Dans le doute, on resucre toujours un malaise.</li><li>Haleine fruitée : hydrater à l’eau plate et alerter l’IDE immédiatement.</li><li>Inspecter les pieds chaque jour ; une rougeur se signale le jour même, sans jamais la percer.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le diabète est une hyperglycémie chronique : manque d’insuline, ou corps qui y résiste.</li><li>Type 1 : auto-immun, sujet jeune, insuline à vie. Type 2 : adulte, régime et comprimés — près de 90 % des cas en EHPAD.</li><li>À jeun, la glycémie normale va de 0,7 à 1,1 g/L ; hypoglycémie sous 0,6 g/L, hyperglycémie sévère au-delà de 2,5 g/L.</li><li>L’hypoglycémie survient brutalement : sueurs, tremblements, pâleur, faim, confusion.</li><li>L’hyperglycémie s’installe progressivement : soif, urines abondantes, fatigue, haleine fruitée.</li><li>L’AS observe, resucre, alerte et trace ; l’IDE administre, le médecin prescrit.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Quelle cellule fabrique l’insuline ?</p><ol class="opts"><li class="ok">Les globules rouges</li><li class="">Les cellules α (alpha)</li><li class="">Le foie</li><li class="">Les cellules β (bêta)</li></ol></div><div class="qblock"><p class="q">2. Différence essentielle entre Type 1 et Type 2 ?</p><ol class="opts"><li class="ok">Le type 2 nécessite toujours de l’insuline dès le début</li><li class="">Type 1 = insuline à vie ; Type 2 = régime + comprimés</li><li class="">Le type 1 touche surtout les personnes âgées</li><li class="">Il n’y a aucune différence</li></ol></div><div class="qblock"><p class="q">3. Glycémie normale à jeun ?</p><ol class="opts"><li class="ok">0,2 – 0,5 g/L</li><li class="">0,7 – 1,1 g/L</li><li class="">1,5 – 2 g/L</li><li class="">Plus de 2,5 g/L</li></ol></div><div class="qblock"><p class="q">4. Où piquer pour la glycémie capillaire ?</p><ol class="opts"><li class="ok">Dans la paume</li><li class="">Sur l’index</li><li class="">Sur le côté du majeur, annulaire ou auriculaire</li><li class="">Au bout du pouce</li></ol></div><div class="qblock"><p class="q">5. Glycémie à 0,5 g/L + sueurs + tremblements. Que faire ?</p><ol class="opts"><li class="ok">Attendre le prochain repas</li><li class="">Faire marcher le résident</li><li class="">Donner de l’insuline</li><li class="">Resucrer si conscient, alerter l’IDE, recontrôler à 15 min</li></ol></div><div class="qblock"><p class="q">6. Haleine fruitée (odeur d’acétone) chez un diabétique. Signification ?</p><ol class="opts"><li class="ok">Signe d’hypoglycémie</li><li class="">Un problème dentaire</li><li class="">C’est normal après le repas</li><li class="">Signe d’hyperglycémie sévère — alerter</li></ol></div><div class="qblock"><p class="q">7. Pourquoi inspecter les pieds tous les jours ?</p><ol class="opts"><li class="ok">Pour vérifier les ongles uniquement</li><li class="">Car une plaie peut évoluer vers infection puis amputation</li><li class="">Ce n’est pas nécessaire</li><li class="">Pour masser les pieds</li></ol></div><div class="qblock"><p class="q">8. Où jeter la lancette après usage ?</p><ol class="opts"><li class="ok">Avec les bandelettes</li><li class="">À la poubelle classique</li><li class="">Dans l’évier</li><li class="">Dans le collecteur OPCT (objets piquants/coupants)</li></ol></div><div class="qblock"><p class="q">9. L’AS peut-il injecter l’insuline ?</p><ol class="opts"><li class="ok">Oui, la nuit seulement</li><li class="">Oui, si le résident le demande</li><li class="">Non — il observe, ressucre, alerte et trace</li><li class="">Oui, toujours</li></ol></div><div class="qblock"><p class="q">10. Pourquoi éliminer la 1ʳᵉ goutte de sang ?</p><ol class="opts"><li class="ok">Pour gagner du temps</li><li class="">Pour faire moins mal</li><li class="">Elle peut contenir des résidus qui faussent la mesure</li><li class="">C’est inutile</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L05.html" class="back">← SOCLE_L05</a><a href="SOCLE_L07.html">SOCLE_L07 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Distinguer le diabète de type 1 du type 2 et le traitement que chacun impose.</li><li>Réaliser une glycémie capillaire dans les règles, sur protocole écrit et délégation IDE.</li><li>Reconnaître une hypoglycémie d’une hyperglycémie et appliquer la conduite qui convient.</li><li>Repérer au quotidien les complications, à commencer par le pied diabétique.</li><li>Situer la limite du rôle aide-soignant autour de l’insuline.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>1 · Comprendre le diabète</h3>
+<p><strong>Définition :</strong> le diabète est une <strong>hyperglycémie chronique</strong> (trop de sucre dans le sang en permanence), par manque d’insuline ou parce que le corps y résiste.</p>
+<p>Normalement, c’est l’<strong>insuline</strong> (fabriquée par le pancréas) qui fait <em>entrer</em> le sucre dans les cellules. Sans elle, le sucre reste dans le sang. <strong>En EHPAD, 20 à 30 % des résidents sont diabétiques.</strong></p>
+<p>Le pancréas est situé derrière l’estomac, en forme de pistolet ; il comprend une tête, un corps et une queue.</p>
+<p>Cellules β (turquoise) = insuline · cellules α (rose) = glucagon</p>
+<div class="tableau"><table><thead><tr>
+<th>Type 1 (DID)</th>
+<th>Type 2 (DNID)</th>
+</tr></thead><tbody>
+<tr>
+<td>Maladie auto-immune · enfants, ados, jeunes adultes</td>
+<td>Le plus fréquent (≈90 % en EHPAD) · adulte, souvent surpoids</td>
+</tr>
+<tr>
+<td><strong>Injection d’insuline obligatoire à vie</strong></td>
+<td>Régime + activité + comprimés (± insuline ensuite)</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>2 · La glycémie : les chiffres clés</h3>
+<p>Ces chiffres sont la <strong>base de la surveillance</strong> : il faut les connaître par cœur.</p>
+<p>L’AS réalise la glycémie capillaire <strong>sur délégation IDE et avec un protocole écrit</strong>. Il <strong>mesure, observe, note et transmet</strong>.</p>
+<p>Le matériel de glycémie capillaire comprend : le lecteur, la bandelette, l’autopiqueur et le collecteur OPCT.</p>
+<div class="tableau"><table><thead><tr>
+<th>Repère</th>
+<th>Valeur</th>
+</tr></thead><tbody>
+<tr>
+<td>Glycémie normale à jeun</td>
+<td><strong>0,7 – 1,1 g/L</strong></td>
+</tr>
+<tr>
+<td>Normale 2 h après repas</td>
+<td>&lt; 1,4 g/L</td>
+</tr>
+<tr>
+<td>Hypoglycémie</td>
+<td><strong>&lt; 0,6 g/L</strong></td>
+</tr>
+<tr>
+<td>Hyperglycémie sévère</td>
+<td><strong>&gt; 2,5 g/L</strong></td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>Bonnes pratiques avant la piqûre</h4><p>Toujours <strong>laver et sécher</strong> le doigt à l’eau tiède savonneuse — <em>pas d’alcool</em> (il fausse le résultat).</p>
+<p>Piquer sur le <strong>côté</strong> du majeur, de l’annulaire ou de l’auriculaire (jamais le bout, ni pouce/index). <strong>Alterner les doigts.</strong></p>
+<p><strong>Éliminer la 1ʳᵉ goutte</strong>, mesurer sur la 2ᵉ (sang capillaire pur, résultat fiable).</p></aside>
+<aside class="encadre"><h4>Capteur de glycémie en continu</h4><p>— l’AS approche le lecteur (ou un smartphone) du capteur pour lire la valeur. L’AS ne pose pas le capteur (geste IDE), il l’utilise seulement pour la lecture.</p></aside>
+</section><section class="partie"><h3>3 · Hypo ou hyper ? Que faire concrètement</h3>
+<p>↓ HYPOGLYCÉMIE</p>
+<p><strong>Signes :</strong> sueurs, tremblements, pâleur, faim, confusion — <em>brutal</em>.</p>
+<p><strong>Si conscient :</strong> resucrer (3 sucres ou un jus), recontrôler à 15 min. <strong>Si inconscient :</strong> PLS + 15. <strong>URGENCE VITALE.</strong></p>
+<p>↑ HYPERGLYCÉMIE</p>
+<p><strong>Signes :</strong> soif intense, urines abondantes, fatigue, <strong>haleine fruitée (acétone)</strong> — <em>progressif</em>.</p>
+<p><strong>CAT :</strong> hydrater à l’eau plate, <strong>alerter l’IDE immédiatement</strong>.</p>
+<aside class="encadre"><h4>Astuce</h4><p><strong>hypo = je resucre</strong> (le manque de sucre tue vite) · <strong>hyper = j’alerte et j’hydrate</strong>. Dans le doute, on resucre toujours un malaise.</p></aside>
+</section><section class="partie"><h3>4 · Complications à repérer au quotidien</h3>
+<p>Un diabète mal équilibré abîme petit à petit plusieurs organes. Le rôle de l’AS est de <strong>repérer les premiers signes</strong> et de transmettre.</p>
+<ul>
+<li><strong>Pieds (pied diabétique) :</strong> inspecter <strong>tous les jours</strong>. Une plaie → infection → gangrène → risque d’amputation.</li>
+</ul>
+<ul>
+<li><strong>Cœur et vaisseaux :</strong> infarctus, AVC, artérite des jambes.</li>
+</ul>
+<ul>
+<li><strong>Reins :</strong> surveiller l’aspect des urines (mousse = protéines).</li>
+</ul>
+<ul>
+<li><strong>Yeux et nerfs :</strong> baisse de la vue, perte de sensibilité (le résident peut ne pas sentir une plaie).</li>
+</ul>
+</section><section class="partie"><h3>5 · La surveillance quotidienne de l’AS</h3>
+<p><strong>Ce que vous surveillez chaque jour chez un résident diabétique :</strong></p>
+<p>🩸 <strong>Glycémie</strong> aux heures prescrites</p>
+<p>🍽️ <strong>Repas pris</strong> (a-t-il mangé ?)</p>
+<p>🚽 <strong>Urines</strong> (quantité, aspect)</p>
+<p>🦶 <strong>Pieds</strong> (rougeur, plaie, ongle)</p>
+<p>😊 <strong>Comportement</strong> (confusion, somnolence)</p>
+<p>💧 <strong>Hydratation</strong> et soif</p>
+<aside class="encadre"><h4>Limite de rôle (fondamentale en VAE)</h4><p>l’AS <strong>observe, ressucre si nécessaire, alerte et trace</strong>. Il n’ajuste jamais les doses d’insuline et ne décide jamais d’un traitement — c’est l’IDE qui administre, le médecin qui prescrit.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<p>Entraînez-vous comme à l’oral VAE : lisez la situation, formulez votre conduite à voix haute, puis vérifiez.</p>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — M. D., 78 ans, type 2 sous insuline</p></p>
+<div class="cas-piste"><p><em>Vous le trouvez pâle, en sueurs, tremblant avant le déjeuner.</em></p>
+<p><strong>Conduite AS étape par étape :</strong></p>
+<ul>
+<li>Penser à l’hypoglycémie → contrôler la glycémie capillaire (protocole).</li>
+<li>S’il est conscient : resucrer (3 sucres ou jus), le rassurer, ne pas le laisser seul.</li>
+<li>Recontrôler à 15 min, puis lui faire prendre son repas.</li>
+<li>Alerter l’IDE et tracer.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Mme P., 84 ans, type 2</p></p>
+<div class="cas-piste"><p><em>Depuis ce matin : soif intense, urine beaucoup, haleine à odeur fruitée.</em></p>
+<p><strong>Conduite AS étape par étape :</strong></p>
+<ul>
+<li>Penser à l’hyperglycémie → contrôler la glycémie.</li>
+<li>Hydrater à l’eau plate.</li>
+<li>Alerter l’IDE immédiatement (haleine acétonique = signe d’alerte).</li>
+<li>Surveiller la conscience et tracer.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 3 — M. K., 72 ans, type 2 — toilette des pieds</p></p>
+<div class="cas-piste"><p><em>Pendant la toilette, vous repérez une petite rougeur sous le talon droit.</em></p>
+<p><strong>Conduite AS étape par étape :</strong></p>
+<ul>
+<li>Réaliser l’inspection quotidienne des pieds.</li>
+<li>Ne pas percer, sécher soigneusement entre les orteils.</li>
+<li>Signaler la rougeur à l’IDE le jour même.</li>
+<li>Tracer la localisation et l’aspect.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Doigt lavé à l’eau tiède savonneuse puis séché — jamais d’alcool, il fausse le résultat.</li><li>Piquer sur le côté du majeur, de l’annulaire ou de l’auriculaire en alternant, et éliminer la première goutte.</li><li>Malaise chez un conscient : resucrer — 3 sucres ou un jus —, rester près de lui, recontrôler à 15 minutes.</li><li>Inconscient : PLS et 15, urgence vitale. Dans le doute, on resucre toujours un malaise.</li><li>Haleine fruitée : hydrater à l’eau plate et alerter l’IDE immédiatement.</li><li>Inspecter les pieds chaque jour ; une rougeur se signale le jour même, sans jamais la percer.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le diabète est une hyperglycémie chronique : manque d’insuline, ou corps qui y résiste.</li><li>Type 1 : auto-immun, sujet jeune, insuline à vie. Type 2 : adulte, régime et comprimés — près de 90 % des cas en EHPAD.</li><li>À jeun, la glycémie normale va de 0,7 à 1,1 g/L ; hypoglycémie sous 0,6 g/L, hyperglycémie sévère au-delà de 2,5 g/L.</li><li>L’hypoglycémie survient brutalement : sueurs, tremblements, pâleur, faim, confusion.</li><li>L’hyperglycémie s’installe progressivement : soif, urines abondantes, fatigue, haleine fruitée.</li><li>L’AS observe, resucre, alerte et trace ; l’IDE administre, le médecin prescrit.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Quelle cellule fabrique l’insuline ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Les globules rouges</li>
+<li data-cle="b" onclick="window._pickQ(this)">Les cellules α (alpha)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le foie</li>
+<li data-cle="d" onclick="window._pickQ(this)">Les cellules β (bêta)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Les cellules β des îlots de Langerhans fabriquent l’insuline. Les cellules α fabriquent le glucagon.<strong> 🎓 À l’oral VAE :</strong> préciser que le pancréas est derrière l’estomac et a une double fonction : digestive et hormonale.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Différence essentielle entre Type 1 et Type 2 ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le type 2 nécessite toujours de l’insuline dès le début</li>
+<li data-cle="b" onclick="window._pickQ(this)">Type 1 = insuline à vie ; Type 2 = régime + comprimés</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le type 1 touche surtout les personnes âgées</li>
+<li data-cle="d" onclick="window._pickQ(this)">Il n’y a aucune différence</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Type 1 (DID) : auto-immun, sujet jeune, insuline à vie. Type 2 (DNID) : adulte souvent en surpoids, régime + comprimés (± insuline).<strong> 🎓 À l’oral VAE :</strong> préciser qu’en EHPAD on rencontre surtout des type 2 (≈90 % des cas).</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Glycémie normale à jeun ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">0,2 – 0,5 g/L</li>
+<li data-cle="b" onclick="window._pickQ(this)">0,7 – 1,1 g/L</li>
+<li data-cle="c" onclick="window._pickQ(this)">1,5 – 2 g/L</li>
+<li data-cle="d" onclick="window._pickQ(this)">Plus de 2,5 g/L</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>À jeun, la glycémie normale est de 0,7 à 1,1 g/L.<strong> 🎓 À l’oral VAE :</strong> préciser que ce sont les chiffres à retenir par cœur — base de la surveillance.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> Où piquer pour la glycémie capillaire ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Dans la paume</li>
+<li data-cle="b" onclick="window._pickQ(this)">Sur l’index</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sur le côté du majeur, annulaire ou auriculaire</li>
+<li data-cle="d" onclick="window._pickQ(this)">Au bout du pouce</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>On pique sur le côté des doigts : moins douloureux, meilleur flux. Pas le bout, pas pouce/index. Alterner. Pas d’alcool.<strong> 🎓 À l’oral VAE :</strong> préciser que la 1ʳᵉ goutte est éliminée pour éviter les faux résultats.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Glycémie à 0,5 g/L + sueurs + tremblements. Que faire ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Attendre le prochain repas</li>
+<li data-cle="b" onclick="window._pickQ(this)">Faire marcher le résident</li>
+<li data-cle="c" onclick="window._pickQ(this)">Donner de l’insuline</li>
+<li data-cle="d" onclick="window._pickQ(this)">Resucrer si conscient, alerter l’IDE, recontrôler à 15 min</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Hypoglycémie : si conscient → 3 sucres ou jus, alerter IDE, recontrôler à 15 min. Si inconscient → PLS + 15.<strong> 🎓 À l’oral VAE :</strong> préciser que l’AS ne touche jamais à la dose d’insuline : il resucre, alerte et trace.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> Haleine fruitée (odeur d’acétone) chez un diabétique. Signification ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Signe d’hypoglycémie</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un problème dentaire</li>
+<li data-cle="c" onclick="window._pickQ(this)">C’est normal après le repas</li>
+<li data-cle="d" onclick="window._pickQ(this)">Signe d’hyperglycémie sévère — alerter</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’haleine fruitée évoque une hyperglycémie sévère / acidocétose. On hydrate et on alerte IDE + médecin.<strong> 🎓 À l’oral VAE :</strong> préciser qu’une glycémie &gt; 2,5 g/L avec haleine acétonique = urgence vitale potentielle.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> Pourquoi inspecter les pieds tous les jours ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Pour vérifier les ongles uniquement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Car une plaie peut évoluer vers infection puis amputation</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ce n’est pas nécessaire</li>
+<li data-cle="d" onclick="window._pickQ(this)">Pour masser les pieds</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Une petite plaie peut évoluer : plaie → infection → gangrène → amputation. Inspection quotidienne obligatoire.<strong> 🎓 À l’oral VAE :</strong> préciser que la prévention du pied diabétique est un axe fort du rôle AS.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q7">
+<p class="q"><strong>Q8.</strong> Où jeter la lancette après usage ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Avec les bandelettes</li>
+<li data-cle="b" onclick="window._pickQ(this)">À la poubelle classique</li>
+<li data-cle="c" onclick="window._pickQ(this)">Dans l’évier</li>
+<li data-cle="d" onclick="window._pickQ(this)">Dans le collecteur OPCT (objets piquants/coupants)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La lancette va dans le collecteur OPCT jaune. La bandelette usagée va dans les DASRI.<strong> 🎓 À l’oral VAE :</strong> préciser que c’est une règle d’hygiène et de prévention du risque AES.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q8">
+<p class="q"><strong>Q9.</strong> L’AS peut-il injecter l’insuline ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Oui, la nuit seulement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Oui, si le résident le demande</li>
+<li data-cle="c" onclick="window._pickQ(this)">Non — il observe, ressucre, alerte et trace</li>
+<li data-cle="d" onclick="window._pickQ(this)">Oui, toujours</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Non. L’AS fait la glycémie capillaire (protocole + délégation), surveille, resucre un patient conscient. L’injection est un geste IDE.<strong> 🎓 À l’oral VAE :</strong> préciser que l’AS observe, ressucre, alerte et trace ; l’IDE administre, le médecin prescrit.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q9">
+<p class="q"><strong>Q10.</strong> Pourquoi éliminer la 1ʳᵉ goutte de sang ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Pour gagner du temps</li>
+<li data-cle="b" onclick="window._pickQ(this)">Pour faire moins mal</li>
+<li data-cle="c" onclick="window._pickQ(this)">Elle peut contenir des résidus qui faussent la mesure</li>
+<li data-cle="d" onclick="window._pickQ(this)">C’est inutile</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La 1ʳᵉ goutte peut contenir du liquide interstitiel ou des résidus. La 2ᵉ goutte = sang capillaire pur → fiable.<strong> 🎓 À l’oral VAE :</strong> préciser que la qualité du geste conditionne la fiabilité de la transmission à l’IDE.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L05.html" class="back">← SOCLE_L05</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L07.html">SOCLE_L07 →</a></div>
 </div>
 </body></html>

@@ -1,62 +1,239 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B2 · B2_L01 · Observation clinique de base — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L01 · Observation clinique de base — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L01</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 2</span><span>Leçon 1</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Observation clinique de base</h1>
-    <div class="accroche"><p>L&#x27;aide-soignant participe à l&#x27;évaluation clinique : il <strong>mesure, observe et transmet</strong>. Il ne pose pas de diagnostic, n&#x27;interprète pas médicalement et ne décide pas du traitement. Cette frontière est constante dans tout le Bloc 2.</p></div>
+    <div class="accroche"><p>L'aide-soignant participe à l'évaluation clinique : il <strong>mesure, observe et transmet</strong>. Il ne pose pas de diagnostic, n'interprète pas médicalement et ne décide pas du traitement. Cette frontière est constante dans tout le Bloc 2.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer la frontière entre ce que l’aide-soignant observe et transmet et ce qui relève du diagnostic médical.</li><li>Balayer l’état général d’une personne : conscience, coloration, peau, hydratation, alimentation, élimination, mobilité, sommeil.</li><li>Croiser les quatre sources d’information avant d’alerter l’IDE.</li><li>Formuler un écart en faits observés, sans interprétation.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Observer, ce n&#x27;est pas diagnostiquer</h3></section><section class="partie"><h3>L&#x27;observation clinique générale</h3></section><section class="partie"><h3>Recueillir &amp; organiser l&#x27;information</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Une seule question de départ : est-ce comme d’habitude ?</li><li>Observer l’objectif — ce que vous constatez — et le subjectif — ce que la personne exprime.</li><li>Lèvres sèches, pli cutané, urines rares : penser hydratation.</li><li>Pour chaque besoin, distinguer ce que la personne peut faire seule de ce qu’elle ne peut plus.</li><li>Alerter l’IDE en décrivant des faits, à l’oral et par écrit.</li><li>La chaîne attendue : observer, repérer l’écart, transmettre — jamais décider seul.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’aide-soignant mesure, observe et transmet — il ne diagnostique pas et ne décide pas du traitement.</li><li>Le signal le plus précieux est l’écart par rapport à l’état habituel.</li><li>Quatre sources : observation directe, paroles de la personne, dossier de soins, transmissions de l’équipe.</li><li>Toilette, repas, déplacements : les moments où l’on voit le plus.</li><li>On transmet le fait, jamais l’interprétation.</li><li>Une confusion récente chez une personne habituellement orientée se signale sans délai.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Observer, pour l&#x27;AS, c&#x27;est…</p><ol class="opts"><li class="ok">Poser un diagnostic</li><li class="">Décider du traitement</li><li class="">Recueillir des informations objectives et subjectives et repérer l&#x27;écart à l&#x27;habituel</li><li class="">Interpréter médicalement les signes</li></ol></div><div class="qblock"><p class="q">2. Le signal le plus précieux en observation est…</p><ol class="opts"><li class="ok">La couleur des draps</li><li class="">L&#x27;avis de la famille</li><li class="">La valeur normale</li><li class="">Le changement par rapport à l&#x27;état habituel</li></ol></div><div class="qblock"><p class="q">3. Combien de sources l&#x27;AS croise-t-il pour recueillir les données ?</p><ol class="opts"><li class="ok">Aucune, il se fie à son instinct</li><li class="">Une seule (le dossier)</li><li class="">Quatre : observation, personne, dossier, équipe</li><li class="">Deux : médecin et famille</li></ol></div><div class="qblock"><p class="q">4. Face à un écart observé, l&#x27;AS…</p><ol class="opts"><li class="ok">L&#x27;interprète et adapte le traitement</li><li class="">Le transmet à l&#x27;IDE comme un fait</li><li class="">Attend le lendemain</li><li class="">Le garde pour lui</li></ol></div><div class="qblock"><p class="q">5. Une confusion d’apparition récente chez une personne habituellement orientée est…</p><ol class="opts"><li class="ok">À surveiller la semaine suivante</li><li class="">Normale avec l’âge</li><li class="">Sans importance</li><li class="">Un signe d’alerte à transmettre sans délai</li></ol></div><div class="qblock"><p class="q">6. L’observation de l’AS sert avant tout à…</p><ol class="opts"><li class="ok">Faire des statistiques</li><li class="">Poser un diagnostic</li><li class="">Repérer tôt et assurer la continuité/sécurité des soins</li><li class="">Remplacer l’IDE</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B1_L19.html" class="back">← B1_L19</a><a href="B2_L02.html">B2_L02 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer la frontière entre ce que l’aide-soignant observe et transmet et ce qui relève du diagnostic médical.</li><li>Balayer l’état général d’une personne : conscience, coloration, peau, hydratation, alimentation, élimination, mobilité, sommeil.</li><li>Croiser les quatre sources d’information avant d’alerter l’IDE.</li><li>Formuler un écart en faits observés, sans interprétation.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Observer, ce n&#x27;est pas diagnostiquer</h3>
+<p>L'aide-soignant participe à l'évaluation clinique : il <strong>mesure, observe et transmet</strong>. Il ne pose pas de diagnostic, n'interprète pas médicalement et ne décide pas du traitement. Cette frontière est constante dans tout le Bloc 2.</p>
+<aside class="encadre"><h4>📖 observer</h4><p>Recueillir, par les sens et l'échange, des informations <strong>objectives</strong> (ce que je constate) et <strong>subjectives</strong> (ce que la personne exprime), pour comprendre son état et repérer tout <strong>écart par rapport à l'état habituel</strong>.</p></aside>
+<aside class="encadre"><h4>🩺 le rôle concret de l&#x27;AS</h4><p>Observer pendant les soins du quotidien (toilette, repas, déplacements) — les moments où l'on voit le plus —, comparer à l'habituel, et signaler tout écart.</p></aside>
+</section><section class="partie"><h3>L&#x27;observation clinique générale</h3>
+<p>Au-delà des chiffres, l'AS observe l'état général, comme une <strong>lecture globale comparée à l'habituel</strong>.</p>
+<div class="tableau"><table><thead><tr>
+<th>Ce que l'AS observe</th>
+<th>Exemples de signes</th>
+</tr></thead><tbody>
+<tr>
+<td>Conscience / comportement</td>
+<td>Somnolence, confusion, agitation, repli</td>
+</tr>
+<tr>
+<td>Coloration de la peau</td>
+<td>Pâleur, rougeur, cyanose, marbrures</td>
+</tr>
+<tr>
+<td>État cutané</td>
+<td>Rougeurs, plaies, points d'appui, sécheresse</td>
+</tr>
+<tr>
+<td>Hydratation</td>
+<td>Lèvres sèches, pli cutané, urines rares</td>
+</tr>
+<tr>
+<td>Alimentation / élimination</td>
+<td>Appétit, quantités, transit, diurèse</td>
+</tr>
+<tr>
+<td>Mobilité / sommeil</td>
+<td>Marche, équilibre, qualité du sommeil</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>📣 ce que l&#x27;AS transmet</h4><p>Tout <strong>changement par rapport à l'habituel</strong> : appétit, hydratation, mobilité, humeur, état de la peau, douleur exprimée, refus inhabituel. On transmet le <strong>fait observé</strong>, pas une interprétation.</p></aside>
+</section><section class="partie"><h3>Recueillir &amp; organiser l&#x27;information</h3>
+<p>Évaluer, c'est rassembler des informations issues de <strong>4 sources</strong> : observation directe, paroles de la personne, dossier de soins, transmissions de l'équipe. L'AS les organise pour donner à l'IDE une image fiable et utile.</p>
+<aside class="encadre"><h4>💡 le réflexe d&#x27;observation</h4><p>Pour chaque besoin, distinguer « <strong>peut faire seul / satisfait</strong> » de « <strong>ne peut faire / insatisfait / problème de santé</strong> », puis transmettre par écrit et oral à l'IDE.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>📘 Référence livre ORACLE — le regard du jury IFAS</strong></p>
+<p>Une bonne réponse montre la chaîne : <strong>observer → repérer l'écart → transmettre à l'IDE</strong>, sans jamais interpréter médicalement ni décider seul.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Mme L., 84 ans, « pas comme d’habitude »</p></p>
+<div class="cas-piste"><p><em>Au lever, Mme L. est plus fatiguée, confuse et a le teint gris.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Comparer à son <strong>état habituel</strong> (le meilleur repère).</li>
+<li>Observer : teint, comportement, paramètres, hydratation ; croiser les 4 sources.</li>
+<li>Alerter l’IDE en décrivant des <strong>faits</strong> (sans interpréter).</li>
+<li>Tracer en transmission ciblée.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — M. K. mange moins et s’isole</p></p>
+<div class="cas-piste"><p><em>Depuis 2 jours, M. K. s’alimente peu et reste dans sa chambre.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Observer (poids, moral, hydratation) et comparer à l’habituel.</li>
+<li>Croiser les sources, alerter l’IDE (dénutrition ? humeur ?).</li>
+<li>Tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Une seule question de départ : est-ce comme d’habitude ?</li><li>Observer l’objectif — ce que vous constatez — et le subjectif — ce que la personne exprime.</li><li>Lèvres sèches, pli cutané, urines rares : penser hydratation.</li><li>Pour chaque besoin, distinguer ce que la personne peut faire seule de ce qu’elle ne peut plus.</li><li>Alerter l’IDE en décrivant des faits, à l’oral et par écrit.</li><li>La chaîne attendue : observer, repérer l’écart, transmettre — jamais décider seul.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’aide-soignant mesure, observe et transmet — il ne diagnostique pas et ne décide pas du traitement.</li><li>Le signal le plus précieux est l’écart par rapport à l’état habituel.</li><li>Quatre sources : observation directe, paroles de la personne, dossier de soins, transmissions de l’équipe.</li><li>Toilette, repas, déplacements : les moments où l’on voit le plus.</li><li>On transmet le fait, jamais l’interprétation.</li><li>Une confusion récente chez une personne habituellement orientée se signale sans délai.</li></ul></section>
+  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« Dès ma prise de poste, j’observe l’écart à l’état habituel de chaque résident. Par exemple, j’ai repéré chez Mme L. une confusion inhabituelle ; je l’ai transmise à l’IDE de façon factuelle, ce qui a permis de détecter une infection débutante. »</p></section>
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> Observer, pour l'AS, c'est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Poser un diagnostic</li>
+<li data-cle="b" onclick="window._pickQ(this)">Décider du traitement</li>
+<li data-cle="c" onclick="window._pickQ(this)">Recueillir des informations objectives et subjectives et repérer l'écart à l'habituel</li>
+<li data-cle="d" onclick="window._pickQ(this)">Interpréter médicalement les signes</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Observer = recueillir l’objectif et le subjectif, repérer l’écart à l’habituel.<strong> 🎓 À l’oral VAE :</strong> l’AS est l’œil de l’équipe.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> Le signal le plus précieux en observation est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La couleur des draps</li>
+<li data-cle="b" onclick="window._pickQ(this)">L'avis de la famille</li>
+<li data-cle="c" onclick="window._pickQ(this)">La valeur normale</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le changement par rapport à l'état habituel</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le signal le plus précieux = le changement par rapport à l’état habituel.<strong> 🎓 À l’oral VAE :</strong> « ce n’est pas comme d’habitude ».</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q2">
+<p class="q"><strong>Q3.</strong> Combien de sources l'AS croise-t-il pour recueillir les données ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Aucune, il se fie à son instinct</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une seule (le dossier)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Quatre : observation, personne, dossier, équipe</li>
+<li data-cle="d" onclick="window._pickQ(this)">Deux : médecin et famille</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>4 sources : observation, personne, dossier, équipe.<strong> 🎓 À l’oral VAE :</strong> croisez les informations.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Face à un écart observé, l'AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L'interprète et adapte le traitement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le transmet à l'IDE comme un fait</li>
+<li data-cle="c" onclick="window._pickQ(this)">Attend le lendemain</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le garde pour lui</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Un écart se transmet à l’IDE comme un fait.<strong> 🎓 À l’oral VAE :</strong> sans interpréter ni diagnostiquer.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Une confusion d’apparition récente chez une personne habituellement orientée est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">À surveiller la semaine suivante</li>
+<li data-cle="b" onclick="window._pickQ(this)">Normale avec l’âge</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sans importance</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un signe d’alerte à transmettre sans délai</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Tout changement brutal du comportement est un signal → transmettre à l’IDE.<strong> 🎓 À l’oral VAE :</strong> reliez le changement à une cause possible (infection, douleur, globe).</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> L’observation de l’AS sert avant tout à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Faire des statistiques</li>
+<li data-cle="b" onclick="window._pickQ(this)">Poser un diagnostic</li>
+<li data-cle="c" onclick="window._pickQ(this)">Repérer tôt et assurer la continuité/sécurité des soins</li>
+<li data-cle="d" onclick="window._pickQ(this)">Remplacer l’IDE</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’AS observe et transmet ; il ne diagnostique pas. Son observation permet d’alerter tôt.<strong> 🎓 À l’oral VAE :</strong> montrez que vous connaissez la limite de votre rôle.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B1_L19.html" class="back">← B1_L19</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B2_L02.html">B2_L02 →</a></div>
 </div>
 </body></html>

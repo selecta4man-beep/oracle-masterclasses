@@ -1,62 +1,224 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B2 · B2_L05 · Glycémie capillaire &amp; hypoglycémie — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L05 · Glycémie capillaire & hypoglycémie — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L05</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 2</span><span>Leçon 5</span><span>⏱ 30 min</span><span>VAE DEAS</span></div>
     <h1>Glycémie capillaire &amp; hypoglycémie</h1>
-    <div class="accroche"><p>Depuis la réforme 2021, l&#x27;AS peut réaliser la <strong>glycémie capillaire</strong> dans le cadre d&#x27;un protocole et en collaboration avec l&#x27;IDE. La rigueur technique conditionne la fiabilité.</p></div>
+    <div class="accroche"><p>Depuis la réforme 2021, l'AS peut réaliser la <strong>glycémie capillaire</strong> dans le cadre d'un protocole et en collaboration avec l'IDE. La rigueur technique conditionne la fiabilité.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer la glycémie capillaire dans le cadre de l’AS : protocole et collaboration avec l’IDE depuis la réforme 2021.</li><li>Réaliser le prélèvement selon la technique qui garantit la fiabilité de la mesure.</li><li>Reconnaître une hypoglycémie sur la valeur et sur les signes ressentis.</li><li>Appliquer la conduite adaptée selon que la personne est consciente ou non.</li><li>Transmettre une valeur avec l’heure, les conditions de mesure et les signes observés.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>La glycémie capillaire dans le cadre prévu</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Éviter pouce et index ; piquer sur le côté de la pulpe.</li><li>Tracer la valeur, l’heure et les conditions de mesure.</li><li>Ne jamais laisser seule une personne en hypoglycémie.</li><li>Conscient : resucrage selon protocole — sucre rapide puis sucre lent — puis recontrôle à 15 minutes.</li><li>Inconscient : position latérale de sécurité et alerte 15 ou IDE, rien par la bouche.</li><li>Ne jamais noter une valeur anormale sans alerter, ni décider seul hors protocole.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Glycémie normale à jeun : 0,70 à 1,10 g/L. Hypoglycémie sous 0,70 g/L.</li><li>Doigt lavé à l’eau et au savon — l’alcool fausse la mesure.</li><li>Hypoglycémie : sueurs, pâleur, tremblements, faim, fourmillements autour de la bouche, vertiges, irritabilité.</li><li>Glycémie basse symptomatique : sécuriser, alerter l’IDE, appliquer le protocole de resucrage.</li><li>Personne inconsciente : rien par la bouche.</li><li>L’AS ne touche jamais aux doses d’insuline.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le seuil d&#x27;hypoglycémie est…</p><ol class="opts"><li class="ok">&lt; 0,70 g/L</li><li class="">&gt; 2 g/L</li><li class="">Exactement 1 g/L</li><li class="">Il n&#x27;y en a pas</li></ol></div><div class="qblock"><p class="q">2. Pour une glycémie capillaire fiable, on nettoie le doigt…</p><ol class="opts"><li class="ok">Avec du désinfectant gras</li><li class="">À l&#x27;eau et au savon (pas d&#x27;alcool)</li><li class="">Avec rien</li><li class="">À l&#x27;alcool</li></ol></div><div class="qblock"><p class="q">3. Signes d&#x27;hypoglycémie :</p><ol class="opts"><li class="ok">Aucun signe</li><li class="">Fièvre et toux</li><li class="">Sueurs, tremblements, pâleur, faim</li><li class="">Soif intense et fatigue</li></ol></div><div class="qblock"><p class="q">4. Devant une glycémie basse symptomatique, l&#x27;AS…</p><ol class="opts"><li class="ok">Décide seul d&#x27;un traitement</li><li class="">Note et passe à la suite</li><li class="">Laisse la personne seule</li><li class="">Sécurise, alerte l&#x27;IDE et applique le protocole de resucrage</li></ol></div><div class="qblock"><p class="q">5. On nettoie le doigt avant une glycémie capillaire…</p><ol class="opts"><li class="ok">À l’eau et au savon</li><li class="">À l’alcool</li><li class="">Avec un antiseptique coloré</li><li class="">On ne nettoie pas</li></ol></div><div class="qblock"><p class="q">6. Devant une hypoglycémie chez une personne INCONSCIENTE, l’AS…</p><ol class="opts"><li class="ok">Donne du sucre dans la bouche</li><li class="">Ne donne rien par la bouche, PLS et alerte le 15/IDE</li><li class="">Attend le repas</li><li class="">Fait boire un jus</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B2_L04.html" class="back">← B2_L04</a><a href="B2_L06.html">B2_L06 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer la glycémie capillaire dans le cadre de l’AS : protocole et collaboration avec l’IDE depuis la réforme 2021.</li><li>Réaliser le prélèvement selon la technique qui garantit la fiabilité de la mesure.</li><li>Reconnaître une hypoglycémie sur la valeur et sur les signes ressentis.</li><li>Appliquer la conduite adaptée selon que la personne est consciente ou non.</li><li>Transmettre une valeur avec l’heure, les conditions de mesure et les signes observés.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>La glycémie capillaire dans le cadre prévu</h3>
+<p>Depuis la réforme 2021, l'AS peut réaliser la <strong>glycémie capillaire</strong> dans le cadre d'un protocole et en collaboration avec l'IDE. La rigueur technique conditionne la fiabilité.</p>
+<aside class="encadre"><h4>🩺 le geste juste (rôle AS)</h4><p>Doigt <strong>lavé à l'eau et au savon</strong> (pas d'alcool qui fausse la mesure), éviter pouce et index, piquer sur le côté de la pulpe, tracer la valeur, l'heure et les conditions.</p></aside>
+<aside class="vigilance"><h4>⚠ 🚨 repère — hypoglycémie</h4><p>Hypoglycémie = glycémie <strong>&lt; 0,70 g/L</strong> (normes 0,70–1,10 g/L à jeun). Signes : sueurs, pâleur, tremblements, faim, fourmillements autour de la bouche, vertiges, irritabilité. Conduite AS : sécuriser, <strong>alerter l'IDE</strong>, appliquer le protocole de resucrage ; ne jamais laisser la personne seule.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 3 (ACTIVITÉ 09 : glycémie capillaire).</p>
+<p>Norme : <strong>0,70–1,10 g/L</strong>.</p>
+<p>Technique : <strong>doigt lavé à l’eau + savon (pas d’alcool)</strong>, éviter pouce et index.</p>
+<p>Hypoglycémie = urgence : resucrage selon protocole, alerter l’IDE.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Eau + savon, pas d’alcool (l’alcool fausse la mesure) : détail technique souvent demandé.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — Glycémie capillaire selon protocole (Mme T.)</strong></p></p>
+<div class="cas-piste"><p><em>Dans le cadre prévu, vous réalisez une glycémie capillaire chez Mme T., diabétique. Le résultat est nettement plus bas que d'habitude ; elle se dit « faible » et un peu tremblante.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Que repérez-vous ?</li>
+<li>Quelle conduite dans votre champ ?</li>
+<li>Que transmettez-vous ?</li>
+<li>Quel piège éviter ?</li>
+</ul>
+<p><strong>Corrigé attendu (IFAS/jury) :</strong></p>
+<p><strong>Repérage.</strong> Glycémie basse + signes ressentis (faiblesse, tremblements) = <strong>hypoglycémie probable</strong> à signaler rapidement.</p>
+<p><strong>Conduite.</strong> Sécuriser la personne, ne pas la laisser seule, vérifier la mesure si doute, alerter l'IDE immédiatement et appliquer le <strong>protocole de resucrage</strong> en vigueur.</p>
+<p><strong>Transmission.</strong> Valeur, heure, conditions de mesure, signes ressentis — à l'IDE.</p>
+<p><strong>Piège.</strong> Noter la valeur sans alerter, ou décider seul d'une conduite hors protocole.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — M. D., sueurs et tremblements avant le repas</p></p>
+<div class="cas-piste"><p><em>Diabétique, M. D. est pâle, tremblant et en sueurs avant le déjeuner.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Penser à l’<strong>hypoglycémie</strong> → contrôler la glycémie (protocole).</li>
+<li>S’il est conscient : <strong>resucrer</strong> (sucre rapide + lent), ne pas laisser seul.</li>
+<li>Recontrôler à 15 min, alerter l’IDE, tracer.</li>
+<li>Inconscient : rien par la bouche → PLS + alerte 15/IDE.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Hyperglycémie</p></p>
+<div class="cas-piste"><p><em>Mme F. a très soif, urine beaucoup ; glycémie &gt; 2,5 g/L.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Contrôler la glycémie, encourager l’<strong>eau plate</strong>.</li>
+<li>Alerter l’IDE (ajustement médical), ne pas toucher à l’insuline.</li>
+<li>Surveiller, tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Éviter pouce et index ; piquer sur le côté de la pulpe.</li><li>Tracer la valeur, l’heure et les conditions de mesure.</li><li>Ne jamais laisser seule une personne en hypoglycémie.</li><li>Conscient : resucrage selon protocole — sucre rapide puis sucre lent — puis recontrôle à 15 minutes.</li><li>Inconscient : position latérale de sécurité et alerte 15 ou IDE, rien par la bouche.</li><li>Ne jamais noter une valeur anormale sans alerter, ni décider seul hors protocole.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Glycémie normale à jeun : 0,70 à 1,10 g/L. Hypoglycémie sous 0,70 g/L.</li><li>Doigt lavé à l’eau et au savon — l’alcool fausse la mesure.</li><li>Hypoglycémie : sueurs, pâleur, tremblements, faim, fourmillements autour de la bouche, vertiges, irritabilité.</li><li>Glycémie basse symptomatique : sécuriser, alerter l’IDE, appliquer le protocole de resucrage.</li><li>Personne inconsciente : rien par la bouche.</li><li>L’AS ne touche jamais aux doses d’insuline.</li></ul></section>
+  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« Je réalise la glycémie capillaire dans le cadre du protocole, eau et savon, sans alcool. Devant une hypoglycémie symptomatique, je resucre si la personne est consciente, je recontrôle et j’alerte — je ne touche jamais aux doses d’insuline. »</p></section>
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le seuil d'hypoglycémie est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">&lt; 0,70 g/L</li>
+<li data-cle="b" onclick="window._pickQ(this)">&gt; 2 g/L</li>
+<li data-cle="c" onclick="window._pickQ(this)">Exactement 1 g/L</li>
+<li data-cle="d" onclick="window._pickQ(this)">Il n'y en a pas</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Hypoglycémie = glycémie &lt; 0,70 g/L.<strong> 🎓 À l’oral VAE :</strong> urgence si symptomatique.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Pour une glycémie capillaire fiable, on nettoie le doigt…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Avec du désinfectant gras</li>
+<li data-cle="b" onclick="window._pickQ(this)">À l'eau et au savon (pas d'alcool)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Avec rien</li>
+<li data-cle="d" onclick="window._pickQ(this)">À l'alcool</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>On nettoie le doigt à l’eau et au savon (pas d’alcool).<strong> 🎓 À l’oral VAE :</strong> l’alcool fausse la mesure.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q2">
+<p class="q"><strong>Q3.</strong> Signes d'hypoglycémie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Aucun signe</li>
+<li data-cle="b" onclick="window._pickQ(this)">Fièvre et toux</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sueurs, tremblements, pâleur, faim</li>
+<li data-cle="d" onclick="window._pickQ(this)">Soif intense et fatigue</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Hypo : sueurs, tremblements, pâleur, faim.<strong> 🎓 À l’oral VAE :</strong> agir vite.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> Devant une glycémie basse symptomatique, l'AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Décide seul d'un traitement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Note et passe à la suite</li>
+<li data-cle="c" onclick="window._pickQ(this)">Laisse la personne seule</li>
+<li data-cle="d" onclick="window._pickQ(this)">Sécurise, alerte l'IDE et applique le protocole de resucrage</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Glycémie basse symptomatique : sécuriser, alerter l’IDE, protocole de resucrage.<strong> 🎓 À l’oral VAE :</strong> l’AS ne touche pas à l’insuline.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> On nettoie le doigt avant une glycémie capillaire…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">À l’eau et au savon</li>
+<li data-cle="b" onclick="window._pickQ(this)">À l’alcool</li>
+<li data-cle="c" onclick="window._pickQ(this)">Avec un antiseptique coloré</li>
+<li data-cle="d" onclick="window._pickQ(this)">On ne nettoie pas</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Eau + savon : l’alcool fausse la mesure.<strong> 🎓 À l’oral VAE :</strong> évitez aussi de piquer pouce et index.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q5">
+<p class="q"><strong>Q6.</strong> Devant une hypoglycémie chez une personne INCONSCIENTE, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Donne du sucre dans la bouche</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ne donne rien par la bouche, PLS et alerte le 15/IDE</li>
+<li data-cle="c" onclick="window._pickQ(this)">Attend le repas</li>
+<li data-cle="d" onclick="window._pickQ(this)">Fait boire un jus</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Rien par la bouche si inconscient (risque de fausse route) → PLS + alerte.<strong> 🎓 À l’oral VAE :</strong> l’hypoglycémie peut tuer : agir vite.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B2_L04.html" class="back">← B2_L04</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B2_L06.html">B2_L06 →</a></div>
 </div>
 </body></html>

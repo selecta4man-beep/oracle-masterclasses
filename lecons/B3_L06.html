@@ -1,62 +1,281 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B3 · B3_L06 · Secret professionnel, droits &amp; bientraitance — ORACLE VAE AS</title>
+<title>Bloc 3 · B3_L06 · Secret professionnel, droits & bientraitance — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 3</strong> › B3_L06</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 3</span><span>Leçon 6</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Secret professionnel, droits &amp; bientraitance</h1>
-    <div class="accroche"><p>Tout ce que l&#x27;AS apprend dans le cadre de son travail est <strong>confidentiel</strong>. On ne parle pas d&#x27;une personne devant d&#x27;autres, on ne divulgue pas d&#x27;informations à l&#x27;entourage sans cadre, on protège l&#x27;intimité et les données.</p></div>
+    <div class="accroche"><p>Tout ce que l'AS apprend dans le cadre de son travail est <strong>confidentiel</strong>. On ne parle pas d'une personne devant d'autres, on ne divulgue pas d'informations à l'entourage sans cadre, on protège l'intimité et les données.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Appliquer le secret professionnel, y compris face à l’entourage et aux tiers.</li><li>Citer les textes qui fondent les droits de la personne soignée.</li><li>Distinguer bientraitance et simple absence de maltraitance.</li><li>Tenir la juste distance professionnelle dans la relation de soin.</li><li>Réagir à un refus de soin sans jamais recourir à la contrainte.</li><li>Signaler une situation de maltraitance en décrivant des faits.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Le secret professionnel : une obligation</h3></section><section class="partie"><h3>Le cadre juridique de la relation</h3></section><section class="partie"><h3>Les chartes &amp; textes clés à connaître</h3></section><section class="partie"><h3>Bientraitance, juste distance &amp; refus de soin</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Ne jamais parler d’une personne devant d’autres ; anonymiser les documents qui sortent.</li><li>Le secret s’applique aussi au stagiaire, et il continue après le décès.</li><li>Un tiers demande des nouvelles : ne rien divulguer, expliquer la confidentialité, orienter vers l’IDE ou le cadre.</li><li>Devant un refus : comprendre, proposer autrement, transmettre — jamais forcer.</li><li>Connaître la personne de confiance désignée et les directives anticipées, et les respecter.</li><li>Maltraitance constatée : protéger la personne, signaler au cadre ou à l’IDE, décrire des faits objectifs.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le secret professionnel est une obligation, pas une option — art. L.1110-4 CSP.</li><li>Secret partagé : l’information utile au soin, entre professionnels concernés, et rien de plus.</li><li>Loi Kouchner (2002) : la personne consent aux soins, et le refus de soin est un droit.</li><li>Forcer un soin est une atteinte à la dignité, donc une maltraitance.</li><li>Bientraitance (loi ASV 2015) : une attention active au confort et à la dignité.</li><li>Ne pas signaler une maltraitance peut relever de la non-assistance — art. 223-6 CP.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le secret professionnel est…</p><ol class="opts"><li class="ok">Réservé aux médecins</li><li class="">Facultatif en équipe</li><li class="">Une obligation (art. L.1110-4 CSP)</li><li class="">Une option selon le service</li></ol></div><div class="qblock"><p class="q">2. La loi Kouchner (2002) pose surtout…</p><ol class="opts"><li class="ok">La personne de confiance</li><li class="">La bientraitance</li><li class="">Le secret partagé</li><li class="">Le consentement de la personne aux soins</li></ol></div><div class="qblock"><p class="q">3. Forcer un soin malgré le refus, c&#x27;est…</p><ol class="opts"><li class="ok">Une atteinte à la dignité / une forme de maltraitance</li><li class="">Un devoir de soignant</li><li class="">Obligatoire pour l&#x27;hygiène</li><li class="">Sans conséquence</li></ol></div><div class="qblock"><p class="q">4. La juste distance professionnelle, c&#x27;est…</p><ol class="opts"><li class="ok">Être froid et distant</li><li class="">Être chaleureux et respectueux sans familiarité excessive</li><li class="">Tutoyer tout le monde</li><li class="">Se confier à la personne soignée</li></ol></div><div class="qblock"><p class="q">5. La bientraitance (loi ASV 2015) est…</p><ol class="opts"><li class="ok">La simple absence de maltraitance</li><li class="">Réservée aux médecins</li><li class="">Une attention active au confort et à la dignité</li><li class="">Une option</li></ol></div><div class="qblock"><p class="q">6. Le secret professionnel est posé notamment par…</p><ol class="opts"><li class="ok">Aucun texte</li><li class="">Le code de la route</li><li class="">Une note de service</li><li class="">L’art. L.1110-4 du Code de la santé publique</li></ol></div><div class="qblock"><p class="q">7. Ne pas signaler une situation de maltraitance peut relever de…</p><ol class="opts"><li class="ok">La non-assistance (art. 223-6 CP)</li><li class="">Un choix personnel</li><li class="">Rien</li><li class="">Une faute mineure</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B3_L05.html" class="back">← B3_L05</a><a href="B3_L07.html">B3_L07 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Appliquer le secret professionnel, y compris face à l’entourage et aux tiers.</li><li>Citer les textes qui fondent les droits de la personne soignée.</li><li>Distinguer bientraitance et simple absence de maltraitance.</li><li>Tenir la juste distance professionnelle dans la relation de soin.</li><li>Réagir à un refus de soin sans jamais recourir à la contrainte.</li><li>Signaler une situation de maltraitance en décrivant des faits.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Le secret professionnel : une obligation</h3>
+<p>Tout ce que l'AS apprend dans le cadre de son travail est <strong>confidentiel</strong>. On ne parle pas d'une personne devant d'autres, on ne divulgue pas d'informations à l'entourage sans cadre, on protège l'intimité et les données.</p>
+<aside class="vigilance"><h4>⚠ 🚨 ce n&#x27;est pas une option</h4><p>Le secret professionnel n'est pas une option : c'est une <strong>obligation</strong> (art. L.1110-4 CSP). Il protège la personne et la confiance dans la relation de soin.</p></aside>
+</section><section class="partie"><h3>Le cadre juridique de la relation</h3>
+<div class="tableau"><table><thead><tr>
+<th>Repère</th>
+<th>Ce que ça signifie pour l'AS</th>
+</tr></thead><tbody>
+<tr>
+<td>Secret professionnel (+ partagé)</td>
+<td>Confidentialité ; partage limité aux professionnels concernés et au strict utile</td>
+</tr>
+<tr>
+<td>Consentement (loi Kouchner, 2002)</td>
+<td>La personne consent aux soins ; on l'informe et on recueille son accord</td>
+</tr>
+<tr>
+<td>Droits des usagers (loi 2002-2)</td>
+<td>Respect de la dignité, de l'intimité, du projet personnalisé</td>
+</tr>
+<tr>
+<td>Personne de confiance</td>
+<td>Interlocuteur désigné par la personne, à connaître et respecter</td>
+</tr>
+<tr>
+<td>Directives anticipées (2016)</td>
+<td>Volontés exprimées à respecter, notamment en fin de vie</td>
+</tr>
+<tr>
+<td>Chartes</td>
+<td>Charte du patient hospitalisé / de la personne âgée / de la personne handicapée</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>Les chartes &amp; textes clés à connaître</h3>
+<p>Quelques repères juridiques que le jury apprécie :</p>
+<div class="tableau"><table><thead><tr>
+<th>Texte</th>
+<th>Ce qu’il pose</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Secret professionnel</strong> (art. L.1110-4 CSP)</td>
+<td>Obligation de ne pas divulguer les informations de la personne</td>
+</tr>
+<tr>
+<td><strong>Loi Kouchner (2002)</strong></td>
+<td>Droits du patient, consentement aux soins</td>
+</tr>
+<tr>
+<td><strong>Loi 2002-2</strong></td>
+<td>Droits des usagers ; charte de la personne accueillie</td>
+</tr>
+<tr>
+<td><strong>Non-assistance</strong> (art. 223-6 CP)</td>
+<td>Obligation de signaler/porter assistance</td>
+</tr>
+<tr>
+<td><strong>Loi ASV 2015</strong></td>
+<td>Adaptation de la société au vieillissement, bientraitance</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p>Le <strong>secret partagé</strong> : on échange l’information utile au soin, uniquement entre professionnels concernés.</p></aside>
+</section><section class="partie"><h3>Bientraitance, juste distance &amp; refus de soin</h3>
+<aside class="encadre"><h4>📖 bientraitance (loi ASV 2015)</h4><p>Une <strong>attention active</strong> au confort et à la dignité — pas seulement l'absence de maltraitance.</p></aside>
+<aside class="encadre"><h4>💡 la juste distance professionnelle</h4><p>Être chaleureux <strong>sans</strong> être familier, proche <strong>sans</strong> être intrusif, impliqué <strong>sans</strong> être envahi. La juste distance protège la personne (respect) et le soignant (équilibre émotionnel).</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🚨 le refus de soin se respecte</strong></p>
+<p>Le refus de soin se respecte : on cherche à comprendre, on propose autrement, on transmet ; on <strong>ne force pas</strong> (atteinte à la dignité et au consentement — loi Kouchner).</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 6 (ACTIVITÉ 22) + ACTIVITÉ 05.</p>
+<p><strong>Secret professionnel :</strong> art. L.1110-4 CSP ; <strong>anonymiser</strong> les documents sortants ; s’applique au stagiaire et après le décès.</p>
+<p><strong>Le refus de soin est un droit</strong> (loi Kouchner 2002) ; <strong>forcer = maltraitance</strong>.</p>
+<p>Bientraitance : ton doux, à hauteur, ne rien promettre de faux, respecter l’intimité.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Citer Kouchner (2002) et L.1110-4 ancre vos propos dans le droit.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Demande d’info par un tiers</p></p>
+<div class="cas-piste"><p><em>Le voisin demande des nouvelles de santé d’un autre résident.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Ne pas divulguer (secret pro).</li>
+<li>Expliquer la confidentialité.</li>
+<li>Orienter vers IDE/cadre.</li>
+<li>Tracer si besoin.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Repérer une maltraitance</p></p>
+<div class="cas-piste"><p><em>Propos humiliants d’un collègue constatés.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Protéger le résident.</li>
+<li>Signaler au cadre/IDE.</li>
+<li>Décrire des faits objectifs.</li>
+<li>Suivre la procédure.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Ne jamais parler d’une personne devant d’autres ; anonymiser les documents qui sortent.</li><li>Le secret s’applique aussi au stagiaire, et il continue après le décès.</li><li>Un tiers demande des nouvelles : ne rien divulguer, expliquer la confidentialité, orienter vers l’IDE ou le cadre.</li><li>Devant un refus : comprendre, proposer autrement, transmettre — jamais forcer.</li><li>Connaître la personne de confiance désignée et les directives anticipées, et les respecter.</li><li>Maltraitance constatée : protéger la personne, signaler au cadre ou à l’IDE, décrire des faits objectifs.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le secret professionnel est une obligation, pas une option — art. L.1110-4 CSP.</li><li>Secret partagé : l’information utile au soin, entre professionnels concernés, et rien de plus.</li><li>Loi Kouchner (2002) : la personne consent aux soins, et le refus de soin est un droit.</li><li>Forcer un soin est une atteinte à la dignité, donc une maltraitance.</li><li>Bientraitance (loi ASV 2015) : une attention active au confort et à la dignité.</li><li>Ne pas signaler une maltraitance peut relever de la non-assistance — art. 223-6 CP.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le secret professionnel est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Réservé aux médecins</li>
+<li data-cle="b" onclick="window._pickQ(this)">Facultatif en équipe</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une obligation (art. L.1110-4 CSP)</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une option selon le service</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le secret professionnel est une obligation (art. L.1110-4).<strong> 🎓 À l’oral VAE :</strong> citez la référence.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> La loi Kouchner (2002) pose surtout…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La personne de confiance</li>
+<li data-cle="b" onclick="window._pickQ(this)">La bientraitance</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le secret partagé</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le consentement de la personne aux soins</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Loi Kouchner (2002) : consentement de la personne aux soins.<strong> 🎓 À l’oral VAE :</strong> droits du patient.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Forcer un soin malgré le refus, c'est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une atteinte à la dignité / une forme de maltraitance</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un devoir de soignant</li>
+<li data-cle="c" onclick="window._pickQ(this)">Obligatoire pour l'hygiène</li>
+<li data-cle="d" onclick="window._pickQ(this)">Sans conséquence</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Forcer un soin malgré le refus = atteinte à la dignité / maltraitance.<strong> 🎓 À l’oral VAE :</strong> jamais de contrainte.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> La juste distance professionnelle, c'est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Être froid et distant</li>
+<li data-cle="b" onclick="window._pickQ(this)">Être chaleureux et respectueux sans familiarité excessive</li>
+<li data-cle="c" onclick="window._pickQ(this)">Tutoyer tout le monde</li>
+<li data-cle="d" onclick="window._pickQ(this)">Se confier à la personne soignée</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Juste distance : chaleureux et respectueux, sans familiarité excessive.<strong> 🎓 À l’oral VAE :</strong> ni froideur, ni fusion.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> La bientraitance (loi ASV 2015) est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La simple absence de maltraitance</li>
+<li data-cle="b" onclick="window._pickQ(this)">Réservée aux médecins</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une attention active au confort et à la dignité</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une option</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Bientraitance (loi ASV 2015) = attention active au confort et à la dignité.<strong> 🎓 À l’oral VAE :</strong> démarche continue.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> Le secret professionnel est posé notamment par…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Aucun texte</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le code de la route</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une note de service</li>
+<li data-cle="d" onclick="window._pickQ(this)">L’art. L.1110-4 du Code de la santé publique</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Obligation légale de confidentialité.<strong> 🎓 À l’oral VAE :</strong> le secret partagé reste limité à l’utile.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q6">
+<p class="q"><strong>Q7.</strong> Ne pas signaler une situation de maltraitance peut relever de…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La non-assistance (art. 223-6 CP)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un choix personnel</li>
+<li data-cle="c" onclick="window._pickQ(this)">Rien</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une faute mineure</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Obligation de signaler ; à défaut, non-assistance.<strong> 🎓 À l’oral VAE :</strong> signalement factuel, sans délai.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B3_L05.html" class="back">← B3_L05</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B3_L07.html">B3_L07 →</a></div>
 </div>
 </body></html>

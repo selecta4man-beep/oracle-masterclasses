@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOCLE · SOCLE_L02 · Vocabulaire médical &amp; Échelles d&#x27;évaluation — ORACLE VAE AS</title>
+<title>Socle · SOCLE_L02 · Vocabulaire médical & Échelles d'évaluation — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L02</div>
@@ -56,7 +79,277 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Vocabulaire médical &amp; Échelles d&#x27;évaluation</h1>
     <div class="accroche"><p>Comprendre les <strong>racines</strong> permet de déchiffrer un mot inconnu. Préfixes et suffixes se combinent : <em>brady-</em> (lent) + <em>-cardie</em> (cœur) = ralentissement du cœur.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Décomposer un mot médical inconnu à partir de sa racine, de son préfixe et de son suffixe.</li><li>Traduire les préfixes de quantité et de direction les plus courants.</li><li>Associer chaque échelle à ce qu’elle mesure et à l’usage qu’en fait l’aide-soignant.</li><li>Choisir l’échelle de douleur selon que la personne communique ou non.</li><li>Transmettre une observation avec le mot juste plutôt qu’une formule approximative.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Décoder le vocabulaire médical</h3></section><section class="partie"><h3>Les préfixes de quantité et de direction</h3></section><section class="partie"><h3>Les échelles d’évaluation, outils de l’AS</h3></section><section class="partie"><h3>Panorama des échelles de l’AS</h3></section><section class="partie"><h3>Transmettre avec le bon mot</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Devant un mot inconnu, séparez les éléments : brady- + -cardie = ralentissement du cœur.</li><li>Dysphagie : difficulté à avaler — vigilance fausse route au moment des repas.</li><li>Oligurie : urines diminuées — surveiller la diurèse et l’hydratation, signaler à l’IDE.</li><li>Transmettre « EVA à 7/10 » plutôt que « il a très mal » : un chiffre est un repère partagé.</li><li>Toute l’équipe utilise la <strong>même échelle</strong> pour suivre l’évolution d’une personne.</li><li>Le recueil se fait sous protocole ; le Glasgow est coté par l’IDE ou le médecin.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>dys- difficulté · a-/an- absence · -algie douleur · -pnée respiration · -urie urine.</li><li>tachy- rapide et brady- lent ; poly- beaucoup et oligo- peu ; hyper- excès et hypo- manque.</li><li>EVA, EN, EVS : la personne note elle-même sa douleur.</li><li>Algoplus et Doloplus s’appuient sur le comportement, pour une personne non communicante.</li><li>Braden et Norton repèrent le risque d’escarre ; le MNA dépiste la dénutrition ; AGGIR donne le GIR, de 1 très dépendant à 6 autonome.</li><li>Une échelle transforme un ressenti en donnée suivie et partagée.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. « Dyspnée » signifie…</p><ol class="opts"><li class="ok">Absence d’urine</li><li class="">Douleur articulaire</li><li class="">Respiration lente</li><li class="">Difficulté à respirer</li></ol></div><div class="qblock"><p class="q">2. Le préfixe « brady- » indique…</p><ol class="opts"><li class="ok">Lent</li><li class="">Rapide</li><li class="">Beaucoup</li><li class="">Excès</li></ol></div><div class="qblock"><p class="q">3. Pour évaluer la douleur d’une personne NON communicante, on utilise…</p><ol class="opts"><li class="ok">L’EVA</li><li class="">L’échelle Algoplus / Doloplus</li><li class="">L’échelle de Glasgow</li><li class="">Le MNA</li></ol></div><div class="qblock"><p class="q">4. L’échelle de Braden évalue le risque de…</p><ol class="opts"><li class="ok">Chute</li><li class="">Fausse route</li><li class="">Escarre</li><li class="">Dénutrition</li></ol></div><div class="qblock"><p class="q">5. « Oligurie » veut dire…</p><ol class="opts"><li class="ok">Sang dans les urines</li><li class="">Urines abondantes</li><li class="">Absence totale d’urine</li><li class="">Urines diminuées</li></ol></div><div class="qblock"><p class="q">6. Utiliser une échelle plutôt qu’un ressenti permet…</p><ol class="opts"><li class="ok">De suivre l’évolution avec un repère partagé</li><li class="">De prescrire</li><li class="">De diagnostiquer</li><li class="">De remplacer l’IDE</li></ol></div><div class="qblock"><p class="q">7. Pour une personne NON communicante, on évalue la douleur avec…</p><ol class="opts"><li class="ok">L’EVA</li><li class="">Algoplus / Doloplus (hétéro-évaluation)</li><li class="">Le MNA</li><li class="">Le GIR</li></ol></div><div class="qblock"><p class="q">8. Le GIR (issu d’AGGIR) mesure…</p><ol class="opts"><li class="ok">La nutrition</li><li class="">Le risque d’escarre</li><li class="">Le degré d’autonomie</li><li class="">La douleur</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L01.html" class="back">← SOCLE_L01</a><a href="SOCLE_L03.html">SOCLE_L03 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Décomposer un mot médical inconnu à partir de sa racine, de son préfixe et de son suffixe.</li><li>Traduire les préfixes de quantité et de direction les plus courants.</li><li>Associer chaque échelle à ce qu’elle mesure et à l’usage qu’en fait l’aide-soignant.</li><li>Choisir l’échelle de douleur selon que la personne communique ou non.</li><li>Transmettre une observation avec le mot juste plutôt qu’une formule approximative.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Décoder le vocabulaire médical</h3>
+<p>Comprendre les <strong>racines</strong> permet de déchiffrer un mot inconnu. Préfixes et suffixes se combinent : <em>brady-</em> (lent) + <em>-cardie</em> (cœur) = ralentissement du cœur.</p>
+<div class="tableau"><table><thead><tr>
+<th>Élément</th>
+<th>Sens</th>
+<th>Exemple</th>
+</tr></thead><tbody>
+<tr>
+<td>dys-</td>
+<td>difficulté</td>
+<td>dyspnée = difficulté à respirer</td>
+</tr>
+<tr>
+<td>a-/an-</td>
+<td>absence</td>
+<td>anurie = absence d’urine</td>
+</tr>
+<tr>
+<td>-algie</td>
+<td>douleur</td>
+<td>arthralgie = douleur articulaire</td>
+</tr>
+<tr>
+<td>-pnée</td>
+<td>respiration</td>
+<td>tachypnée = respiration rapide</td>
+</tr>
+<tr>
+<td>hémat-/-émie</td>
+<td>sang</td>
+<td>hématurie = sang dans les urines</td>
+</tr>
+<tr>
+<td>-urie</td>
+<td>urine</td>
+<td>polyurie = urines abondantes</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>Les préfixes de quantité et de direction</h3>
+<div class="tableau"><table><thead><tr>
+<th>Préfixe</th>
+<th>Sens</th>
+</tr></thead><tbody>
+<tr>
+<td>tachy-</td>
+<td>rapide</td>
+</tr>
+<tr>
+<td>brady-</td>
+<td>lent</td>
+</tr>
+<tr>
+<td>poly-</td>
+<td>beaucoup</td>
+</tr>
+<tr>
+<td>oligo-</td>
+<td>peu</td>
+</tr>
+<tr>
+<td>hyper-</td>
+<td>au-dessus / excès</td>
+</tr>
+<tr>
+<td>hypo-</td>
+<td>en-dessous / manque</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>Les échelles d’évaluation, outils de l’AS</h3>
+<div class="tableau"><table><thead><tr>
+<th>Échelle</th>
+<th>Mesure</th>
+<th>Usage AS</th>
+</tr></thead><tbody>
+<tr>
+<td>EVA / EN</td>
+<td>Douleur (0–10)</td>
+<td>Auto-évaluation, personne communicante</td>
+</tr>
+<tr>
+<td>Algoplus / Doloplus</td>
+<td>Douleur</td>
+<td>Personne non communicante (comportement)</td>
+</tr>
+<tr>
+<td>Braden / Norton</td>
+<td>Risque d’escarre</td>
+<td>Repérage, prévention</td>
+</tr>
+<tr>
+<td>Glasgow (GCS)</td>
+<td>Conscience</td>
+<td>Coté par l’IDE/médecin ; l’AS observe la vigilance et transmet</td>
+</tr>
+<tr>
+<td>MNA</td>
+<td>Dénutrition</td>
+<td>Dépistage nutritionnel</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>🩺 le rôle concret de l’AS</h4><p>Les échelles transforment un ressenti en donnée transmissible et suivie dans le temps. L’AS participe à plusieurs d’entre elles, sous protocole.</p></aside>
+</section><section class="partie"><h3>Panorama des échelles de l’AS</h3>
+<p>Une échelle transforme un ressenti en <strong>donnée suivie et partagée</strong>. Les principales :</p>
+<div class="tableau"><table><thead><tr>
+<th>Échelle</th>
+<th>Mesure / usage</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>EVA / EN / EVS</strong></td>
+<td>Douleur — auto-évaluation (la personne note elle-même)</td>
+</tr>
+<tr>
+<td><strong>Algoplus / Doloplus</strong></td>
+<td>Douleur — hétéro-évaluation (personne non communicante)</td>
+</tr>
+<tr>
+<td><strong>Braden / Norton</strong></td>
+<td>Risque d’escarre</td>
+</tr>
+<tr>
+<td><strong>AGGIR → GIR</strong></td>
+<td>Degré d’autonomie (1 = très dépendant → 6 = autonome)</td>
+</tr>
+<tr>
+<td><strong>MNA</strong></td>
+<td>Évaluation nutritionnelle (dénutrition)</td>
+</tr>
+<tr>
+<td><strong>Glasgow</strong></td>
+<td>État de conscience (par l’IDE/médecin)</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p>L’AS participe au recueil sous protocole et utilise la <strong>même échelle</strong> en équipe pour suivre l’évolution.</p></aside>
+</section><section class="partie"><h3>Transmettre avec le bon mot</h3>
+<div class="exemples">
+<div class="ex"><p>📖 transmission ciblée DAR — Le vocabulaire précis évite les contresens. « Polyurie » est plus clair que « il fait beaucoup pipi ». <strong>D</strong> : « EVA à 7/10, douleur à la mobilisation ». <strong>A</strong> : « Installation, alerte IDE ». <strong>R</strong> : « EVA à 3/10 après antalgique ». Un chiffre d’échelle = un repère partagé par toute l’équipe.</p></div>
+</div>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas pratique corrigé — Lire une transmission</strong></p></p>
+<div class="cas-piste"><p><em>Vous lisez dans le dossier : « Patient présentant dysphagie et asthénie, oligurie depuis 24 h ». Que comprenez-vous ?</em></p>
+<p><strong>Décodage :</strong></p>
+<ul>
+<li><strong>Dysphagie</strong> = difficulté à avaler → risque de fausse route, vigilance aux repas.</li>
+<li><strong>Asthénie</strong> = fatigue intense → aide accrue, sécurité aux transferts.</li>
+<li><strong>Oligurie</strong> = urines diminuées → surveiller la diurèse, signaler à l’IDE.</li>
+</ul>
+<p>Comprendre les mots, c’est <strong>anticiper</strong> les soins et les risques.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Décoder une transmission</p></p>
+<div class="cas-piste"><p><em>Le dossier indique « dysphagie et asthénie, oligurie depuis 24 h ».</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Dysphagie = difficulté à avaler → risque de fausse route, vigilance repas.</li>
+<li>Asthénie = grande fatigue ; oligurie = urines diminuées.</li>
+<li>Surveiller hydratation/diurèse, signaler à l’IDE.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Devant un mot inconnu, séparez les éléments : brady- + -cardie = ralentissement du cœur.</li><li>Dysphagie : difficulté à avaler — vigilance fausse route au moment des repas.</li><li>Oligurie : urines diminuées — surveiller la diurèse et l’hydratation, signaler à l’IDE.</li><li>Transmettre « EVA à 7/10 » plutôt que « il a très mal » : un chiffre est un repère partagé.</li><li>Toute l’équipe utilise la <strong>même échelle</strong> pour suivre l’évolution d’une personne.</li><li>Le recueil se fait sous protocole ; le Glasgow est coté par l’IDE ou le médecin.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>dys- difficulté · a-/an- absence · -algie douleur · -pnée respiration · -urie urine.</li><li>tachy- rapide et brady- lent ; poly- beaucoup et oligo- peu ; hyper- excès et hypo- manque.</li><li>EVA, EN, EVS : la personne note elle-même sa douleur.</li><li>Algoplus et Doloplus s’appuient sur le comportement, pour une personne non communicante.</li><li>Braden et Norton repèrent le risque d’escarre ; le MNA dépiste la dénutrition ; AGGIR donne le GIR, de 1 très dépendant à 6 autonome.</li><li>Une échelle transforme un ressenti en donnée suivie et partagée.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> « Dyspnée » signifie…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Absence d’urine</li>
+<li data-cle="b" onclick="window._pickQ(this)">Douleur articulaire</li>
+<li data-cle="c" onclick="window._pickQ(this)">Respiration lente</li>
+<li data-cle="d" onclick="window._pickQ(this)">Difficulté à respirer</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Dys-pnée = difficulté (dys-) à respirer (-pnée).<strong> 🎓 À l’oral VAE :</strong> décomposez le mot devant le jury pour montrer votre méthode.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> Le préfixe « brady- » indique…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Lent</li>
+<li data-cle="b" onclick="window._pickQ(this)">Rapide</li>
+<li data-cle="c" onclick="window._pickQ(this)">Beaucoup</li>
+<li data-cle="d" onclick="window._pickQ(this)">Excès</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Brady- = lent (bradycardie = cœur lent) ; tachy- = rapide.<strong> 🎓 À l’oral VAE :</strong> opposez brady-/tachy- pour être clair.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Pour évaluer la douleur d’une personne NON communicante, on utilise…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L’EVA</li>
+<li data-cle="b" onclick="window._pickQ(this)">L’échelle Algoplus / Doloplus</li>
+<li data-cle="c" onclick="window._pickQ(this)">L’échelle de Glasgow</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le MNA</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Pour une personne non communicante : Algoplus / Doloplus (hétéro-évaluation).<strong> 🎓 À l’oral VAE :</strong> EVA/EN pour qui communique, Algoplus/Doloplus sinon.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> L’échelle de Braden évalue le risque de…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Chute</li>
+<li data-cle="b" onclick="window._pickQ(this)">Fausse route</li>
+<li data-cle="c" onclick="window._pickQ(this)">Escarre</li>
+<li data-cle="d" onclick="window._pickQ(this)">Dénutrition</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Braden évalue le risque d’escarre (6 critères).<strong> 🎓 À l’oral VAE :</strong> score bas = risque élevé.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> « Oligurie » veut dire…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Sang dans les urines</li>
+<li data-cle="b" onclick="window._pickQ(this)">Urines abondantes</li>
+<li data-cle="c" onclick="window._pickQ(this)">Absence totale d’urine</li>
+<li data-cle="d" onclick="window._pickQ(this)">Urines diminuées</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Oligurie = urines diminuées ; anurie = absence d’urine.<strong> 🎓 À l’oral VAE :</strong> oligo- = peu, an- = absence.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> Utiliser une échelle plutôt qu’un ressenti permet…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">De suivre l’évolution avec un repère partagé</li>
+<li data-cle="b" onclick="window._pickQ(this)">De prescrire</li>
+<li data-cle="c" onclick="window._pickQ(this)">De diagnostiquer</li>
+<li data-cle="d" onclick="window._pickQ(this)">De remplacer l’IDE</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Une échelle transforme un ressenti en donnée suivie et partagée.<strong> 🎓 À l’oral VAE :</strong> préférez « EVA 7/10 » à « il a très mal ».</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> Pour une personne NON communicante, on évalue la douleur avec…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L’EVA</li>
+<li data-cle="b" onclick="window._pickQ(this)">Algoplus / Doloplus (hétéro-évaluation)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le MNA</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le GIR</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Hétéro-évaluation pour les non communicants.<strong> 🎓 À l’oral VAE :</strong> EVA/EN/EVS si la personne communique.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q7">
+<p class="q"><strong>Q8.</strong> Le GIR (issu d’AGGIR) mesure…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La nutrition</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le risque d’escarre</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le degré d’autonomie</li>
+<li data-cle="d" onclick="window._pickQ(this)">La douleur</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>GIR 1 (très dépendant) → 6 (autonome).<strong> 🎓 À l’oral VAE :</strong> sert au projet de soins et aux aides.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L01.html" class="back">← SOCLE_L01</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L03.html">SOCLE_L03 →</a></div>
 </div>
 </body></html>

@@ -1,62 +1,351 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B1 · B1_L11 · Soins post-mortem : respect, rites et traçabilité — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L11 · Soins post-mortem : respect, rites et traçabilité — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L11</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 11</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Soins post-mortem : respect, rites et traçabilité</h1>
-    <div class="accroche"><p>— certificat signé par le médecin, absence d&#x27;obstacle médico-légal. Aucun soin avant cette confirmation.</p></div>
+    <div class="accroche"><p>— certificat signé par le médecin, absence d'obstacle médico-légal. Aucun soin avant cette confirmation.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer le cadre réglementaire qui conditionne tout soin post-mortem.</li><li>Dérouler les étapes de la toilette mortuaire dans l’ordre.</li><li>Distinguer ce que prévoient la loi Léonetti et la loi Claeys-Leonetti.</li><li>Adapter votre pratique aux rites de la famille sans jamais en imposer un.</li><li>Reconnaître les signes de l’agonie pour adapter les soins de confort.</li><li>Tracer les soins et l’inventaire, et coordonner la suite avec l’équipe.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Cadre et objectifs des soins post-mortem</h3></section><section class="partie"><h3>Les étapes des soins post-mortem</h3></section><section class="partie"><h3>Cadre légal : loi Léonetti / Claeys-Leonetti</h3></section><section class="partie"><h3>Rites religieux &amp; accompagnement de la famille</h3></section><section class="partie"><h3>Reconnaître les signes de l&#x27;agonie</h3></section><section class="partie"><h3>Le deuil : les 5 étapes de Kübler-Ross</h3></section><section class="partie"><h3>Mythes vs réalité en fin de vie</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Fermer les yeux et la bouche, retirer lunettes et prothèses — à remettre si la famille souhaite voir le défunt.</li><li>Eau tiède, savon doux, séchage soigneux, tenue propre ; décubitus dorsal, drap propre.</li><li>Préparer la chambre : lumière douce, silence, chaise pour la famille, chariots retirés.</li><li>Ne jamais dire « il ne souffre plus », « c’est mieux ainsi », « il faut être fort ».</li><li>Préférer « je suis désolé pour vous », « prenez le temps qu’il vous faut » — ou le silence.</li><li>En cas de doute sur un rite, demander à la famille ou au cadre ; ne jamais imposer.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Aucun soin avant le constat de décès par le médecin.</li><li>Toilette dans les 2 heures suivant le constat, réalisée en binôme.</li><li>Mort suspecte ou obstacle médico-légal : on ne touche rien, on attend les consignes.</li><li>Retrait des dispositifs sur prescription IDE ou médecin uniquement ; pas de thanatopraxie.</li><li>L’inventaire des effets personnels est signé — la traçabilité est absolue.</li><li>Respect du corps et secret professionnel se poursuivent après le décès.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Les soins post-mortem ont pour objectif principal :</p><ol class="opts"><li class="ok">Réaliser une thanatopraxie</li><li class="">Faire disparaître toute trace de maladie</li><li class="">Respecter la dignité et préparer la présentation à la famille</li><li class="">Accélérer le départ vers les pompes funèbres</li></ol></div><div class="qblock"><p class="q">2. Après le décès, le respect du corps et le secret professionnel :</p><ol class="opts"><li class="ok">Ne s&#x27;appliquent plus</li><li class="">Dépendent de la famille</li><li class="">Sont au choix du soignant</li><li class="">S&#x27;appliquent toujours, jusqu&#x27;au bout</li></ol></div><div class="qblock"><p class="q">3. Le retrait des sondes, drains et perfusions du défunt :</p><ol class="opts"><li class="ok">Est toujours strictement interdit</li><li class="">Est réalisé par la famille</li><li class="">Se fait sur prescription IDE/médecin uniquement</li><li class="">Peut être fait par l&#x27;AS si c&#x27;est urgent</li></ol></div><div class="qblock"><p class="q">4. Un signe clinique de l&#x27;agonie :</p><ol class="opts"><li class="ok">Une tension artérielle élevée et stable</li><li class="">Une force musculaire accrue</li><li class="">Respiration de Cheyne-Stokes, marbrures, râles agoniques</li><li class="">Un appétit augmenté</li></ol></div><div class="qblock"><p class="q">5. La loi qui permet la sédation profonde et continue jusqu&#x27;au décès :</p><ol class="opts"><li class="ok">La loi Claeys-Leonetti (2016)</li><li class="">Aucune loi</li><li class="">La loi Léonetti 2005 seule</li><li class="">La loi Kouchner</li></ol></div><div class="qblock"><p class="q">6. La famille demande d&#x27;orienter le corps vers La Mecque. Vous :</p><ol class="opts"><li class="ok">Imposez un autre rite</li><li class="">Ignorez la demande</li><li class="">Refusez, ce n&#x27;est pas au protocole</li><li class="">Répondez à la demande dans la mesure du possible, en respectant les procédures</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B1_L10.html" class="back">← B1_L10</a><a href="B1_L12.html">B1_L12 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer le cadre réglementaire qui conditionne tout soin post-mortem.</li><li>Dérouler les étapes de la toilette mortuaire dans l’ordre.</li><li>Distinguer ce que prévoient la loi Léonetti et la loi Claeys-Leonetti.</li><li>Adapter votre pratique aux rites de la famille sans jamais en imposer un.</li><li>Reconnaître les signes de l’agonie pour adapter les soins de confort.</li><li>Tracer les soins et l’inventaire, et coordonner la suite avec l’équipe.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Cadre et objectifs des soins post-mortem</h3>
+<p><strong>Quatre objectifs :</strong></p>
+<ul>
+<li><strong>🤲 Respecter le corps</strong> — préserver la dignité dans chaque geste.</li>
+</ul>
+<ul>
+<li><strong>👨‍👩‍👧 Préparer la présentation</strong> — permettre à la famille de se recueillir dans de bonnes conditions.</li>
+</ul>
+<ul>
+<li><strong>🛡️ Prévenir les risques</strong> — précautions d'hygiène et risque infectieux.</li>
+</ul>
+<ul>
+<li><strong>🏥 Faciliter la prise en charge</strong> — préparer le transfert (chambre mortuaire, pompes funèbres).</li>
+</ul>
+<aside class="encadre"><h4></h4><p><strong>🔗 La bientraitance ne s'arrête pas au décès</strong></p>
+<p>La toilette mortuaire prolonge la prise en charge jusqu'au bout. Réalisée par l'AS <strong>sous la responsabilité de l'IDE</strong>, elle s'inscrit dans une démarche de dignité : le corps n'est pas un « objet », c'est toujours la personne que l'on a soignée.</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠ Cadre réglementaire</h4><p>Le <strong>décès doit être constaté par un médecin</strong> (certificat signé) avant tout soin · toilette réalisée dans les <strong>2 heures</strong> suivant le constat · travail <strong>en binôme</strong> · en cas de <strong>mort suspecte ou d'obstacle médico-légal : ne pas toucher le corps, ne rien retirer</strong>, attendre les consignes.</p></aside>
+</section><section class="partie"><h3>Les étapes des soins post-mortem</h3>
+<p>Dans l'ordre, avec respect :</p>
+<ul>
+<li><strong>Vérification du décès</strong> — certificat signé par le médecin, absence d'obstacle médico-légal. Aucun soin avant cette confirmation.</li>
+</ul>
+<ul>
+<li><strong>Premiers gestes</strong> — fermer délicatement les yeux (compresses humides si besoin) et la bouche (mentonnière ou linge roulé) ; retirer lunettes et prothèses dentaires (à remettre si la famille souhaite voir le défunt).</li>
+</ul>
+<ul>
+<li><strong>Toilette post-mortem</strong> — eau tiède + savon doux, séchage soigneux, coiffure, rasage si besoin ; protection anatomique ; habillage avec une tenue propre (vêtements personnels souhaités ou chemise d'hôpital).</li>
+</ul>
+<ul>
+<li><strong>Dispositifs médicaux</strong> — retrait des sondes, drains, perfusions, pansements <strong>sur prescription IDE/médecin uniquement</strong>. En cas d'obstacle médico-légal : rien n'est touché.</li>
+</ul>
+<ul>
+<li><strong>Installation du corps</strong> — décubitus dorsal, bras le long du corps (ou mains croisées selon les souhaits), drap propre, oreiller ; objets symboliques de la famille (chapelet, photo, fleur).</li>
+</ul>
+<ul>
+<li><strong>Chambre + inventaire</strong> — environnement apaisant (lumière douce, silence, chaise pour la famille, chariots retirés) ; <strong>inventaire des effets personnels signé</strong> (bijoux, prothèses) — traçabilité absolue.</li>
+</ul>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Ce que l'AS ne fait PAS</strong></p>
+<p>Aucun soin sans confirmation médicale du décès · ne déplace pas le corps avant le constat · ne retire aucun dispositif sans consigne IDE/médecin · <strong>pas de thanatopraxie</strong> (réservée aux thanatopracteurs) · n'intervient pas en cas d'obstacle médico-légal.</p></aside>
+</section><section class="partie"><h3>Cadre légal : loi Léonetti / Claeys-Leonetti</h3>
+<div class="tableau"><table><thead><tr>
+<th>Disposition</th>
+<th>Léonetti (2005)</th>
+<th>Claeys-Leonetti (2016)</th>
+</tr></thead><tbody>
+<tr>
+<td>📜 Directives anticipées</td>
+<td>Valables 3 ans, consultatives</td>
+<td>Sans limite de durée, <strong>s'imposent au médecin</strong></td>
+</tr>
+<tr>
+<td>👤 Personne de confiance</td>
+<td>Désignée par écrit, consultée</td>
+<td><strong>Son avis prévaut sur la famille</strong></td>
+</tr>
+<tr>
+<td>🛌 Sédation</td>
+<td>Non encadrée</td>
+<td><strong>Profonde et continue jusqu'au décès</strong>, sur procédure collégiale</td>
+</tr>
+<tr>
+<td>💧 Nutrition / hydratation</td>
+<td>Acharnement interdit</td>
+<td>Sont des <strong>traitements qui peuvent être arrêtés</strong> (art. L1110-5-1)</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p><strong>⚖ Sédation profonde et continue (loi 2016, article 3)</strong></p>
+<p>Mise en œuvre <strong>à la demande du patient</strong> lorsque : maladie grave et incurable, pronostic vital engagé à court terme, souffrance réfractaire aux traitements. Décision en <strong>procédure collégiale</strong> (médicament cité : Hypnovel au pousse-seringue). Possible à domicile, en établissement ou en EHPAD.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>🔗 Rôle de l'AS dans ce cadre</strong></p>
+<p>L'AS <strong>ne décide jamais seul(e)</strong> d'un arrêt de soin ou d'une sédation. Son rôle : <strong>observer</strong> la douleur/souffrance, <strong>transmettre</strong> à l'IDE et au médecin, <strong>participer</strong> aux réunions de concertation pluridisciplinaire.</p></aside>
+</section><section class="partie"><h3>Rites religieux &amp; accompagnement de la famille</h3>
+<div class="tableau"><table><thead><tr>
+<th>Religion</th>
+<th>Rites et spécificités</th>
+</tr></thead><tbody>
+<tr>
+<td>✝️ Catholique</td>
+<td>Crucifix, chapelet entre les mains, mains jointes ; possibilité de sacrement des malades (aumônier).</td>
+</tr>
+<tr>
+<td>☪️ Musulmane</td>
+<td><strong>Toilette rituelle par la famille ou l'imam</strong> ; orientation vers La Mecque ; linceul blanc ; inhumation rapide.</td>
+</tr>
+<tr>
+<td>✡️ Juive</td>
+<td><strong>Ne pas laisser le corps seul</strong> ; la Chevra Kadisha réalise la toilette rituelle ; inhumation sous 24h.</td>
+</tr>
+<tr>
+<td>☸️ Bouddhiste</td>
+<td><strong>Ne pas toucher le corps pendant plusieurs heures</strong> (méditation) ; bougies, encens ; crémation fréquente.</td>
+</tr>
+<tr>
+<td>🕊️ Laïc / athée</td>
+<td>Respecter les volontés exprimées de son vivant ou par la famille ; pas de symbole religieux ; cérémonie civile possible.</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p><strong>🔗 L'attitude de l'AS face à la famille</strong></p>
+<p><strong>Présence calme</strong> (être là sans brusquer) · <strong>paroles simples</strong> (« prenez votre temps », « je suis à côté ») · <strong>respect du silence</strong> (souvent le meilleur accompagnement).</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠ En cas de doute</h4><p>Ne pas agir : demander à la famille ou au cadre. Ne jamais imposer un rite.</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Phrases à ne JAMAIS dire à une famille endeuillée</strong></p>
+<p>« Il/elle ne souffre plus » · « C'est mieux ainsi » · « Le temps fera son œuvre » · « Vous étiez préparé(e) » · « Il faut être fort(e) ». <strong>À privilégier :</strong> « Je suis désolé(e) pour vous », « Prenez le temps qu'il vous faut », ou simplement le silence.</p></aside>
+</section><section class="partie"><h3>Reconnaître les signes de l&#x27;agonie</h3>
+<p>Par système, ces signes annoncent la phase ultime :</p>
+<ul>
+<li><strong>🫁 Respiratoire</strong> — respiration de Cheyne-Stokes (irrégulière avec pauses), râles agoniques (encombrement), apnées, fréquence très basse en phase ultime.</li>
+</ul>
+<ul>
+<li><strong>❤️ Cardiovasculaire</strong> — pouls faible et filant, hypotension (TA imprenable), marbrures cutanées, cyanose des extrémités.</li>
+</ul>
+<ul>
+<li><strong>🧠 Neurologique</strong> — somnolence croissante, coma progressif, regard fixe non réactif, mâchoire tombante, absence de déglutition.</li>
+</ul>
+<ul>
+<li><strong>💧 Élimination / peau</strong> — oligurie puis anurie, relâchement des sphincters, extrémités froides, refroidissement du corps.</li>
+</ul>
+<aside class="encadre"><h4>💡 Ces signes sont normaux</h4><p>Ils font partie du processus de fin de vie. L'AS les <strong>reconnaît</strong> pour adapter les soins de confort et <strong>rassurer la famille</strong> (« ce que vous voyez est normal, votre proche ne souffre pas »). Rappel : <strong>l'ouïe est le dernier sens à disparaître</strong> — continuer à parler doucement.</p></aside>
+</section><section class="partie"><h3>Le deuil : les 5 étapes de Kübler-Ross</h3>
+<ul>
+<li><strong>1. Déni</strong> — « ce n'est pas possible » ; refus de la réalité.</li>
+</ul>
+<ul>
+<li><strong>2. Colère</strong> — « pourquoi nous ? » ; révolte, agressivité.</li>
+</ul>
+<ul>
+<li><strong>3. Négociation</strong> — « si seulement… » ; marchandage, promesses.</li>
+</ul>
+<ul>
+<li><strong>4. Tristesse</strong> — dépression, pleurs, repli sur soi.</li>
+</ul>
+<ul>
+<li><strong>5. Acceptation</strong> — apaisement, accueil de la réalité.</li>
+</ul>
+<aside class="encadre"><h4>💡 À garder en tête</h4><p>Ces étapes <strong>ne sont pas linéaires</strong> : elles peuvent revenir, se mélanger. Le <strong>pré-deuil</strong> (avant le décès) permet de se préparer. L'AS accueille chaque étape <strong>sans jugement</strong>.</p></aside>
+</section><section class="partie"><h3>Mythes vs réalité en fin de vie</h3>
+<aside class="encadre"><h4>✅ La réalité</h4><p>La sensation de soif disparaît en fin de vie → soins de bouche fréquents = confort. La perfusion <strong>augmente l'encombrement bronchique</strong> sans améliorer le confort. La personne « ne meurt ni de soif ni de faim, elle meurt de sa maladie ». L'acharnement = obstination déraisonnable, <strong>interdite par la loi</strong>. <strong>L'ouïe est le dernier sens</strong> à disparaître → continuer à parler doucement.</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠ Mythes fréquents de la famille</h4><p>« Il/elle va mourir de soif sans perfusion » · « mourir de faim sans alimentation » · « la morphine accélère la mort » · « il faut tout faire jusqu'au bout » · « il ne sent plus rien, il est dans le coma ».</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 4 (ACTIVITÉ 20 : Soins post mortem).</p>
+<p>Seul le <strong>médecin constate le décès</strong> ; l’AS <strong>ne déplace pas le corps</strong> avant ce constat.</p>
+<p><strong>Toilette mortuaire dans le respect</strong> : le corps reste une personne (gestes doux, pudeur).</p>
+<p>Retrait des dispositifs, installation en <strong>décubitus dorsal</strong>.</p>
+<p><strong>Secret professionnel maintenu</strong> après le décès.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Le respect de la dignité ne s’arrête pas au décès : c’est un attendu fort du jury.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>Constat de décès par <strong>médecin/IDE formée</strong> ; respect du corps, des croyances et des <strong>directives anticipées</strong>.</p>
+<p>Toilette/protection (le corps se vide), retrait des dispositifs (pacemaker par le médecin), fermer bouche et yeux, prothèses remises.</p>
+<p><strong>Pas de bougie si O₂</strong> · judaïsme/islam : pas de nettoyage du corps · 2 h en chambre avant la chambre funéraire (hôpital), 2 bracelets d’identité.</p>
+<p>Bijoux : inventaire/coffre · gestion émotionnelle du soignant · transmissions.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Traçabilité, coordination &amp; cas pratique</h2>
+<p><strong>L'AS coordonne avec</strong> l'IDE (confirmation, dispositifs), le cadre (transfert, pompes funèbres), le psychologue (soutien), les collègues (binôme), les pompes funèbres (via le cadre). <strong>L'AS trace</strong> : heure du décès, soins réalisés (type, heure, qui), demandes de la famille, <strong>inventaire signé</strong>, devenir du corps. <strong>Le secret professionnel est maintenu après le décès.</strong></p>
+<p><strong>📌 5 repères :</strong></p>
+<ul>
+<li>attendre la <strong>confirmation médicale</strong> du décès (délai 2h, en binôme) ;</li>
+<li>toilette respectueuse (eau tiède, savon doux, coiffure, habillage selon la famille) ;</li>
+<li>respecter les rites (position, objets, tenue, intervention famille/imam si demandé) ;</li>
+<li>préparer la chambre et la famille (calme, paroles simples, jamais « il ne souffre plus ») ;</li>
+<li>tout tracer (DAR + inventaire signé) et coordonner avec IDE, cadre, pompes funèbres ; secret pro maintenu.</li>
+</ul>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Soins post-mortem de Mme Lucienne, 89 ans</strong></p></p>
+<div class="cas-piste"><p><em>Mme Lucienne, 89 ans, est décédée à 10h15 ; le décès est constaté par le médecin à 10h30. Sa fille arrive à 13h00 et vous dit : « Maman tenait à sa robe bleue à fleurs, dans l'armoire. Elle portait toujours son alliance, ne l'enlevez pas. »</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles étapes réaliser entre le constat de décès et l'arrivée de la fille à 13h00 ?</li>
+<li>Comment répondre à la demande concernant la robe bleue et l'alliance ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Étapes avant 13h00.</strong> Attendre la confirmation médicale du décès (10h30) avant tout soin ; réaliser ensuite la toilette mortuaire en binôme, dans les 2 heures suivant le constat (donc avant environ 12h30) : fermer délicatement les yeux et la bouche, retirer lunettes et prothèses dentaires en les conservant pour les remettre si la famille souhaite voir le défunt, procéder à la toilette (eau tiède, savon doux), au séchage, à la coiffure et à la protection anatomique, installer le corps en décubitus dorsal avec un drap propre, puis préparer une chambre apaisante (lumière douce, silence, chaise pour la famille, chariots retirés).</p>
+<p><strong>2. Robe et alliance.</strong> Respecter la demande de la fille dans la mesure du possible : habiller Mme Lucienne avec sa robe bleue à fleurs, vêtement personnel souhaité par la famille ; ne pas retirer l'alliance et la laisser à son doigt comme demandé, tout en la mentionnant précisément dans l'inventaire des effets personnels — même conservée sur le corps, elle doit être tracée.</p>
+<p><strong>3. Transmission.</strong> Transmettre à l'IDE et au cadre : l'heure du décès (10h15), l'heure du constat (10h30), les soins réalisés et leur heure, les demandes de la famille (robe, alliance), l'inventaire des effets personnels signé, et coordonner avec les pompes funèbres via le cadre. Rien d'urgent au sens vital, mais une traçabilité immédiate et complète.</p>
+<p><strong>4. Erreur à éviter.</strong> Réaliser un soin avant le constat médical du décès ; retirer l'alliance sans respecter la demande de la famille ou l'oublier de l'inventaire ; ne pas tracer précisément les horaires et les soins réalisés ; oublier que le secret professionnel se poursuit après le décès.</p></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Fermer les yeux et la bouche, retirer lunettes et prothèses — à remettre si la famille souhaite voir le défunt.</li><li>Eau tiède, savon doux, séchage soigneux, tenue propre ; décubitus dorsal, drap propre.</li><li>Préparer la chambre : lumière douce, silence, chaise pour la famille, chariots retirés.</li><li>Ne jamais dire « il ne souffre plus », « c’est mieux ainsi », « il faut être fort ».</li><li>Préférer « je suis désolé pour vous », « prenez le temps qu’il vous faut » — ou le silence.</li><li>En cas de doute sur un rite, demander à la famille ou au cadre ; ne jamais imposer.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Aucun soin avant le constat de décès par le médecin.</li><li>Toilette dans les 2 heures suivant le constat, réalisée en binôme.</li><li>Mort suspecte ou obstacle médico-légal : on ne touche rien, on attend les consignes.</li><li>Retrait des dispositifs sur prescription IDE ou médecin uniquement ; pas de thanatopraxie.</li><li>L’inventaire des effets personnels est signé — la traçabilité est absolue.</li><li>Respect du corps et secret professionnel se poursuivent après le décès.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> Les soins post-mortem ont pour objectif principal :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Réaliser une thanatopraxie</li>
+<li data-cle="b" onclick="window._pickQ(this)">Faire disparaître toute trace de maladie</li>
+<li data-cle="c" onclick="window._pickQ(this)">Respecter la dignité et préparer la présentation à la famille</li>
+<li data-cle="d" onclick="window._pickQ(this)">Accélérer le départ vers les pompes funèbres</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Objectif : respecter la dignité du défunt et préparer la présentation à la famille.<strong> 🎓 À l’oral VAE :</strong> soin de respect, pas un acte banal.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> Après le décès, le respect du corps et le secret professionnel :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ne s'appliquent plus</li>
+<li data-cle="b" onclick="window._pickQ(this)">Dépendent de la famille</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sont au choix du soignant</li>
+<li data-cle="d" onclick="window._pickQ(this)">S'appliquent toujours, jusqu'au bout</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Respect du corps et secret professionnel s’appliquent jusqu’au bout.<strong> 🎓 À l’oral VAE :</strong> la dignité ne s’arrête pas au décès.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q2">
+<p class="q"><strong>Q3.</strong> Le retrait des sondes, drains et perfusions du défunt :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Est toujours strictement interdit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Est réalisé par la famille</li>
+<li data-cle="c" onclick="window._pickQ(this)">Se fait sur prescription IDE/médecin uniquement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Peut être fait par l'AS si c'est urgent</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Retrait des sondes/drains/perfusions : sur prescription IDE/médecin uniquement.<strong> 🎓 À l’oral VAE :</strong> l’AS assiste, ne décide pas.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un signe clinique de l'agonie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une tension artérielle élevée et stable</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une force musculaire accrue</li>
+<li data-cle="c" onclick="window._pickQ(this)">Respiration de Cheyne-Stokes, marbrures, râles agoniques</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un appétit augmenté</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Agonie : Cheyne-Stokes, marbrures, râles agoniques.<strong> 🎓 À l’oral VAE :</strong> sachez nommer ces signes.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> La loi qui permet la sédation profonde et continue jusqu'au décès :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La loi Claeys-Leonetti (2016)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Aucune loi</li>
+<li data-cle="c" onclick="window._pickQ(this)">La loi Léonetti 2005 seule</li>
+<li data-cle="d" onclick="window._pickQ(this)">La loi Kouchner</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Sédation profonde et continue jusqu’au décès : loi Claeys-Leonetti (2016).<strong> 🎓 À l’oral VAE :</strong> reliez la loi à la pratique.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> La famille demande d'orienter le corps vers La Mecque. Vous :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Imposez un autre rite</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ignorez la demande</li>
+<li data-cle="c" onclick="window._pickQ(this)">Refusez, ce n'est pas au protocole</li>
+<li data-cle="d" onclick="window._pickQ(this)">Répondez à la demande dans la mesure du possible, en respectant les procédures</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Orientation du corps (rite) : répondre dans la mesure du possible, selon les procédures.<strong> 🎓 À l’oral VAE :</strong> respect des rites religieux.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B1_L10.html" class="back">← B1_L10</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L12.html">B1_L12 →</a></div>
 </div>
 </body></html>

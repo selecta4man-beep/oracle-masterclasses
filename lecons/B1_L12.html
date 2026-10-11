@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B1 · B1_L12 · Refus de soin : comprendre, négocier et adapter — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L12 · Refus de soin : comprendre, négocier et adapter — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L12</div>
@@ -56,7 +79,346 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Refus de soin : comprendre, négocier et adapter</h1>
     <div class="accroche"><p>La loi reconnaît à toute personne le droit de <strong>refuser un soin</strong>, y compris lorsque ce refus met sa santé en danger (loi du 4 mars 2002, dite loi Kouchner).</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Décoder la cause probable d’un refus à partir des signes observés.</li><li>Situer le refus dans le droit : consentement libre et éclairé, retirable à tout moment.</li><li>Dérouler les cinq réflexes DREPA face à un refus.</li><li>Adapter votre approche au refus non verbal d’une personne atteinte de troubles cognitifs.</li><li>Nommer les quatre types de contention et rappeler qu’elle reste un dernier recours prescrit.</li><li>Alerter l’équipe lorsqu’un refus expose la personne à une complication grave.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Comprendre le refus de soin</h3></section><section class="partie"><h3>Cadre éthique, droits &amp; bientraitance</h3></section><section class="partie"><h3>La démarche en 4 étapes</h3></section><section class="partie"><h3>Refus &amp; troubles cognitifs : approches spécifiques</h3></section><section class="partie"><h3>Refus &amp; contention : dernier recours</h3></section><section class="partie"><h3>Situations à risque &amp; conduite à tenir</h3></section><section class="partie"><h3>3 dilemmes éthiques face au refus</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Arrêter le geste dès le « non », même si la personne avait d’abord accepté.</li><li>Chercher la cause avant de renégocier : douleur, pudeur, peur, fatigue, horaire.</li><li>Proposer une alternative — plus tard, un collègue, une toilette partielle, le gant confié à la personne.</li><li>Troubles cognitifs : se mettre à hauteur, ton doux, valider l’émotion avant le contenu. Jamais de contention pour faire un soin.</li><li>Tracer le refus en DAR et prévenir l’IDE : plaie, traitement vital, alimentation n’attendent pas.</li><li>Refus soudain ou repli inexpliqué : penser à une maltraitance subie et signaler — 3977.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le refus est un droit fondamental — loi du 4 mars 2002, article L.1111-4 CSP — jamais un échec du soignant.</li><li>Le consentement se retire à tout moment, même après accord : on arrête le geste aussitôt.</li><li>Forcer relève de la maltraitance active ; ignorer un refus sans en chercher la cause, de la maltraitance passive.</li><li>DREPA : Droit, Respecter, Écouter, Proposer, Adapter.</li><li>Huit causes fréquentes : douleur, pudeur, peur, fatigue, dépression, incompréhension, démence, mauvaise expérience.</li><li>Un refus répété est un problème d’équipe, pas une affaire individuelle.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Face à un refus de toilette, la première attitude de l&#x27;AS est de :</p><ol class="opts"><li class="ok">Ignorer et partir</li><li class="">Écouter, comprendre la cause et proposer une adaptation</li><li class="">Forcer le soin « pour son bien »</li><li class="">Se fâcher</li></ol></div><div class="qblock"><p class="q">2. Un résident a-t-il le droit de refuser un soin ?</p><ol class="opts"><li class="ok">Seulement si le médecin l&#x27;autorise</li><li class="">Non, jamais</li><li class="">Oui, c&#x27;est un droit (loi du 4 mars 2002, art. L.1111-4 CSP)</li><li class="">Seulement avec l&#x27;accord de la famille</li></ol></div><div class="qblock"><p class="q">3. Forcer un soin malgré le refus :</p><ol class="opts"><li class="ok">Est sans conséquence</li><li class="">Est une obligation</li><li class="">Est recommandé si c&#x27;est « pour son bien »</li><li class="">Peut constituer une maltraitance (active)</li></ol></div><div class="qblock"><p class="q">4. La méthode mnémotechnique DREPA signifie :</p><ol class="opts"><li class="ok">Droit, Respecter, Écouter, Proposer, Adapter</li><li class="">Dialoguer, Rassurer, Évaluer, Prévenir, Aider</li><li class="">Demander, Répéter, Exiger, Punir, Agir</li><li class="">Détecter, Réagir, Empêcher, Protéger, Alerter</li></ol></div><div class="qblock"><p class="q">5. Les 4 types de contention sont :</p><ol class="opts"><li class="ok">Manuelle, mécanique, électrique, chimique</li><li class="">Physique, psychologique, chimique, architecturale</li><li class="">Active, passive, totale, partielle</li><li class="">Physique, verbale, sociale, médicale</li></ol></div><div class="qblock"><p class="q">6. Face au refus d&#x27;un résident Alzheimer, on privilégie :</p><ol class="opts"><li class="ok">Le chantage</li><li class="">La contention pour faire le soin</li><li class="">La validation (Naomi Feil) + Humanitude, jamais de force</li><li class="">Insister fermement</li></ol></div><div class="qblock"><p class="q">7. Tracer un refus en DAR est essentiel car cela :</p><ol class="opts"><li class="ok">Sert à se déresponsabiliser</li><li class="">Permet de punir le résident</li><li class="">Est facultatif</li><li class="">Protège le résident, le soignant (juridiquement) et l&#x27;équipe</li></ol></div><div class="qblock"><p class="q">8. Face à un refus de soin de plaie avec rougeur et chaleur, l&#x27;AS :</p><ol class="opts"><li class="ok">Ne force pas, observe et alerte immédiatement l&#x27;IDE</li><li class="">Force le soin</li><li class="">Ne fait rien et n&#x27;en parle pas</li><li class="">Réalise le pansement seule</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B1_L11.html" class="back">← B1_L11</a><a href="B1_L13.html">B1_L13 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Décoder la cause probable d’un refus à partir des signes observés.</li><li>Situer le refus dans le droit : consentement libre et éclairé, retirable à tout moment.</li><li>Dérouler les cinq réflexes DREPA face à un refus.</li><li>Adapter votre approche au refus non verbal d’une personne atteinte de troubles cognitifs.</li><li>Nommer les quatre types de contention et rappeler qu’elle reste un dernier recours prescrit.</li><li>Alerter l’équipe lorsqu’un refus expose la personne à une complication grave.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Comprendre le refus de soin</h3>
+<p><strong>Les 8 causes fréquentes du refus :</strong></p>
+<div class="tableau"><table><thead><tr>
+<th>Cause fréquente</th>
+<th>Signes d'alerte</th>
+<th>Exemple de situation</th>
+</tr></thead><tbody>
+<tr>
+<td>Douleur</td>
+<td>Grimaces, cris, position antalgique, retrait</td>
+<td>Refus de mobilisation chez un résident souffrant d'arthrose sévère</td>
+</tr>
+<tr>
+<td>Pudeur / dignité</td>
+<td>Détourne le regard, cache son corps, pleure</td>
+<td>Refus de changer la protection devant un soignant de sexe opposé</td>
+</tr>
+<tr>
+<td>Peur / anxiété</td>
+<td>Agitation, tachycardie, verbalisation de la peur</td>
+<td>Refus de la douche après une chute (peur de glisser)</td>
+</tr>
+<tr>
+<td>Fatigue</td>
+<td>Somnolence, irritabilité, « pas maintenant »</td>
+<td>Refus de la toilette après une nuit d'insomnie</td>
+</tr>
+<tr>
+<td>Dépression</td>
+<td>Repli, larmes, « à quoi bon »</td>
+<td>Refus généralisé de toute activité, syndrome de glissement</td>
+</tr>
+<tr>
+<td>Incompréhension</td>
+<td>Confusion, regard perdu, absence de réponse</td>
+<td>Personne avec démence ne comprenant pas le geste proposé</td>
+</tr>
+<tr>
+<td>Démence / troubles cognitifs</td>
+<td>Agressivité réactionnelle, gestes d'opposition</td>
+<td>Résident Alzheimer qui ne reconnaît pas le soignant et se sent agressé</td>
+</tr>
+<tr>
+<td>Mauvaise expérience</td>
+<td>Réactions disproportionnées, mutisme</td>
+<td>Refus systématique des soins intimes lié à des violences passées</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>🔗 Définition</h4><p>Expression <strong>verbale ou non verbale</strong> de l'opposition à un soin. Le refus peut être <strong>total ou partiel</strong>, <strong>ponctuel ou permanent</strong>, <strong>explicite</strong> (verbal) ou <strong>implicite</strong> (geste, attitude, cris). C'est un <strong>droit fondamental</strong> — il n'est jamais un échec du soignant : derrière chaque « non » se cache un message à décoder.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>⚖ Texte de loi — Article L.1111-4 du Code de la santé publique</strong></p>
+<p>« Aucun acte médical ni aucun traitement ne peut être pratiqué <strong>sans le consentement libre et éclairé</strong> de la personne et ce <strong>consentement peut être retiré à tout moment</strong>. » → le refus peut intervenir <strong>à tout moment du soin</strong>, même après accord initial : on arrête immédiatement le geste.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>🔗 Mémo DREPA — à mémoriser pour l'oral</strong></p>
+<p>Face à un refus, l'AS applique 5 réflexes : <strong>D</strong>roit (reconnaître le droit) · <strong>R</strong>especter (le « non » sans le contester) · <strong>É</strong>couter (la cause) · <strong>P</strong>roposer (une alternative) · <strong>A</strong>dapter (moment, soignant, méthode).</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠ Refus ponctuel ≠ refus répété</h4><p>Un refus isolé peut être lié à un état du moment (douleur, fatigue, mauvaise nuit). Un refus qui se <strong>répète</strong> doit alerter l'équipe : il peut révéler un problème plus profond (dépression, maltraitance, soin inadapté). Dans les deux cas, <strong>on ne force jamais</strong>.</p></aside>
+</section><section class="partie"><h3>Cadre éthique, droits &amp; bientraitance</h3>
+<p>La loi reconnaît à toute personne le droit de <strong>refuser un soin</strong>, y compris lorsque ce refus met sa santé en danger (loi du 4 mars 2002, dite loi Kouchner). Quatre piliers guident l'AS :</p>
+<ul>
+<li><strong>✅ Consentement libre et éclairé</strong> — tout soin nécessite l'accord de la personne.</li>
+</ul>
+<ul>
+<li><strong>🚫 Droit au refus</strong> — même si le refus semble « déraisonnable ».</li>
+</ul>
+<ul>
+<li><strong>💜 Bientraitance</strong> — la personne est sujet, pas objet de soin.</li>
+</ul>
+<ul>
+<li><strong>📋 Traçabilité</strong> — tout refus est noté dans le dossier.</li>
+</ul>
+<aside class="encadre"><h4>🔗 Textes de référence</h4><p>Loi du <strong>4 mars 2002</strong> (Kouchner) · <strong>Art. L.1111-4 CSP</strong> (droit au refus) · loi <strong>Claeys-Leonetti 2016</strong> (directives anticipées) · <strong>Charte de la personne accueillie</strong> (14 articles, remise à l'admission).</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠ Attention maltraitance</h4><p>Ne pas respecter un refus peut être constitutif de maltraitance. <strong>Active</strong> : forcer physiquement, menacer (« si vous ne vous lavez pas, pas de repas »), se moquer, infantiliser. <strong>Passive</strong> : ignorer le refus sans en chercher la cause, abandonner sans proposer d'alternative, ne pas transmettre.</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Un refus soudain peut être un signe de maltraitance subie</strong></p>
+<p>Un refus de soins soudain, un changement brutal de comportement ou un repli inexpliqué doivent alerter. <strong>Toujours signaler.</strong> Numéro national : <strong>3977</strong>.</p></aside>
+</section><section class="partie"><h3>La démarche en 4 étapes</h3>
+<ul>
+<li><strong>✋ Respecter</strong> — ne jamais forcer ; arrêter le geste immédiatement. Le « non » doit être entendu sans délai.</li>
+</ul>
+<ul>
+<li><strong>💬 Dialoguer</strong> — réexpliquer le soin calmement, chercher la cause (peur, douleur, pudeur, horaire), reformuler avec empathie.</li>
+</ul>
+<ul>
+<li><strong>🤝 Négocier</strong> — proposer une alternative (plus tard, par un collègue, toilette partielle) ; <strong>impliquer</strong> le résident (lui donner le gant, choisir l'ordre).</li>
+</ul>
+<ul>
+<li><strong>📝 Transmettre</strong> — tracer en DAR, informer l'IDE/le médecin pour réévaluation. <strong>Un refus tracé protège le soignant juridiquement.</strong></li>
+</ul>
+</section><section class="partie"><h3>Refus &amp; troubles cognitifs : approches spécifiques</h3>
+<aside class="encadre"><h4>🔗 Approche Naomi Feil — validation</h4><p><strong>Valider l'émotion</strong> avant le contenu : « je vois que vous êtes inquiet… », « vous avez l'air en colère, c'est normal ». Utiliser le non verbal (sourire, toucher doux, regard à hauteur) : la communication non verbale = <strong>80 % du message</strong>.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>🔗 Méthode Humanitude (Gineste-Marescotti)</strong></p>
+<p>Principe : <strong>« zéro soin de force sans abandon de soin »</strong>. Prendre soin de façon consentie, à leur rythme, <strong>reporter le soin</strong> si nécessaire ; stratégies de diversion (chant, musique apaisante).</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Ce n'est pas de la méchanceté, c'est la maladie</strong></p>
+<p>Chez la personne atteinte de troubles cognitifs, le refus est souvent <strong>non verbal</strong> : agressivité, cris, se débat, repousse le soignant. Ne <strong>jamais</strong> contenir physiquement pour forcer un soin.</p></aside>
+</section><section class="partie"><h3>Refus &amp; contention : dernier recours</h3>
+<div class="tableau"><table><thead><tr>
+<th>4 types de contention</th>
+<th>Définition / exemple</th>
+</tr></thead><tbody>
+<tr>
+<td>🪑 Physique / passive</td>
+<td>Barrières de lit, ceinture, gilet, tablette de fauteuil — tout moyen empêchant la mobilisation volontaire</td>
+</tr>
+<tr>
+<td>🗣️ Psychologique</td>
+<td>Répéter « restez assis », « ne marchez pas, vous allez tomber » = harcèlement injustifié</td>
+</tr>
+<tr>
+<td>💊 Chimique</td>
+<td>Neuroleptiques, sédatifs prescrits à visée comportementale</td>
+</tr>
+<tr>
+<td>🏛️ Architecturale</td>
+<td>Portes fermées, code d'accès, unité fermée (Alzheimer)</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ ⚠ Règle d&#x27;or</h4><p>Les contentions sont une solution de <strong>dernier recours</strong>, les plus rares possibles. Toute contention nécessite une <strong>ordonnance médicale</strong> (durée max 1 mois renouvelable). La contention ne « résout » jamais un refus.</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠ Risques de la contention</h4><p>Sentiment de mise à l'écart et d'emprisonnement, troubles du comportement, perte de dignité, dépendance accrue, <strong>risque de strangulation</strong>.</p></aside>
+</section><section class="partie"><h3>Situations à risque &amp; conduite à tenir</h3>
+<p>Certains refus peuvent avoir des <strong>conséquences graves</strong> (aggravation d'une plaie, surinfection, déshydratation, escarre). L'AS <strong>ne force jamais</strong> mais <strong>alerte immédiatement</strong> l'IDE, le médecin ou le cadre pour chercher une solution en équipe.</p>
+<div class="tableau"><table><thead><tr>
+<th>Situation de refus</th>
+<th>Risque si non traité</th>
+<th>Conduite à tenir</th>
+</tr></thead><tbody>
+<tr>
+<td>Refus de soin de plaie</td>
+<td>Infection, nécrose, septicémie</td>
+<td>Alerter l'IDE immédiatement ; proposer un antalgique avant le soin</td>
+</tr>
+<tr>
+<td>Refus total de toilette (plusieurs jours)</td>
+<td>Macération, mycose, infection urinaire, isolement</td>
+<td>Proposer une alternative (toilette partielle, lingettes) ; en parler en réunion d'équipe</td>
+</tr>
+<tr>
+<td>Refus de traitement vital</td>
+<td>Décompensation, urgence vitale</td>
+<td>Alerter le médecin ; faire intervenir la personne de confiance si désignée</td>
+</tr>
+<tr>
+<td>Refus d'alimentation / hydratation</td>
+<td>Déshydratation, dénutrition, chutes</td>
+<td>Proposer alternatives (textures, horaires) ; alerter IDE et diététicien</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ ⚠ Règle d&#x27;or</h4><p>Ne jamais rester seul face à un refus répété et/ou dangereux. Le refus est un <strong>problème d'équipe</strong>, pas un échec individuel : transmissions, réunion d'équipe, avis du médecin / psychologue / personne de confiance.</p></aside>
+</section><section class="partie"><h3>3 dilemmes éthiques face au refus</h3>
+<p>Quand la « bonne » réponse n'existe pas, on pense <strong>en équipe</strong> :</p>
+<ul>
+<li><strong>🍽️ Refus alimentaire</strong> — respecter le choix ou « forcer » par devoir de soin ? <em>Réponse :</em> respecter, chercher la cause, proposer des alternatives (textures, horaires, plaisir), alerter l'IDE si dégradation.</li>
+</ul>
+<ul>
+<li><strong>⛓️ Contention</strong> — protéger (chute, errance) ou priver de liberté ? <em>Réponse :</em> dernier recours, prescription médicale, durée limitée, alternatives systématiquement explorées.</li>
+</ul>
+<ul>
+<li><strong>🕊️ Fin de vie</strong> — obstination ou soins de confort ? <em>Réponse :</em> directives anticipées (loi Claeys-Leonetti 2016), procédure collégiale, priorité au confort.</li>
+</ul>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 05 : Refus de soin).</p>
+<p>S’appuyer sur les <strong>6 émotions primaires</strong> (Ekman) pour comprendre.</p>
+<p>Se présenter, <strong>ton doux, à hauteur</strong>, capter le regard ; <strong>ne pas forcer</strong>, ne rien promettre de faux.</p>
+<p><strong>Négocier :</strong> toilette partielle, décaler, dérivatifs, relais d’un collègue.</p>
+<p><strong>Forcer = maltraitance</strong> ; le refus est un <strong>droit</strong> (loi Kouchner 2002).</p>
+<p><strong>🎓 À l’oral / piège :</strong> Le refus est un droit : montre que vous cherchez la cause et que vous adaptez, sans jamais contraindre.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>Comprendre le refus : besoin de <strong>s’affirmer</strong>, troubles cognitifs/du comportement, émotions (peur, colère…).</p>
+<p>Se présenter, se mettre à <strong>hauteur</strong>, capter le regard, ton doux ; <strong>respecter le refus, ne pas forcer</strong>.</p>
+<p><strong>Négocier</strong> (ex. laver seulement l’intime + change) sans promesse mensongère ; mettre en avant le positif du soin.</p>
+<p>S’adapter aux troubles ; <strong>décaler le soin</strong> dans le temps si possible ; utiliser des dérivatifs (sujet aimé, humour, musique).</p>
+<p><strong>Relais</strong> par un collègue si besoin · vigilance sécurité (personne et soignant) si agressivité · transmissions.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Transmettre, cas pratiques &amp; points clés</h2>
+<p><strong>🎬 Cas pratiques :</strong></p>
+<p><strong>📌 L'essentiel :</strong></p>
+<ul>
+<li>le refus de soin est un <strong>droit</strong> (loi 4 mars 2002, art. L.1111-4 CSP) ;</li>
+<li>méthode <strong>DREPA</strong> : Droit – Respecter – Écouter – Proposer – Adapter ;</li>
+<li>8 causes : douleur, peur, pudeur, fatigue, dépression, incompréhension, démence, mauvaise expérience ;</li>
+<li><strong>ne jamais forcer</strong>, jamais de contention pour faire un soin (Humanitude : « zéro soin de force ») ;</li>
+<li>Alzheimer : validation de Naomi Feil, non verbal = 80 % ;</li>
+<li><strong>tracer en DAR</strong> + alerter l'IDE si récurrent → réévaluation du PAP.</li>
+</ul>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette refusée, douleur au bras (Mme B., 83 ans)</strong></p></p>
+<div class="cas-piste"><p><em>En EHPAD, ce matin, Mme B., 83 ans, refuse la toilette. Lorsque vous approchez son bras droit pour l'aider à se déshabiller, elle grimace et retient fermement son bras contre elle. Elle n'a pas d'antécédent de refus connu dans son dossier. Vous devez pourtant enchaîner sur les toilettes des autres résidents du couloir.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> La grimace et le retrait du bras droit à la mobilisation ne sont pas un simple caprice : ils évoquent une douleur localisée (arthrose, chute méconnue, fracture, hématome). Ce refus doit être analysé comme un signe clinique et non comme une opposition gratuite ; noter précisément le membre concerné, le moment d'apparition et le comportement associé.</p>
+<p><strong>2. Conduite immédiate.</strong> Ne pas forcer la mobilisation du bras douloureux ; arrêter le geste dès la grimace, réaliser une toilette partielle en épargnant la zone atteinte, proposer un antalgique si celui-ci est prescrit avant de reprendre. Rassurer Mme B. et lui expliquer que le soin peut attendre.</p>
+<p><strong>3. Transmission.</strong> Transmettre sans délai à l'IDE la douleur observée au bras droit avec la grimace et le refus associé, afin qu'une évaluation clinique soit faite (fracture, chute non signalée, poussée d'arthrose). Tracer en DAR l'heure, le membre concerné et la conduite tenue.</p>
+<p><strong>4. Erreur à éviter.</strong> Considérer systématiquement le refus comme un caprice et forcer le geste malgré la douleur exprimée : au-delà de la maltraitance que cela constituerait, cela expose à méconnaître une fracture ou une lésion qui nécessite une prise en charge médicale.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Change refusé par pudeur (M. R., 79 ans)</strong></p></p>
+<div class="cas-piste"><p><em>En EHPAD, vous entrez dans la chambre de M. R., 79 ans, pour procéder au change de sa protection. Il détourne le regard, tire le drap pour cacher son bassin et reste muet malgré vos explications. Vous êtes seule ce matin et plusieurs autres résidents attendent leur change.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> Le détournement du regard, le geste de dissimulation du corps et le mutisme sont des signes de pudeur et de gêne, sans agressivité ni confusion associée : ce refus relève probablement de la pudeur, pas d'un trouble cognitif ni d'un refus de principe.</p>
+<p><strong>2. Conduite immédiate.</strong> Respecter le refus, ne pas insister ni dévoiler le corps sans accord ; expliquer calmement le soin, préserver l'intimité (porte fermée, drap gardé le plus possible) ; si possible, proposer qu'un collègue du même sexe réalise le soin, ou reporter légèrement s'il n'y a pas d'urgence cutanée.</p>
+<p><strong>3. Transmission.</strong> Transmettre en DAR le refus lié à la pudeur et la solution mise en place (report, changement de soignant), pour assurer la continuité et éviter la macération ; alerter l'IDE si le refus venait à se répéter dans le temps.</p>
+<p><strong>4. Erreur à éviter.</strong> Forcer le change en maintenant le soignant refusé auprès de lui, ou culpabiliser M. R. en lui reprochant son refus : cela relèverait de la maltraitance et renforcerait son opposition future.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Refus de soin de plaie (Mme G., 87 ans)</strong></p></p>
+<div class="cas-piste"><p><em>En EHPAD, Mme G., 87 ans, porte une plaie au talon suivie par l'IDE. Ce matin, elle refuse que l'on s'approche pour l'installation du soin et dit avoir mal. En l'aidant à s'installer, vous constatez que la peau autour du pansement est rouge et chaude au toucher. Le service est en sous-effectif ce matin.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> La rougeur et la chaleur autour de la plaie, associées à la douleur exprimée et au refus, évoquent des signes d'inflammation ou d'infection débutante (4 signes inflammatoires : rougeur, chaleur, douleur, œdème). Ce refus n'est donc pas anodin : il peut signaler une complication.</p>
+<p><strong>2. Conduite immédiate.</strong> Ne pas forcer l'installation ni réaliser le soin de plaie soi-même, ce geste relevant de l'IDE ; rassurer Mme G., proposer un antalgique si prescrit avant le soin infirmier, ne pas retirer le pansement au-delà de ce qui est nécessaire à l'observation.</p>
+<p><strong>3. Transmission.</strong> Alerter l'IDE immédiatement en décrivant précisément ce qui est observé (rougeur, chaleur, douleur, refus) sans attendre la fin de la tournée : une plaie qui s'infecte peut évoluer vers une septicémie. Tracer l'heure et les signes en DAR.</p>
+<p><strong>4. Erreur à éviter.</strong> Reporter la transmission à plus tard faute de temps, ou considérer que le refus prime sur le signalement des signes d'infection : la priorité est d'alerter sans délai, le refus du soin n'empêche pas la transmission des observations.</p></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Arrêter le geste dès le « non », même si la personne avait d’abord accepté.</li><li>Chercher la cause avant de renégocier : douleur, pudeur, peur, fatigue, horaire.</li><li>Proposer une alternative — plus tard, un collègue, une toilette partielle, le gant confié à la personne.</li><li>Troubles cognitifs : se mettre à hauteur, ton doux, valider l’émotion avant le contenu. Jamais de contention pour faire un soin.</li><li>Tracer le refus en DAR et prévenir l’IDE : plaie, traitement vital, alimentation n’attendent pas.</li><li>Refus soudain ou repli inexpliqué : penser à une maltraitance subie et signaler — 3977.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le refus est un droit fondamental — loi du 4 mars 2002, article L.1111-4 CSP — jamais un échec du soignant.</li><li>Le consentement se retire à tout moment, même après accord : on arrête le geste aussitôt.</li><li>Forcer relève de la maltraitance active ; ignorer un refus sans en chercher la cause, de la maltraitance passive.</li><li>DREPA : Droit, Respecter, Écouter, Proposer, Adapter.</li><li>Huit causes fréquentes : douleur, pudeur, peur, fatigue, dépression, incompréhension, démence, mauvaise expérience.</li><li>Un refus répété est un problème d’équipe, pas une affaire individuelle.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="b" data-id="q0">
+<p class="q"><strong>Q1.</strong> Face à un refus de toilette, la première attitude de l'AS est de :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ignorer et partir</li>
+<li data-cle="b" onclick="window._pickQ(this)">Écouter, comprendre la cause et proposer une adaptation</li>
+<li data-cle="c" onclick="window._pickQ(this)">Forcer le soin « pour son bien »</li>
+<li data-cle="d" onclick="window._pickQ(this)">Se fâcher</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Premier réflexe : écouter, comprendre la cause, proposer une adaptation.<strong> 🎓 À l’oral VAE :</strong> jamais forcer d’emblée.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q1">
+<p class="q"><strong>Q2.</strong> Un résident a-t-il le droit de refuser un soin ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Seulement si le médecin l'autorise</li>
+<li data-cle="b" onclick="window._pickQ(this)">Non, jamais</li>
+<li data-cle="c" onclick="window._pickQ(this)">Oui, c'est un droit (loi du 4 mars 2002, art. L.1111-4 CSP)</li>
+<li data-cle="d" onclick="window._pickQ(this)">Seulement avec l'accord de la famille</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Oui, refuser un soin est un droit (loi du 4 mars 2002, art. L.1111-4).<strong> 🎓 À l’oral VAE :</strong> citez la référence.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q2">
+<p class="q"><strong>Q3.</strong> Forcer un soin malgré le refus :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Est sans conséquence</li>
+<li data-cle="b" onclick="window._pickQ(this)">Est une obligation</li>
+<li data-cle="c" onclick="window._pickQ(this)">Est recommandé si c'est « pour son bien »</li>
+<li data-cle="d" onclick="window._pickQ(this)">Peut constituer une maltraitance (active)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Forcer malgré le refus peut être une maltraitance active.<strong> 🎓 À l’oral VAE :</strong> la contrainte est une faute.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q3">
+<p class="q"><strong>Q4.</strong> La méthode mnémotechnique DREPA signifie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Droit, Respecter, Écouter, Proposer, Adapter</li>
+<li data-cle="b" onclick="window._pickQ(this)">Dialoguer, Rassurer, Évaluer, Prévenir, Aider</li>
+<li data-cle="c" onclick="window._pickQ(this)">Demander, Répéter, Exiger, Punir, Agir</li>
+<li data-cle="d" onclick="window._pickQ(this)">Détecter, Réagir, Empêcher, Protéger, Alerter</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>DREPA : Droit, Respecter, Écouter, Proposer, Adapter.<strong> 🎓 À l’oral VAE :</strong> une trame simple pour le jury.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q4">
+<p class="q"><strong>Q5.</strong> Les 4 types de contention sont :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Manuelle, mécanique, électrique, chimique</li>
+<li data-cle="b" onclick="window._pickQ(this)">Physique, psychologique, chimique, architecturale</li>
+<li data-cle="c" onclick="window._pickQ(this)">Active, passive, totale, partielle</li>
+<li data-cle="d" onclick="window._pickQ(this)">Physique, verbale, sociale, médicale</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>4 types de contention : physique, psychologique, chimique, architecturale.<strong> 🎓 À l’oral VAE :</strong> la contention dépasse la sangle.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> Face au refus d'un résident Alzheimer, on privilégie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le chantage</li>
+<li data-cle="b" onclick="window._pickQ(this)">La contention pour faire le soin</li>
+<li data-cle="c" onclick="window._pickQ(this)">La validation (Naomi Feil) + Humanitude, jamais de force</li>
+<li data-cle="d" onclick="window._pickQ(this)">Insister fermement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Alzheimer : validation (Naomi Feil) + Humanitude, jamais de force.<strong> 🎓 À l’oral VAE :</strong> entrer en relation avant le geste.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q6">
+<p class="q"><strong>Q7.</strong> Tracer un refus en DAR est essentiel car cela :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Sert à se déresponsabiliser</li>
+<li data-cle="b" onclick="window._pickQ(this)">Permet de punir le résident</li>
+<li data-cle="c" onclick="window._pickQ(this)">Est facultatif</li>
+<li data-cle="d" onclick="window._pickQ(this)">Protège le résident, le soignant (juridiquement) et l'équipe</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Tracer le refus en DAR protège résident, soignant et équipe.<strong> 🎓 À l’oral VAE :</strong> juridiquement essentiel.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q7">
+<p class="q"><strong>Q8.</strong> Face à un refus de soin de plaie avec rougeur et chaleur, l'AS :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ne force pas, observe et alerte immédiatement l'IDE</li>
+<li data-cle="b" onclick="window._pickQ(this)">Force le soin</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ne fait rien et n'en parle pas</li>
+<li data-cle="d" onclick="window._pickQ(this)">Réalise le pansement seule</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Refus + plaie rouge et chaude : ne pas forcer, observer, alerter l’IDE.<strong> 🎓 À l’oral VAE :</strong> signe d’infection à signaler.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B1_L11.html" class="back">← B1_L11</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L13.html">B1_L13 →</a></div>
 </div>
 </body></html>

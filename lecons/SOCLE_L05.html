@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOCLE · SOCLE_L05 · Pathologies neurologiques — ORACLE VAE AS</title>
+<title>Socle · SOCLE_L05 · Pathologies neurologiques — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L05</div>
@@ -56,7 +79,190 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Pathologies neurologiques</h1>
     <div class="accroche"><p>(accident vasculaire cérébral, urgence), <strong>maladie de Parkinson</strong>, <strong>épilepsie</strong>, <strong>sclérose en plaques</strong>, <strong>séquelles</strong> motrices et de la parole. Les troubles <strong>cognitifs</strong> (Alzheimer) sont traités à part.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Reconnaître une suspicion d’AVC à l’aide du test FAST.</li><li>Relier chaque atteinte neurologique à son mécanisme : vaisseau bouché ou rompu, manque de dopamine, décharge électrique anormale.</li><li>Adapter la prise de boisson et de repas au risque de fausse route après un AVC.</li><li>Conduire les gestes de protection pendant et après une crise convulsive.</li><li>Transmettre en DAR une suspicion d’AVC en plaçant l’heure de début au premier plan.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Les grandes atteintes neurologiques</h3></section><section class="partie"><h3>Le système nerveux : comprendre pour surveiller</h3></section><section class="partie"><h3>Reconnaître un AVC : le test FAST</h3></section><section class="partie"><h3>Le rôle de l’AS au quotidien</h3></section><section class="partie"><h3>Transmettre &amp; tracer</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Bouche déviée, bras qui ne se lève plus, parole troublée : alerter le 15 et l’IDE sans délai.</li><li>Noter l’heure de début des signes avant tout le reste — la thrombolyse a un délai court.</li><li>Suspicion d’AVC : ne rien donner à boire ni à manger.</li><li>Déglutition : texture adaptée, position assise, pas de boisson dans le doute.</li><li>Crise d’épilepsie : écarter les objets, protéger la tête, noter heure et durée, PLS après la crise.</li><li>Parkinson : respecter la lenteur, sécuriser la marche ; laisser la personne finir ses phrases.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Un déficit brutal est une urgence : chaque minute compte.</li><li>FAST : Face, Arm, Speech, Time.</li><li>Pour l’AVC, l’heure de début conditionne le traitement.</li><li>Parkinson : manque de dopamine — lenteur, rigidité, tremblement.</li><li>Après un AVC, les troubles de la déglutition exposent à la fausse route.</li><li>Pendant une convulsion : rien dans la bouche, aucune contrainte.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le test « FAST » sert à repérer…</p><ol class="opts"><li class="ok">Un AVC</li><li class="">Un infarctus</li><li class="">Une hypoglycémie</li><li class="">Une crise d’asthme</li></ol></div><div class="qblock"><p class="q">2. Pour un AVC, l’information capitale à transmettre est…</p><ol class="opts"><li class="ok">L’heure de début des signes</li><li class="">Le poids</li><li class="">La température</li><li class="">La glycémie</li></ol></div><div class="qblock"><p class="q">3. Pendant une crise d’épilepsie, l’AS…</p><ol class="opts"><li class="ok">Met un objet dans la bouche</li><li class="">Protège la tête et ne contraint pas</li><li class="">Fait boire</li><li class="">Maintient fermement les membres</li></ol></div><div class="qblock"><p class="q">4. Chez une personne avec troubles de la déglutition, dans le doute on…</p><ol class="opts"><li class="ok">Donne des morceaux durs</li><li class="">Ne fait pas boire et signale</li><li class="">Fait boire vite</li><li class="">Allonge à plat pour le repas</li></ol></div><div class="qblock"><p class="q">5. Dans la maladie de Parkinson, l’AS doit surtout…</p><ol class="opts"><li class="ok">Respecter sa lenteur et sécuriser la marche</li><li class="">Presser la personne</li><li class="">Finir ses phrases à sa place</li><li class="">Interdire la marche</li></ol></div><div class="qblock"><p class="q">6. Après une crise convulsive, on installe la personne…</p><ol class="opts"><li class="ok">Tête en bas</li><li class="">Sur le ventre</li><li class="">Debout</li><li class="">En position latérale de sécurité</li></ol></div><div class="qblock"><p class="q">7. Un AVC se caractérise par un déficit…</p><ol class="opts"><li class="ok">Uniquement nocturne</li><li class="">Réversible sans soin</li><li class="">D’apparition brutale (FAST)</li><li class="">Progressif sur des semaines</li></ol></div><div class="qblock"><p class="q">8. Dans la maladie de Parkinson, le manque de dopamine provoque…</p><ol class="opts"><li class="ok">Fièvre</li><li class="">Lenteur, rigidité, tremblement</li><li class="">Cécité</li><li class="">Diarrhée</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L04.html" class="back">← SOCLE_L04</a><a href="SOCLE_L06.html">SOCLE_L06 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Reconnaître une suspicion d’AVC à l’aide du test FAST.</li><li>Relier chaque atteinte neurologique à son mécanisme : vaisseau bouché ou rompu, manque de dopamine, décharge électrique anormale.</li><li>Adapter la prise de boisson et de repas au risque de fausse route après un AVC.</li><li>Conduire les gestes de protection pendant et après une crise convulsive.</li><li>Transmettre en DAR une suspicion d’AVC en plaçant l’heure de début au premier plan.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Les grandes atteintes neurologiques</h3>
+<p><strong>AVC</strong> (accident vasculaire cérébral, urgence), <strong>maladie de Parkinson</strong>, <strong>épilepsie</strong>, <strong>sclérose en plaques</strong>, <strong>séquelles</strong> motrices et de la parole. Les troubles <strong>cognitifs</strong> (Alzheimer) sont traités à part.</p>
+<aside class="encadre"><h4>📘 Référence livre ORACLE</h4><p>Le cerveau commande mouvement, parole, déglutition, conscience. Un déficit brutal est une urgence : « chaque minute compte ».</p></aside>
+</section><section class="partie"><h3>Le système nerveux : comprendre pour surveiller</h3>
+<p>Le <strong>cerveau</strong> commande la motricité, la sensibilité, la parole, la déglutition et la cognition ; la <strong>moelle</strong> et les <strong>nerfs</strong> transmettent les informations.</p>
+<p><strong>Mécanismes :</strong></p>
+<ul>
+<li><strong>AVC</strong> : un vaisseau se bouche (ischémique) ou se rompt (hémorragique) → déficit <strong>brutal</strong> (<strong>test FAST</strong>).</li>
+</ul>
+<ul>
+<li><strong>Parkinson</strong> : manque de dopamine → lenteur, rigidité, tremblement.</li>
+</ul>
+<ul>
+<li><strong>Épilepsie</strong> : décharge électrique anormale → convulsions.</li>
+</ul>
+<ul>
+<li>Troubles de la <strong>déglutition</strong> fréquents après AVC → risque de fausse route.</li>
+</ul>
+<aside class="encadre"><h4></h4><p>Pour l’AVC, l’AS retient l’<strong>heure de début</strong> des signes : elle conditionne le traitement.</p></aside>
+</section><section class="partie"><h3>Reconnaître un AVC : le test FAST</h3>
+<div class="tableau"><table><thead><tr>
+<th>Lettre</th>
+<th>Signe à vérifier</th>
+</tr></thead><tbody>
+<tr>
+<td>F — Face</td>
+<td>Bouche / visage qui tombe d’un côté</td>
+</tr>
+<tr>
+<td>A — Arm</td>
+<td>Un bras qui ne se lève plus / faiblesse</td>
+</tr>
+<tr>
+<td>S — Speech</td>
+<td>Parole troublée, incompréhensible</td>
+</tr>
+<tr>
+<td>T — Time</td>
+<td>Heure de début → on alerte le 15 sans délai</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🚨 signes d’alerte — on alerte l’IDE</strong></p>
+<p>Déficit brutal (paralysie d’un côté, bouche déviée, parole troublée) = suspicion d’AVC → noter l’heure de début, alerter le 15/IDE <strong>immédiatement</strong>. La thrombolyse n’est possible que dans un délai court.</p></aside>
+</section><section class="partie"><h3>Le rôle de l’AS au quotidien</h3>
+<aside class="encadre"><h4>🩺 le rôle concret de l’AS</h4><p><strong>Déglutition</strong> : vigilance aux fausses routes (textures adaptées, position assise, ne pas faire boire dans le doute). <strong>Mobilité</strong> : prévention des chutes, aide aux transferts, installation. <strong>Parole</strong> : laisser le temps, ne pas finir les phrases. <strong>Parkinson</strong> : respecter la lenteur (akinésie), sécuriser la marche (festination).</p></aside>
+</section><section class="partie"><h3>Transmettre &amp; tracer</h3>
+<div class="exemples">
+<div class="ex"><p>📖 transmission ciblée DAR — <strong>D</strong> : « Depuis ce matin, Mme V. a la bouche déviée à droite et ne tient plus son bras gauche ». <strong>A</strong> : « Heure de début notée (8 h 10), alerte IDE/15 ». <strong>R</strong> : « Transférée aux urgences ». Pour un AVC, l’<strong>heure de début</strong> est l’information capitale.</p></div>
+</div>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas pratique corrigé — Crise d’épilepsie</strong></p></p>
+<div class="cas-piste"><p><em>Pendant la toilette, Mme G. se met à convulser : raideur puis secousses, perte de connaissance.</em></p>
+<p><strong>Conduite à tenir :</strong></p>
+<ul>
+<li>Protéger : écarter les objets dangereux, glisser quelque chose de mou sous la tête.</li>
+<li><strong>Ne rien mettre dans la bouche</strong>, ne pas contraindre les mouvements.</li>
+<li>Noter l’heure de début et la durée.</li>
+<li>Après la crise : position latérale de sécurité, surveiller, rassurer.</li>
+<li>Alerter l’IDE / le médecin.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Mme V., bouche déviée et bras qui tombe</p></p>
+<div class="cas-piste"><p><em>Apparu ce matin pendant le petit-déjeuner.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Reconnaître les signes FAST d’un AVC.</li>
+<li>Noter l’heure de début, ne rien donner à boire/manger.</li>
+<li>Alerter le 15/IDE sans délai, rassurer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Bouche déviée, bras qui ne se lève plus, parole troublée : alerter le 15 et l’IDE sans délai.</li><li>Noter l’heure de début des signes avant tout le reste — la thrombolyse a un délai court.</li><li>Suspicion d’AVC : ne rien donner à boire ni à manger.</li><li>Déglutition : texture adaptée, position assise, pas de boisson dans le doute.</li><li>Crise d’épilepsie : écarter les objets, protéger la tête, noter heure et durée, PLS après la crise.</li><li>Parkinson : respecter la lenteur, sécuriser la marche ; laisser la personne finir ses phrases.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Un déficit brutal est une urgence : chaque minute compte.</li><li>FAST : Face, Arm, Speech, Time.</li><li>Pour l’AVC, l’heure de début conditionne le traitement.</li><li>Parkinson : manque de dopamine — lenteur, rigidité, tremblement.</li><li>Après un AVC, les troubles de la déglutition exposent à la fausse route.</li><li>Pendant une convulsion : rien dans la bouche, aucune contrainte.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le test « FAST » sert à repérer…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un AVC</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un infarctus</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une hypoglycémie</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une crise d’asthme</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>FAST repère l’AVC : Face, Arm, Speech, Time.<strong> 🎓 À l’oral VAE :</strong> l’AVC est une urgence absolue.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> Pour un AVC, l’information capitale à transmettre est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L’heure de début des signes</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le poids</li>
+<li data-cle="c" onclick="window._pickQ(this)">La température</li>
+<li data-cle="d" onclick="window._pickQ(this)">La glycémie</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Pour l’AVC, l’heure de début conditionne le traitement.<strong> 🎓 À l’oral VAE :</strong> notez-la précisément.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Pendant une crise d’épilepsie, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Met un objet dans la bouche</li>
+<li data-cle="b" onclick="window._pickQ(this)">Protège la tête et ne contraint pas</li>
+<li data-cle="c" onclick="window._pickQ(this)">Fait boire</li>
+<li data-cle="d" onclick="window._pickQ(this)">Maintient fermement les membres</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Pendant une crise d’épilepsie : protéger la tête, ne pas contraindre, rien en bouche.<strong> 🎓 À l’oral VAE :</strong> PLS après la crise.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Chez une personne avec troubles de la déglutition, dans le doute on…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Donne des morceaux durs</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ne fait pas boire et signale</li>
+<li data-cle="c" onclick="window._pickQ(this)">Fait boire vite</li>
+<li data-cle="d" onclick="window._pickQ(this)">Allonge à plat pour le repas</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Trouble de déglutition + doute = ne pas faire boire, signaler.<strong> 🎓 À l’oral VAE :</strong> risque de fausse route.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> Dans la maladie de Parkinson, l’AS doit surtout…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Respecter sa lenteur et sécuriser la marche</li>
+<li data-cle="b" onclick="window._pickQ(this)">Presser la personne</li>
+<li data-cle="c" onclick="window._pickQ(this)">Finir ses phrases à sa place</li>
+<li data-cle="d" onclick="window._pickQ(this)">Interdire la marche</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Parkinson : respecter la lenteur, sécuriser la marche.<strong> 🎓 À l’oral VAE :</strong> ne pas presser la personne.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> Après une crise convulsive, on installe la personne…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Tête en bas</li>
+<li data-cle="b" onclick="window._pickQ(this)">Sur le ventre</li>
+<li data-cle="c" onclick="window._pickQ(this)">Debout</li>
+<li data-cle="d" onclick="window._pickQ(this)">En position latérale de sécurité</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Après une crise convulsive : position latérale de sécurité (PLS).<strong> 🎓 À l’oral VAE :</strong> prévient l’inhalation.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q6">
+<p class="q"><strong>Q7.</strong> Un AVC se caractérise par un déficit…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Uniquement nocturne</li>
+<li data-cle="b" onclick="window._pickQ(this)">Réversible sans soin</li>
+<li data-cle="c" onclick="window._pickQ(this)">D’apparition brutale (FAST)</li>
+<li data-cle="d" onclick="window._pickQ(this)">Progressif sur des semaines</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Déficit soudain → urgence, noter l’heure de début.<strong> 🎓 À l’oral VAE :</strong> FAST : Face, Arms, Speech, Time.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q7">
+<p class="q"><strong>Q8.</strong> Dans la maladie de Parkinson, le manque de dopamine provoque…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Fièvre</li>
+<li data-cle="b" onclick="window._pickQ(this)">Lenteur, rigidité, tremblement</li>
+<li data-cle="c" onclick="window._pickQ(this)">Cécité</li>
+<li data-cle="d" onclick="window._pickQ(this)">Diarrhée</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Triade : lenteur (akinésie), rigidité, tremblement.<strong> 🎓 À l’oral VAE :</strong> respecter la lenteur, sécuriser la marche.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L04.html" class="back">← SOCLE_L04</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L06.html">SOCLE_L06 →</a></div>
 </div>
 </body></html>

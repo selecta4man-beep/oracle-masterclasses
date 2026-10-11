@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>INTRO · INTRO_L05 · Avant la VAE — recevabilité, Livret 1 &amp; France VAE — ORACLE VAE AS</title>
+<title>Démarrage · INTRO_L05 · Avant la VAE — recevabilité, Livret 1 & France VAE — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Démarrage</strong> › INTRO_L05</div>
@@ -56,7 +79,224 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Avant la VAE — recevabilité, Livret 1 &amp; France VAE</h1>
     <div class="accroche"><p>Avant de rédiger quoi que ce soit, il faut <strong>être déclaré recevable</strong>. Deux voies coexistent aujourd’hui pour candidater au DEAS par la VAE…</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Distinguer les deux voies d’accès à la VAE AS : France VAE et voie certificateur / ASP.</li><li>Réunir les pièces qui composent votre dossier de recevabilité.</li><li>Situer le rôle de l’architecte-accompagnateur de parcours dans votre démarche.</li><li>Repérer le dispositif de financement qui correspond à votre situation.</li><li>Enchaîner vos démarches dans l’ordre, de la vérification d’éligibilité au dépôt.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>1 · Les 2 chemins d’accès à la VAE AS</h3></section><section class="partie"><h3>2 · Étape 1 : la recevabilité (Livret 1)</h3></section><section class="partie"><h3>3 · France VAE &amp; l’accompagnateur (AAP)</h3></section><section class="partie"><h3>4 · Constituer son dossier de recevabilité (check-list)</h3></section><section class="partie"><h3>5 · Financer sa VAE</h3></section><section class="partie"><h3>📥 Les documents officiels (ASP)</h3></section><section class="partie"><h3>💡 Ce qu’il faut faire maintenant</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Vérifier la voie indiquée par votre certificateur avant de créer un compte.</li><li>Compte à créer sur vae.gouv.fr ou vaedem.asp-public.fr selon la voie.</li><li>Demander tôt les attestations d’employeur : les anciens employeurs prennent du temps.</li><li>Au dossier : identité, attestations d’employeur, bulletins, contrats, formations, formulaire.</li><li>Télécharger sur le portail de l’ASP le Livret 1 (Cerfa) et l’attestation employeur.</li><li>Financement : CPF, France VAE, OPCO, Transitions Pro, France Travail selon votre situation.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Les deux voies mènent au même diplôme ; la plateforme et le vocabulaire diffèrent.</li><li>Le Livret 1 prouve votre droit de candidater — il ne raconte aucune situation.</li><li>Condition d’expérience : environ un an en lien avec le métier.</li><li>L’avis de recevabilité favorable est le feu vert du Livret 2.</li><li>Comptez souvent 1 à 2 mois pour la réponse du certificateur.</li><li>L’accompagnement par un AAP peut être pris en charge financièrement.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. La toute première étape de la VAE est…</p><ol class="opts"><li class="ok">L’oral</li><li class="">Le Livret 2</li><li class="">La recevabilité (Livret 1)</li><li class="">Le financement</li></ol></div><div class="qblock"><p class="q">2. Le Livret 1 sert à…</p><ol class="opts"><li class="ok">Raconter ses situations</li><li class="">Prouver qu’on remplit les conditions (recevabilité)</li><li class="">Choisir le jury</li><li class="">Préparer l’oral</li></ol></div><div class="qblock"><p class="q">3. « France VAE » désigne…</p><ol class="opts"><li class="ok">Une école de la fonction publique</li><li class="">Un diplôme délivré par l’État</li><li class="">Le service public de la VAE</li><li class="">Un employeur du secteur sanitaire</li></ol></div><div class="qblock"><p class="q">4. L’ASP est…</p><ol class="opts"><li class="ok">Un logiciel de dossier de soins</li><li class="">L’Agence de Services et de Paiement</li><li class="">Un diplôme d’État de niveau 3</li><li class="">Un syndicat de la fonction publique</li></ol></div><div class="qblock"><p class="q">5. La condition d’expérience pour candidater est d’environ…</p><ol class="opts"><li class="ok">6 mois</li><li class="">5 ans</li><li class="">1 an en lien avec le métier</li><li class="">1 mois</li></ol></div><div class="qblock"><p class="q">6. Pour financer sa VAE, on peut mobiliser…</p><ol class="opts"><li class="ok">CPF, France VAE, OPCO, Transitions Pro, France Travail</li><li class="">Uniquement ses économies</li><li class="">Le jury</li><li class="">Rien</li></ol></div></div></section>
-  <div class="footer-nav"><a href="INTRO_L04.html" class="back">← INTRO_L04</a><a href="SOCLE_L01.html">SOCLE_L01 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Distinguer les deux voies d’accès à la VAE AS : France VAE et voie certificateur / ASP.</li><li>Réunir les pièces qui composent votre dossier de recevabilité.</li><li>Situer le rôle de l’architecte-accompagnateur de parcours dans votre démarche.</li><li>Repérer le dispositif de financement qui correspond à votre situation.</li><li>Enchaîner vos démarches dans l’ordre, de la vérification d’éligibilité au dépôt.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>1 · Les 2 chemins d’accès à la VAE AS</h3>
+<p>Avant de rédiger quoi que ce soit, il faut <strong>être déclaré recevable</strong>. Deux voies coexistent aujourd’hui pour candidater au DEAS par la VAE :</p>
+<div class="tableau"><table><thead><tr>
+<th>Voie</th>
+<th>Comment</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>France VAE</strong> (service public)</td>
+<td>Portail <strong>vae.gouv.fr</strong> · un <strong>accompagnateur (AAP)</strong> vous suit · dossier de faisabilité puis dossier de validation</td>
+</tr>
+<tr>
+<td><strong>Voie « certificateur / ASP »</strong></td>
+<td>Dépôt du <strong>dossier de recevabilité (Livret 1)</strong> via le portail de l’ASP (<strong>vaedem.asp-public.fr</strong>) puis Livret 2</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p>Les deux mènent au même diplôme. Vérifiez la voie indiquée par votre <strong>certificateur</strong> (souvent l’ARS via un organisme), car la plateforme et le vocabulaire diffèrent.</p></aside>
+</section><section class="partie"><h3>2 · Étape 1 : la recevabilité (Livret 1)</h3>
+<p>Le <strong>Livret 1</strong> (ou dossier de recevabilité / faisabilité) ne raconte pas vos situations : il <strong>prouve que vous avez le droit de candidater</strong>.</p>
+<ul>
+<li><strong>Condition clé :</strong> environ <strong>1 an d’expérience</strong> en lien avec le métier (activités d’aide-soignant).</li>
+</ul>
+<ul>
+<li><strong>Où :</strong> créer un compte en ligne (vae.gouv.fr ou vaedem.asp-public.fr selon la voie).</li>
+</ul>
+<ul>
+<li><strong>Quoi joindre :</strong> formulaire d’identité/parcours + <strong>attestations d’employeur</strong>, bulletins de salaire, contrats.</li>
+</ul>
+<ul>
+<li><strong>Résultat :</strong> le certificateur prononce un <strong>avis de recevabilité</strong> (favorable = feu vert pour le Livret 2).</li>
+</ul>
+<ul>
+<li><strong>Délai :</strong> souvent <strong>1 à 2 mois</strong>.</li>
+</ul>
+</section><section class="partie"><h3>3 · France VAE &amp; l’accompagnateur (AAP)</h3>
+<p><strong>France VAE</strong> (vae.gouv.fr) est le <strong>service public</strong> unifié de la VAE. Vous y êtes suivi par un <strong>architecte-accompagnateur de parcours (AAP)</strong> qui vous aide à choisir vos activités, structurer le dossier et préparer l’entretien.</p>
+<aside class="encadre"><h4>💡 Conseil ORACLE</h4><p>Faites-vous accompagner : un AAP augmente fortement vos chances et peut être pris en charge financièrement.</p></aside>
+</section><section class="partie"><h3>4 · Constituer son dossier de recevabilité (check-list)</h3>
+<ul>
+<li>Pièce d’identité.</li>
+</ul>
+<ul>
+<li><strong>Attestations d’employeur</strong> (fonctions d’aide-soignant exercées).</li>
+</ul>
+<ul>
+<li>Bulletins de salaire / contrats couvrant l’expérience exigée.</li>
+</ul>
+<ul>
+<li>Justificatifs de formations éventuelles.</li>
+</ul>
+<ul>
+<li>Formulaire complété (parcours, motivations).</li>
+</ul>
+<ul>
+<li><strong>AFGSU 2</strong> en cours de validité — elle est exigée pour le diplôme, et doit dater de <strong>moins de quatre ans</strong> le jour du jury. Inscrivez-vous tôt : les sessions de CESU se remplissent des mois à l’avance.</li>
+</ul>
+<aside class="encadre"><h4></h4><p>Rassemblez ces pièces <strong>tôt</strong> : leur obtention (anciens employeurs) prend souvent du temps.</p></aside>
+</section><section class="partie"><h3>5 · Financer sa VAE</h3>
+<div class="tableau"><table><thead><tr>
+<th>Dispositif</th>
+<th>Pour qui</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>France VAE</strong> (prise en charge)</td>
+<td>Parcours via vae.gouv.fr</td>
+</tr>
+<tr>
+<td><strong>CPF</strong> (Compte Personnel de Formation)</td>
+<td>Tout actif</td>
+</tr>
+<tr>
+<td><strong>Employeur / OPCO</strong></td>
+<td>Salariés du privé</td>
+</tr>
+<tr>
+<td><strong>Transitions Pro</strong></td>
+<td>Projet de transition</td>
+</tr>
+<tr>
+<td><strong>France Travail</strong></td>
+<td>Demandeurs d’emploi</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p>L’<strong>ASP</strong> (Agence de Services et de Paiement) gère des démarches et financements publics liés à la VAE.</p></aside>
+</section><section class="partie"><h3>📥 Les documents officiels (ASP)</h3>
+<p>Tous les documents officiels du DEAS sont téléchargeables gratuitement sur le portail de l’ASP :</p>
+<p>vae.asp-public.fr — DEAS, Téléchargements ↗</p>
+<p>Vous y trouverez :</p>
+<ul>
+<li><strong>Livret 1</strong> (Cerfa — version standard et version formulaire à remplir)</li>
+</ul>
+<ul>
+<li><strong>Livret 2</strong> (PDF et Word)</li>
+</ul>
+<ul>
+<li>la <strong>Notice</strong> et la <strong>Fiche d’information</strong></li>
+</ul>
+<ul>
+<li>l’<strong>Attestation</strong> (employeur)</li>
+</ul>
+<ul>
+<li>le <strong>référentiel d’activités</strong>, le <strong>référentiel de compétences</strong> et les <strong>conditions de recevabilité</strong></li>
+</ul>
+<aside class="encadre"><h4></h4><p>Téléchargez le <strong>Livret 1 (Cerfa)</strong> et l’<strong>attestation employeur</strong> dès maintenant : ce sont les pièces de votre recevabilité. Le <strong>Livret 2</strong> servira pour la phase de rédaction.</p></aside>
+</section><section class="partie"><h3>💡 Ce qu’il faut faire maintenant</h3>
+<aside class="encadre"><h4>💡 Conseil ORACLE</h4><p>1) Vérifier mon éligibilité (1 an d’expérience). 2) Réunir mes attestations d’employeur. 3) Créer mon compte sur vae.gouv.fr. 4) Demander un accompagnateur. 5) Déposer ma recevabilité avant de commencer le Livret 2.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Karima prépare sa recevabilité</p></p>
+<div class="cas-piste"><p><em>AS faisant fonction depuis 3 ans, elle veut candidater.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Vérifier la condition d’expérience (~1 an en lien avec le métier).</li>
+<li>Créer son compte (vae.gouv.fr / vaedem.asp-public.fr) et réunir attestations + bulletins.</li>
+<li>Déposer le dossier de recevabilité et attendre l’avis du certificateur.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Financer son parcours</p></p>
+<div class="cas-piste"><p><em>Salariée en EHPAD, elle ne sait pas comment financer.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Explorer CPF, prise en charge France VAE, OPCO de l’employeur.</li>
+<li>Se faire accompagner par un AAP pour le montage.</li>
+<li>Anticiper les délais (1-2 mois pour la recevabilité).</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Vérifier la voie indiquée par votre certificateur avant de créer un compte.</li><li>Compte à créer sur vae.gouv.fr ou vaedem.asp-public.fr selon la voie.</li><li>Demander tôt les attestations d’employeur : les anciens employeurs prennent du temps.</li><li>Au dossier : identité, attestations d’employeur, bulletins, contrats, formations, formulaire.</li><li>Télécharger sur le portail de l’ASP le Livret 1 (Cerfa) et l’attestation employeur.</li><li>Financement : CPF, France VAE, OPCO, Transitions Pro, France Travail selon votre situation.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Les deux voies mènent au même diplôme ; la plateforme et le vocabulaire diffèrent.</li><li>Le Livret 1 prouve votre droit de candidater — il ne raconte aucune situation.</li><li>Condition d’expérience : environ un an en lien avec le métier.</li><li>L’avis de recevabilité favorable est le feu vert du Livret 2.</li><li>Comptez souvent 1 à 2 mois pour la réponse du certificateur.</li><li>L’accompagnement par un AAP peut être pris en charge financièrement.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> La toute première étape de la VAE est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L’oral</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le Livret 2</li>
+<li data-cle="c" onclick="window._pickQ(this)">La recevabilité (Livret 1)</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le financement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>On doit d’abord être déclaré recevable avant de rédiger le Livret 2.<strong> 🎓 À l’oral VAE :</strong> délai souvent 1 à 2 mois.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Le Livret 1 sert à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Raconter ses situations</li>
+<li data-cle="b" onclick="window._pickQ(this)">Prouver qu’on remplit les conditions (recevabilité)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Choisir le jury</li>
+<li data-cle="d" onclick="window._pickQ(this)">Préparer l’oral</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Dossier administratif d’éligibilité, pas de preuves.<strong> 🎓 À l’oral VAE :</strong> ne pas confondre Livret 1 et Livret 2.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q2">
+<p class="q"><strong>Q3.</strong> « France VAE » désigne…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une école de la fonction publique</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un diplôme délivré par l’État</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le service public de la VAE</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un employeur du secteur sanitaire</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Portail public unifié + architecte-accompagnateur (AAP).<strong> 🎓 À l’oral VAE :</strong> l’accompagnement augmente les chances.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> L’ASP est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un logiciel de dossier de soins</li>
+<li data-cle="b" onclick="window._pickQ(this)">L’Agence de Services et de Paiement</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un diplôme d’État de niveau 3</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un syndicat de la fonction publique</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Gère notamment le portail de recevabilité vaedem.asp-public.fr.<strong> 🎓 À l’oral VAE :</strong> selon la voie de votre certificateur.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> La condition d’expérience pour candidater est d’environ…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">6 mois</li>
+<li data-cle="b" onclick="window._pickQ(this)">5 ans</li>
+<li data-cle="c" onclick="window._pickQ(this)">1 an en lien avec le métier</li>
+<li data-cle="d" onclick="window._pickQ(this)">1 mois</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Environ 1 an d’activité en lien avec le métier d’aide-soignant.<strong> 🎓 À l’oral VAE :</strong> réunissez attestations et bulletins.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> Pour financer sa VAE, on peut mobiliser…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">CPF, France VAE, OPCO, Transitions Pro, France Travail</li>
+<li data-cle="b" onclick="window._pickQ(this)">Uniquement ses économies</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le jury</li>
+<li data-cle="d" onclick="window._pickQ(this)">Rien</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Plusieurs dispositifs selon votre situation.<strong> 🎓 À l’oral VAE :</strong> faites-vous aider pour le montage.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="INTRO_L04.html" class="back">← INTRO_L04</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L01.html">SOCLE_L01 →</a></div>
 </div>
 </body></html>

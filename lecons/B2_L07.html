@@ -1,62 +1,246 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B2 · B2_L07 · Aide à la prise de médicaments &amp; règle des 5B — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L07 · Aide à la prise de médicaments & règle des 5B — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L07</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 2</span><span>Leçon 7</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Aide à la prise de médicaments &amp; règle des 5B</h1>
-    <div class="accroche"><p>L&#x27;aide à la prise médicamenteuse se fait <strong>sur prescription</strong>, dans le cadre défini par l&#x27;établissement et en collaboration avec l&#x27;IDE. L&#x27;AS <strong>aide à la prise</strong> de formes orales préparées et identifiées ; il ne prépare pas le pilulier, ne calcule pas de dose, ne décide jamais seul.</p></div>
+    <div class="accroche"><p>L'aide à la prise médicamenteuse se fait <strong>sur prescription</strong>, dans le cadre défini par l'établissement et en collaboration avec l'IDE. L'AS <strong>aide à la prise</strong> de formes orales préparées et identifiées ; il ne prépare pas le pilulier, ne calcule pas de dose, ne décide jamais seul.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Délimiter ce que l’aide à la prise autorise et ce qu’elle interdit à l’aide-soignant.</li><li>Appliquer les 5B et l’identitovigilance à chaque aide à la prise.</li><li>Vous assurer que le médicament est réellement avalé.</li><li>Signaler à l’IDE et tracer tout incident de prise.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Le champ de l&#x27;AS dans le circuit du médicament</h3></section><section class="partie"><h3>La règle des 5B</h3></section><section class="partie"><h3>Surveiller, transmettre</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Les 5B : bon patient · bon médicament · bonne dose · bonne voie · bon moment.</li><li>Installer assis, faire avaler un comprimé à la fois, vérifier la bouche vide avant le suivant.</li><li>Comprimé recraché, tombé ou vomi : ne pas le redonner, alerter l’IDE en temps réel.</li><li>Signaler aussi le refus, la difficulté à avaler, la fausse route, un effet inhabituel — somnolence, nausée, éruption.</li><li>Médicament apporté par la famille et non prescrit : ne pas le donner, prévenir l’IDE, expliquer le risque d’interaction.</li><li>Tracer la prise — et tracer tout autant ce qui n’a pas été pris.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’aide à la prise se fait sur prescription, en collaboration avec l’IDE — collaboration n’est pas délégation.</li><li>L’IDE prépare et contrôle ; l’AS aide à la prise de formes orales déjà préparées et identifiées.</li><li>Aucune dose modifiée, aucun comprimé écrasé de sa propre initiative — formes LP et interactions.</li><li>Ne jamais laisser les médicaments en l’absence du résident.</li><li>Aider à la prise n’est pas administrer : la limite du rôle tient dans cette nuance.</li><li>En cas de doute, on se réfère à l’IDE plutôt que d’agir seul.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. La règle des 5B comprend…</p><ol class="opts"><li class="ok">Cinq minutes de surveillance après la prise</li><li class="">Bon lit, bon repas, bon horaire, bon soignant</li><li class="">Bon patient, médicament, dose, moment, voie</li><li class="">Cinq soignants présents à la distribution</li></ol></div><div class="qblock"><p class="q">2. L&#x27;AS peut-il modifier une dose s&#x27;il pense que c&#x27;est mieux ?</p><ol class="opts"><li class="ok">Oui si la famille le demande</li><li class="">Oui la nuit</li><li class="">Oui avec expérience</li><li class="">Non, jamais : il aide à la prise sur prescription</li></ol></div><div class="qblock"><p class="q">3. Après l&#x27;aide à la prise, l&#x27;AS…</p><ol class="opts"><li class="ok">Vérifie que le médicament est bien pris et trace</li><li class="">Laisse le comprimé sur la table</li><li class="">Note sans vérifier</li><li class="">Quitte la pièce aussitôt</li></ol></div><div class="qblock"><p class="q">4. Un médicament recraché doit être…</p><ol class="opts"><li class="ok">Redonné aussitôt</li><li class="">Signalé à l&#x27;IDE et tracé</li><li class="">Remplacé par un autre</li><li class="">Ignoré</li></ol></div><div class="qblock"><p class="q">5. Les 5B incluent notamment…</p><ol class="opts"><li class="ok">Trois vérifications seulement</li><li class="">Le seul bon patient</li><li class="">Bon patient, bon médicament, bonne dose, bonne voie, bon moment</li><li class="">Beau, bon, bref, brut, brillant</li></ol></div><div class="qblock"><p class="q">6. L’AS peut-il écraser un comprimé de sa propre initiative ?</p><ol class="opts"><li class="ok">Oui si la personne déglutit mal</li><li class="">Oui, toujours</li><li class="">Oui pour aller plus vite</li><li class="">Non : c’est l’IDE qui le décide/prépare (interactions, formes LP)</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B2_L06.html" class="back">← B2_L06</a><a href="B2_L08.html">B2_L08 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Délimiter ce que l’aide à la prise autorise et ce qu’elle interdit à l’aide-soignant.</li><li>Appliquer les 5B et l’identitovigilance à chaque aide à la prise.</li><li>Vous assurer que le médicament est réellement avalé.</li><li>Signaler à l’IDE et tracer tout incident de prise.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Le champ de l&#x27;AS dans le circuit du médicament</h3>
+<p>L'aide à la prise médicamenteuse se fait <strong>sur prescription</strong>, dans le cadre défini par l'établissement et en collaboration avec l'IDE. L'AS <strong>aide à la prise</strong> de formes orales préparées et identifiées ; il ne prépare pas le pilulier, ne calcule pas de dose, ne décide jamais seul.</p>
+<aside class="vigilance"><h4>⚠ 🚨 la limite absolue</h4><p>L'AS ne prépare pas un traitement injectable, ne modifie pas une dose, n'écrase pas un comprimé sans avis. <strong>En cas de doute, on se réfère à l'IDE</strong> plutôt que d'agir seul.</p></aside>
+</section><section class="partie"><h3>La règle des 5B</h3>
+<p>Pour sécuriser chaque aide à la prise, on vérifie les <strong>5B</strong>.</p>
+<div class="tableau"><table><thead><tr>
+<th>Règle</th>
+<th>Vérification</th>
+</tr></thead><tbody>
+<tr>
+<td>👤 <strong>Bon patient</strong></td>
+<td>Identitovigilance : la bonne personne (nom, vérification)</td>
+</tr>
+<tr>
+<td>💊 <strong>Bon médicament</strong></td>
+<td>Le traitement préparé et identifié pour cette personne</td>
+</tr>
+<tr>
+<td>⚖️ <strong>Bonne dose</strong></td>
+<td>La dose préparée par l'IDE, conforme à la prescription</td>
+</tr>
+<tr>
+<td>🕐 <strong>Bon moment</strong></td>
+<td>Horaire prescrit (avant/pendant/après repas)</td>
+</tr>
+<tr>
+<td>💧 <strong>Bonne voie</strong></td>
+<td>Voie orale dans le champ AS (formes préparées)</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>🩺 le rôle concret de l&#x27;AS</h4><p>Vérifier les 5B, installer la personne, aider à la prise, <strong>s'assurer que le médicament est bien pris</strong> (pas recraché, pas oublié), tracer la prise et signaler tout refus ou difficulté.</p></aside>
+</section><section class="partie"><h3>Surveiller, transmettre</h3>
+<aside class="encadre"><h4>📣 ce que l&#x27;AS transmet</h4><p>Refus de prise, médicament recraché, difficulté à avaler, effet inhabituel observé (somnolence, nausée, éruption…). On signale à l'IDE et on trace.</p></aside>
+<aside class="vigilance"><h4>⚠ 🚨 sans prescription = danger</h4><p>Donner un médicament sans prescription, ou modifier une prise, est une faute grave aux conséquences potentiellement vitales. <strong>L'AS aide, il ne prescrit pas.</strong></p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>C’est l’<strong>IDE qui prépare et contrôle</strong> ; l’AS <strong>aide à la prise sur prescription</strong> (collaboration ≠ délégation).</p>
+<p><strong>Règle des 5B</strong> + identitovigilance · ne jamais laisser les médicaments en l’absence du résident.</p>
+<p>Aide à la prise : installer assis, faire avaler un par un, vérifier la bouche vide, s’assurer de la prise.</p>
+<p>Signaler <strong>immédiatement</strong> : refus, fausse route, médicament recraché/tombé/vomi · tracer.</p>
+<p>Connaître les surveillances par famille : anticoagulants (saignements), AINS/corticoïdes, antibiotiques (allergie, mycose), diurétiques, laxatifs, insuline, antalgiques (paliers), neuroleptiques/antidépresseurs.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 4 (ACTIVITÉ 11 : règle des 5 B).</p>
+<p><strong>5 B :</strong> Bon patient · Bon médicament · Bonne dose · Bonne voie · Bon moment.</p>
+<p>L’AS <strong>aide à la prise</strong> : pas de délégation (rôle propre IDE, art. R4311-4).</p>
+<p><strong>Comprimé par comprimé</strong>, bouche vide avant le suivant.</p>
+<p>Non pris / au sol / vomi → <strong>alerter l’IDE en temps réel</strong>.</p>
+<p><strong>🎓 À l’oral / piège :</strong> « Aider à la prise » ≠ administrer : marque bien la limite du rôle AS.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Mme F. recrache son comprimé</p></p>
+<div class="cas-piste"><p><em>Après l’aide à la prise, vous retrouvez un comprimé dans le lit.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Ne pas redonner de soi-même ; <strong>signaler immédiatement à l’IDE</strong>.</li>
+<li>Vérifier les 5B et les consignes (texture, moment).</li>
+<li>Tracer le médicament non pris.</li>
+<li>Rechercher la cause (déglutition, refus).</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Médicament apporté par la famille</p></p>
+<div class="cas-piste"><p><em>La famille a laissé un médicament non prescrit sur la table.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Ne pas l’administrer ; <strong>signaler à l’IDE/au médecin</strong>.</li>
+<li>Expliquer le risque d’interaction à la famille.</li>
+<li>Tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Les 5B : bon patient · bon médicament · bonne dose · bonne voie · bon moment.</li><li>Installer assis, faire avaler un comprimé à la fois, vérifier la bouche vide avant le suivant.</li><li>Comprimé recraché, tombé ou vomi : ne pas le redonner, alerter l’IDE en temps réel.</li><li>Signaler aussi le refus, la difficulté à avaler, la fausse route, un effet inhabituel — somnolence, nausée, éruption.</li><li>Médicament apporté par la famille et non prescrit : ne pas le donner, prévenir l’IDE, expliquer le risque d’interaction.</li><li>Tracer la prise — et tracer tout autant ce qui n’a pas été pris.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’aide à la prise se fait sur prescription, en collaboration avec l’IDE — collaboration n’est pas délégation.</li><li>L’IDE prépare et contrôle ; l’AS aide à la prise de formes orales déjà préparées et identifiées.</li><li>Aucune dose modifiée, aucun comprimé écrasé de sa propre initiative — formes LP et interactions.</li><li>Ne jamais laisser les médicaments en l’absence du résident.</li><li>Aider à la prise n’est pas administrer : la limite du rôle tient dans cette nuance.</li><li>En cas de doute, on se réfère à l’IDE plutôt que d’agir seul.</li></ul></section>
+  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« L’aide à la prise se fait sur prescription, en appliquant les 5B et l’identitovigilance. Je ne modifie jamais une dose ; si un médicament est recraché ou refusé, je le signale immédiatement à l’IDE et je le trace. »</p></section>
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> La règle des 5B comprend…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Cinq minutes de surveillance après la prise</li>
+<li data-cle="b" onclick="window._pickQ(this)">Bon lit, bon repas, bon horaire, bon soignant</li>
+<li data-cle="c" onclick="window._pickQ(this)">Bon patient, médicament, dose, moment, voie</li>
+<li data-cle="d" onclick="window._pickQ(this)">Cinq soignants présents à la distribution</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>5B : bon patient, bon médicament, bonne dose, bon moment, bonne voie.<strong> 🎓 À l’oral VAE :</strong> la règle de sécurité.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> L'AS peut-il modifier une dose s'il pense que c'est mieux ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Oui si la famille le demande</li>
+<li data-cle="b" onclick="window._pickQ(this)">Oui la nuit</li>
+<li data-cle="c" onclick="window._pickQ(this)">Oui avec expérience</li>
+<li data-cle="d" onclick="window._pickQ(this)">Non, jamais : il aide à la prise sur prescription</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Jamais modifier une dose : l’AS aide à la prise sur prescription.<strong> 🎓 À l’oral VAE :</strong> pas d’initiative.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Après l'aide à la prise, l'AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Vérifie que le médicament est bien pris et trace</li>
+<li data-cle="b" onclick="window._pickQ(this)">Laisse le comprimé sur la table</li>
+<li data-cle="c" onclick="window._pickQ(this)">Note sans vérifier</li>
+<li data-cle="d" onclick="window._pickQ(this)">Quitte la pièce aussitôt</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Après l’aide : vérifier la prise effective et tracer.<strong> 🎓 À l’oral VAE :</strong> s’assurer qu’il est avalé.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un médicament recraché doit être…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Redonné aussitôt</li>
+<li data-cle="b" onclick="window._pickQ(this)">Signalé à l'IDE et tracé</li>
+<li data-cle="c" onclick="window._pickQ(this)">Remplacé par un autre</li>
+<li data-cle="d" onclick="window._pickQ(this)">Ignoré</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Médicament recraché : signaler à l’IDE et tracer.<strong> 🎓 À l’oral VAE :</strong> ne pas redonner soi-même.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> Les 5B incluent notamment…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Trois vérifications seulement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le seul bon patient</li>
+<li data-cle="c" onclick="window._pickQ(this)">Bon patient, bon médicament, bonne dose, bonne voie, bon moment</li>
+<li data-cle="d" onclick="window._pickQ(this)">Beau, bon, bref, brut, brillant</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Bon patient, bon médicament, bonne dose, bonne voie, bon moment.<strong> 🎓 À l’oral VAE :</strong> associez-les à l’identitovigilance.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> L’AS peut-il écraser un comprimé de sa propre initiative ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Oui si la personne déglutit mal</li>
+<li data-cle="b" onclick="window._pickQ(this)">Oui, toujours</li>
+<li data-cle="c" onclick="window._pickQ(this)">Oui pour aller plus vite</li>
+<li data-cle="d" onclick="window._pickQ(this)">Non : c’est l’IDE qui le décide/prépare (interactions, formes LP)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Écraser modifie le médicament (formes LP, interactions) : préparation/contrôle IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS aide à la prise, ne prépare pas.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B2_L06.html" class="back">← B2_L06</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B2_L08.html">B2_L08 →</a></div>
 </div>
 </body></html>

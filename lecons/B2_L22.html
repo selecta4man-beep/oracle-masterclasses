@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B2 · B2_L22 · Douleur — évaluation &amp; soulagement — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L22 · Douleur — évaluation & soulagement — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L22</div>
@@ -56,7 +79,165 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Douleur — évaluation &amp; soulagement</h1>
     <div class="accroche"><p>Cette leçon vous apprend à évaluer systématiquement la douleur, y compris chez une personne qui ne s’exprime plus, en choisissant l’échelle adaptée et en réévaluant après chaque action pour objectiver le soulagement.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Évaluer la douleur systématiquement, y compris chez une personne qui ne s’exprime plus.</li><li>Choisir l’échelle adaptée entre auto-évaluation et hétéro-évaluation.</li><li>Repérer les signes non verbaux qui traduisent une douleur.</li><li>Adapter le déroulement du soin à une personne douloureuse.</li><li>Réévaluer avec la même échelle et transmettre ce que vous avez observé.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>La douleur, « 5ᵉ signe vital »</h3></section><section class="partie"><h3>Les échelles d&#x27;évaluation</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Grimaces, gémissements, repli, refus de mobilisation, position antalgique, crispation : la douleur se voit avant de se dire.</li><li>Signaler la douleur avant le soin — l’IDE peut donner l’antalgique prescrit.</li><li>Ne pas forcer une mobilisation : gestes doux, pauses, reporter ce qui peut l’être.</li><li>Installer en position confortable et rassurer.</li><li>Réévaluer après chaque action, toujours avec la même échelle.</li><li>Transmettre les signes observés et le retentissement — la cause relève de l’IDE et du médecin.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La douleur est le 5ᵉ signe vital : elle s’évalue systématiquement.</li><li>Elle est subjective — on croit la personne qui dit avoir mal.</li><li>Auto-évaluation : EN de 0 à 10, EVA à la réglette, EVS verbale simple de 0 à 4.</li><li>Hétéro-évaluation : Algoplus en aigu, douleur au-delà de 2/5 ; Doloplus en chronique, douleur au-delà de 5.</li><li>Douleur corporelle, souffrance physique et morale, total pain pour la douleur globale.</li><li>Toute l’équipe utilise la même échelle pour la même personne.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. La douleur est…</p><ol class="opts"><li class="ok">Sans importance</li><li class="">À minimiser</li><li class="">Subjective : on croit la personne qui dit avoir mal</li><li class="">Objective et mesurable comme la fièvre</li></ol></div><div class="qblock"><p class="q">2. Pour une personne qui ne communique pas, on utilise…</p><ol class="opts"><li class="ok">Une échelle d&#x27;hétéro-évaluation (Algoplus, Doloplus)</li><li class="">Aucune échelle</li><li class="">L&#x27;EVA seule</li><li class="">La glycémie</li></ol></div><div class="qblock"><p class="q">3. Algoplus indique une douleur si le score est…</p><ol class="opts"><li class="ok">&gt; 2/5</li><li class="">&lt; 1</li><li class="">Jamais</li><li class="">= 0</li></ol></div><div class="qblock"><p class="q">4. Après une action antalgique, l&#x27;AS…</p><ol class="opts"><li class="ok">Oublie de tracer</li><li class="">Change d&#x27;échelle</li><li class="">Ne refait rien</li><li class="">Réévalue la douleur avec la même échelle</li></ol></div><div class="qblock"><p class="q">5. Doloplus (douleur chronique, personne non communicante) indique une douleur si le score est…</p><ol class="opts"><li class="ok">&lt; 2</li><li class="">&gt; 5</li><li class="">= 0</li><li class="">Toujours nul chez la personne âgée</li></ol></div><div class="qblock"><p class="q">6. Quand une personne signale une douleur avant la toilette, l’AS…</p><ol class="opts"><li class="ok">Réalise le soin sans rien dire</li><li class="">Attend la fin de la tournée pour transmettre</li><li class="">Signale à l’IDE avant le soin, pour un éventuel antalgique prescrit</li><li class="">Décide elle-même d’administrer un antalgique</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B2_L21.html" class="back">← B2_L21</a><a href="B2_L23.html">B2_L23 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Évaluer la douleur systématiquement, y compris chez une personne qui ne s’exprime plus.</li><li>Choisir l’échelle adaptée entre auto-évaluation et hétéro-évaluation.</li><li>Repérer les signes non verbaux qui traduisent une douleur.</li><li>Adapter le déroulement du soin à une personne douloureuse.</li><li>Réévaluer avec la même échelle et transmettre ce que vous avez observé.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>La douleur, « 5ᵉ signe vital »</h3>
+<p>La douleur s'évalue <strong>systématiquement</strong>. Elle est <strong>subjective</strong> : on croit la personne qui dit avoir mal. Chez une personne qui ne s'exprime pas, la douleur « se voit » avant de se dire.</p>
+<aside class="encadre"><h4>📖 douleur, souffrance, total pain</h4><p><strong>Douleur</strong> = corporelle. <strong>Souffrance</strong> = physique + morale. <strong>Total pain</strong> = douleur globale (physique, psychique, sociale, spirituelle). Toujours subjective, jamais à minimiser.</p></aside>
+</section><section class="partie"><h3>Les échelles d&#x27;évaluation</h3>
+<div class="tableau"><table><thead><tr>
+<th>Type</th>
+<th>Échelles</th>
+</tr></thead><tbody>
+<tr>
+<td>Auto-évaluation (la personne s'exprime)</td>
+<td>EN (0–10), EVA (réglette), EVS (verbale simple 0→4)</td>
+</tr>
+<tr>
+<td>Hétéro-évaluation (HAS, non communicante)</td>
+<td>Algoplus (aiguë, 5 items → douleur si &gt; 2/5) ; Doloplus (chronique → douleur si &gt; 5)</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>💡 signes non verbaux de douleur</h4><p>Grimaces, gémissements, repli, refus de mobilisation, position antalgique, agitation, crispation. Chez la personne non communicante, ces signes guident l'hétéro-évaluation.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p><strong>Repérer</strong> (verbal/non verbal), évaluer l’intensité et la localisation, puis <strong>réévaluer</strong>.</p>
+<p>Auto-évaluation : <strong>EN / EVA / EVS</strong> · hétéro-évaluation : <strong>Algoplus / Doloplus</strong> si non communicant.</p>
+<p>Distinguer douleur et souffrance · notion de <strong>total pain</strong> en fin de vie.</p>
+<p>Rôle AS : soins doux, réinstallation, soins non médicamenteux (chaud/froid sur protocole), collaboration, transmissions en précisant l’échelle (la même en équipe).</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 3 (ACTIVITÉ 10 : évaluation de la douleur).</p>
+<p><strong>Auto-évaluation :</strong> EN (0–10), EVA (réglette), EVS (0→4).</p>
+<p><strong>Hétéro-évaluation (HAS) :</strong> Algoplus (aiguë, &gt; 2/5) ; Doloplus (chronique, &gt; 5).</p>
+<p>Douleur <strong>toujours subjective, jamais à minimiser</strong> ; <strong>réévaluer après chaque action</strong>, même échelle en équipe.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Même échelle dans l’équipe + réévaluation : preuve d’un suivi rigoureux.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · douleur non verbale (M. D.)</strong></p></p>
+<div class="cas-piste"><p><em>M. D., troubles cognitifs avancés, ne s'exprime quasiment plus. Depuis ce matin il gémit, refuse de bouger, garde une jambe repliée et grimace dès qu'on l'approche pour la toilette.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Comment évaluer alors qu'il ne parle pas ?</li>
+<li>Quelle conduite pendant le soin ?</li>
+<li>Que transmettre, et à qui ?</li>
+<li>Quels pièges éviter ?</li>
+</ul>
+<p><strong>Corrigé attendu (IFAS/jury) :</strong></p>
+<p><strong>1. Évaluation.</strong> S'appuyer sur les <strong>signes non verbaux</strong> (gémissements, grimaces, refus de mobilisation, position antalgique) et utiliser un outil d'<strong>hétéro-évaluation</strong> (Algoplus / Doloplus) adapté à une personne qui ne communique pas.</p>
+<p><strong>2. Conduite.</strong> Ne pas forcer la mobilisation, agir en douceur, installer en position confortable, reporter ce qui peut l'être, rassurer.</p>
+<p><strong>3. Transmission.</strong> Signaler à l'IDE une douleur probable : signes observés, localisation suggérée (jambe), retentissement (refus du soin). Tracer.</p>
+<p><strong>4. Pièges.</strong> Conclure « il ne dit rien donc il n'a pas mal », forcer le soin, interpréter la cause. <strong>La douleur se croit et se transmet</strong> ; la cause relève de l'IDE/médecin.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Mme P. non communicante, grimaces</p></p>
+<div class="cas-piste"><p><em>Elle gémit et grimace à la mobilisation, sans pouvoir s’exprimer.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Utiliser une <strong>hétéro-évaluation</strong> (Algoplus/Doloplus).</li>
+<li>Installation antalgique, soins doux, alerter l’IDE.</li>
+<li>Réévaluer avec la même échelle, tracer.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — M. R., EVA 7/10 avant la toilette</p></p>
+<div class="cas-piste"><p><em>Il évalue lui-même sa douleur à 7/10 avant le soin.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Signaler <strong>avant</strong> le soin pour antalgique IDE si prescrit.</li>
+<li>Adapter le soin (douceur, pauses).</li>
+<li>Réévaluer avec la <strong>même échelle</strong>, tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Grimaces, gémissements, repli, refus de mobilisation, position antalgique, crispation : la douleur se voit avant de se dire.</li><li>Signaler la douleur avant le soin — l’IDE peut donner l’antalgique prescrit.</li><li>Ne pas forcer une mobilisation : gestes doux, pauses, reporter ce qui peut l’être.</li><li>Installer en position confortable et rassurer.</li><li>Réévaluer après chaque action, toujours avec la même échelle.</li><li>Transmettre les signes observés et le retentissement — la cause relève de l’IDE et du médecin.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La douleur est le 5ᵉ signe vital : elle s’évalue systématiquement.</li><li>Elle est subjective — on croit la personne qui dit avoir mal.</li><li>Auto-évaluation : EN de 0 à 10, EVA à la réglette, EVS verbale simple de 0 à 4.</li><li>Hétéro-évaluation : Algoplus en aigu, douleur au-delà de 2/5 ; Doloplus en chronique, douleur au-delà de 5.</li><li>Douleur corporelle, souffrance physique et morale, total pain pour la douleur globale.</li><li>Toute l’équipe utilise la même échelle pour la même personne.</li></ul></section>
+  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« La douleur est subjective : je crois la personne qui dit avoir mal. J’évalue avec l’échelle adaptée — EVA si elle communique, Algoplus sinon — je soulage par des soins doux et je réévalue toujours avec la même échelle. »</p></section>
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> La douleur est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Sans importance</li>
+<li data-cle="b" onclick="window._pickQ(this)">À minimiser</li>
+<li data-cle="c" onclick="window._pickQ(this)">Subjective : on croit la personne qui dit avoir mal</li>
+<li data-cle="d" onclick="window._pickQ(this)">Objective et mesurable comme la fièvre</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La douleur est subjective : on croit la personne qui dit avoir mal.<strong> 🎓 À l’oral VAE :</strong> jamais juger.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> Pour une personne qui ne communique pas, on utilise…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une échelle d'hétéro-évaluation (Algoplus, Doloplus)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Aucune échelle</li>
+<li data-cle="c" onclick="window._pickQ(this)">L'EVA seule</li>
+<li data-cle="d" onclick="window._pickQ(this)">La glycémie</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Non communicant : hétéro-évaluation (Algoplus, Doloplus).<strong> 🎓 À l’oral VAE :</strong> échelle adaptée.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Algoplus indique une douleur si le score est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">&gt; 2/5</li>
+<li data-cle="b" onclick="window._pickQ(this)">&lt; 1</li>
+<li data-cle="c" onclick="window._pickQ(this)">Jamais</li>
+<li data-cle="d" onclick="window._pickQ(this)">= 0</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Algoplus : douleur si score &gt; 2/5.<strong> 🎓 À l’oral VAE :</strong> repère chiffré.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> Après une action antalgique, l'AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Oublie de tracer</li>
+<li data-cle="b" onclick="window._pickQ(this)">Change d'échelle</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ne refait rien</li>
+<li data-cle="d" onclick="window._pickQ(this)">Réévalue la douleur avec la même échelle</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Après une action antalgique : réévaluer avec la même échelle.<strong> 🎓 À l’oral VAE :</strong> mesurer l’effet.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q4">
+<p class="q"><strong>Q5.</strong> Doloplus (douleur chronique, personne non communicante) indique une douleur si le score est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">&lt; 2</li>
+<li data-cle="b" onclick="window._pickQ(this)">&gt; 5</li>
+<li data-cle="c" onclick="window._pickQ(this)">= 0</li>
+<li data-cle="d" onclick="window._pickQ(this)">Toujours nul chez la personne âgée</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Doloplus : douleur si le score est supérieur à 5.<strong> 🎓 À l’oral VAE :</strong> ne pas confondre avec Algoplus (&gt; 2/5, douleur aiguë).</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> Quand une personne signale une douleur avant la toilette, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Réalise le soin sans rien dire</li>
+<li data-cle="b" onclick="window._pickQ(this)">Attend la fin de la tournée pour transmettre</li>
+<li data-cle="c" onclick="window._pickQ(this)">Signale à l’IDE avant le soin, pour un éventuel antalgique prescrit</li>
+<li data-cle="d" onclick="window._pickQ(this)">Décide elle-même d’administrer un antalgique</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Signaler la douleur avant le soin permet à l’IDE de donner l’antalgique prescrit si besoin.<strong> 🎓 À l’oral VAE :</strong> anticiper plutôt que subir.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B2_L21.html" class="back">← B2_L21</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B2_L23.html">B2_L23 →</a></div>
 </div>
 </body></html>

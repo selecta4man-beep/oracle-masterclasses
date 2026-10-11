@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B2 · B2_L16 · Oxygénothérapie &amp; sonde nasogastrique — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L16 · Oxygénothérapie & sonde nasogastrique — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L16</div>
@@ -56,7 +79,132 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Oxygénothérapie &amp; sonde nasogastrique</h1>
     <div class="accroche"><p>Cette leçon vous apprend à sécuriser une personne sous oxygène, sans flamme ni corps gras à proximité, et à surveiller une sonde nasogastrique sans la manipuler, en sachant ce qui doit être signalé à l’IDE.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer ce qui relève de l’aide-soignant et ce qui relève de l’IDE autour de l’oxygène.</li><li>Surveiller le confort et l’état cutané d’une personne sous oxygénothérapie.</li><li>Appliquer les règles de sécurité liées au caractère comburant de l’oxygène.</li><li>Surveiller une sonde nasogastrique sans jamais la manipuler.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Oxygénothérapie : confort et surveillance</h3></section><section class="partie"><h3>Sonde nasogastrique : surveiller, ne pas manipuler</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Vérifier que lunettes ou masque sont bien en place, sans point d’appui douloureux.</li><li>Surveiller la SpO₂, l’essoufflement, l’état de la bouche.</li><li>Refuser la crème grasse sur le visage sous oxygène, et expliquer pourquoi.</li><li>Installer en position demi-assise pour l’alimentation entérale, selon protocole.</li><li>Signaler : gêne, nausées, vomissements, sonde qui semble déplacée, signes respiratoires.</li><li>Fixation qui se détache : sécuriser, appeler l’IDE, ne rien repousser.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’oxygène est un traitement sur prescription ; le débit se règle par l’IDE.</li><li>Le changement de lunette à O₂ avec tubulure peut être confié à l’AS depuis la réforme 2021.</li><li>L’oxygène est comburant : ni flamme, ni corps gras à proximité.</li><li>La sonde nasogastrique ne se mobilise pas et ne se repositionne pas.</li><li>L’aile du nez, sous la fixation, est une zone d’escarre.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le réglage du débit d&#x27;oxygène relève…</p><ol class="opts"><li class="ok">Du kiné</li><li class="">De l&#x27;AS</li><li class="">De l&#x27;IDE</li><li class="">De la famille</li></ol></div><div class="qblock"><p class="q">2. L&#x27;oxygène étant comburant, il faut éviter…</p><ol class="opts"><li class="ok">Le calme</li><li class="">Toute flamme et les corps gras à proximité</li><li class="">La SpO₂</li><li class="">La position assise</li></ol></div><div class="qblock"><p class="q">3. Face à une sonde nasogastrique, l&#x27;AS…</p><ol class="opts"><li class="ok">Modifie l&#x27;alimentation</li><li class="">Surveille fixation/confort et signale, sans la manipuler</li><li class="">La retire si elle gêne</li><li class="">La repositionne</li></ol></div><div class="qblock"><p class="q">4. Le changement de lunette à O₂ avec tubulure…</p><ol class="opts"><li class="ok">Peut être confié à l&#x27;AS dans le cadre prévu (réforme 2021)</li><li class="">N&#x27;existe pas</li><li class="">Est interdit à l&#x27;AS</li><li class="">Relève du médecin seul</li></ol></div><div class="qblock"><p class="q">5. Pour l’alimentation entérale par sonde nasogastrique, l’AS installe la personne…</p><ol class="opts"><li class="ok">Allongée à plat</li><li class="">En position demi-assise, selon le protocole</li><li class="">Sur le côté systématiquement</li><li class="">Debout</li></ol></div><div class="qblock"><p class="q">6. Si la fixation de la sonde nasogastrique se détache pendant la toilette, l’AS…</p><ol class="opts"><li class="ok">La repousse doucement dans le nez</li><li class="">Retire complètement la sonde</li><li class="">Sécurise sans repousser la sonde et alerte l’IDE immédiatement</li><li class="">Attend la fin de la toilette pour agir</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B2_L15.html" class="back">← B2_L15</a><a href="B2_L17.html">B2_L17 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer ce qui relève de l’aide-soignant et ce qui relève de l’IDE autour de l’oxygène.</li><li>Surveiller le confort et l’état cutané d’une personne sous oxygénothérapie.</li><li>Appliquer les règles de sécurité liées au caractère comburant de l’oxygène.</li><li>Surveiller une sonde nasogastrique sans jamais la manipuler.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Oxygénothérapie : confort et surveillance</h3>
+<p>L'oxygène est un <strong>traitement sur prescription</strong>. L'AS veille au confort et à la sécurité ; le réglage du débit relève de l'IDE. Depuis la réforme 2021, le <strong>changement de lunette à O₂ avec tubulure</strong> peut être confié à l'AS dans le cadre prévu.</p>
+<aside class="encadre"><h4>🩺 le rôle concret de l&#x27;AS</h4><p>Vérifier que les lunettes/le masque sont bien en place, surveiller l'état cutané (nez, oreilles), le confort, la SpO₂, et signaler tout essoufflement ou désaturation. <strong>Ne pas modifier le débit</strong> sans l'IDE.</p></aside>
+<aside class="vigilance"><h4>⚠ 🚨 sécurité oxygène</h4><p>L'oxygène est <strong>comburant</strong> : pas de flamme, pas de corps gras sur le visage à proximité. Surveiller les points d'appui de la tubulure.</p></aside>
+</section><section class="partie"><h3>Sonde nasogastrique : surveiller, ne pas manipuler</h3>
+<aside class="encadre"><h4>🩺 le rôle concret de l&#x27;AS</h4><p>Veiller à la <strong>fixation</strong>, au confort, à l'hygiène du nez et de la bouche, à l'installation (position demi-assise pour l'alimentation entérale selon protocole). Signaler toute gêne, nausée, déplacement apparent. <strong>Ne pas mobiliser ni repositionner la sonde.</strong></p></aside>
+<aside class="encadre"><h4>📣 ce que l&#x27;AS transmet</h4><p>Gêne, nausées/vomissements, sonde qui semble déplacée, signes respiratoires, état cutané du nez.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 4 (ACTIVITÉ 15 : dispositifs).</p>
+<p><strong>Oxygène :</strong> pas de crème grasse ni parfum (risque de brûlure) ; confort des lunettes/masque.</p>
+<p><strong>SNG :</strong> surveiller la fixation et l’aile du nez (escarre), la position.</p>
+<p>Toute anomalie/débranchement → alerter l’IDE.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Oxygène + corps gras = danger : à ne jamais oublier.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Crème sur le visage sous oxygène</p></p>
+<div class="cas-piste"><p><em>Sous O₂, M. D. demande qu’on lui mette de la crème grasse sur le nez.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Refuser le <strong>corps gras</strong> (O₂ comburant → brûlure) ; expliquer.</li>
+<li>Vérifier l’humidificateur, surveiller ailes du nez/oreilles, bouche.</li>
+<li>Tracer.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Sonde nasogastrique qui se décolle</p></p>
+<div class="cas-piste"><p><em>Pendant la toilette, la fixation de la SNG se détache de l’aile du nez.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Ne pas remettre/repousser la sonde ; sécuriser.</li>
+<li>Signaler immédiatement à l’IDE.</li>
+<li>Surveiller la respiration, tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Vérifier que lunettes ou masque sont bien en place, sans point d’appui douloureux.</li><li>Surveiller la SpO₂, l’essoufflement, l’état de la bouche.</li><li>Refuser la crème grasse sur le visage sous oxygène, et expliquer pourquoi.</li><li>Installer en position demi-assise pour l’alimentation entérale, selon protocole.</li><li>Signaler : gêne, nausées, vomissements, sonde qui semble déplacée, signes respiratoires.</li><li>Fixation qui se détache : sécuriser, appeler l’IDE, ne rien repousser.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’oxygène est un traitement sur prescription ; le débit se règle par l’IDE.</li><li>Le changement de lunette à O₂ avec tubulure peut être confié à l’AS depuis la réforme 2021.</li><li>L’oxygène est comburant : ni flamme, ni corps gras à proximité.</li><li>La sonde nasogastrique ne se mobilise pas et ne se repositionne pas.</li><li>L’aile du nez, sous la fixation, est une zone d’escarre.</li></ul></section>
+  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« Sous oxygène, je surveille le confort — ailes du nez, bouche sèche — et je n’approche jamais de corps gras ni de flamme. Pour la sonde nasogastrique, je surveille la fixation et l’écoulement sans jamais la manipuler. »</p></section>
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le réglage du débit d'oxygène relève…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Du kiné</li>
+<li data-cle="b" onclick="window._pickQ(this)">De l'AS</li>
+<li data-cle="c" onclick="window._pickQ(this)">De l'IDE</li>
+<li data-cle="d" onclick="window._pickQ(this)">De la famille</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Réglage du débit d’O₂ = IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS surveille.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> L'oxygène étant comburant, il faut éviter…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le calme</li>
+<li data-cle="b" onclick="window._pickQ(this)">Toute flamme et les corps gras à proximité</li>
+<li data-cle="c" onclick="window._pickQ(this)">La SpO₂</li>
+<li data-cle="d" onclick="window._pickQ(this)">La position assise</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>O₂ comburant : éviter flammes et corps gras à proximité.<strong> 🎓 À l’oral VAE :</strong> sécurité incendie.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Face à une sonde nasogastrique, l'AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Modifie l'alimentation</li>
+<li data-cle="b" onclick="window._pickQ(this)">Surveille fixation/confort et signale, sans la manipuler</li>
+<li data-cle="c" onclick="window._pickQ(this)">La retire si elle gêne</li>
+<li data-cle="d" onclick="window._pickQ(this)">La repositionne</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Sonde nasogastrique : surveiller fixation/confort, signaler, sans la manipuler.<strong> 🎓 À l’oral VAE :</strong> champ AS.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q3">
+<p class="q"><strong>Q4.</strong> Le changement de lunette à O₂ avec tubulure…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Peut être confié à l'AS dans le cadre prévu (réforme 2021)</li>
+<li data-cle="b" onclick="window._pickQ(this)">N'existe pas</li>
+<li data-cle="c" onclick="window._pickQ(this)">Est interdit à l'AS</li>
+<li data-cle="d" onclick="window._pickQ(this)">Relève du médecin seul</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Changement de lunette O₂ : peut être confié à l’AS (réforme 2021).<strong> 🎓 À l’oral VAE :</strong> dans le cadre prévu.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q4">
+<p class="q"><strong>Q5.</strong> Pour l’alimentation entérale par sonde nasogastrique, l’AS installe la personne…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Allongée à plat</li>
+<li data-cle="b" onclick="window._pickQ(this)">En position demi-assise, selon le protocole</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sur le côté systématiquement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Debout</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Alimentation entérale : position demi-assise selon protocole, pour limiter le risque de reflux/inhalation.<strong> 🎓 À l’oral VAE :</strong> sécurité respiratoire.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> Si la fixation de la sonde nasogastrique se détache pendant la toilette, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La repousse doucement dans le nez</li>
+<li data-cle="b" onclick="window._pickQ(this)">Retire complètement la sonde</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sécurise sans repousser la sonde et alerte l’IDE immédiatement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Attend la fin de la toilette pour agir</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Fixation décollée : ne rien repousser, sécuriser, alerter l’IDE immédiatement.<strong> 🎓 À l’oral VAE :</strong> ne jamais réintroduire une sonde déplacée.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B2_L15.html" class="back">← B2_L15</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B2_L17.html">B2_L17 →</a></div>
 </div>
 </body></html>

@@ -1,62 +1,323 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B3 · B3_L01 · Communication bienveillante — ORACLE VAE AS</title>
+<title>Bloc 3 · B3_L01 · Communication bienveillante — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 3</strong> › B3_L01</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 3</span><span>Leçon 1</span><span>⏱ 40 min</span><span>VAE DEAS</span></div>
     <h1>Communication bienveillante</h1>
-    <div class="accroche"><p>On distingue trois registres — et il faut veiller à leur <strong>cohérence</strong> (éviter la dissonance entre les mots et l&#x27;attitude).</p></div>
+    <div class="accroche"><p>On distingue trois registres — et il faut veiller à leur <strong>cohérence</strong> (éviter la dissonance entre les mots et l'attitude).</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Considérer la communication comme une compétence professionnelle qui précède le geste.</li><li>Distinguer le verbal, le paraverbal et le non verbal, et veiller à leur cohérence.</li><li>Structurer une demande difficile avec la trame F.R.E.D.</li><li>Adapter votre langage et votre rythme au profil de la personne.</li><li>Employer un langage professionnel et écarter les formulations infantilisantes.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Communiquer, c&#x27;est soigner</h3></section><section class="partie"><h3>Verbal, paraverbal, non verbal</h3></section><section class="partie"><h3>La communication non violente en pratique (F.R.E.D.)</h3></section><section class="partie"><h3>Adapter sa communication à la personne</h3></section><section class="partie"><h3>Des modèles pour structurer la relation</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Avant chaque soin : se présenter, regarder la personne, annoncer ce qu’on va faire.</li><li>Se mettre à hauteur, ton calme, laisser à la personne le temps de répondre.</li><li>Dire « prise en soin », « altération », « aggravation » ; jamais « mamy », « petite dame », « on va se laver ».</li><li>Personne désorientée : phrases simples, repères, validation de l’émotion, sans contredire brutalement.</li><li>Trouble sensoriel : se placer face à la personne, articuler sans crier, vérifier l’appareillage, écrire au besoin.</li><li>Aphasie : questions fermées, supports visuels, observation du non verbal, patience.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Une toilette parfaite techniquement mais faite sans un mot échoue comme soin.</li><li>Verbal, paraverbal, non verbal : quand les mots et l’attitude se contredisent, c’est l’attitude qui l’emporte.</li><li>F.R.E.D. : Fait, Ressenti, Enjeu, Demande — une demande claire et négociable.</li><li>On demande sans exiger ; l’écoute active reformule et accueille l’émotion.</li><li>Le triangle de Karpman rappelle de viser la relation adulte-adulte.</li><li>L’empathie comprend l’émotion sans s’y noyer ; la sympathie fait perdre la juste distance.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Dans la communication, le non verbal…</p><ol class="opts"><li class="ok">Concerne seulement l&#x27;écrit</li><li class="">Remplace toujours la parole</li><li class="">N&#x27;a aucune importance</li><li class="">Pèse souvent plus que les mots</li></ol></div><div class="qblock"><p class="q">2. La méthode F.R.E.D. (CNV) signifie…</p><ol class="opts"><li class="ok">Aucune de ces réponses</li><li class="">Forcer → Refuser → Exiger → Décider</li><li class="">Fiche de Recueil des Données</li><li class="">Fait → Ressenti → Enjeux → Demande</li></ol></div><div class="qblock"><p class="q">3. Pour parler à une personne âgée, on…</p><ol class="opts"><li class="ok">L&#x27;infantilise avec des petits noms</li><li class="">Évite de la regarder</li><li class="">Parle clairement, sans infantiliser, en laissant le temps de répondre</li><li class="">Parle très fort systématiquement</li></ol></div><div class="qblock"><p class="q">4. Une « dissonance » en communication, c&#x27;est…</p><ol class="opts"><li class="ok">Une contradiction entre les mots et l&#x27;attitude</li><li class="">Un appareil auditif défectueux</li><li class="">Un mot mal prononcé</li><li class="">Un silence trop long</li></ol></div><div class="qblock"><p class="q">5. Le triangle de Karpman invite à viser…</p><ol class="opts"><li class="ok">La relation adulte–adulte</li><li class="">La relation victime–sauveur</li><li class="">Aucune relation</li><li class="">Le rôle de persécuteur</li></ol></div><div class="qblock"><p class="q">6. La méthode F.R.E.D. (CNV) se termine par…</p><ol class="opts"><li class="ok">Un reproche</li><li class="">Un silence</li><li class="">Une menace</li><li class="">Une demande claire et négociable</li></ol></div><div class="qblock"><p class="q">7. « Demander sans exiger » signifie…</p><ol class="opts"><li class="ok">Imposer</li><li class="">Ordonner</li><li class="">Formuler une demande négociable, sans pression</li><li class="">Renoncer</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B2_L26.html" class="back">← B2_L26</a><a href="B3_L02.html">B3_L02 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Considérer la communication comme une compétence professionnelle qui précède le geste.</li><li>Distinguer le verbal, le paraverbal et le non verbal, et veiller à leur cohérence.</li><li>Structurer une demande difficile avec la trame F.R.E.D.</li><li>Adapter votre langage et votre rythme au profil de la personne.</li><li>Employer un langage professionnel et écarter les formulations infantilisantes.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Communiquer, c&#x27;est soigner</h3>
+<p>Aucun soin de qualité n'existe sans relation. Une toilette techniquement parfaite mais faite <strong>sans un mot, sans regard, sans respect</strong> échoue en tant que soin. Communiquer n'est pas « bavarder » : c'est une compétence professionnelle, qui s'apprend.</p>
+<aside class="encadre"><h4></h4><p><strong>📖 les deux canaux de la communication</strong></p>
+<p>Toute communication a deux canaux : le <strong>verbal</strong> (les mots) et le <strong>non verbal</strong> (regard, ton, posture, gestes, silence). Le non verbal pèse souvent <strong>plus lourd</strong> que les mots : la personne « lit » votre attitude avant de vous entendre.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>💡 le réflexe qui précède le geste</strong></p>
+<p>Avant de soigner : je me présente, je regarde la personne, j'annonce ce que je vais faire. <strong>La communication précède le geste.</strong></p></aside>
+</section><section class="partie"><h3>Verbal, paraverbal, non verbal</h3>
+<p>On distingue trois registres — et il faut veiller à leur <strong>cohérence</strong> (éviter la dissonance entre les mots et l'attitude).</p>
+<div class="tableau"><table><thead><tr>
+<th>Registre</th>
+<th>Ce qu'il recouvre</th>
+</tr></thead><tbody>
+<tr>
+<td>🗣️ <strong>Verbal</strong></td>
+<td>Les mots, le vocabulaire choisi</td>
+</tr>
+<tr>
+<td>🎚️ <strong>Paraverbal</strong></td>
+<td>Le ton, le débit, le volume, les silences</td>
+</tr>
+<tr>
+<td>🧍 <strong>Non verbal</strong></td>
+<td>Regard, posture, gestes, distance, toucher, expression du visage</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ 🚨 la dissonance</h4><p>Un message verbal rassurant prononcé avec un <strong>visage fermé</strong> ne rassure pas. Quand les mots et l'attitude se contredisent, c'est l'attitude qui l'emporte.</p></aside>
+</section><section class="partie"><h3>La communication non violente en pratique (F.R.E.D.)</h3>
+<p>La <strong>CNV</strong> (Rosenberg) aide à exprimer un besoin sans agresser. Outil <strong>F.R.E.D.</strong> :</p>
+<div class="tableau"><table><thead><tr>
+<th>Étape</th>
+<th>Exemple</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>F</strong>ait</td>
+<td>« Quand le soin est reporté plusieurs fois… »</td>
+</tr>
+<tr>
+<td><strong>R</strong>essenti</td>
+<td>« …je me sens inquiet pour votre confort »</td>
+</tr>
+<tr>
+<td><strong>E</strong>njeu</td>
+<td>« …car votre bien-être est important pour moi »</td>
+</tr>
+<tr>
+<td><strong>D</strong>emande</td>
+<td>« …pourrions-nous convenir d’un moment ensemble ? » (claire, négociable)</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p>On <strong>demande sans exiger</strong> et on pratique l’écoute active (reformuler, accueillir l’émotion) : cela apaise le conflit.</p></aside>
+</section><section class="partie"><h3>Adapter sa communication à la personne</h3>
+<p>Il n'existe pas une bonne façon de communiquer, mais une communication <strong>adaptée</strong> à chaque personne et à chaque situation. L'AS ajuste son langage, son rythme, son ton et ses supports.</p>
+<div class="tableau"><table><thead><tr>
+<th>Profil</th>
+<th>Communication adaptée</th>
+</tr></thead><tbody>
+<tr>
+<td>Personne âgée</td>
+<td>Parler clairement, sans infantiliser, laisser le temps de répondre</td>
+</tr>
+<tr>
+<td>Personne désorientée</td>
+<td>Phrases simples, repères, ton calme, ne pas contredire brutalement</td>
+</tr>
+<tr>
+<td>Troubles sensoriels</td>
+<td>Se placer face à elle, articuler, écrire si besoin, vérifier l'appareillage</td>
+</tr>
+<tr>
+<td>Aphasie / troubles du langage</td>
+<td>Questions fermées, supports visuels, patience, observer le non verbal</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ 🚨 le langage à bannir</h4><p>Préférer « <strong>aggravation</strong> », « <strong>prise en soin</strong> », « <strong>altération</strong> » ; bannir « petite dame », « mamy », « on va se laver », « mon résident ». Le langage professionnel respecte la dignité.</p></aside>
+</section><section class="partie"><h3>Des modèles pour structurer la relation</h3>
+<p>Le livre ORACLE relie la communication à plusieurs modèles repères (fiche ACTIVITÉ 22).</p>
+<div class="tableau"><table><thead><tr>
+<th>Modèle</th>
+<th>À retenir</th>
+</tr></thead><tbody>
+<tr>
+<td>CNV — F.R.E.D. (Rosenberg)</td>
+<td>Fait (sans juger) → Ressenti → Enjeux → Demande (positive, concrète, réaliste, négociable)</td>
+</tr>
+<tr>
+<td>Triangle de Karpman</td>
+<td>Victime – Sauveur – Persécuteur ; viser la relation <strong>adulte–adulte</strong></td>
+</tr>
+<tr>
+<td>Écoute active (Rogers)</td>
+<td>Questionnement + reformulation, sans juger</td>
+</tr>
+<tr>
+<td>Validation (Feil)</td>
+<td>Entrer dans l'émotion (démence), ne pas contredire</td>
+</tr>
+<tr>
+<td>Intelligence émotionnelle (Goleman)</td>
+<td>Identifier, exprimer, comprendre, réguler les émotions</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>💡 empathie ≠ sympathie</h4><p>L'<strong>empathie</strong> comprend l'émotion de l'autre sans s'y noyer ; la <strong>sympathie</strong> la partage et fait perdre la juste distance. Le soignant vise l'empathie.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>Verbal / paraverbal (ton) / non verbal · éviter la <strong>dissonance</strong> · viser une <strong>relation adulte-adulte</strong> (triangle de Karpman).</p>
+<p><strong>CNV</strong> (méthode F.R.E.D.) · <strong>écoute active</strong> (Rogers) · <strong>validation</strong> (N. Feil) pour les démences (entrer dans l’émotion, sans mentir).</p>
+<p><strong>Langage professionnel</strong> (« prise en soin », « altération ») · pas d’infantilisation (« mamy/papy », « on va se laver »).</p>
+<p>Empathie (≠ sympathie), se mettre à hauteur, secret et discrétion, reformuler les émotions · <strong>anonymiser</strong> les écrits qui sortent de l’établissement.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 6 (ACTIVITÉ 22 : communication).</p>
+<p><strong>3 canaux :</strong> verbal (mots), paraverbal (ton), non verbal (corps) — attention à la <strong>dissonance</strong>.</p>
+<p><strong>CNV (Rosenberg) — F.R.E.D. :</strong> Fait (sans juger) → Ressenti → Enjeux → Demande (positive, concrète, réaliste, négociable).</p>
+<p><strong>Langage professionnel :</strong> préférer « aggravation, prise en soin, altération » ; bannir « petite dame, mamy, on va se laver, mon résident ».</p>
+<p><strong>🎓 À l’oral / piège :</strong> « On va se laver » et « ma petite dame » sont des pièges : emploie un langage professionnel et respectueux.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Soin chez une personne anxieuse</p></p>
+<div class="cas-piste"><p><em>Mme V. est tendue avant sa toilette.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Se présenter, à sa hauteur, ton calme.</li>
+<li>Expliquer chaque geste, demander l’accord.</li>
+<li>Non-verbal rassurant.</li>
+<li>Reformuler, transmettre le ressenti.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Résident malentendant</p></p>
+<div class="cas-piste"><p><em>M. C. entend mal.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Face à lui, articuler sans crier.</li>
+<li>Phrases courtes, gestes, support visuel.</li>
+<li>Faire reformuler.</li>
+<li>Signaler appareil défaillant.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Avant chaque soin : se présenter, regarder la personne, annoncer ce qu’on va faire.</li><li>Se mettre à hauteur, ton calme, laisser à la personne le temps de répondre.</li><li>Dire « prise en soin », « altération », « aggravation » ; jamais « mamy », « petite dame », « on va se laver ».</li><li>Personne désorientée : phrases simples, repères, validation de l’émotion, sans contredire brutalement.</li><li>Trouble sensoriel : se placer face à la personne, articuler sans crier, vérifier l’appareillage, écrire au besoin.</li><li>Aphasie : questions fermées, supports visuels, observation du non verbal, patience.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Une toilette parfaite techniquement mais faite sans un mot échoue comme soin.</li><li>Verbal, paraverbal, non verbal : quand les mots et l’attitude se contredisent, c’est l’attitude qui l’emporte.</li><li>F.R.E.D. : Fait, Ressenti, Enjeu, Demande — une demande claire et négociable.</li><li>On demande sans exiger ; l’écoute active reformule et accueille l’émotion.</li><li>Le triangle de Karpman rappelle de viser la relation adulte-adulte.</li><li>L’empathie comprend l’émotion sans s’y noyer ; la sympathie fait perdre la juste distance.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Dans la communication, le non verbal…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Concerne seulement l'écrit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Remplace toujours la parole</li>
+<li data-cle="c" onclick="window._pickQ(this)">N'a aucune importance</li>
+<li data-cle="d" onclick="window._pickQ(this)">Pèse souvent plus que les mots</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le non verbal pèse souvent plus que les mots.<strong> 🎓 À l’oral VAE :</strong> ton, regard, posture comptent.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> La méthode F.R.E.D. (CNV) signifie…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Aucune de ces réponses</li>
+<li data-cle="b" onclick="window._pickQ(this)">Forcer → Refuser → Exiger → Décider</li>
+<li data-cle="c" onclick="window._pickQ(this)">Fiche de Recueil des Données</li>
+<li data-cle="d" onclick="window._pickQ(this)">Fait → Ressenti → Enjeux → Demande</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>F.R.E.D. : Fait → Ressenti → Enjeux → Demande (CNV).<strong> 🎓 À l’oral VAE :</strong> une trame de communication non violente.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q2">
+<p class="q"><strong>Q3.</strong> Pour parler à une personne âgée, on…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L'infantilise avec des petits noms</li>
+<li data-cle="b" onclick="window._pickQ(this)">Évite de la regarder</li>
+<li data-cle="c" onclick="window._pickQ(this)">Parle clairement, sans infantiliser, en laissant le temps de répondre</li>
+<li data-cle="d" onclick="window._pickQ(this)">Parle très fort systématiquement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Parler clairement, sans infantiliser, en laissant le temps de répondre.<strong> 🎓 À l’oral VAE :</strong> jamais de « bébé langage ».</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q3">
+<p class="q"><strong>Q4.</strong> Une « dissonance » en communication, c'est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une contradiction entre les mots et l'attitude</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un appareil auditif défectueux</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un mot mal prononcé</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un silence trop long</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Dissonance = contradiction entre les mots et l’attitude.<strong> 🎓 À l’oral VAE :</strong> cohérence verbal/non verbal.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> Le triangle de Karpman invite à viser…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La relation adulte–adulte</li>
+<li data-cle="b" onclick="window._pickQ(this)">La relation victime–sauveur</li>
+<li data-cle="c" onclick="window._pickQ(this)">Aucune relation</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le rôle de persécuteur</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le triangle de Karpman invite à viser la relation adulte-adulte.<strong> 🎓 À l’oral VAE :</strong> sortir des rôles victime/sauveur/persécuteur.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> La méthode F.R.E.D. (CNV) se termine par…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un reproche</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un silence</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une menace</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une demande claire et négociable</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Fait → Ressenti → Enjeu → Demande.<strong> 🎓 À l’oral VAE :</strong> demander sans exiger.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q6">
+<p class="q"><strong>Q7.</strong> « Demander sans exiger » signifie…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Imposer</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ordonner</li>
+<li data-cle="c" onclick="window._pickQ(this)">Formuler une demande négociable, sans pression</li>
+<li data-cle="d" onclick="window._pickQ(this)">Renoncer</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’exigence suscite soumission ou révolte ; la demande ouvre le dialogue.<strong> 🎓 À l’oral VAE :</strong> privilégier l’écoute des besoins.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B2_L26.html" class="back">← B2_L26</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B3_L02.html">B3_L02 →</a></div>
 </div>
 </body></html>

@@ -1,62 +1,213 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B5 · B5_L02 · La transmission orale : la relève — ORACLE VAE AS</title>
+<title>Bloc 5 · B5_L02 · La transmission orale : la relève — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 5</strong> › B5_L02</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 5</span><span>Leçon 2</span><span>⏱ 30 min</span><span>VAE DEAS</span></div>
     <h1>La transmission orale : la relève</h1>
-    <div class="accroche"><p>La <strong>relève</strong> (transmissions orales entre équipes) assure le passage de relais d&#x27;une équipe à la suivante. Elle doit être <strong>organisée, concise et complète</strong> : on transmet l&#x27;essentiel sur chaque personne — les <strong>événements</strong>, les <strong>surveillances en cours</strong>, et <strong>ce qui reste à faire</strong>.</p></div>
+    <div class="accroche"><p>La <strong>relève</strong> (transmissions orales entre équipes) assure le passage de relais d'une équipe à la suivante. Elle doit être <strong>organisée, concise et complète</strong> : on transmet l'essentiel sur chaque personne — les <strong>événements</strong>, les <strong>surveillances en cours</strong>, et <strong>ce qui reste à faire</strong>.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Structurer votre relève par personne : événements, surveillances en cours, ce qui reste à faire.</li><li>Hiérarchiser vos informations en commençant par l’urgent.</li><li>Choisir un lieu de relève qui préserve la confidentialité.</li><li>Compléter systématiquement la transmission orale par l’écrit.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>La relève : passer le relais</h3></section><section class="partie"><h3>Où et comment : un cadre à respecter</h3></section><section class="partie"><h3>Sur le terrain</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Jamais de relève en couloir ni devant des tiers.</li><li>Une phrase par résident : ce qui s’est passé, ce qu’on surveille, ce qui reste à faire.</li><li>S’assurer que l’interlocuteur a compris avant de passer au suivant.</li><li>Un événement urgent se transmet immédiatement, sans attendre la relève.</li><li>Ce qui est important à l’oral se trace ensuite par écrit.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La relève est organisée, concise et complète.</li><li>Pour chaque personne : les événements, les surveillances en cours, ce qui reste à faire.</li><li>L’AS apporte ses observations de première ligne — ni jugement, ni diagnostic.</li><li>La relève hiérarchise : l’urgent d’abord, pas l’ordre des chambres.</li><li>Une transmission orale ne remplace pas l’écrit.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. La relève doit être :</p><ol class="opts"><li class="ok">Uniquement écrite</li><li class="">Longue et exhaustive</li><li class="">Organisée, concise et complète</li><li class="">Faite en couloir pour gagner du temps</li></ol></div><div class="qblock"><p class="q">2. Pendant la relève, l&#x27;AS apporte :</p><ol class="opts"><li class="ok">Ses observations de première ligne</li><li class="">Des jugements sur les résidents</li><li class="">Des diagnostics médicaux</li><li class="">Rien, il écoute seulement</li></ol></div><div class="qblock"><p class="q">3. Une transmission orale :</p><ol class="opts"><li class="ok">Ne remplace pas l&#x27;écrit pour ce qui est important</li><li class="">Remplace l&#x27;écrit</li><li class="">Est interdite</li><li class="">Suffit toujours</li></ol></div><div class="qblock"><p class="q">4. La relève se fait :</p><ol class="opts"><li class="ok">En couloir devant les résidents</li><li class="">Sur les réseaux sociaux</li><li class="">À voix haute en salle commune</li><li class="">Dans un lieu préservant la confidentialité</li></ol></div><div class="qblock"><p class="q">5. Que transmet-on à la relève pour chaque personne ?</p><ol class="opts"><li class="ok">Des anecdotes personnelles</li><li class="">Son avis sur la famille</li><li class="">Uniquement le prénom</li><li class="">Événements, surveillances en cours, ce qui reste à faire</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B5_L01.html" class="back">← B5_L01</a><a href="B5_L03.html">B5_L03 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Structurer votre relève par personne : événements, surveillances en cours, ce qui reste à faire.</li><li>Hiérarchiser vos informations en commençant par l’urgent.</li><li>Choisir un lieu de relève qui préserve la confidentialité.</li><li>Compléter systématiquement la transmission orale par l’écrit.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>La relève : passer le relais</h3>
+<p>La <strong>relève</strong> (transmissions orales entre équipes) assure le passage de relais d'une équipe à la suivante. Elle doit être <strong>organisée, concise et complète</strong> : on transmet l'essentiel sur chaque personne — les <strong>événements</strong>, les <strong>surveillances en cours</strong>, et <strong>ce qui reste à faire</strong>.</p>
+<aside class="encadre"><h4>🩺 Le rôle de l&#x27;AS</h4><p>L'AS apporte à la relève ses <strong>observations de première ligne</strong> : ce qu'il a vu, fait et constaté auprès de chaque personne, de façon claire et hiérarchisée (l'urgent d'abord).</p></aside>
+</section><section class="partie"><h3>Où et comment : un cadre à respecter</h3>
+<p>La relève se fait dans un <strong>lieu préservant la confidentialité</strong> — jamais en couloir devant des tiers. Elle est concise : on s'assure que l'interlocuteur a compris, sans noyer l'utile sous l'anecdotique.</p>
+<aside class="vigilance"><h4>⚠ ⚠️ Points de vigilance</h4><p>Une transmission orale <strong>ne remplace pas l'écrit</strong> : ce qui est important se trace aussi. L'oral se fait dans un lieu qui protège la confidentialité.</p></aside>
+</section><section class="partie"><h3>Sur le terrain</h3>
+<p>Exemple en EHPAD — passage de relais à l'équipe suivante :</p>
+<ul>
+<li><strong>Action AS :</strong> transmettre l'essentiel par résident (événements, surveillances, ce qui reste à faire), de façon concise.</li>
+</ul>
+<ul>
+<li><strong>Vigilance :</strong> lieu confidentiel ; l'oral important est aussi tracé.</li>
+</ul>
+<ul>
+<li><strong>Erreur à éviter :</strong> relève en couloir devant des tiers.</li>
+</ul>
+<aside class="encadre"><h4>💡 Phrase-type</h4><p>« Pour M. X : a peu mangé ce midi, IDE prévenue ; surveillance hydratation à poursuivre ; pansement à refaire au prochain poste. »</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 9 (ACTIVITÉ 25 : orales).</p>
+<p>Aux <strong>changements d’équipe</strong> (relève) ; claires, concises, <strong>hiérarchisées (urgent d’abord)</strong>.</p>
+<p>S’assurer que l’interlocuteur a <strong>compris</strong>.</p>
+<p>Compléter l’oral par l’écrit (l’oral seul ne trace pas).</p>
+<p><strong>🎓 À l’oral / piège :</strong> La relève hiérarchise : l’urgent d’abord, pas dans l’ordre des chambres.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Relève structurée</p></p>
+<div class="cas-piste"><p><em>Relève à l’équipe du soir, pressée.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>L’essentiel : ce qui change/à surveiller.</li>
+<li>Factuel, organisé.</li>
+<li>Vérifier la compréhension.</li>
+<li>Compléter par l’écrit.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Information urgente</p></p>
+<div class="cas-piste"><p><em>Malaise juste avant la relève.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Transmettre immédiatement.</li>
+<li>Faits, heure, actions faites.</li>
+<li>IDE informée.</li>
+<li>Tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Jamais de relève en couloir ni devant des tiers.</li><li>Une phrase par résident : ce qui s’est passé, ce qu’on surveille, ce qui reste à faire.</li><li>S’assurer que l’interlocuteur a compris avant de passer au suivant.</li><li>Un événement urgent se transmet immédiatement, sans attendre la relève.</li><li>Ce qui est important à l’oral se trace ensuite par écrit.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La relève est organisée, concise et complète.</li><li>Pour chaque personne : les événements, les surveillances en cours, ce qui reste à faire.</li><li>L’AS apporte ses observations de première ligne — ni jugement, ni diagnostic.</li><li>La relève hiérarchise : l’urgent d’abord, pas l’ordre des chambres.</li><li>Une transmission orale ne remplace pas l’écrit.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> La relève doit être :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Uniquement écrite</li>
+<li data-cle="b" onclick="window._pickQ(this)">Longue et exhaustive</li>
+<li data-cle="c" onclick="window._pickQ(this)">Organisée, concise et complète</li>
+<li data-cle="d" onclick="window._pickQ(this)">Faite en couloir pour gagner du temps</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La relève : organisée, concise et complète.<strong> 🎓 À l’oral VAE :</strong> passer le relais sûr.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> Pendant la relève, l'AS apporte :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ses observations de première ligne</li>
+<li data-cle="b" onclick="window._pickQ(this)">Des jugements sur les résidents</li>
+<li data-cle="c" onclick="window._pickQ(this)">Des diagnostics médicaux</li>
+<li data-cle="d" onclick="window._pickQ(this)">Rien, il écoute seulement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’AS apporte ses observations de première ligne.<strong> 🎓 À l’oral VAE :</strong> au plus près du résident.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Une transmission orale :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ne remplace pas l'écrit pour ce qui est important</li>
+<li data-cle="b" onclick="window._pickQ(this)">Remplace l'écrit</li>
+<li data-cle="c" onclick="window._pickQ(this)">Est interdite</li>
+<li data-cle="d" onclick="window._pickQ(this)">Suffit toujours</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’oral ne remplace pas l’écrit pour l’important.<strong> 🎓 À l’oral VAE :</strong> tracer.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> La relève se fait :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">En couloir devant les résidents</li>
+<li data-cle="b" onclick="window._pickQ(this)">Sur les réseaux sociaux</li>
+<li data-cle="c" onclick="window._pickQ(this)">À voix haute en salle commune</li>
+<li data-cle="d" onclick="window._pickQ(this)">Dans un lieu préservant la confidentialité</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Relève dans un lieu préservant la confidentialité.<strong> 🎓 À l’oral VAE :</strong> pas dans le couloir.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Que transmet-on à la relève pour chaque personne ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Des anecdotes personnelles</li>
+<li data-cle="b" onclick="window._pickQ(this)">Son avis sur la famille</li>
+<li data-cle="c" onclick="window._pickQ(this)">Uniquement le prénom</li>
+<li data-cle="d" onclick="window._pickQ(this)">Événements, surveillances en cours, ce qui reste à faire</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Pour chaque personne : événements, surveillances en cours, ce qui reste à faire.<strong> 🎓 À l’oral VAE :</strong> structure de la relève.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B5_L01.html" class="back">← B5_L01</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B5_L03.html">B5_L03 →</a></div>
 </div>
 </body></html>

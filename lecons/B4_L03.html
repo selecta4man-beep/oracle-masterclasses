@@ -1,62 +1,253 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B4 · B4_L03 · IAS &amp; Prévention — ORACLE VAE AS</title>
+<title>Bloc 4 · B4_L03 · IAS & Prévention — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 4</strong> › B4_L03</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 4</span><span>Leçon 3</span><span>⏱ 30 min</span><span>VAE DEAS</span></div>
     <h1>IAS &amp; Prévention</h1>
-    <div class="accroche"><p>Les micro-organismes se transmettent par les <strong>mains</strong>, les <strong>surfaces</strong>, le <strong>matériel</strong> et le <strong>linge</strong>. L&#x27;entretien réduit cette charge microbienne et casse les chaînes de transmission : c&#x27;est une mesure de prévention des infections, donc un soin à part entière.</p></div>
+    <div class="accroche"><p>Les micro-organismes se transmettent par les <strong>mains</strong>, les <strong>surfaces</strong>, le <strong>matériel</strong> et le <strong>linge</strong>. L'entretien réduit cette charge microbienne et casse les chaînes de transmission : c'est une mesure de prévention des infections, donc un soin à part entière.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Définir une infection associée aux soins et la situer par rapport à l’infection nosocomiale.</li><li>Décrire la chaîne de transmission et nommer le maillon que chacun de vos gestes casse.</li><li>Associer une voie de transmission à la barrière qui lui correspond.</li><li>Repérer ce qui rend une personne réceptive à l’infection.</li><li>Signaler un cas suspect ou groupé avant qu’une épidémie ne s’installe.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Qu&#x27;est-ce qu&#x27;une IAS</h3></section><section class="partie"><h3>La chaîne de transmission</h3></section><section class="partie"><h3>Les modes de transmission des IAS</h3></section><section class="partie"><h3>Personnes fragiles &amp; risque accru</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Gouttelettes : masque à usage médical. Air : masque FFP2 et porte fermée. Ne pas confondre.</li><li>Contact — gale, BMR, gastro : tablier et gants dédiés, matériel dédié à la chambre.</li><li>En cas de gastro : hygiène des mains à l’eau et au savon, bionettoyage, précautions contact.</li><li>Signaler tout cas groupé, tout matériel non désinfectable, toute rupture d’hygiène.</li><li>Porteur de sonde : système clos, poche sous le niveau de la vessie, toilette génitale soigneuse.</li><li>L’entretien reste rigoureux en permanence, pas seulement quand un risque est déjà connu.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>IAS : infection survenue au cours ou au décours des soins, ni présente ni en incubation au départ.</li><li>La chaîne : agent, réservoir, porte de sortie, mode de transmission, porte d’entrée, hôte réceptif.</li><li>Casser un seul maillon suffit à empêcher l’infection.</li><li>La voie manuportée est la plus fréquente — d’où l’hygiène des mains en premier.</li><li>Trois précautions complémentaires : contact, gouttelettes, air.</li><li>Un environnement maîtrisé est une barrière efficace et invisible.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Une IAS est :</p><ol class="opts"><li class="ok">Une douleur post-opératoire</li><li class="">Une allergie aux soins</li><li class="">Un type de pansement</li><li class="">Une infection associée aux soins, absente au début de la prise en charge</li></ol></div><div class="qblock"><p class="q">2. Par quelle voie les micro-organismes se transmettent-ils le plus souvent ?</p><ol class="opts"><li class="ok">Par le bruit</li><li class="">Par voie manuportée (les mains)</li><li class="">Par la nourriture seulement</li><li class="">Par l&#x27;air uniquement</li></ol></div><div class="qblock"><p class="q">3. Pour empêcher une infection, il faut :</p><ol class="opts"><li class="ok">Isoler tout le monde en permanence</li><li class="">Désinfecter une fois par mois</li><li class="">Attendre les symptômes</li><li class="">Casser un maillon de la chaîne de transmission</li></ol></div><div class="qblock"><p class="q">4. Un environnement bien entretenu est :</p><ol class="opts"><li class="ok">Réservé aux blocs opératoires</li><li class="">Du simple ménage</li><li class="">Inutile si la personne est jeune</li><li class="">Une barrière invisible contre l&#x27;infection</li></ol></div><div class="qblock"><p class="q">5. Les personnes en EHPAD sont des hôtes réceptifs car :</p><ol class="opts"><li class="ok">Elles refusent les soins</li><li class="">Elles sont contagieuses</li><li class="">Elles vivent seules</li><li class="">Elles sont fragiles (âge, immunodépression, dispositifs)</li></ol></div><div class="qblock"><p class="q">6. La voie de transmission la plus fréquente des IAS est…</p><ol class="opts"><li class="ok">La voie manuportée (les mains)</li><li class="">L’eau</li><li class="">L’air</li><li class="">Les aliments</li></ol></div><div class="qblock"><p class="q">7. Pour une transmission « air » (tuberculose), on utilise…</p><ol class="opts"><li class="ok">Un masque FFP2 + chambre porte fermée</li><li class="">Un masque à usage médical</li><li class="">Aucun masque</li><li class="">Des gants seuls</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B4_L02.html" class="back">← B4_L02</a><a href="B4_L04.html">B4_L04 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Définir une infection associée aux soins et la situer par rapport à l’infection nosocomiale.</li><li>Décrire la chaîne de transmission et nommer le maillon que chacun de vos gestes casse.</li><li>Associer une voie de transmission à la barrière qui lui correspond.</li><li>Repérer ce qui rend une personne réceptive à l’infection.</li><li>Signaler un cas suspect ou groupé avant qu’une épidémie ne s’installe.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Qu&#x27;est-ce qu&#x27;une IAS</h3>
+<p>Les micro-organismes se transmettent par les <strong>mains</strong>, les <strong>surfaces</strong>, le <strong>matériel</strong> et le <strong>linge</strong>. L'entretien réduit cette charge microbienne et casse les chaînes de transmission : c'est une mesure de prévention des infections, donc un soin à part entière.</p>
+<aside class="encadre"><h4></h4><p><strong>📖 IAS — Infection Associée aux Soins</strong></p>
+<p>Infection survenant au cours ou au décours d'une prise en charge, et qui n'était ni présente ni en incubation au début des soins. Les infections <strong>nosocomiales</strong> (contractées en établissement de santé) en sont une catégorie.</p></aside>
+</section><section class="partie"><h3>La chaîne de transmission</h3>
+<p>Une infection se propage par une <strong>chaîne</strong> : un réservoir (porteur, surface, matériel), une porte de sortie, un mode de transmission (le plus souvent les mains = voie manuportée), une porte d'entrée et un hôte réceptif (personne fragile). <strong>Casser un seul maillon</strong> empêche l'infection.</p>
+<aside class="encadre"><h4></h4><p><strong>🩺 Le rôle de l'AS = casser les maillons</strong></p>
+<p>Hygiène des mains (mode de transmission), bionettoyage des surfaces (réservoir), entretien du matériel partagé, gestion des déchets et du linge, respect des circuits. Chaque geste casse un maillon.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>📘 Référence livre ORACLE — la barrière invisible</strong></p>
+<p>Une chambre mal entretenue est « une porte ouverte à la transmission ». À l'inverse, un environnement maîtrisé est une <strong>barrière efficace et invisible</strong> qui protège réellement les personnes.</p></aside>
+</section><section class="partie"><h3>Les modes de transmission des IAS</h3>
+<p>Une IAS se transmet selon plusieurs voies ; les connaître permet de poser la bonne barrière :</p>
+<div class="tableau"><table><thead><tr>
+<th>Voie</th>
+<th>Exemple / barrière</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Manuportée</strong> (la plus fréquente)</td>
+<td>Mains → <strong>hygiène des mains (SHA)</strong>, gants</td>
+</tr>
+<tr>
+<td><strong>Contact</strong></td>
+<td>Gale, BMR, gastro → tablier/gants dédiés, matériel dédié</td>
+</tr>
+<tr>
+<td><strong>Gouttelettes</strong></td>
+<td>Grippe, COVID → masque à usage médical</td>
+</tr>
+<tr>
+<td><strong>Air</strong></td>
+<td>Tuberculose, rougeole → masque FFP2, chambre porte fermée</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p>La <strong>chaîne de transmission</strong> = agent → réservoir → porte de sortie → mode de transmission → porte d’entrée → hôte réceptif. <strong>Casser un seul maillon</strong> suffit.</p></aside>
+</section><section class="partie"><h3>Personnes fragiles &amp; risque accru</h3>
+<p>En EHPAD et en gériatrie, les personnes accompagnées sont <strong>fragiles</strong> : âge, immunodépression, plaies, dispositifs invasifs (sonde, perfusion), dénutrition. Elles constituent des <strong>hôtes réceptifs</strong> pour qui une IAS peut être grave.</p>
+<aside class="encadre"><h4>📣 À signaler</h4><p>Tout cas suspect ou groupé (plusieurs résidents avec les mêmes symptômes), tout matériel non désinfectable, toute rupture d'hygiène : signaler à l'IDE / l'encadrement et à l'EOH le cas échéant.</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠️ Vigilance épidémie</h4><p>En collectivité, une IAS peut devenir une <strong>épidémie</strong> (gastro-entérite, grippe, gale, <em>Clostridioides difficile</em>). D'où l'importance d'un entretien rigoureux et constant, pas seulement quand un risque est « connu ».</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 8 (ACTIVITÉ 24 + SOCLE).</p>
+<p>IAS = infection associée aux soins ; prévention = <strong>précautions standard</strong> + protocoles + hygiène des mains.</p>
+<p><strong>Isolements :</strong> précautions complémentaires <strong>contact / gouttelettes / air</strong> ; précautions protectrices (immunodéprimé) ; matériel dédié à la chambre.</p>
+<p>Repérer les signes d’infection et transmettre.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Savoir nommer les 3 précautions complémentaires : contact, gouttelettes, air.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Cas groupés de gastro</p></p>
+<div class="cas-piste"><p><em>Plusieurs résidents : diarrhées et vomissements.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Alerter l’IDE/cadre (épidémie).</li>
+<li>Hygiène des mains (eau+savon), bionettoyage.</li>
+<li>Précautions « contact ».</li>
+<li>Tracer les cas.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Sonde urinaire</p></p>
+<div class="cas-piste"><p><em>Soins d’un porteur de sonde.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Asepsie, sac sous le niveau vessie.</li>
+<li>Système clos, surveiller les urines.</li>
+<li>Toilette génitale soigneuse.</li>
+<li>Signaler urines troubles/fièvre.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Gouttelettes : masque à usage médical. Air : masque FFP2 et porte fermée. Ne pas confondre.</li><li>Contact — gale, BMR, gastro : tablier et gants dédiés, matériel dédié à la chambre.</li><li>En cas de gastro : hygiène des mains à l’eau et au savon, bionettoyage, précautions contact.</li><li>Signaler tout cas groupé, tout matériel non désinfectable, toute rupture d’hygiène.</li><li>Porteur de sonde : système clos, poche sous le niveau de la vessie, toilette génitale soigneuse.</li><li>L’entretien reste rigoureux en permanence, pas seulement quand un risque est déjà connu.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>IAS : infection survenue au cours ou au décours des soins, ni présente ni en incubation au départ.</li><li>La chaîne : agent, réservoir, porte de sortie, mode de transmission, porte d’entrée, hôte réceptif.</li><li>Casser un seul maillon suffit à empêcher l’infection.</li><li>La voie manuportée est la plus fréquente — d’où l’hygiène des mains en premier.</li><li>Trois précautions complémentaires : contact, gouttelettes, air.</li><li>Un environnement maîtrisé est une barrière efficace et invisible.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Une IAS est :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une douleur post-opératoire</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une allergie aux soins</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un type de pansement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une infection associée aux soins, absente au début de la prise en charge</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>IAS = infection associée aux soins, absente au début de la prise en charge.<strong> 🎓 À l’oral VAE :</strong> définition.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Par quelle voie les micro-organismes se transmettent-ils le plus souvent ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Par le bruit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Par voie manuportée (les mains)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Par la nourriture seulement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Par l'air uniquement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Transmission le plus souvent manuportée (les mains).<strong> 🎓 À l’oral VAE :</strong> d’où l’hygiène des mains.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q2">
+<p class="q"><strong>Q3.</strong> Pour empêcher une infection, il faut :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Isoler tout le monde en permanence</li>
+<li data-cle="b" onclick="window._pickQ(this)">Désinfecter une fois par mois</li>
+<li data-cle="c" onclick="window._pickQ(this)">Attendre les symptômes</li>
+<li data-cle="d" onclick="window._pickQ(this)">Casser un maillon de la chaîne de transmission</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Empêcher l’infection = casser un maillon de la chaîne.<strong> 🎓 À l’oral VAE :</strong> un seul suffit.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un environnement bien entretenu est :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Réservé aux blocs opératoires</li>
+<li data-cle="b" onclick="window._pickQ(this)">Du simple ménage</li>
+<li data-cle="c" onclick="window._pickQ(this)">Inutile si la personne est jeune</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une barrière invisible contre l'infection</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Environnement entretenu = barrière invisible contre l’infection.<strong> 🎓 À l’oral VAE :</strong> le bionettoyage protège.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Les personnes en EHPAD sont des hôtes réceptifs car :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Elles refusent les soins</li>
+<li data-cle="b" onclick="window._pickQ(this)">Elles sont contagieuses</li>
+<li data-cle="c" onclick="window._pickQ(this)">Elles vivent seules</li>
+<li data-cle="d" onclick="window._pickQ(this)">Elles sont fragiles (âge, immunodépression, dispositifs)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Personnes fragiles = hôtes réceptifs (âge, immunodépression, dispositifs).<strong> 🎓 À l’oral VAE :</strong> vigilance accrue.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> La voie de transmission la plus fréquente des IAS est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La voie manuportée (les mains)</li>
+<li data-cle="b" onclick="window._pickQ(this)">L’eau</li>
+<li data-cle="c" onclick="window._pickQ(this)">L’air</li>
+<li data-cle="d" onclick="window._pickQ(this)">Les aliments</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Les mains sont le 1er vecteur → hygiène des mains n°1.<strong> 🎓 À l’oral VAE :</strong> casser un maillon de la chaîne.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q6">
+<p class="q"><strong>Q7.</strong> Pour une transmission « air » (tuberculose), on utilise…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un masque FFP2 + chambre porte fermée</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un masque à usage médical</li>
+<li data-cle="c" onclick="window._pickQ(this)">Aucun masque</li>
+<li data-cle="d" onclick="window._pickQ(this)">Des gants seuls</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Air = FFP2 ; gouttelettes = masque médical.<strong> 🎓 À l’oral VAE :</strong> ne pas confondre les deux.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B4_L02.html" class="back">← B4_L02</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B4_L04.html">B4_L04 →</a></div>
 </div>
 </body></html>

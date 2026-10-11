@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>INTRO · INTRO_L03 · Règles VAE &amp; objectifs du dossier — ORACLE VAE AS</title>
+<title>Démarrage · INTRO_L03 · Règles VAE & objectifs du dossier — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Démarrage</strong> › INTRO_L03</div>
@@ -56,7 +79,219 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Règles VAE &amp; objectifs du dossier</h1>
     <div class="accroche"><p>Le DEAS s’appuie sur <strong>5 blocs de compétences</strong> et un ensemble de <strong>situations-types d’activités</strong> que l’AS rencontre au quotidien.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer les 5 blocs et les 11 compétences qui composent le référentiel du DEAS.</li><li>Rattacher chacune de vos situations à l’activité et aux compétences qu’elle illustre.</li><li>Identifier les quatre critères sur lesquels le jury évalue une situation.</li><li>Construire un récit concret, analysé et anonymisé.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>1 · Le référentiel DEAS (RNCP 35830)</h3></section><section class="partie"><h3>Le référentiel officiel — 5 blocs, 11 compétences</h3></section><section class="partie"><h3>2 · Les activités — votre grille de lecture</h3></section><section class="partie"><h3>3 · Les critères d’évaluation du jury</h3></section><section class="partie"><h3>4 · Conseils pour un dossier réussi</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Avant d’écrire : quelle compétence du référentiel cette situation prouve-t-elle ?</li><li>Choisir une situation où vous avez observé, décidé, agi et transmis — pas une situation banale.</li><li>Après chaque description, ajouter le pourquoi de vos choix et ce que vous auriez pu faire autrement.</li><li>Être concret : nom fictif, lieu, date, contexte précis.</li><li>Relier théorie et pratique — c’est votre raisonnement clinique qui est lu.</li><li>Dire vos difficultés : c’est une force aux yeux du jury, pas une faiblesse.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le DEAS repose sur 5 blocs de compétences, 11 compétences au total.</li><li>Référence officielle : arrêté du 10 juin 2021, RNCP 35830.</li><li>Chaque activité décrit une situation type du métier ; vos exemples vécus la prouvent.</li><li>Le jury regarde la pertinence, la description, l’analyse, la sécurité et les valeurs.</li><li>Une description soignée sans analyse reste insuffisante.</li><li>Les noms sont fictifs : le secret professionnel s’applique aussi au dossier.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le DEAS s’appuie sur…</p><ol class="opts"><li class="ok">3 blocs</li><li class="">7 modules</li><li class="">10 activités</li><li class="">5 blocs de compétences</li></ol></div><div class="qblock"><p class="q">2. Le jury évalue PRINCIPALEMENT…</p><ol class="opts"><li class="ok">Le vocabulaire savant</li><li class="">L’analyse réflexive</li><li class="">La longueur du dossier</li><li class="">Le nombre de pages</li></ol></div><div class="qblock"><p class="q">3. Le code RNCP du DEAS est…</p><ol class="opts"><li class="ok">RNCP35830</li><li class="">RNCP4495</li><li class="">RNCP12000</li><li class="">RNCP35028</li></ol></div><div class="qblock"><p class="q">4. Un dossier sans analyse est jugé…</p><ol class="opts"><li class="ok">Hors-sujet</li><li class="">Excellent</li><li class="">Suffisant</li><li class="">Insuffisant</li></ol></div><div class="qblock"><p class="q">5. Pour respecter le secret professionnel, les noms sont…</p><ol class="opts"><li class="ok">Des initiales du vrai nom</li><li class="">Fictifs (anonymisés)</li><li class="">Réels</li><li class="">Inutiles</li></ol></div><div class="qblock"><p class="q">6. Le référentiel de compétences du DEAS compte…</p><ol class="opts"><li class="ok">5 compétences</li><li class="">27 compétences</li><li class="">11 compétences réparties en 5 blocs</li><li class="">3 blocs</li></ol></div><div class="qblock"><p class="q">7. La mobilisation/installation de la personne (techniques préventives) relève de…</p><ol class="opts"><li class="ok">Bloc 2 (compétence 5)</li><li class="">Bloc 4</li><li class="">Bloc 1</li><li class="">Bloc 5</li></ol></div><div class="qblock"><p class="q">8. « Organiser son activité et améliorer sa pratique (démarche qualité) » est…</p><ol class="opts"><li class="ok">Du ressort du médecin</li><li class="">La compétence 11 (Bloc 5)</li><li class="">Hors référentiel</li><li class="">La compétence 1</li></ol></div></div></section>
-  <div class="footer-nav"><a href="INTRO_L02.html" class="back">← INTRO_L02</a><a href="INTRO_L04.html">INTRO_L04 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer les 5 blocs et les 11 compétences qui composent le référentiel du DEAS.</li><li>Rattacher chacune de vos situations à l’activité et aux compétences qu’elle illustre.</li><li>Identifier les quatre critères sur lesquels le jury évalue une situation.</li><li>Construire un récit concret, analysé et anonymisé.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>1 · Le référentiel DEAS (RNCP 35830)</h3>
+<p>Le DEAS s’appuie sur <strong>5 blocs de compétences</strong> et un ensemble de <strong>situations-types d’activités</strong> que l’AS rencontre au quotidien.</p>
+<aside class="encadre"><h4>Bloc 1</h4><p>accompagnement et soins dans les activités de la vie quotidienne · Bloc 2 : évaluation clinique et soins adaptés · Bloc 3 : information et accompagnement · Bloc 4 : entretien des locaux/matériel · Bloc 5 : travail en équipe et qualité.</p></aside>
+</section><section class="partie"><h3>Le référentiel officiel — 5 blocs, 11 compétences</h3>
+<p>Le DEAS est défini par l’<strong>arrêté du 10 juin 2021</strong> (NOR SSAH2110960A). Le jury évalue vos situations au regard de ces <strong>11 compétences</strong> réparties en 5 blocs :</p>
+<div class="tableau"><table><thead><tr>
+<th>Bloc</th>
+<th>Compétences (officielles)</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Bloc 1</strong>
+Accompagnement &amp; soins (vie quotidienne et sociale)</td>
+<td>1 · Accompagner dans les actes essentiels et personnaliser l’accompagnement
+2 · Identifier les situations à risque, mettre en œuvre la prévention et l’évaluer</td>
+</tr>
+<tr>
+<td><strong>Bloc 2</strong>
+Évaluation clinique &amp; soins adaptés</td>
+<td>3 · Évaluer l’état clinique pour adapter la prise en soins
+4 · Mettre en œuvre des soins adaptés à l’état clinique
+5 · Accompagner l’installation et les déplacements (mobilisation préventive)</td>
+</tr>
+<tr>
+<td><strong>Bloc 3</strong>
+Information &amp; accompagnement</td>
+<td>6 · Établir une communication adaptée (personne et entourage)
+7 · Informer et former pairs, apprenants et autres professionnels</td>
+</tr>
+<tr>
+<td><strong>Bloc 4</strong>
+Entretien de l’environnement &amp; matériels</td>
+<td>8 · Utiliser les techniques d’entretien des locaux/matériels (prévention des risques)
+9 · Repérer et traiter les anomalies et dysfonctionnements</td>
+</tr>
+<tr>
+<td><strong>Bloc 5</strong>
+Travail en équipe &amp; qualité/gestion des risques</td>
+<td>10 · Rechercher, traiter et transmettre les données (continuité, traçabilité)
+11 · Organiser son activité, coopérer en équipe, améliorer sa pratique (démarche qualité)</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p>À chaque situation de votre Livret 2, demandez-vous : <strong>quelle(s) compétence(s) du référentiel</strong> est-ce que je prouve ici ?</p></aside>
+</section><section class="partie"><h3>2 · Les activités — votre grille de lecture</h3>
+<p>Chaque <strong>activité</strong> décrit une situation type du métier. Dans le Livret 2, vous montrez que vous la maîtrisez à travers des exemples vécus.</p>
+<p>Repérez, pour chacune de vos situations, <strong>quelle activité elle illustre</strong>.</p>
+</section><section class="partie"><h3>3 · Les critères d’évaluation du jury</h3>
+<div class="tableau"><table><thead><tr>
+<th>Critère</th>
+<th>Ce que le jury regarde</th>
+</tr></thead><tbody>
+<tr>
+<td>Pertinence</td>
+<td>La situation choisie est-elle représentative ?</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Contexte, acteurs, déroulement clairs et précis</td>
+</tr>
+<tr>
+<td>Analyse</td>
+<td>Le « pourquoi » des choix, les alternatives</td>
+</tr>
+<tr>
+<td>Sécurité &amp; valeurs</td>
+<td>Respect, dignité, traçabilité, collaboration</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>4 · Conseils pour un dossier réussi</h3>
+<ul>
+<li>Soyez <strong>concret</strong> : noms fictifs, lieu, date, contexte précis.</li>
+</ul>
+<ul>
+<li>Montrez votre <strong>raisonnement clinique</strong> et faites des liens théorie-pratique.</li>
+</ul>
+<ul>
+<li>Soyez <strong>honnête</strong> sur vos difficultés : c’est une force, pas une faiblesse.</li>
+</ul>
+<ul>
+<li>Respectez l’<strong>anonymat</strong> (secret professionnel).</li>
+</ul>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets — viser juste</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Awa décrit sans jamais analyser</p></p>
+<div class="cas-piste"><p><em>Son dossier raconte bien, mais reste « plat » aux yeux du jury.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Ajouter, après chaque description, le « pourquoi » de ses choix.</li>
+<li>Évoquer ce qu’elle aurait pu faire autrement.</li>
+<li>Relier à une valeur (dignité, sécurité) ou une référence.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Théo choisit une situation trop banale</p></p>
+<div class="cas-piste"><p><em>Rien n’y démontre une vraie compétence.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Choisir une situation où il a dû observer, décider, agir, transmettre.</li>
+<li>Vérifier qu’elle illustre clairement une activité du référentiel.</li>
+<li>S’assurer qu’il y a matière à analyse.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Avant d’écrire : quelle compétence du référentiel cette situation prouve-t-elle ?</li><li>Choisir une situation où vous avez observé, décidé, agi et transmis — pas une situation banale.</li><li>Après chaque description, ajouter le pourquoi de vos choix et ce que vous auriez pu faire autrement.</li><li>Être concret : nom fictif, lieu, date, contexte précis.</li><li>Relier théorie et pratique — c’est votre raisonnement clinique qui est lu.</li><li>Dire vos difficultés : c’est une force aux yeux du jury, pas une faiblesse.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le DEAS repose sur 5 blocs de compétences, 11 compétences au total.</li><li>Référence officielle : arrêté du 10 juin 2021, RNCP 35830.</li><li>Chaque activité décrit une situation type du métier ; vos exemples vécus la prouvent.</li><li>Le jury regarde la pertinence, la description, l’analyse, la sécurité et les valeurs.</li><li>Une description soignée sans analyse reste insuffisante.</li><li>Les noms sont fictifs : le secret professionnel s’applique aussi au dossier.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le DEAS s’appuie sur…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">3 blocs</li>
+<li data-cle="b" onclick="window._pickQ(this)">7 modules</li>
+<li data-cle="c" onclick="window._pickQ(this)">10 activités</li>
+<li data-cle="d" onclick="window._pickQ(this)">5 blocs de compétences</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>5 blocs de compétences structurent le diplôme.<strong> 🎓 À l’oral VAE :</strong> sachez situer chaque situation dans son bloc.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Le jury évalue PRINCIPALEMENT…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le vocabulaire savant</li>
+<li data-cle="b" onclick="window._pickQ(this)">L’analyse réflexive</li>
+<li data-cle="c" onclick="window._pickQ(this)">La longueur du dossier</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le nombre de pages</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’analyse réflexive (le pourquoi) est le critère décisif.<strong> 🎓 À l’oral VAE :</strong> une belle description sans analyse reste insuffisante.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Le code RNCP du DEAS est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">RNCP35830</li>
+<li data-cle="b" onclick="window._pickQ(this)">RNCP4495</li>
+<li data-cle="c" onclick="window._pickQ(this)">RNCP12000</li>
+<li data-cle="d" onclick="window._pickQ(this)">RNCP35028</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le DEAS correspond au RNCP 35830.<strong> 🎓 À l’oral VAE :</strong> citez-le si on vous demande la référence du diplôme.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un dossier sans analyse est jugé…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Hors-sujet</li>
+<li data-cle="b" onclick="window._pickQ(this)">Excellent</li>
+<li data-cle="c" onclick="window._pickQ(this)">Suffisant</li>
+<li data-cle="d" onclick="window._pickQ(this)">Insuffisant</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Sans analyse, la compétence n’est pas démontrée : dossier insuffisant.<strong> 🎓 À l’oral VAE :</strong> ajoutez toujours le raisonnement derrière vos actes.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q4">
+<p class="q"><strong>Q5.</strong> Pour respecter le secret professionnel, les noms sont…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Des initiales du vrai nom</li>
+<li data-cle="b" onclick="window._pickQ(this)">Fictifs (anonymisés)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Réels</li>
+<li data-cle="d" onclick="window._pickQ(this)">Inutiles</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>On anonymise systématiquement (noms fictifs).<strong> 🎓 À l’oral VAE :</strong> montrez que vous connaissez le cadre déontologique.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> Le référentiel de compétences du DEAS compte…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">5 compétences</li>
+<li data-cle="b" onclick="window._pickQ(this)">27 compétences</li>
+<li data-cle="c" onclick="window._pickQ(this)">11 compétences réparties en 5 blocs</li>
+<li data-cle="d" onclick="window._pickQ(this)">3 blocs</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>11 compétences réparties en 5 blocs (arrêté du 10 juin 2021).<strong> 🎓 À l’oral VAE :</strong> reliez chaque situation aux compétences qu’elle prouve.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q6">
+<p class="q"><strong>Q7.</strong> La mobilisation/installation de la personne (techniques préventives) relève de…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Bloc 2 (compétence 5)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Bloc 4</li>
+<li data-cle="c" onclick="window._pickQ(this)">Bloc 1</li>
+<li data-cle="d" onclick="window._pickQ(this)">Bloc 5</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La compétence 5 (accompagner l’installation et les déplacements) est dans le Bloc 2.<strong> 🎓 À l’oral VAE :</strong> situez vos gestes de manutention dans le bon bloc.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q7">
+<p class="q"><strong>Q8.</strong> « Organiser son activité et améliorer sa pratique (démarche qualité) » est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Du ressort du médecin</li>
+<li data-cle="b" onclick="window._pickQ(this)">La compétence 11 (Bloc 5)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Hors référentiel</li>
+<li data-cle="d" onclick="window._pickQ(this)">La compétence 1</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>C’est la compétence 11 du Bloc 5 (travail en équipe, qualité/gestion des risques).<strong> 🎓 À l’oral VAE :</strong> la posture réflexive y est attendue.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="INTRO_L02.html" class="back">← INTRO_L02</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="INTRO_L04.html">INTRO_L04 →</a></div>
 </div>
 </body></html>

@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B2 · B2_L26 · Pharmacologie — pathologie, traitement &amp; grandes classes — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L26 · Pharmacologie — pathologie, traitement & grandes classes — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L26</div>
@@ -56,7 +79,208 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Pharmacologie — pathologie, traitement &amp; grandes classes</h1>
     <div class="accroche"><p>L’AS <strong>aide à la prise sur prescription</strong>, en collaboration avec l’IDE (collaboration ≠ délégation). Il applique les <strong>5B</strong>, ne modifie <strong>jamais</strong> une dose, surveille les effets et signale toute anomalie.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer ce que l’aide-soignant peut faire, et ne peut pas faire, autour du médicament.</li><li>Relier une classe de médicaments à la surveillance qu’elle impose.</li><li>Repérer les signes qui imposent d’alerter l’IDE sans attendre.</li><li>Appliquer les 5B à chaque aide à la prise.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>1 · Le rôle de l’AS face aux médicaments</h3></section><section class="partie"><h3>2 · Relier pathologie → traitement → surveillance</h3></section><section class="partie"><h3>3 · Repères par grande classe</h3></section><section class="partie"><h3>4 · Sécurité : les 5B &amp; vigilances</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Les 5B : bon patient · bon médicament · bonne dose · bonne voie · bon moment.</li><li>Vérifier la prise effective : rien dans le lit, sur la table, au sol.</li><li>Signaler tout de suite : refus, comprimé recraché ou vomi, fausse route, effet inhabituel.</li><li>Corticoïdes : fragilité cutanée, risque infectieux, souvent régime sans sel.</li><li>Psychotropes : somnolence et risque de chute — sécuriser l’environnement.</li><li>Tracer en temps réel, jamais de mémoire en fin de poste.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Aide à la prise sur prescription, en collaboration avec l’IDE — jamais en délégation.</li><li>Ne jamais modifier une dose ; ne jamais écraser un comprimé de sa propre initiative.</li><li>L’insuline reste à l’IDE, qui la prépare et la contrôle.</li><li>Sous anticoagulant, tout saignement se signale.</li><li>Sous diurétique, le poids et la diurèse sont les meilleurs indicateurs.</li><li>La morphine constipe, endort, et peut déprimer la respiration.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Sous anticoagulant, l’AS surveille surtout…</p><ol class="opts"><li class="ok">Rien</li><li class="">La glycémie</li><li class="">La température uniquement</li><li class="">Les signes de saignement (hématomes, épistaxis, selles noires)</li></ol></div><div class="qblock"><p class="q">2. La morphine (antalgique palier 3) expose notamment à…</p><ol class="opts"><li class="ok">Constipation, somnolence, dépression respiratoire</li><li class="">Une HTA</li><li class="">Une hyperglycémie</li><li class="">Une mycose</li></ol></div><div class="qblock"><p class="q">3. Le meilleur indicateur de surveillance sous diurétique est…</p><ol class="opts"><li class="ok">La SpO₂</li><li class="">La courbe de poids et la diurèse</li><li class="">Le pouls seul</li><li class="">La taille</li></ol></div><div class="qblock"><p class="q">4. Chez une personne débutant un traitement antidépresseur, l’AS reste vigilant à…</p><ol class="opts"><li class="ok">Une hyperglycémie systématique</li><li class="">Un risque hémorragique</li><li class="">Un risque de chute par somnolence et une vigilance particulière au risque suicidaire en début de traitement</li><li class="">Une amélioration immédiate et sans risque</li></ol></div><div class="qblock"><p class="q">5. Les corticoïdes peuvent entraîner…</p><ol class="opts"><li class="ok">Une baisse de la glycémie</li><li class="">Une bradycardie</li><li class="">Une perte de poids</li><li class="">Diabète, HTA, fragilité cutanée, risque infectieux</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B2_L25.html" class="back">← B2_L25</a><a href="B3_L01.html">B3_L01 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer ce que l’aide-soignant peut faire, et ne peut pas faire, autour du médicament.</li><li>Relier une classe de médicaments à la surveillance qu’elle impose.</li><li>Repérer les signes qui imposent d’alerter l’IDE sans attendre.</li><li>Appliquer les 5B à chaque aide à la prise.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>1 · Le rôle de l’AS face aux médicaments</h3>
+<p>L’AS <strong>aide à la prise sur prescription</strong>, en collaboration avec l’IDE (collaboration ≠ délégation). Il applique les <strong>5B</strong>, ne modifie <strong>jamais</strong> une dose, surveille les effets et signale toute anomalie.</p>
+<aside class="encadre"><h4></h4><p>L’AS n’écrase pas un comprimé de sa propre initiative (formes LP, interactions) et ne touche jamais à l’insuline : c’est l’IDE qui prépare et contrôle.</p></aside>
+</section><section class="partie"><h3>2 · Relier pathologie → traitement → surveillance</h3>
+<div class="tableau"><table><thead><tr>
+<th>Objectif / pathologie</th>
+<th>Classe</th>
+<th>Exemples</th>
+<th>Surveillance &amp; effets à signaler (AS)</th>
+</tr></thead><tbody>
+<tr>
+<td>Fluidifier le sang (prévention caillot)</td>
+<td><strong>Anticoagulants</strong></td>
+<td>héparine, AVK, AOD</td>
+<td>Saignements : hématomes, nez, urines, selles noires → alerter ; gestes doux, rasoir électrique</td>
+</tr>
+<tr>
+<td>Baisser la tension / l’eau</td>
+<td><strong>Diurétiques &amp; antihypertenseurs</strong></td>
+<td>furosémide, IEC…</td>
+<td>Hypotension au lever, déshydratation ; surveiller poids, diurèse, œdèmes</td>
+</tr>
+<tr>
+<td>Soulager la douleur</td>
+<td><strong>Antalgiques (3 paliers)</strong></td>
+<td>paracétamol → codéine/tramadol → morphine</td>
+<td>Palier 3 : constipation, somnolence, dépression respiratoire → surveiller conscience &amp; FR</td>
+</tr>
+<tr>
+<td>Traiter une infection</td>
+<td><strong>Antibiotiques</strong></td>
+<td>amoxicilline…</td>
+<td>Allergie (éruption, œdème), mycose/muguet, diarrhée → signaler ; yaourt si avis IDE</td>
+</tr>
+<tr>
+<td>Équilibrer le diabète</td>
+<td><strong>Antidiabétiques &amp; insuline</strong></td>
+<td>metformine, insuline</td>
+<td>Hypo (sueurs, tremblements) / hyper (soif, polyurie) ; pied diabétique</td>
+</tr>
+<tr>
+<td>Inflammation / immunité</td>
+<td><strong>AINS &amp; corticoïdes</strong></td>
+<td>ibuprofène, prednisone</td>
+<td>AINS : estomac (prise au repas) ; corticoïdes : diabète, HTA, fragilité cutanée, risque infectieux</td>
+</tr>
+<tr>
+<td>Transit</td>
+<td><strong>Laxatifs</strong></td>
+<td>macrogol…</td>
+<td>Surveiller le transit, risque de diarrhée par surdosage</td>
+</tr>
+<tr>
+<td>Troubles psychiques</td>
+<td><strong>Psychotropes</strong></td>
+<td>neuroleptiques, antidépresseurs, benzodiazépines</td>
+<td>Somnolence, risque de <strong>chute</strong> ; début d’antidépresseur = vigilance suicidaire</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>3 · Repères par grande classe</h3>
+<ul>
+<li><strong>Anticoagulants</strong> : tout saignement se signale ; éviter chocs et coupures.</li>
+</ul>
+<ul>
+<li><strong>Antalgiques</strong> : 3 paliers ; la morphine constipe et peut déprimer la respiration.</li>
+</ul>
+<ul>
+<li><strong>Diurétiques</strong> : la <strong>courbe de poids</strong> et la diurèse sont les meilleurs indicateurs.</li>
+</ul>
+<ul>
+<li><strong>Corticoïdes</strong> : régime souvent sans sel ; fragilité cutanée → gestes doux.</li>
+</ul>
+<ul>
+<li><strong>Insuline</strong> : jamais touchée par l’AS ; surveiller hypo/hyper et les pieds.</li>
+</ul>
+<ul>
+<li><strong>Psychotropes</strong> : sécuriser l’environnement (chutes), surveiller la vigilance.</li>
+</ul>
+</section><section class="partie"><h3>4 · Sécurité : les 5B &amp; vigilances</h3>
+<ul>
+<li>Vérifier la <strong>prise effective</strong> (rien dans le lit, sur la table, au sol).</li>
+</ul>
+<ul>
+<li>Signaler immédiatement : refus, médicament recraché/vomi, fausse route, effet inhabituel.</li>
+</ul>
+<ul>
+<li>Respecter les consignes (avant/pendant/après repas, ne pas mélanger au laitage si interdit).</li>
+</ul>
+<ul>
+<li>Tracer en temps réel.</li>
+</ul>
+<aside class="encadre"><h4>5B</h4><p>Bon patient · Bon médicament · Bonne dose · Bonne voie · Bon moment (+ identitovigilance).</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 4 (ACTIVITÉ 11 : surveillances par classe).</p>
+<p><strong>Anticoagulants</strong> → saignements (rasoir électrique, gestes doux).</p>
+<p><strong>Corticoïdes</strong> → infection/diabète, régime sans sel.</p>
+<p><strong>Antibiotiques</strong> → allergie/diarrhée. <strong>Diurétiques</strong> → hypotension.</p>
+<p><strong>Morphine</strong> → constipation, somnolence, détresse respiratoire. <strong>Neuroleptiques/antidépresseurs</strong> → pas d’alcool, risque suicidaire au début.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Relier chaque classe à sa surveillance : très valorisé à l’oral.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Hématomes sous anticoagulant</p></p>
+<div class="cas-piste"><p><em>Mme L., sous AVK, présente des hématomes et un saignement de nez.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Reconnaître un effet des <strong>anticoagulants</strong> (risque hémorragique).</li>
+<li>Gestes doux, comprimer un saignement, ne pas masser.</li>
+<li>Alerter l’IDE, surveiller d’autres signes (urines, selles noires), tracer.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Vertiges au lever sous diurétique</p></p>
+<div class="cas-piste"><p><em>M. R., sous diurétique, a un malaise en se levant.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Penser à l’<strong>hypotension orthostatique</strong> / déshydratation.</li>
+<li>Le rallonger, sécuriser (chute), encourager l’hydratation.</li>
+<li>Surveiller poids/diurèse, alerter l’IDE, tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Les 5B : bon patient · bon médicament · bonne dose · bonne voie · bon moment.</li><li>Vérifier la prise effective : rien dans le lit, sur la table, au sol.</li><li>Signaler tout de suite : refus, comprimé recraché ou vomi, fausse route, effet inhabituel.</li><li>Corticoïdes : fragilité cutanée, risque infectieux, souvent régime sans sel.</li><li>Psychotropes : somnolence et risque de chute — sécuriser l’environnement.</li><li>Tracer en temps réel, jamais de mémoire en fin de poste.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Aide à la prise sur prescription, en collaboration avec l’IDE — jamais en délégation.</li><li>Ne jamais modifier une dose ; ne jamais écraser un comprimé de sa propre initiative.</li><li>L’insuline reste à l’IDE, qui la prépare et la contrôle.</li><li>Sous anticoagulant, tout saignement se signale.</li><li>Sous diurétique, le poids et la diurèse sont les meilleurs indicateurs.</li><li>La morphine constipe, endort, et peut déprimer la respiration.</li></ul></section>
+  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« Je relie toujours le traitement à la pathologie et à ma surveillance : par exemple, chez une personne sous anticoagulant, je surveille les signes de saignement et j’ai des gestes doux ; sous diurétique, je surveille le poids, la diurèse et l’hypotension au lever. J’applique les 5B, je ne modifie jamais une dose et je signale tout effet inhabituel à l’IDE. »</p></section>
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Sous anticoagulant, l’AS surveille surtout…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Rien</li>
+<li data-cle="b" onclick="window._pickQ(this)">La glycémie</li>
+<li data-cle="c" onclick="window._pickQ(this)">La température uniquement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Les signes de saignement (hématomes, épistaxis, selles noires)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Risque hémorragique → gestes doux, signaler tout saignement.<strong> 🎓 À l’oral VAE :</strong> rasoir électrique, éviter les chocs.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> La morphine (antalgique palier 3) expose notamment à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Constipation, somnolence, dépression respiratoire</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une HTA</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une hyperglycémie</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une mycose</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Surveiller transit, conscience et fréquence respiratoire.<strong> 🎓 À l’oral VAE :</strong> palier 3 = vigilance respiratoire.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Le meilleur indicateur de surveillance sous diurétique est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La SpO₂</li>
+<li data-cle="b" onclick="window._pickQ(this)">La courbe de poids et la diurèse</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le pouls seul</li>
+<li data-cle="d" onclick="window._pickQ(this)">La taille</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Poids + diurèse dépistent rétention/déshydratation.<strong> 🎓 À l’oral VAE :</strong> attention à l’hypotension au lever.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> Chez une personne débutant un traitement antidépresseur, l’AS reste vigilant à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une hyperglycémie systématique</li>
+<li data-cle="b" onclick="window._pickQ(this)">Un risque hémorragique</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un risque de chute par somnolence et une vigilance particulière au risque suicidaire en début de traitement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une amélioration immédiate et sans risque</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Psychotropes : risque de chute par somnolence, vigilance suicidaire en début de traitement antidépresseur.<strong> 🎓 À l’oral VAE :</strong> sécurisez l’environnement et signalez tout changement de comportement.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Les corticoïdes peuvent entraîner…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une baisse de la glycémie</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une bradycardie</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une perte de poids</li>
+<li data-cle="d" onclick="window._pickQ(this)">Diabète, HTA, fragilité cutanée, risque infectieux</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Effets fréquents → régime sans sel souvent, gestes doux.<strong> 🎓 À l’oral VAE :</strong> surveiller peau, glycémie, infections.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B2_L25.html" class="back">← B2_L25</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B3_L01.html">B3_L01 →</a></div>
 </div>
 </body></html>

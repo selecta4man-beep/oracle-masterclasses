@@ -1,62 +1,324 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B1 · B1_L09 · Aide à l&#x27;habillage et au déshabillage — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L09 · Aide à l'habillage et au déshabillage — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L09</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 9</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Aide à l&#x27;habillage et au déshabillage</h1>
-    <div class="accroche"><p>— fermer la porte, tirer le rideau, couvrir les parties non concernées. L&#x27;habillage est un moment intime.</p></div>
+    <div class="accroche"><p>— fermer la porte, tirer le rideau, couvrir les parties non concernées. L'habillage est un moment intime.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Appliquer la règle d’or : habiller le côté atteint d’abord, déshabiller le côté sain d’abord.</li><li>Préserver la pudeur et le choix vestimentaire pendant toute l’aide à l’habillage.</li><li>Adapter la technique à la pathologie — hémiplégie, Alzheimer, post-opératoire, Parkinson ou arthrose.</li><li>Habiller une personne porteuse d’une perfusion, d’un plâtre, d’une sonde ou d’une stomie.</li><li>Choisir un chaussage qui prévient la chute.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Principes fondamentaux</h3></section><section class="partie"><h3>Technique pour un résident hémiplégique</h3></section><section class="partie"><h3>Vêtements adaptés &amp; situations particulières</h3></section><section class="partie"><h3>Cadre théorique : pourquoi l&#x27;habillage compte</h3></section><section class="partie"><h3>Adapter selon la pathologie</h3></section><section class="partie"><h3>Montessori &amp; chaussures : sécurité, prévention des chutes</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Hémiplégie : manche du côté atteint d’abord, vêtement passé derrière le dos, le côté valide enfilé par la personne.</li><li>Perfusion : bras perfusé en premier, poche passée dans la manche, sans jamais tirer la tubulure — vérifier le débit ensuite.</li><li>Bas de contention prescrits : le matin, avant le lever, jambes décongestionnées.</li><li>Prothèse de hanche : chausse-pied long, flexion au-delà de 90° interdite.</li><li>Chaussures fermées, antidérapantes, à la bonne taille, avec maintien du talon — velcro plutôt que lacets.</li><li>Refus chez une personne Alzheimer : revenir plus tard, proposer deux tenues au maximum, ne jamais forcer.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Déshabiller le bon, habiller le mauvais en premier.</li><li>L’habillage est un moment intime : porte fermée, rideau tiré, parties non concernées couvertes.</li><li>La personne choisit ses vêtements — on propose, on n’impose pas.</li><li>Laisser faire seul tout ce que la personne peut faire, et guider plutôt que faire à sa place.</li><li>Se vêtir est le besoin n°6 de Henderson : pudeur, température corporelle, appartenance.</li><li>Les chaussures inadaptées sont le premier facteur extrinsèque de chute.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Chez un résident hémiplégique droit, quel bras habiller en premier ?</p><ol class="opts"><li class="ok">Le bras droit (atteint)</li><li class="">Les deux en même temps</li><li class="">Peu importe</li><li class="">Le bras gauche (valide)</li></ol></div><div class="qblock"><p class="q">2. La règle d&#x27;or de l&#x27;habillage / déshabillage :</p><ol class="opts"><li class="ok">Habiller le côté atteint en premier, déshabiller le côté sain en premier</li><li class="">Habiller le côté sain, déshabiller l&#x27;atteint</li><li class="">Toujours commencer par la tête</li><li class="">Toujours commencer par les pieds</li></ol></div><div class="qblock"><p class="q">3. Un résident veut mettre un pull en plein été. Que faites-vous ?</p><ol class="opts"><li class="ok">Refuser et imposer une tenue légère</li><li class="">L&#x27;habiller de force</li><li class="">Le laisser sans vêtement</li><li class="">Respecter son choix, l&#x27;informer et proposer une alternative</li></ol></div><div class="qblock"><p class="q">4. Pourquoi éviter les lacets chez le sujet âgé ?</p><ol class="opts"><li class="ok">Aucune raison</li><li class="">C&#x27;est démodé</li><li class="">Risque de chute (lacets défaits) et motricité fine difficile</li><li class="">Ils tiennent trop bien</li></ol></div><div class="qblock"><p class="q">5. Quelles chaussures recommander en EHPAD ?</p><ol class="opts"><li class="ok">Pantoufles ouvertes, souples au talon</li><li class="">Chaussures neuves à semelle lisse</li><li class="">Chaussures à talon, lacets défaits</li><li class="">Chaussures fermées, antidérapantes, à sa taille</li></ol></div><div class="qblock"><p class="q">6. Les bas de contention prescrits s&#x27;enfilent :</p><ol class="opts"><li class="ok">Après une longue marche</li><li class="">À n&#x27;importe quel moment</li><li class="">Le soir au coucher</li><li class="">Le matin avant le lever, jambes décongestionnées</li></ol></div><div class="qblock"><p class="q">7. Résident porteur d&#x27;une perfusion au bras, on :</p><ol class="opts"><li class="ok">Retire la perfusion</li><li class="">Enfile d&#x27;abord le bras perfusé en passant la poche dans la manche, sans tirer la tubulure</li><li class="">Enfile d&#x27;abord le bras sain</li><li class="">Coupe la manche systématiquement</li></ol></div><div class="qblock"><p class="q">8. Une résidente Alzheimer refuse de se changer et s&#x27;agite. On :</p><ol class="opts"><li class="ok">La gronde</li><li class="">La laisse sans la changer plusieurs jours</li><li class="">Revient plus tard, propose un choix limité, ne force jamais</li><li class="">Force pour aller vite</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B1_L08.html" class="back">← B1_L08</a><a href="B1_L10.html">B1_L10 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Appliquer la règle d’or : habiller le côté atteint d’abord, déshabiller le côté sain d’abord.</li><li>Préserver la pudeur et le choix vestimentaire pendant toute l’aide à l’habillage.</li><li>Adapter la technique à la pathologie — hémiplégie, Alzheimer, post-opératoire, Parkinson ou arthrose.</li><li>Habiller une personne porteuse d’une perfusion, d’un plâtre, d’une sonde ou d’une stomie.</li><li>Choisir un chaussage qui prévient la chute.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Principes fondamentaux</h3>
+<ul>
+<li><strong>🫂 Respecter la pudeur</strong> — fermer la porte, tirer le rideau, couvrir les parties non concernées. L'habillage est un moment intime.</li>
+</ul>
+<ul>
+<li><strong>👤 Favoriser l'autonomie</strong> — laisser faire seul tout ce que la personne peut, guider plutôt que faire à sa place, prévoir du temps.</li>
+</ul>
+<ul>
+<li><strong>👕 Respecter les choix</strong> — la personne choisit ses vêtements ; proposer, ne pas imposer ; adapter à la météo et aux activités.</li>
+</ul>
+<ul>
+<li><strong>🔄 Ordre logique</strong> — déshabiller d'abord le côté sain, habiller d'abord le côté atteint.</li>
+</ul>
+<aside class="encadre"><h4>🔗 La règle d&#x27;or à mémoriser</h4><p>« <strong>Déshabiller le bon, habiller le mauvais en premier</strong> » : on commence par enfiler le membre atteint (qui bouge mal) et on retire d'abord le membre valide.</p></aside>
+</section><section class="partie"><h3>Technique pour un résident hémiplégique</h3>
+<p><strong>👚 Habiller le haut</strong> (exemple : hémiplégie droite) :</p>
+<ul>
+<li>enfiler la manche sur le bras <strong>droit (atteint) en premier</strong> ;</li>
+</ul>
+<ul>
+<li>passer le vêtement derrière le dos ;</li>
+</ul>
+<ul>
+<li>la personne enfile seule la manche gauche (bras valide) ;</li>
+</ul>
+<ul>
+<li>boutonner / zipper du bas vers le haut. Astuce : vêtements ouverts devant (chemise plutôt que pull).</li>
+</ul>
+<p><strong>👖 Déshabiller le haut :</strong></p>
+<ul>
+<li>retirer la manche <strong>gauche (valide) en premier</strong> ;</li>
+</ul>
+<ul>
+<li>passer le vêtement par-dessus la tête ;</li>
+</ul>
+<ul>
+<li>faire glisser la manche droite (atteinte).</li>
+</ul>
+<aside class="encadre"><h4></h4><p><strong>🔗 Pour le bas (pantalon, chaussettes, chaussures)</strong></p>
+<p>Même principe : enfiler d'abord la jambe atteinte, retirer d'abord la jambe valide. Position assise stable (bord du lit ou fauteuil). <strong>Chausse-pied long</strong> si prothèse de hanche (flexion &gt; 90° interdite). Chaussures fermées, antidérapantes, à la bonne taille ; velcro plutôt que lacets.</p></aside>
+</section><section class="partie"><h3>Vêtements adaptés &amp; situations particulières</h3>
+<p><strong>Vêtements facilitants :</strong> ouverture devant (boutons-pression, velcro, aimants), taille élastique, chaussures à velcro, brassière (pas de fermeture dorsale), chaussettes sans élastique serré (circulation), vêtements amples et confortables.</p>
+<aside class="encadre"><h4>🔗 Situations particulières</h4><p><strong>Perfusion :</strong> chemise d'hôpital ou ouverture côté perfusé ; enfiler d'abord le bras perfusé en passant la poche dans la manche, sans jamais tirer la tubulure ; vérifier le débit après. <strong>Plâtre/attelle :</strong> vêtements larges, découper la manche si besoin. <strong>Sonde urinaire :</strong> pantalon large, poche de recueil accessible. <strong>Stomie :</strong> vêtements amples sur l'abdomen, pas de ceinture serrée.</p></aside>
+</section><section class="partie"><h3>Cadre théorique : pourquoi l&#x27;habillage compte</h3>
+<aside class="encadre"><h4></h4><p><strong>🔗 Henderson — besoin n°6 « se vêtir et se dévêtir »</strong></p>
+<p>L'un des 14 besoins fondamentaux. Se vêtir sert à <strong>préserver la pudeur</strong>, <strong>maintenir la température corporelle</strong> et <strong>marquer une appartenance</strong> (identité sociale, culturelle). Cela touche aussi l'image corporelle et le respect du choix.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>🔗 Maslow — plusieurs niveaux à la fois</strong></p>
+<p>Physiologique (chaleur, protection) · sécurité (chaussures antidérapantes) · estime (<strong>pudeur, choix, dignité</strong>). Un résident bien habillé est un résident valorisé.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>📊 Grille AGGIR — l'habillage, variable discriminante</strong></p>
+<p>L'habillage est une des variables qui servent à coter l'autonomie : <strong>A</strong> = fait seul, totalement, habituellement et correctement · <strong>B</strong> = fait partiellement ou avec aide · <strong>C</strong> = ne fait pas, totalement dépendant.</p></aside>
+</section><section class="partie"><h3>Adapter selon la pathologie</h3>
+<ul>
+<li><strong>🧠 AVC / hémiplégie</strong> — habiller le <strong>côté atteint en premier</strong> ; installer du côté sain pour stimuler le côté atteint ; faire participer (autonomie du côté valide).</li>
+</ul>
+<ul>
+<li><strong>🧓 Alzheimer / démence</strong> — proposer un <strong>choix simple</strong> (2 tenues max), vêtements faciles (velcro, pas de petits boutons), routine stable (même heure, même séquence), décomposer en étapes courtes, montrer le geste.</li>
+</ul>
+<ul>
+<li><strong>🦴 Post-opératoire</strong> — <strong>bas de contention</strong> si prescrits, à enfiler le <strong>matin avant le lever</strong> (jambes décongestionnées) ; vêtements amples (pansement, drain, sonde) ; lever précoce favorisé.</li>
+</ul>
+<ul>
+<li><strong>⚙️ Parkinson / arthrose</strong> — motricité fine altérée : privilégier velcro et taille élastique ; mouvements lents : <strong>laisser du temps</strong>, ne pas presser ; position assise stable, environnement calme.</li>
+</ul>
+</section><section class="partie"><h3>Montessori &amp; chaussures : sécurité, prévention des chutes</h3>
+<aside class="encadre"><h4></h4><p><strong>🔗 Approche Montessori appliquée à l'habillage</strong></p>
+<p>S'appuyer sur les <strong>capacités</strong> (ce que la personne peut faire) · offrir un <strong>choix</strong> (« celle-ci ou celle-là ? ») · préparer les vêtements <strong>dans l'ordre d'enfilage</strong> · <strong>montrer</strong> plus que parler · respecter le <strong>rythme</strong> · découper en <strong>petites étapes</strong>.</p></aside>
+<aside class="encadre"><h4>✅ Chaussures recommandées</h4><p>Fermées (pas de pantoufles ouvertes) · antidérapantes (semelle caoutchouc) · à la bonne taille · maintien du talon (contrefort solide) · velcro plutôt que lacets.</p></aside>
+<aside class="encadre"><h4>🚫 Chaussures à proscrire</h4><p>Chaussons ouverts, mules · semelles lisses ou cuir glissant · talons (même petits) · chaussures neuves non rodées · lacets défaits (chute immédiate) · trop serrées (compression).</p></aside>
+<aside class="encadre"><h4></h4><p><strong>✦ Astuce ORACLE — vers votre Livret 2</strong></p>
+<p>Après 75 ans : examen annuel des pieds recommandé. Surveille l'usure des chaussures (semelle, talons biseautés) et remplace-les dès que l'adhérence diminue.</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Les chaussures inadaptées = 1ᵉʳ facteur extrinsèque de chute</strong></p>
+<p>Le choix du chaussage est un acte de soin à part entière.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Bientraitance, cas cliniques &amp; points clés</h2>
+<p><strong>📌 À retenir :</strong></p>
+<ul>
+<li><strong>règle d'or</strong> : habiller le côté atteint d'abord, déshabiller le côté sain d'abord ;</li>
+<li><strong>pudeur &amp; choix</strong> : porte fermée, la personne choisit, on favorise l'autonomie ;</li>
+<li><strong>adaptations</strong> : velcro, taille élastique, ouverture devant, chaussures fermées antidérapantes ;</li>
+<li><strong>estime de soi</strong> : être bien habillé = dignité et identité ; éviter le pyjama toute la journée.</li>
+</ul>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette et habillage de Mme C., 82 ans (GIR 3)</strong></p></p>
+<div class="cas-piste"><p><em>Mme C., 82 ans, vit en EHPAD. Elle est cotée GIR 3 : son autonomie mentale est conservée, mais elle a besoin d'une aide physique pour se laver et s'habiller. Ce matin, elle est capable de réaliser seule certains gestes (se laver le visage, boutonner le haut de son chemisier) mais se fatigue vite. Le service est chargé et l'équipe a peu de temps à lui consacrer.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> GIR 3 correspond à une autonomie mentale conservée mais une dépendance physique partielle : sur la grille AGGIR, l'habillage se cote en général « B » (fait partiellement ou avec aide). Mme C. réalise seule certains gestes mais se fatigue, ce qui signe une autonomie à préserver et non à remplacer.</p>
+<p><strong>2. Conduite immédiate.</strong> Laisser Mme C. faire seule tout ce qu'elle peut faire (favoriser l'autonomie), guider plutôt que faire à sa place, respecter son rythme malgré la charge de travail du service, lui proposer le choix de sa tenue, fermer la porte et tirer le rideau pour préserver la pudeur — sans se précipiter pour « gagner du temps ».</p>
+<p><strong>3. Transmission.</strong> Transmettre à l'équipe le niveau d'autonomie observé (ce qu'elle fait seule, ce qui nécessite une aide) afin d'ajuster le plan de soin ; transmission de routine, sans urgence.</p>
+<p><strong>4. Erreur à éviter.</strong> Faire à sa place par manque de temps, ce qui accélère la perte d'autonomie et s'apparente à de la maltraitance par précipitation ; ne pas respecter son choix vestimentaire ; négliger la pudeur sous prétexte de charge de travail.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Habillage de M. D., 78 ans (hémiplégie gauche)</strong></p></p>
+<div class="cas-piste"><p><em>M. D., 78 ans, vit en EHPAD. Il est coté GIR 4, hémiplégique gauche à la suite d'un AVC, et se déplace avec un déambulateur. Ce matin, vous l'aidez à s'habiller avant le lever ; il porte des bas de contention prescrits et souhaite mettre sa chemise préférée, à boutons.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> L'hémiplégie gauche touche le bras et la jambe gauches : motricité fine réduite de ce côté, et risque de chute au déambulateur si le chaussage n'est pas adapté. Les bas de contention prescrits doivent être enfilés avant le lever, jambes décongestionnées.</p>
+<p><strong>2. Conduite immédiate.</strong> Appliquer la règle d'or : habiller le côté atteint (gauche) en premier, déshabiller le côté sain (droit) en premier ; enfiler les bas de contention avant le lever ; laisser M. D. participer avec son bras droit valide ; la chemise à boutons devant est adaptée (facilite le passage du bras atteint), boutonner du bas vers le haut ; vérifier avant la marche que le chaussage est fermé, antidérapant, à velcro de préférence.</p>
+<p><strong>3. Transmission.</strong> Transmettre toute difficulté inhabituelle à l'habillage ou tout changement de mobilité du côté atteint, ainsi que la tolérance des bas de contention, à l'IDE ; pas d'urgence sauf signe nouveau (douleur, rougeur, perte de sensibilité).</p>
+<p><strong>4. Erreur à éviter.</strong> Enfiler le bras valide en premier (inverse de la règle d'or), oublier les bas de contention avant le lever, ou le laisser marcher au déambulateur avec des chaussons ouverts ou mal fixés — premier facteur extrinsèque de chute.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Refus de se changer de Mme L., 86 ans (Alzheimer)</strong></p></p>
+<div class="cas-piste"><p><em>Mme L., 86 ans, vit en EHPAD et présente une maladie d'Alzheimer modérée. Ce matin, elle refuse catégoriquement de se changer ; quand l'équipe insiste pour respecter le planning de la toilette, elle s'agite, repousse les mains et hausse le ton.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> Le refus associé à une agitation lors de l'insistance, chez une personne Alzheimer, traduit le plus souvent un mal-être ou une incompréhension plutôt qu'une opposition volontaire : fatigue, douleur, peur, ou rythme non respecté sont à envisager.</p>
+<p><strong>2. Conduite immédiate.</strong> Ne pas forcer, s'arrêter, revenir un peu plus tard (approche Montessori) ; reformuler simplement, proposer un choix limité entre deux tenues au maximum ; montrer le geste plutôt que de longuement expliquer ; privilégier un environnement calme, avec une seule personne qui s'adresse à elle.</p>
+<p><strong>3. Transmission.</strong> Transmettre l'épisode de refus et d'agitation à l'équipe et à l'IDE (contexte, fréquence, ce qui a permis d'apaiser), afin d'adapter l'approche et de rechercher une cause (douleur, début d'infection, mal-être) si le refus se répète.</p>
+<p><strong>4. Erreur à éviter.</strong> Forcer « pour aller vite », ce qui majore l'agitation et s'apparente à de la maltraitance ; gronder ou brusquer Mme L. ; ne pas lui proposer de choix.</p></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Hémiplégie : manche du côté atteint d’abord, vêtement passé derrière le dos, le côté valide enfilé par la personne.</li><li>Perfusion : bras perfusé en premier, poche passée dans la manche, sans jamais tirer la tubulure — vérifier le débit ensuite.</li><li>Bas de contention prescrits : le matin, avant le lever, jambes décongestionnées.</li><li>Prothèse de hanche : chausse-pied long, flexion au-delà de 90° interdite.</li><li>Chaussures fermées, antidérapantes, à la bonne taille, avec maintien du talon — velcro plutôt que lacets.</li><li>Refus chez une personne Alzheimer : revenir plus tard, proposer deux tenues au maximum, ne jamais forcer.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Déshabiller le bon, habiller le mauvais en premier.</li><li>L’habillage est un moment intime : porte fermée, rideau tiré, parties non concernées couvertes.</li><li>La personne choisit ses vêtements — on propose, on n’impose pas.</li><li>Laisser faire seul tout ce que la personne peut faire, et guider plutôt que faire à sa place.</li><li>Se vêtir est le besoin n°6 de Henderson : pudeur, température corporelle, appartenance.</li><li>Les chaussures inadaptées sont le premier facteur extrinsèque de chute.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> Chez un résident hémiplégique droit, quel bras habiller en premier ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le bras droit (atteint)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Les deux en même temps</li>
+<li data-cle="c" onclick="window._pickQ(this)">Peu importe</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le bras gauche (valide)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Hémiplégie droite : on habille d’abord le bras droit (atteint).<strong> 🎓 À l’oral VAE :</strong> côté difficile en premier.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> La règle d'or de l'habillage / déshabillage :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Habiller le côté atteint en premier, déshabiller le côté sain en premier</li>
+<li data-cle="b" onclick="window._pickQ(this)">Habiller le côté sain, déshabiller l'atteint</li>
+<li data-cle="c" onclick="window._pickQ(this)">Toujours commencer par la tête</li>
+<li data-cle="d" onclick="window._pickQ(this)">Toujours commencer par les pieds</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Règle d’or : habiller le côté atteint d’abord, déshabiller le côté sain d’abord.<strong> 🎓 À l’oral VAE :</strong> mémorisez cette double règle.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q2">
+<p class="q"><strong>Q3.</strong> Un résident veut mettre un pull en plein été. Que faites-vous ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Refuser et imposer une tenue légère</li>
+<li data-cle="b" onclick="window._pickQ(this)">L'habiller de force</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le laisser sans vêtement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Respecter son choix, l'informer et proposer une alternative</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Pull en été : respecter le choix, informer, proposer une alternative.<strong> 🎓 À l’oral VAE :</strong> autonomie et dignité.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> Pourquoi éviter les lacets chez le sujet âgé ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Aucune raison</li>
+<li data-cle="b" onclick="window._pickQ(this)">C'est démodé</li>
+<li data-cle="c" onclick="window._pickQ(this)">Risque de chute (lacets défaits) et motricité fine difficile</li>
+<li data-cle="d" onclick="window._pickQ(this)">Ils tiennent trop bien</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Lacets : risque de chute + motricité fine difficile.<strong> 🎓 À l’oral VAE :</strong> préférez le scratch.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Quelles chaussures recommander en EHPAD ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Pantoufles ouvertes, souples au talon</li>
+<li data-cle="b" onclick="window._pickQ(this)">Chaussures neuves à semelle lisse</li>
+<li data-cle="c" onclick="window._pickQ(this)">Chaussures à talon, lacets défaits</li>
+<li data-cle="d" onclick="window._pickQ(this)">Chaussures fermées, antidérapantes, à sa taille</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Chaussures fermées, antidérapantes, bonne taille, maintien du talon.<strong> 🎓 À l’oral VAE :</strong> prévention des chutes.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> Les bas de contention prescrits s'enfilent :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Après une longue marche</li>
+<li data-cle="b" onclick="window._pickQ(this)">À n'importe quel moment</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le soir au coucher</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le matin avant le lever, jambes décongestionnées</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Bas de contention : le matin, jambes décongestionnées, avant le lever.<strong> 🎓 À l’oral VAE :</strong> sinon l’effet est perdu.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> Résident porteur d'une perfusion au bras, on :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Retire la perfusion</li>
+<li data-cle="b" onclick="window._pickQ(this)">Enfile d'abord le bras perfusé en passant la poche dans la manche, sans tirer la tubulure</li>
+<li data-cle="c" onclick="window._pickQ(this)">Enfile d'abord le bras sain</li>
+<li data-cle="d" onclick="window._pickQ(this)">Coupe la manche systématiquement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Perfusion : enfiler d’abord le bras perfusé, passer la poche dans la manche, sans tirer.<strong> 🎓 À l’oral VAE :</strong> protéger la tubulure.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q7">
+<p class="q"><strong>Q8.</strong> Une résidente Alzheimer refuse de se changer et s'agite. On :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La gronde</li>
+<li data-cle="b" onclick="window._pickQ(this)">La laisse sans la changer plusieurs jours</li>
+<li data-cle="c" onclick="window._pickQ(this)">Revient plus tard, propose un choix limité, ne force jamais</li>
+<li data-cle="d" onclick="window._pickQ(this)">Force pour aller vite</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Alzheimer agitée : revenir plus tard, proposer un choix limité, ne jamais forcer.<strong> 🎓 À l’oral VAE :</strong> apaiser avant d’agir.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B1_L08.html" class="back">← B1_L08</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L10.html">B1_L10 →</a></div>
 </div>
 </body></html>

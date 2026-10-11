@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOCLE · SOCLE_L09 · Appareil locomoteur — ORACLE VAE AS</title>
+<title>Socle · SOCLE_L09 · Appareil locomoteur — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L09</div>
@@ -56,7 +79,190 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Appareil locomoteur</h1>
     <div class="accroche"><p>, <strong>ostéoporose</strong> (os fragiles), <strong>fractures</strong> (notamment col du fémur après chute), <strong>rhumatismes</strong>, séquelles de <strong>prothèses</strong> (hanche, genou). Toutes limitent la mobilité et exposent au risque de <strong>chute</strong> et d’<strong>escarre</strong>.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Relier arthrose, ostéoporose et sarcopénie au mécanisme qui les explique.</li><li>Adapter la manutention et la mobilisation à l’atteinte de la personne.</li><li>Repérer après une chute les signes qui font suspecter une fracture du col du fémur.</li><li>Décrire une douleur et une limitation du mouvement dans une transmission.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Les atteintes de l’appareil locomoteur</h3></section><section class="partie"><h3>Os, articulations &amp; muscles : comprendre les atteintes</h3></section><section class="partie"><h3>Mobilité, douleur et risques</h3></section><section class="partie"><h3>Le rôle de l’AS</h3></section><section class="partie"><h3>Transmettre &amp; tracer</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Suspicion de fracture : ne pas relever, ne pas mobiliser, rassurer, alerter l’IDE.</li><li>Noter l’heure et les circonstances de la chute.</li><li>Manutention : matériel adapté — lève-personne, drap de glisse — pour votre dos et le sien.</li><li>Arthrose : prendre le temps, antalgique avant le soin sous protocole.</li><li>Fracture ou plâtre : surveiller douleur, coloration et gonflement des extrémités.</li><li>Prothèse : suivre les consignes du dossier et du kiné, signaler toute douleur inhabituelle.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La mobilité conditionne l’autonomie.</li><li>Ostéoporose : os fragiles, donc fractures. Arthrose : usure du cartilage, donc douleur et raideur.</li><li>Sarcopénie : fonte musculaire liée à l’âge et à l’immobilité.</li><li>L’alitement expose à l’escarre et à l’enraidissement.</li><li>Prothèse de hanche récente : ni rotation ni adduction excessive.</li><li>Jambe raccourcie et tournée en dehors après une chute : on pense fracture.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. L’ostéoporose se caractérise par…</p><ol class="opts"><li class="ok">Une douleur articulaire isolée</li><li class="">Une raideur de la peau</li><li class="">Des os fragiles, exposés aux fractures</li><li class="">Des muscles atrophiés</li></ol></div><div class="qblock"><p class="q">2. Après une chute, une jambe raccourcie et tournée vers l’extérieur évoque…</p><ol class="opts"><li class="ok">Une phlébite</li><li class="">Une crampe</li><li class="">Une fracture (souvent du col du fémur)</li><li class="">Une simple contusion</li></ol></div><div class="qblock"><p class="q">3. Devant une suspicion de fracture, l’AS…</p><ol class="opts"><li class="ok">Masse la zone</li><li class="">Ne mobilise pas et alerte</li><li class="">Mobilise pour vérifier</li><li class="">Fait marcher la personne</li></ol></div><div class="qblock"><p class="q">4. Avec une prothèse de hanche récente, il faut éviter…</p><ol class="opts"><li class="ok">De s’asseoir</li><li class="">La marche</li><li class="">De boire</li><li class="">Les rotations et adductions excessives</li></ol></div><div class="qblock"><p class="q">5. La manutention doit protéger…</p><ol class="opts"><li class="ok">Uniquement le soignant</li><li class="">Le dos du soignant ET de la personne, avec matériel adapté</li><li class="">Ni l’un ni l’autre</li><li class="">Uniquement la personne</li></ol></div><div class="qblock"><p class="q">6. Mobiliser régulièrement une personne alitée permet de prévenir…</p><ol class="opts"><li class="ok">L’hypertension</li><li class="">Le diabète</li><li class="">L’escarre et l’enraidissement</li><li class="">L’infection urinaire</li></ol></div><div class="qblock"><p class="q">7. Chez une personne porteuse d’un plâtre, l’AS surveille en priorité…</p><ol class="opts"><li class="ok">La douleur, la coloration et le gonflement des extrémités</li><li class="">La couleur des cheveux</li><li class="">Le poids corporel uniquement</li><li class="">La tension artérielle uniquement</li></ol></div><div class="qblock"><p class="q">8. La « sarcopénie » désigne…</p><ol class="opts"><li class="ok">Une fracture</li><li class="">Une raideur articulaire</li><li class="">La fonte musculaire liée à l’âge/immobilité</li><li class="">Une infection osseuse</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L08.html" class="back">← SOCLE_L08</a><a href="SOCLE_L10.html">SOCLE_L10 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Relier arthrose, ostéoporose et sarcopénie au mécanisme qui les explique.</li><li>Adapter la manutention et la mobilisation à l’atteinte de la personne.</li><li>Repérer après une chute les signes qui font suspecter une fracture du col du fémur.</li><li>Décrire une douleur et une limitation du mouvement dans une transmission.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Les atteintes de l’appareil locomoteur</h3>
+<p><strong>Arthrose</strong>, <strong>ostéoporose</strong> (os fragiles), <strong>fractures</strong> (notamment col du fémur après chute), <strong>rhumatismes</strong>, séquelles de <strong>prothèses</strong> (hanche, genou). Toutes limitent la mobilité et exposent au risque de <strong>chute</strong> et d’<strong>escarre</strong>.</p>
+<aside class="encadre"><h4>📘 Référence livre ORACLE</h4><p>La mobilité conditionne l’autonomie. Préserver le mouvement et prévenir la chute sont au cœur du rôle AS.</p></aside>
+</section><section class="partie"><h3>Os, articulations &amp; muscles : comprendre les atteintes</h3>
+<p>Le <strong>squelette</strong> soutient le corps, les <strong>articulations</strong> permettent le mouvement, les <strong>muscles</strong> assurent la force.</p>
+<p><strong>Mécanismes :</strong></p>
+<ul>
+<li><strong>Ostéoporose</strong> : os fragiles → <strong>fractures</strong> (col du fémur après une chute).</li>
+</ul>
+<ul>
+<li><strong>Arthrose</strong> : usure du cartilage → douleur, raideur.</li>
+</ul>
+<ul>
+<li><strong>Sarcopénie</strong> : fonte musculaire liée à l’âge et à l’immobilité.</li>
+</ul>
+<aside class="encadre"><h4></h4><p>L’AS prévient les chutes, mobilise régulièrement (contre l’enraidissement et l’escarre) et protège son dos ET celui de la personne.</p></aside>
+</section><section class="partie"><h3>Mobilité, douleur et risques</h3>
+<div class="tableau"><table><thead><tr>
+<th>Situation</th>
+<th>Vigilance AS</th>
+</tr></thead><tbody>
+<tr>
+<td>Arthrose</td>
+<td>Douleur à la mobilisation : prendre le temps, antalgique avant le soin (sous protocole)</td>
+</tr>
+<tr>
+<td>Ostéoporose</td>
+<td>Os fragiles : manutention douce, prévention des chutes</td>
+</tr>
+<tr>
+<td>Prothèse de hanche</td>
+<td>Respecter les mouvements interdits (pas de rotation/adduction excessive)</td>
+</tr>
+<tr>
+<td>Fracture/plâtre</td>
+<td>Surveiller douleur, coloration, gonflement des extrémités</td>
+</tr>
+<tr>
+<td>Alitement</td>
+<td>Risque d’escarre et d’enraidissement</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🚨 signes d’alerte — on alerte l’IDE</strong></p>
+<p>Après une chute : douleur de hanche, jambe raccourcie et tournée vers l’extérieur, impossibilité de se lever → suspicion de fracture, on ne mobilise pas, on alerte.</p></aside>
+</section><section class="partie"><h3>Le rôle de l’AS</h3>
+<aside class="encadre"><h4>🩺 le rôle concret de l’AS</h4><p><strong>Manutention</strong> : gestes sûrs et doux, matériel adapté (lève-personne, drap de glisse), protéger le dos (le vôtre et celui de la personne). <strong>Mobilisation</strong> : encourager le mouvement dans la limite des consignes, prévenir l’enraidissement. <strong>Prothèse</strong> : respecter les positions autorisées. <strong>Chute</strong> : sécuriser l’environnement, chaussage adapté.</p></aside>
+</section><section class="partie"><h3>Transmettre &amp; tracer</h3>
+<div class="exemples">
+<div class="ex"><p>📖 transmission ciblée DAR — <strong>D</strong> : « M. L. grimace et refuse de poser le pied gauche après sa chute ce matin ». <strong>A</strong> : « Non mobilisé, installé confortablement, alerte IDE ». <strong>R</strong> : « Radio demandée ». On décrit la douleur, la position du membre, la capacité ou non à bouger.</p></div>
+</div>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas pratique corrigé — Prothèse de hanche récente</strong></p></p>
+<div class="cas-piste"><p><em>Mme D. a une prothèse de hanche posée il y a 3 semaines. Au lever, vous hésitez sur la façon de l’installer au fauteuil.</em></p>
+<p><strong>Bonnes pratiques :</strong></p>
+<ul>
+<li>Respecter les mouvements interdits : pas de rotation interne ni d’adduction excessive, hanche fléchie sans dépasser l’angle autorisé.</li>
+<li>Utiliser les aides (rehausseur, accoudoirs) pour ne pas trop fléchir la hanche.</li>
+<li>Travailler en lien avec le kiné et suivre les consignes du dossier.</li>
+<li>Transmettre toute douleur ou difficulté inhabituelle.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — M. K. est tombé, sa jambe paraît raccourcie</p></p>
+<div class="cas-piste"><p><em>Il a très mal à la hanche.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Suspecter une fracture du col du fémur.</li>
+<li>Ne pas le relever ni mobiliser la jambe, rassurer.</li>
+<li>Alerter l’IDE/le cadre, noter l’heure et les circonstances.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Suspicion de fracture : ne pas relever, ne pas mobiliser, rassurer, alerter l’IDE.</li><li>Noter l’heure et les circonstances de la chute.</li><li>Manutention : matériel adapté — lève-personne, drap de glisse — pour votre dos et le sien.</li><li>Arthrose : prendre le temps, antalgique avant le soin sous protocole.</li><li>Fracture ou plâtre : surveiller douleur, coloration et gonflement des extrémités.</li><li>Prothèse : suivre les consignes du dossier et du kiné, signaler toute douleur inhabituelle.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La mobilité conditionne l’autonomie.</li><li>Ostéoporose : os fragiles, donc fractures. Arthrose : usure du cartilage, donc douleur et raideur.</li><li>Sarcopénie : fonte musculaire liée à l’âge et à l’immobilité.</li><li>L’alitement expose à l’escarre et à l’enraidissement.</li><li>Prothèse de hanche récente : ni rotation ni adduction excessive.</li><li>Jambe raccourcie et tournée en dehors après une chute : on pense fracture.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="c" data-id="q0">
+<p class="q"><strong>Q1.</strong> L’ostéoporose se caractérise par…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une douleur articulaire isolée</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une raideur de la peau</li>
+<li data-cle="c" onclick="window._pickQ(this)">Des os fragiles, exposés aux fractures</li>
+<li data-cle="d" onclick="window._pickQ(this)">Des muscles atrophiés</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Ostéoporose = os fragiles, exposés aux fractures.<strong> 🎓 À l’oral VAE :</strong> prévention des chutes essentielle.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q1">
+<p class="q"><strong>Q2.</strong> Après une chute, une jambe raccourcie et tournée vers l’extérieur évoque…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une phlébite</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une crampe</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une fracture (souvent du col du fémur)</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une simple contusion</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Jambe raccourcie et tournée en dehors après chute = fracture du col du fémur.<strong> 🎓 À l’oral VAE :</strong> ne pas mobiliser.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Devant une suspicion de fracture, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Masse la zone</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ne mobilise pas et alerte</li>
+<li data-cle="c" onclick="window._pickQ(this)">Mobilise pour vérifier</li>
+<li data-cle="d" onclick="window._pickQ(this)">Fait marcher la personne</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Suspicion de fracture : l’AS ne mobilise pas et alerte.<strong> 🎓 À l’oral VAE :</strong> immobiliser, rassurer.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> Avec une prothèse de hanche récente, il faut éviter…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">De s’asseoir</li>
+<li data-cle="b" onclick="window._pickQ(this)">La marche</li>
+<li data-cle="c" onclick="window._pickQ(this)">De boire</li>
+<li data-cle="d" onclick="window._pickQ(this)">Les rotations et adductions excessives</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Prothèse de hanche récente : éviter rotations et adductions excessives.<strong> 🎓 À l’oral VAE :</strong> respecter les consignes post-op.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q4">
+<p class="q"><strong>Q5.</strong> La manutention doit protéger…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Uniquement le soignant</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le dos du soignant ET de la personne, avec matériel adapté</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ni l’un ni l’autre</li>
+<li data-cle="d" onclick="window._pickQ(this)">Uniquement la personne</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La manutention protège le dos du soignant ET de la personne, avec matériel adapté.<strong> 🎓 À l’oral VAE :</strong> utilisez lève-personne/drap de glisse.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> Mobiliser régulièrement une personne alitée permet de prévenir…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L’hypertension</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le diabète</li>
+<li data-cle="c" onclick="window._pickQ(this)">L’escarre et l’enraidissement</li>
+<li data-cle="d" onclick="window._pickQ(this)">L’infection urinaire</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Mobiliser régulièrement prévient escarre et enraidissement.<strong> 🎓 À l’oral VAE :</strong> liez immobilité ↔ complications.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q6">
+<p class="q"><strong>Q7.</strong> Chez une personne porteuse d’un plâtre, l’AS surveille en priorité…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La douleur, la coloration et le gonflement des extrémités</li>
+<li data-cle="b" onclick="window._pickQ(this)">La couleur des cheveux</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le poids corporel uniquement</li>
+<li data-cle="d" onclick="window._pickQ(this)">La tension artérielle uniquement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Fracture/plâtre : surveiller douleur, coloration et gonflement des extrémités.<strong> 🎓 À l’oral VAE :</strong> un signe anormal s’alerte à l’IDE sans délai.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q7">
+<p class="q"><strong>Q8.</strong> La « sarcopénie » désigne…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une fracture</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une raideur articulaire</li>
+<li data-cle="c" onclick="window._pickQ(this)">La fonte musculaire liée à l’âge/immobilité</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une infection osseuse</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Perte de muscle → mobiliser pour prévenir.<strong> 🎓 À l’oral VAE :</strong> liez immobilité et complications.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L08.html" class="back">← SOCLE_L08</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L10.html">SOCLE_L10 →</a></div>
 </div>
 </body></html>

@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B2 · B2_L15 · Perfusion : surveillance dans le champ AS — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L15 · Perfusion : surveillance dans le champ AS — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L15</div>
@@ -56,7 +79,149 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Perfusion : surveillance dans le champ AS</h1>
     <div class="accroche"><p>Cette leçon vous apprend à surveiller une perfusion sans y toucher : repérer les signes d’alerte au point de ponction, réagir à une tubulure coudée ou à un gonflement du membre perfusé, et alerter l’IDE sans délai.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer votre champ autour d’une perfusion : surveiller, assurer le confort, alerter.</li><li>Repérer les signes d’alerte au point de ponction et sur le membre perfusé.</li><li>Réagir à une anomalie du dispositif sans toucher au cathéter.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Surveiller une perfusion sans la manipuler</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>À chaque passage : point de ponction, écoulement, niveau de la poche, tubulure.</li><li>Tubulure coudée : repositionner le bras ou la tubulure, sans toucher au cathéter, puis vérifier l’écoulement.</li><li>Lors des mobilisations, veiller à ne pas plier ni arracher la tubulure.</li><li>Gonflement douloureux autour du cathéter : ne pas régler le débit, signaler immédiatement à l’IDE.</li><li>Surveiller aussi le confort : gêne, mobilité, installation.</li><li>Tracer ce que vous avez observé et ce que vous avez signalé.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La pose et le réglage d’une perfusion relèvent de l’IDE.</li><li>Point de ponction : rougeur, douleur, gonflement, écoulement se signalent.</li><li>Membre œdématié, froid ou douloureux : extravasation à suspecter.</li><li>L’AS ne règle jamais le débit, ne reconnecte pas une tubulure, ne manipule pas le cathéter.</li></ul></section><section class="reflexe"><h2>🛡 Réflexe terrain</h2><ul><li>gestes</li><li>vae</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le réglage du débit d&#x27;une perfusion relève…</p><ol class="opts"><li class="ok">De la famille</li><li class="">De l&#x27;IDE</li><li class="">Du patient</li><li class="">De l&#x27;AS</li></ol></div><div class="qblock"><p class="q">2. Une douleur avec gonflement au point de ponction évoque…</p><ol class="opts"><li class="ok">Une bonne perfusion</li><li class="">Une allergie au lit</li><li class="">Rien</li><li class="">Une anomalie (extravasation) à signaler</li></ol></div><div class="qblock"><p class="q">3. Si la tubulure est coudée, l&#x27;AS…</p><ol class="opts"><li class="ok">Retire la perfusion</li><li class="">Le signale à l&#x27;IDE / repositionne sans manipuler le cathéter</li><li class="">Augmente le débit</li><li class="">La recoupe</li></ol></div><div class="qblock"><p class="q">4. Le champ de l&#x27;AS pour la perfusion est…</p><ol class="opts"><li class="ok">Le changement de poche</li><li class="">La pose et le réglage</li><li class="">La surveillance, le confort et l&#x27;alerte</li><li class="">Le retrait du cathéter</li></ol></div><div class="qblock"><p class="q">5. Si l’AS constate que la poche de perfusion est vide ou que l’écoulement s’est arrêté, il…</p><ol class="opts"><li class="ok">Le signale sans délai à l’IDE, sans modifier le débit</li><li class="">Change la poche lui-même</li><li class="">Ferme la perfusion et retire le pansement</li><li class="">Attend le prochain passage prévu</li></ol></div><div class="qblock"><p class="q">6. Une tubulure de perfusion se débranche accidentellement pendant une mobilisation : l’AS…</p><ol class="opts"><li class="ok">La reconnecte lui-même rapidement</li><li class="">Retire complètement la perfusion</li><li class="">Alerte l’IDE sans la reconnecter, et sécurise la personne</li><li class="">Ne dit rien si le patient ne se plaint pas</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B2_L14.html" class="back">← B2_L14</a><a href="B2_L16.html">B2_L16 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer votre champ autour d’une perfusion : surveiller, assurer le confort, alerter.</li><li>Repérer les signes d’alerte au point de ponction et sur le membre perfusé.</li><li>Réagir à une anomalie du dispositif sans toucher au cathéter.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Surveiller une perfusion sans la manipuler</h3>
+<p>La pose et le réglage d'une perfusion relèvent de l'IDE. L'AS <strong>surveille, assure le confort et signale</strong>.</p>
+<div class="tableau"><table><thead><tr>
+<th>Ce que l'AS surveille</th>
+<th>Signes d'alerte</th>
+</tr></thead><tbody>
+<tr>
+<td>Point de ponction</td>
+<td>Rougeur, douleur, gonflement, écoulement</td>
+</tr>
+<tr>
+<td>Membre perfusé</td>
+<td>Œdème, froideur, douleur (extravasation)</td>
+</tr>
+<tr>
+<td>Dispositif</td>
+<td>Tubulure coudée, perfusion arrêtée, poche vide</td>
+</tr>
+<tr>
+<td>Confort</td>
+<td>Gêne, mobilité, installation</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ 🚨 la limite absolue</h4><p>L'AS <strong>ne règle pas le débit</strong>, ne reconnecte pas une tubulure, ne manipule pas le cathéter. En cas d'anomalie, il <strong>alerte l'IDE</strong>.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 4 (ACTIVITÉ 15 : dispositifs).</p>
+<p>L’AS <strong>surveille</strong> (point de ponction, confort) mais <strong>ne touche pas au débit</strong> (IDE).</p>
+<p><strong>Sang / gonflement / douleur au point de ponction → alerter l’IDE</strong>.</p>
+<p>Attention à ne pas plier/arracher la tubulure lors des mobilisations.</p>
+<p><strong>🎓 À l’oral / piège :</strong> L’AS ne règle jamais une perfusion : il surveille et alerte.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Tubulure coudée</p></p>
+<div class="cas-piste"><p><em>La tubulure de perfusion est pliée sous le bras.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Repositionner le bras/la tubulure <strong>sans toucher le cathéter</strong>.</li>
+<li>Vérifier l’écoulement ; signaler à l’IDE si doute.</li>
+<li>Tracer.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Gonflement au point de ponction</p></p>
+<div class="cas-piste"><p><em>La main gonfle et devient douloureuse autour du cathéter.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Suspecter une <strong>extravasation</strong> : ne pas régler le débit.</li>
+<li>Signaler immédiatement à l’IDE.</li>
+<li>Surveiller, tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>À chaque passage : point de ponction, écoulement, niveau de la poche, tubulure.</li><li>Tubulure coudée : repositionner le bras ou la tubulure, sans toucher au cathéter, puis vérifier l’écoulement.</li><li>Lors des mobilisations, veiller à ne pas plier ni arracher la tubulure.</li><li>Gonflement douloureux autour du cathéter : ne pas régler le débit, signaler immédiatement à l’IDE.</li><li>Surveiller aussi le confort : gêne, mobilité, installation.</li><li>Tracer ce que vous avez observé et ce que vous avez signalé.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La pose et le réglage d’une perfusion relèvent de l’IDE.</li><li>Point de ponction : rougeur, douleur, gonflement, écoulement se signalent.</li><li>Membre œdématié, froid ou douloureux : extravasation à suspecter.</li><li>L’AS ne règle jamais le débit, ne reconnecte pas une tubulure, ne manipule pas le cathéter.</li></ul></section>
+  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« Pour une perfusion, mon champ c’est la surveillance, le confort et l’alerte : je vérifie le point de ponction et l’écoulement, mais je ne règle jamais le débit ni ne manipule le cathéter — c’est l’IDE. »</p></section>
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="b" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le réglage du débit d'une perfusion relève…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">De la famille</li>
+<li data-cle="b" onclick="window._pickQ(this)">De l'IDE</li>
+<li data-cle="c" onclick="window._pickQ(this)">Du patient</li>
+<li data-cle="d" onclick="window._pickQ(this)">De l'AS</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Réglage du débit de perfusion = IDE.<strong> 🎓 À l’oral VAE :</strong> pas l’AS.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> Une douleur avec gonflement au point de ponction évoque…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une bonne perfusion</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une allergie au lit</li>
+<li data-cle="c" onclick="window._pickQ(this)">Rien</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une anomalie (extravasation) à signaler</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Douleur + gonflement au point de ponction = extravasation à signaler.<strong> 🎓 À l’oral VAE :</strong> anomalie.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Si la tubulure est coudée, l'AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Retire la perfusion</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le signale à l'IDE / repositionne sans manipuler le cathéter</li>
+<li data-cle="c" onclick="window._pickQ(this)">Augmente le débit</li>
+<li data-cle="d" onclick="window._pickQ(this)">La recoupe</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Tubulure coudée : signaler/repositionner sans manipuler le cathéter.<strong> 🎓 À l’oral VAE :</strong> prudence.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q3">
+<p class="q"><strong>Q4.</strong> Le champ de l'AS pour la perfusion est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le changement de poche</li>
+<li data-cle="b" onclick="window._pickQ(this)">La pose et le réglage</li>
+<li data-cle="c" onclick="window._pickQ(this)">La surveillance, le confort et l'alerte</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le retrait du cathéter</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Champ AS pour la perfusion : surveillance, confort, alerte.<strong> 🎓 À l’oral VAE :</strong> limites claires.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> Si l’AS constate que la poche de perfusion est vide ou que l’écoulement s’est arrêté, il…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le signale sans délai à l’IDE, sans modifier le débit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Change la poche lui-même</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ferme la perfusion et retire le pansement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Attend le prochain passage prévu</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Poche vide ou écoulement arrêté : signaler sans délai à l’IDE, sans modifier le débit.<strong> 🎓 À l’oral VAE :</strong> surveillance systématique à chaque passage.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> Une tubulure de perfusion se débranche accidentellement pendant une mobilisation : l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La reconnecte lui-même rapidement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Retire complètement la perfusion</li>
+<li data-cle="c" onclick="window._pickQ(this)">Alerte l’IDE sans la reconnecter, et sécurise la personne</li>
+<li data-cle="d" onclick="window._pickQ(this)">Ne dit rien si le patient ne se plaint pas</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Tubulure déconnectée : ne pas la reconnecter soi-même, alerter l’IDE sans délai.<strong> 🎓 À l’oral VAE :</strong> on ne touche pas au dispositif.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B2_L14.html" class="back">← B2_L14</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B2_L16.html">B2_L16 →</a></div>
 </div>
 </body></html>

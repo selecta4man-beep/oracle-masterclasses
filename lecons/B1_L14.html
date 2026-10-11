@@ -1,62 +1,485 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B1 · B1_L14 · Prévenir la maltraitance et savoir signaler — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L14 · Prévenir la maltraitance et savoir signaler — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L14</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 14</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Prévenir la maltraitance et savoir signaler</h1>
-    <div class="accroche"><p>— tout acte ou omission portant atteinte à l&#x27;intégrité physique, psychique ou morale.…</p></div>
+    <div class="accroche"><p>— tout acte ou omission portant atteinte à l'intégrité physique, psychique ou morale.…</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Distinguer la bientraitance, démarche continue et collective, de la simple absence de maltraitance.</li><li>Identifier les six formes de maltraitance, y compris la maltraitance ordinaire et institutionnelle.</li><li>Repérer les signaux d’alerte chez la personne, dans les propos de l’équipe et dans l’organisation.</li><li>Dérouler la procédure de signalement, de l’alerte interne aux recours externes.</li><li>Traduire la bientraitance en gestes concrets avant, pendant et après chaque soin.</li><li>Adapter votre vigilance aux pathologies qui empêchent la personne de se plaindre.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Bientraitance &amp; maltraitance : définitions et cadre</h3></section><section class="partie"><h3>Les 6 formes de maltraitance</h3></section><section class="partie"><h3>Repérer les signaux d&#x27;alerte</h3></section><section class="partie"><h3>La procédure de signalement</h3></section><section class="partie"><h3>La bientraitance au quotidien</h3></section><section class="partie"><h3>Vulnérabilité selon les pathologies</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Frapper, se présenter avec prénom et fonction, expliquer, demander l’accord et attendre la réponse.</li><li>Vouvoyer sauf accord explicite ; expliquer chaque geste, même chez la personne confuse.</li><li>Préserver la pudeur — drap, paravent, porte — et adapter votre rythme à celui de la personne.</li><li>Un inconfort intérieur est un signal : ne pas attendre la preuve, ne jamais rester seul avec une suspicion.</li><li>Décrire des faits : date, heure, lieu, personnes présentes. « J’ai observé que… », sans juger ni accuser.</li><li>Numéros : 3977 personnes vulnérables · 119 enfance · 15 ou 112 urgence vitale · 17 danger immédiat.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La bientraitance est un mouvement continu, pas un état acquis.</li><li>Six formes : physique, psychologique, financière, négligence, institutionnelle, atteinte à la dignité.</li><li>La maltraitance n’est pas toujours intentionnelle : méconnaissance, épuisement, habitude.</li><li>La maltraitance ordinaire est la plus fréquente et la plus difficile à repérer.</li><li>Signaler n’est pas dénoncer : c’est une obligation légale et un acte de protection.</li><li>Le signalant de bonne foi est protégé par l’article L313-24 du CASF.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Lequel de ces comportements est un exemple de maltraitance psychologique ?</p><ol class="opts"><li class="ok">Frapper avant d&#x27;entrer dans la chambre</li><li class="">Dire en riant « de toute façon, il ne comprend rien »</li><li class="">Proposer deux options de vêtements</li><li class="">Expliquer calmement un soin avant de le réaliser</li></ol></div><div class="qblock"><p class="q">2. « La maltraitance ne concerne que les coups et les blessures physiques. »</p><ol class="opts"><li class="ok">Faux : elle est aussi psychologique, financière, négligence, institutionnelle</li><li class="">Vrai uniquement en EHPAD</li><li class="">Vrai s&#x27;il n&#x27;y a pas d&#x27;intention</li><li class="">Vrai</li></ol></div><div class="qblock"><p class="q">3. Un professionnel qui observe une situation potentielle de maltraitance :</p><ol class="opts"><li class="ok">Doit d&#x27;abord enquêter seul</li><li class="">Peut l&#x27;ignorer</li><li class="">Doit attendre une preuve formelle</li><li class="">A le devoir de la signaler (sinon non-assistance, art. 223-6)</li></ol></div><div class="qblock"><p class="q">4. Un signalement interne doit contenir :</p><ol class="opts"><li class="ok">Les faits observés de façon factuelle (date, heure, lieu, personnes présentes)</li><li class="">Des jugements personnels sur l&#x27;auteur</li><li class="">Des suppositions</li><li class="">Le moins de détails possible</li></ol></div><div class="qblock"><p class="q">5. Le numéro national de signalement de la maltraitance des personnes vulnérables :</p><ol class="opts"><li class="ok">3114</li><li class="">15 (SAMU)</li><li class="">112</li><li class="">3977</li></ol></div><div class="qblock"><p class="q">6. Un résident a des ecchymoses inexpliquées et semble craintif avec un soignant. D&#x27;abord :</p><ol class="opts"><li class="ok">En parler aux autres résidents</li><li class="">Informer l&#x27;IDE ou le cadre en décrivant les faits</li><li class="">Interroger directement le soignant suspecté</li><li class="">Attendre que ça se reproduise</li></ol></div><div class="qblock"><p class="q">7. « La maltraitance institutionnelle est toujours volontaire. »</p><ol class="opts"><li class="ok">Vrai, sinon ce n’est pas de la maltraitance</li><li class="">Faux, elle naît souvent de l’organisation</li><li class="">Vrai, dès lors qu’un fait est tracé</li><li class="">Vrai, mais seulement en EHPAD</li></ol></div><div class="qblock"><p class="q">8. Vous surprenez un collègue tenant fermement le bras d&#x27;un résident qui dit « Non ! ». Vous :</p><ol class="opts"><li class="ok">Interviens avec calme : « on va lui expliquer et voir s&#x27;il est d&#x27;accord »</li><li class="">Quittes la pièce</li><li class="">Ne dis rien, il a ses raisons</li><li class="">Fais une blague pour détendre</li></ol></div><div class="qblock"><p class="q">9. (Livre ORACLE) Face à un faisceau de signes de maltraitance à domicile, l&#x27;AS doit…</p><ol class="opts"><li class="ok">Confronter seul l&#x27;aidant suspecté</li><li class="">Banaliser tant qu&#x27;il n&#x27;y a pas de preuve</li><li class="">Garder l&#x27;information pour lui par prudence</li><li class="">Observer des faits précis et signaler sans délai, de façon factuelle, selon la procédure</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B1_L13.html" class="back">← B1_L13</a><a href="B1_L15.html">B1_L15 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Distinguer la bientraitance, démarche continue et collective, de la simple absence de maltraitance.</li><li>Identifier les six formes de maltraitance, y compris la maltraitance ordinaire et institutionnelle.</li><li>Repérer les signaux d’alerte chez la personne, dans les propos de l’équipe et dans l’organisation.</li><li>Dérouler la procédure de signalement, de l’alerte interne aux recours externes.</li><li>Traduire la bientraitance en gestes concrets avant, pendant et après chaque soin.</li><li>Adapter votre vigilance aux pathologies qui empêchent la personne de se plaindre.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Bientraitance &amp; maltraitance : définitions et cadre</h3>
+<ul>
+<li><strong>💚 Bientraitance</strong> — démarche de respect, d'écoute et d'adaptation permanente aux besoins.</li>
+</ul>
+<ul>
+<li><strong>⛔ Maltraitance</strong> — tout acte ou omission portant atteinte à l'intégrité physique, psychique ou morale.</li>
+</ul>
+<ul>
+<li><strong>🏛️ Enjeu de dignité</strong> — la personne vulnérable dépend de ceux qui l'accompagnent : chaque geste compte.</li>
+</ul>
+<ul>
+<li><strong>👩‍⚕️ Rôle de l'AS</strong> — au plus proche au quotidien, l'aide-soignant est le <strong>premier maillon du repérage</strong>.</li>
+</ul>
+<aside class="encadre"><h4>🔗 Référence HAS-ANESM (guide 2008)</h4><p>La <strong>bientraitance</strong> n'est pas l'absence de maltraitance : c'est une <strong>démarche globale, collective et continue</strong> — une culture du soin qui place la personne au centre. Elle repose sur le respect des droits fondamentaux : dignité, intimité, libre choix, information, consentement. C'est un <strong>mouvement continu</strong>, pas un état.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>🔗 Les 4 dimensions de la bientraitance (HAS)</strong></p>
+<p><strong>1. Individuelle</strong> (la posture de chaque professionnel) · <strong>2. Collective</strong> (la cohérence et la vigilance de l'équipe) · <strong>3. Institutionnelle</strong> (l'organisation crée les conditions du soin respectueux) · <strong>4. Sociétale</strong> (le cadre légal et culturel protège les personnes vulnérables).</p></aside>
+<aside class="encadre"><h4>🔗 Cadre juridique obligatoire</h4><p><strong>Loi 2002-2</strong> (droits des usagers) · <strong>Art. 223-6 Code pénal</strong> (non-assistance à personne en danger — 5 ans d'emprisonnement) · <strong>Art. L313-24 CASF</strong> (protection du signalant de bonne foi) · <strong>Charte HAS-ANESM 2008</strong> (bientraitance).</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ La maltraitance peut être intentionnelle ou non</strong></p>
+<p>Elle résulte parfois de la méconnaissance, de l'épuisement professionnel ou de l'habitude. Elle peut être le fait d'un individu ou d'une organisation entière (maltraitance institutionnelle).</p></aside>
+</section><section class="partie"><h3>Les 6 formes de maltraitance</h3>
+<p>La maltraitance ne se limite pas aux coups. Elle se décline en <strong>six grandes catégories</strong> (classification HAS) à savoir repérer :</p>
+<div class="tableau"><table><thead><tr>
+<th>Type</th>
+<th>Définition</th>
+<th>Exemples concrets</th>
+</tr></thead><tbody>
+<tr>
+<td>👊 Physique</td>
+<td>Coups, gestes brusques, contentions non prescrites, secousses</td>
+<td>Attraper le bras pour faire avancer ; maintenir de force au lit sans prescription ; gifler « pour réveiller »</td>
+</tr>
+<tr>
+<td>🗣️ Psychologique</td>
+<td>Humiliations, infantilisation, menaces, moqueries</td>
+<td>« Dépêchez-vous ! » sur un ton agressif ; « il ne comprend plus rien » devant le résident ; tutoiement non sollicité</td>
+</tr>
+<tr>
+<td>💰 Financière</td>
+<td>Vol, utilisation non autorisée d'argent ou d'objets, extorsion</td>
+<td>Se servir dans le réfrigérateur personnel ; emprunter sans demander ; pression pour testament/donation</td>
+</tr>
+<tr>
+<td>😶 Négligence</td>
+<td>Manque de soins, oublis répétés, absence de stimulation (active ou passive)</td>
+<td>Ne pas répondre aux appels « car il sonne tout le temps » ; oublier la prise de boisson ; isolement social</td>
+</tr>
+<tr>
+<td>🏢 Institutionnelle</td>
+<td>Organisation génératrice de maltraitance (cadences, sous-effectif, protocoles rigides)</td>
+<td>Toilettes « à la chaîne » ; coucher imposé à 19h ; chambre double sans intimité</td>
+</tr>
+<tr>
+<td>🚪 Atteinte à la dignité</td>
+<td>Violation de l'intimité, rupture du secret professionnel</td>
+<td>Entrer sans frapper ; porte ouverte pendant un soin intime ; divulguer des infos dans le couloir ; photos sans accord</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4></h4><p><strong>🔗 Focus : la « maltraitance ordinaire » (rapport Compagnon &amp; Ghadi, HAS 2009)</strong></p>
+<p>Ce sont les <strong>petits gestes banalisés du quotidien</strong> qui, par accumulation, deviennent maltraitants : appeler par le numéro de chambre, parler du résident à la 3e personne devant lui, soupirer pendant un soin, fermer les yeux sur un collègue brusque. La forme la plus fréquente et la plus difficile à repérer.</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ La maltraitance institutionnelle est souvent invisible</strong></p>
+<p>Elle est « normalisée » par l'équipe : ce n'est pas la faute d'un seul individu, mais un fonctionnement collectif défaillant. L'aide-soignant a le <strong>droit et le devoir d'alerter par écrit</strong>.</p></aside>
+</section><section class="partie"><h3>Repérer les signaux d&#x27;alerte</h3>
+<p>Le repérage repose sur <strong>trois niveaux d'observation</strong> : ce qui se passe chez le résident, ce qui se dit dans l'équipe, et ce qui dysfonctionne dans l'organisation.</p>
+<ul>
+<li><strong>😢 Repli sur soi</strong> — pleurs, silence inhabituel.</li>
+</ul>
+<ul>
+<li><strong>🩹 Blessures inexpliquées</strong> — ecchymoses, griffures, fractures.</li>
+</ul>
+<ul>
+<li><strong>😨 Peur visible</strong> — crispation à l'approche d'un soignant.</li>
+</ul>
+<ul>
+<li><strong>💬 Paroles à demi-mot</strong> — « on m'a fait mal », « laissez ».</li>
+</ul>
+<ul>
+<li><strong>🗣️ Propos banalisés dans l'équipe</strong> — « elle est folle, de toute façon ».</li>
+</ul>
+<ul>
+<li><strong>⏰ Gestes brusques normalisés</strong> — « on n'a pas le temps ».</li>
+</ul>
+<ul>
+<li><strong>🍽️ Perte de poids</strong> — dénutrition, plateau intact.</li>
+</ul>
+<ul>
+<li><strong>🛏️ Escarres / hygiène négligée</strong> — soins de base non assurés.</li>
+</ul>
+<aside class="encadre"><h4></h4><p><strong>💡 Faites confiance à votre « inconfort intérieur »</strong></p>
+<p>Si une situation te met mal à l'aise, c'est un signal à écouter. Le doute est normal : il ne faut ni le minimiser ni attendre d'avoir « la preuve ». En parler est la première étape.</p></aside>
+</section><section class="partie"><h3>La procédure de signalement</h3>
+<ul>
+<li><strong>Parler immédiatement</strong> — à un interlocuteur de confiance (IDE, cadre, référent bientraitance). Si la hiérarchie est impliquée : direction, médecin coordonnateur ou interlocuteur extérieur.</li>
+</ul>
+<ul>
+<li><strong>Décrire les faits</strong> — date, heure, lieu, personnes présentes, faits observés. « J'ai observé que… » : on ne juge pas, on n'accuse pas.</li>
+</ul>
+<ul>
+<li><strong>Utiliser la procédure interne</strong> — fiche d'événement indésirable et référent bientraitance (à connaître dès la prise de poste).</li>
+</ul>
+<ul>
+<li><strong>Signalement externe si nécessaire</strong> — <strong>3977</strong>, <strong>ARS</strong>, ou <strong>procureur de la République</strong> en cas de danger immédiat. Le signalant de bonne foi est protégé (art. L313-24 CASF).</li>
+</ul>
+<ul>
+<li><strong>Tracer et suivre</strong> — transmissions ciblées, fiche de signalement. La traçabilité protège le résident et le professionnel ; vérifier que les faits ont cessé.</li>
+</ul>
+<aside class="encadre"><h4>🔗 La règle d&#x27;or</h4><p><strong>Ne jamais rester seul</strong> avec une suspicion. Le signalement n'est pas une dénonciation, c'est un <strong>acte de protection</strong> de la personne vulnérable.</p></aside>
+<aside class="encadre"><h4>✅ Numéros utiles à mémoriser</h4><p><strong>3977</strong> (maltraitance personnes âgées/handicapées) · <strong>119</strong> (enfance en danger) · <strong>15 / 112</strong> (SAMU — urgence vitale) · <strong>17</strong> (police/gendarmerie — danger immédiat).</p></aside>
+</section><section class="partie"><h3>La bientraitance au quotidien</h3>
+<p>La bientraitance se joue <strong>avant, pendant et après chaque soin</strong> — des micro-gestes qui redonnent un sentiment de contrôle et de dignité :</p>
+<ul>
+<li><strong>🚪 Avant le soin</strong> — frapper, se présenter, expliquer, demander l'accord et attendre la réponse.</li>
+</ul>
+<ul>
+<li><strong>🤲 Pendant le soin</strong> — protéger la pudeur, garder le contact visuel, adapter le rythme à la personne (pas l'inverse).</li>
+</ul>
+<ul>
+<li><strong>🔄 Proposer des choix</strong> — ordre des soins, heure du lever, vêtements, menu : ces micro-choix redonnent le contrôle.</li>
+</ul>
+<ul>
+<li><strong>🤝 Oser dire stop</strong> — interpeller un collègue avec bienveillance, participer aux analyses de pratiques.</li>
+</ul>
+<aside class="encadre"><h4></h4><p><strong>🔗 Les 8 gestes ORACLE de la bientraitance</strong></p>
+<p>1. frapper et attendre la réponse · 2. se présenter (prénom + fonction) · 3. vouvoyer sauf accord explicite · 4. expliquer chaque geste, même chez le patient confus · 5. proposer un choix · 6. préserver la pudeur (drap, paravent, porte) · 7. adapter son rythme à celui de la personne · 8. remercier et saluer en partant.</p></aside>
+<aside class="encadre"><h4>🔗 Lien avec la démarche qualité</h4><p>La bientraitance s'inscrit dans le projet d'établissement et la certification HAS. Chaque professionnel est acteur de la qualité : signaler, proposer, améliorer.</p></aside>
+</section><section class="partie"><h3>Vulnérabilité selon les pathologies</h3>
+<p>Certaines pathologies créent des facteurs de risque spécifiques de maltraitance, à identifier et prévenir :</p>
+<p><strong>Signaux d'alerte à repérer lors des soins :</strong></p>
+<ul>
+<li><strong>🩸 Physiques</strong> — hématomes à des stades différents, blessures incompatibles avec l'explication, escarres/plaies négligées, dénutrition ou déshydratation inexpliquée, mauvaise hygiène chronique.</li>
+</ul>
+<ul>
+<li><strong>😰 Comportementaux</strong> — peur à l'approche de certains soignants, régression soudaine (incontinence, mutisme), agitation lors des soins, pleurs sans raison, retrait/prostration.</li>
+</ul>
+<ul>
+<li><strong>🗣️ Verbaux</strong> — propos contradictoires sur une blessure, demandes répétées de « ne pas dire », allusions à des menaces, silence inhabituel ; une confidence spontanée se reçoit toujours avec écoute.</li>
+</ul>
+<div class="tableau"><table><thead><tr>
+<th>Pathologie</th>
+<th>Facteurs de vulnérabilité</th>
+<th>Formes à risque</th>
+<th>Vigilance AS</th>
+</tr></thead><tbody>
+<tr>
+<td>🧓 Alzheimer / démence</td>
+<td>Incapacité à se plaindre, confusion, dépendance totale</td>
+<td>Maltraitance physique (soins), négligence, vol, violence psychologique</td>
+<td>Surveiller hématomes inexpliqués, état cutané, comportement inhabituel</td>
+</tr>
+<tr>
+<td>🧠 AVC avec aphasie</td>
+<td>Impossibilité d'appeler à l'aide ou de témoigner</td>
+<td>Négligence (soins reportés car ne se plaint pas), maltraitance physique</td>
+<td>Lire les signes non verbaux de détresse (regard, expression, tension)</td>
+</tr>
+<tr>
+<td>♋ Cancer (stade terminal)</td>
+<td>Grande faiblesse, douleur, altération de l'état général</td>
+<td>Négligence de l'antalgie, soins forcés, abandon émotionnel</td>
+<td>Vérifier que la douleur est traitée et les souhaits respectés</td>
+</tr>
+<tr>
+<td>🧒 Mineur malade</td>
+<td>Dépendance totale aux adultes, incapacité juridique</td>
+<td>Négligence des soins, violence, maltraitance associée</td>
+<td>Signalement obligatoire (IDE ou autorités) si soupçon</td>
+</tr>
+<tr>
+<td>🧠 Troubles psychiatriques</td>
+<td>Déni, isolement, méfiance des soins, contrainte</td>
+<td>Contention abusive, médication forcée non justifiée, isolement</td>
+<td>Toute contention doit être prescrite et tracée</td>
+</tr>
+<tr>
+<td>🩺 IRC / dialysé</td>
+<td>Épuisement, contraintes multiples, dépendance à l'équipe</td>
+<td>Négligence des accès vasculaires, restrictions mal gérées</td>
+<td>Protéger la fistule ; jamais de TA dans le bras de la fistule</td>
+</tr>
+<tr>
+<td>♿ Polyhandicap</td>
+<td>Communication limitée, dépendance totale, positionnement difficile</td>
+<td>Manipulations brusques, manque d'individualisation, infantilisation</td>
+<td>Toujours expliquer avant de manipuler, respecter le rythme</td>
+</tr>
+<tr>
+<td>😴 Soins palliatifs / fin de vie</td>
+<td>Vulnérabilité extrême, fatigue, conscience parfois altérée</td>
+<td>Acharnement, abandon, soins de bouche négligés</td>
+<td>Respecter directives anticipées et personne de confiance ; confort prioritaire</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 2 (ACTIVITÉ 08 : Risques &amp; maltraitance).</p>
+<p>Formes de <strong>maltraitance</strong> : physique, psychologique/emprise (<strong>triangle de Karpman</strong>), négligence, <strong>contention inappropriée</strong> (loi 2002-2).</p>
+<p><strong>Procédure :</strong> parler (obligation légale) → alerte → <strong>FEI</strong> → transmissions.</p>
+<p>Repérer aussi les <strong>4 signes inflammatoires</strong> : rougeur, chaleur, douleur, œdème (± fièvre).</p>
+<p><strong>🎓 À l’oral / piège :</strong> Signaler n’est pas trahir : c’est une <strong>obligation légale</strong>. Décris des faits, pas des jugements.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>Posture clé : <strong>repérer, alerter, prendre des mesures ajustées, transmettre</strong> ; connaître les chartes (patient, personne âgée, personne handicapée).</p>
+<p>Risques à prévenir : médicaments (5B), intoxication aux produits d’entretien, <strong>dénutrition/déshydratation</strong>, allergies, troubles de la déglutition et du transit.</p>
+<p><strong>Chute</strong> (majorée si troubles cognitifs) : bonnes pratiques de transfert, lit abaissé, freins, sol sec, sonnette à portée.</p>
+<p>Troubles du décubitus : escarre, constipation, fonte musculaire, risque <strong>thrombo-embolique</strong> (mobilisation, bas de contention/anticoagulant sur prescription).</p>
+<p>Savoir évoquer une urgence : <strong>thrombose veineuse, embolie pulmonaire, AVC, infarctus</strong> → identifier, alerter, transmettre.</p>
+<p>Agressivité : comprendre la cause (peur, douleur, troubles cognitifs, deuil), protéger la personne et se protéger, transmettre.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Référence livre ORACLE &amp; cas pratique</h2>
+<p><strong>📌 Fiche mémo — 6 repères :</strong></p>
+<ul>
+<li>traiter chaque résident comme une <strong>personne à part entière</strong> (nom, regard, explication, accord) ;</li>
+<li>refuser les <strong>gestes brusques et paroles humiliantes</strong>, même « anodins » ;</li>
+<li>rester attentif aux <strong>changements de comportement</strong> (peur, repli, blessures) ;</li>
+<li>ne pas banaliser ce qui te met <strong>mal à l'aise</strong> : en parler à l'IDE/au cadre ;</li>
+<li>utiliser les <strong>procédures de signalement</strong> : <strong>signaler ≠ dénoncer = protéger</strong> ;</li>
+<li>participer aux <strong>actions de bientraitance</strong> (groupes de parole, formations, analyses de pratiques).</li>
+</ul>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Propos dévalorisants devant un résident (M. Duval)</strong></p></p>
+<div class="cas-piste"><p><em>En EHPAD, vous accompagnez la toilette de M. Duval, 84 ans, atteint de troubles cognitifs sévères. Une collègue entre dans la chambre et dit à voix haute, devant lui : « de toute façon, il ne comprend rien, on peut parler devant lui ». M. Duval ne répond pas mais se referme aussitôt et cesse de coopérer au soin. Vous devez poursuivre la tournée.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> Les propos tenus devant le résident, sous prétexte qu'il « ne comprend rien », constituent une maltraitance psychologique même sans intention de nuire ; le repli de M. Duval juste après montre qu'il perçoit le ton et l'ambiance, au-delà des mots.</p>
+<p><strong>2. Conduite immédiate.</strong> Ne pas laisser passer la remarque ; rappeler avec calme et sans conflit à la collègue que le résident ressent ce qui se dit et se passe autour de lui ; poursuivre le soin avec douceur, en expliquant chaque geste comme d'habitude, pour restaurer la confiance.</p>
+<p><strong>3. Transmission.</strong> Signaler la situation à l'IDE ou au cadre de façon factuelle : décrire les propos entendus, le contexte, la réaction du résident, sans porter de jugement sur la personne de la collègue. Proposer d'aborder le sujet en réunion d'équipe ou en analyse de pratiques (maltraitance ordinaire).</p>
+<p><strong>4. Erreur à éviter.</strong> Se taire par crainte du conflit avec la collègue, ou banaliser en pensant que « il ne s'en rend pas compte » : c'est justement cette banalisation qui installe la maltraitance ordinaire dans le service.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Ecchymoses inexpliquées (Mme Colette, 87 ans)</strong></p></p>
+<div class="cas-piste"><p><em>En EHPAD, en réalisant la toilette de Mme Colette, 87 ans, vous découvrez plusieurs ecchymoses sur les avant-bras, à des stades de couleur différents, qu'elle ne sait pas expliquer. Elle se montre craintive lorsque vous approchez pour la mobiliser et vous demande de « faire vite ». Aucune chute n'est notée dans son dossier de soins.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> Des ecchymoses multiples, d'âges différents, sans explication ni chute tracée, associées à une crainte à la mobilisation et une demande de faire vite, forment un faisceau de signes qui peut évoquer une maltraitance physique, sans que cela soit une certitude.</p>
+<p><strong>2. Conduite immédiate.</strong> Poursuivre le soin avec douceur et bienveillance, ne pas interroger Mme Colette de façon insistante ou accusatrice ; observer et noter précisément la localisation, la taille et la couleur des ecchymoses, ainsi que son comportement.</p>
+<p><strong>3. Transmission.</strong> Transmettre sans délai à l'IDE ou au cadre, de façon factuelle (« j'ai observé que… »), sans juger ni désigner de responsable ; demander une réévaluation en équipe et, si besoin, une orientation vers le médecin coordonnateur.</p>
+<p><strong>4. Erreur à éviter.</strong> Garder l'information pour soi en attendant une « preuve » plus formelle, ou mener soi-même une enquête auprès des collègues : cela retarde la protection de la résidente et sort du rôle de l'aide-soignant.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Maltraitance institutionnelle, toilettes à la chaîne</strong></p></p>
+<div class="cas-piste"><p><em>En sous-effectif ce matin, l'équipe enchaîne les toilettes en quelques minutes chacune : portes laissées ouvertes, résidents levés sans être prévenus, phrase répétée « on n'a pas le temps, dépêchez-vous ». Vous ressentez un malaise mais cette pratique semble habituelle dans le service et personne ne s'en inquiète.</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> Des cadences imposées, des portes laissées ouvertes pendant des soins intimes, l'absence d'information préalable des résidents : ce sont des signes de maltraitance institutionnelle, liée à l'organisation du service (sous-effectif, cadences) et banalisée par l'équipe.</p>
+<p><strong>2. Conduite immédiate.</strong> Dans la limite de son propre soin, préserver ce qui dépend de soi : fermer la porte, prévenir le résident avant chaque geste, adapter son propre rythme sans accuser un collègue en particulier devant les résidents.</p>
+<p><strong>3. Transmission.</strong> Alerter par écrit (fiche d'événement indésirable) le cadre ou la direction sur le fonctionnement observé, en s'appuyant sur des faits concrets et répétés ; demander à en parler en réunion d'équipe pour que la situation soit prise en compte collectivement.</p>
+<p><strong>4. Erreur à éviter.</strong> Se dire que « c'est comme ça partout » et ne rien signaler : l'aide-soignant a le droit et le devoir d'alerter par écrit sur une maltraitance institutionnelle, même si elle n'est le fait d'aucun individu isolé.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — Domicile · Maltraitance &amp; vigilance (Mme S.)</strong></p></p>
+<div class="cas-piste"><p><em>Chez Mme S., dépendante, vous remarquez des ecchymoses sur les bras, un logement très négligé, une personne amaigrie et craintive en présence de son neveu (seul aidant). Elle vous dit à voix basse : « il faut que je me dépêche, il n'aime pas attendre ».</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quels signes vous alertent ?</li>
+<li>Quelle attitude immédiate, dans votre rôle ?</li>
+<li>Que transmettre, à qui, comment ?</li>
+<li>Quels pièges éviter ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Signes.</strong> Ecchymoses inexpliquées, dénutrition apparente, logement négligé, peur en présence de l'aidant, propos évoquant une pression : faisceau cohérent évoquant une possible maltraitance.</p>
+<p><strong>2. Attitude.</strong> Rester calme et bienveillant, réaliser l'accompagnement, ne pas accuser ni mener d'enquête, observer et noter des <strong>faits précis</strong>, préserver la relation de confiance.</p>
+<p><strong>3. Transmission.</strong> Signaler sans délai à l'IDE/coordinateur, de façon <strong>factuelle</strong> (décrire ce qui est observé et entendu, pas une accusation), selon la procédure. Le signalement est une <strong>obligation professionnelle</strong>.</p>
+<p><strong>4. Pièges.</strong> Banaliser (« ce ne sont que des bleus »), confronter le neveu seul, garder l'information pour soi, ou porter un jugement non étayé.</p></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Frapper, se présenter avec prénom et fonction, expliquer, demander l’accord et attendre la réponse.</li><li>Vouvoyer sauf accord explicite ; expliquer chaque geste, même chez la personne confuse.</li><li>Préserver la pudeur — drap, paravent, porte — et adapter votre rythme à celui de la personne.</li><li>Un inconfort intérieur est un signal : ne pas attendre la preuve, ne jamais rester seul avec une suspicion.</li><li>Décrire des faits : date, heure, lieu, personnes présentes. « J’ai observé que… », sans juger ni accuser.</li><li>Numéros : 3977 personnes vulnérables · 119 enfance · 15 ou 112 urgence vitale · 17 danger immédiat.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La bientraitance est un mouvement continu, pas un état acquis.</li><li>Six formes : physique, psychologique, financière, négligence, institutionnelle, atteinte à la dignité.</li><li>La maltraitance n’est pas toujours intentionnelle : méconnaissance, épuisement, habitude.</li><li>La maltraitance ordinaire est la plus fréquente et la plus difficile à repérer.</li><li>Signaler n’est pas dénoncer : c’est une obligation légale et un acte de protection.</li><li>Le signalant de bonne foi est protégé par l’article L313-24 du CASF.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="b" data-id="q0">
+<p class="q"><strong>Q1.</strong> Lequel de ces comportements est un exemple de maltraitance psychologique ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Frapper avant d'entrer dans la chambre</li>
+<li data-cle="b" onclick="window._pickQ(this)">Dire en riant « de toute façon, il ne comprend rien »</li>
+<li data-cle="c" onclick="window._pickQ(this)">Proposer deux options de vêtements</li>
+<li data-cle="d" onclick="window._pickQ(this)">Expliquer calmement un soin avant de le réaliser</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>« Il ne comprend rien » dit en riant = maltraitance psychologique.<strong> 🎓 À l’oral VAE :</strong> le mépris est une violence.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> « La maltraitance ne concerne que les coups et les blessures physiques. »</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Faux : elle est aussi psychologique, financière, négligence, institutionnelle</li>
+<li data-cle="b" onclick="window._pickQ(this)">Vrai uniquement en EHPAD</li>
+<li data-cle="c" onclick="window._pickQ(this)">Vrai s'il n'y a pas d'intention</li>
+<li data-cle="d" onclick="window._pickQ(this)">Vrai</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Faux : la maltraitance est aussi psychologique, financière, négligence, institutionnelle.<strong> 🎓 À l’oral VAE :</strong> 6 formes à connaître.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q2">
+<p class="q"><strong>Q3.</strong> Un professionnel qui observe une situation potentielle de maltraitance :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Doit d'abord enquêter seul</li>
+<li data-cle="b" onclick="window._pickQ(this)">Peut l'ignorer</li>
+<li data-cle="c" onclick="window._pickQ(this)">Doit attendre une preuve formelle</li>
+<li data-cle="d" onclick="window._pickQ(this)">A le devoir de la signaler (sinon non-assistance, art. 223-6)</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Observer une maltraitance = devoir de signaler (art. 223-6, non-assistance).<strong> 🎓 À l’oral VAE :</strong> ne pas signaler est une faute.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un signalement interne doit contenir :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Les faits observés de façon factuelle (date, heure, lieu, personnes présentes)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Des jugements personnels sur l'auteur</li>
+<li data-cle="c" onclick="window._pickQ(this)">Des suppositions</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le moins de détails possible</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Signalement : faits factuels (date, heure, lieu, personnes présentes).<strong> 🎓 À l’oral VAE :</strong> des faits, pas des jugements.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Le numéro national de signalement de la maltraitance des personnes vulnérables :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">3114</li>
+<li data-cle="b" onclick="window._pickQ(this)">15 (SAMU)</li>
+<li data-cle="c" onclick="window._pickQ(this)">112</li>
+<li data-cle="d" onclick="window._pickQ(this)">3977</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Numéro national maltraitance des personnes vulnérables : 3977.<strong> 🎓 À l’oral VAE :</strong> mémorisez-le.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q5">
+<p class="q"><strong>Q6.</strong> Un résident a des ecchymoses inexpliquées et semble craintif avec un soignant. D'abord :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">En parler aux autres résidents</li>
+<li data-cle="b" onclick="window._pickQ(this)">Informer l'IDE ou le cadre en décrivant les faits</li>
+<li data-cle="c" onclick="window._pickQ(this)">Interroger directement le soignant suspecté</li>
+<li data-cle="d" onclick="window._pickQ(this)">Attendre que ça se reproduise</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Ecchymoses inexpliquées + crainte : informer l’IDE/cadre en décrivant les faits.<strong> 🎓 À l’oral VAE :</strong> factuel et sans accusation.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> « La maltraitance institutionnelle est toujours volontaire. »</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Vrai, sinon ce n’est pas de la maltraitance</li>
+<li data-cle="b" onclick="window._pickQ(this)">Faux, elle naît souvent de l’organisation</li>
+<li data-cle="c" onclick="window._pickQ(this)">Vrai, dès lors qu’un fait est tracé</li>
+<li data-cle="d" onclick="window._pickQ(this)">Vrai, mais seulement en EHPAD</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Faux : la maltraitance institutionnelle est souvent un dysfonctionnement (sous-effectif).<strong> 🎓 À l’oral VAE :</strong> pas forcément volontaire.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q7">
+<p class="q"><strong>Q8.</strong> Vous surprenez un collègue tenant fermement le bras d'un résident qui dit « Non ! ». Vous :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Interviens avec calme : « on va lui expliquer et voir s'il est d'accord »</li>
+<li data-cle="b" onclick="window._pickQ(this)">Quittes la pièce</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ne dis rien, il a ses raisons</li>
+<li data-cle="d" onclick="window._pickQ(this)">Fais une blague pour détendre</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Collègue qui contraint malgré le « Non ! » : intervenir avec calme, proposer d’expliquer.<strong> 🎓 À l’oral VAE :</strong> protéger le résident, sans clash.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q8">
+<p class="q"><strong>Q9.</strong> (Livre ORACLE) Face à un faisceau de signes de maltraitance à domicile, l'AS doit…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Confronter seul l'aidant suspecté</li>
+<li data-cle="b" onclick="window._pickQ(this)">Banaliser tant qu'il n'y a pas de preuve</li>
+<li data-cle="c" onclick="window._pickQ(this)">Garder l'information pour lui par prudence</li>
+<li data-cle="d" onclick="window._pickQ(this)">Observer des faits précis et signaler sans délai, de façon factuelle, selon la procédure</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Maltraitance à domicile : observer des faits précis et signaler sans délai, selon la procédure.<strong> 🎓 À l’oral VAE :</strong> factuel et rapide.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B1_L13.html" class="back">← B1_L13</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L15.html">B1_L15 →</a></div>
 </div>
 </body></html>

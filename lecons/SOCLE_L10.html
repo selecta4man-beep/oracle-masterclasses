@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOCLE · SOCLE_L10 · Pathologies de la peau — l’escarre — ORACLE VAE AS</title>
+<title>Socle · SOCLE_L10 · Pathologies de la peau — l’escarre — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L10</div>
@@ -56,7 +79,240 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Pathologies de la peau — l’escarre</h1>
     <div class="accroche"><p>l’escarre est une <strong>lésion de la peau et des tissus sous-jacents</strong>, causée par une <strong>pression prolongée</strong> et/ou un <strong>cisaillement</strong> sur un point d’appui.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Expliquer le mécanisme de l’escarre, de la pression jusqu’à la nécrose.</li><li>Reconnaître les quatre stades et situer celui qui reste réversible.</li><li>Repérer les facteurs de risque et les points d’appui les plus exposés.</li><li>Conduire la prévention au quotidien : repositionnement, peau sèche, nutrition, matériel.</li><li>Tracer une observation cutanée en transmission ciblée DAR.</li><li>Réaliser un lavage oculaire et une instillation de collyre dans le bon sens et au bon endroit.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>1 · La peau, premier rempart à surveiller</h3></section><section class="partie"><h3>2 · Les 4 stades de l’escarre</h3></section><section class="partie"><h3>3 · Facteurs de risque &amp; échelle de Braden</h3></section><section class="partie"><h3>4 · Prévention &amp; rôle de l’AS</h3></section><section class="partie"><h3>5 · Transmettre &amp; tracer (DAR)</h3></section><section class="partie"><h3>L’œil &amp; soins associés (nouveaux gestes AS)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Jamais masser une rougeur, jamais percer une phlyctène.</li><li>L’effleurage se pratique sur peau saine ; il s’arrête sur la zone dès la rougeur persistante.</li><li>Peau propre et sèche, changes réguliers contre la macération ; protéines, CNO et hydratation.</li><li>Décharger le point d’appui : matelas à air, coussin de gel, arceau — et signaler toute anomalie cutanée à l’IDE.</li><li>En DAR : localisation, taille, stade, douleur ; puis les actions posées ; puis l’évolution depuis le dernier soin.</li><li>Collyre dans le cul-de-sac conjonctival inférieur, sans toucher l’œil ; lavage oculaire de l’angle interne vers l’externe, une compresse par passage.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Pression prolongée ou cisaillement, puis ischémie, puis nécrose — quelques heures d’immobilité suffisent.</li><li>Vitropression : trois secondes d’appui ; une rougeur qui ne blanchit pas signe un stade 1.</li><li>1 rougeur · 2 phlyctène · 3 cratère · 4 os exposé — au stade 3 la lésion est irréversible, au stade 4 c’est une urgence médicale.</li><li>Le sacrum d’abord, puis les talons, les trochanters, les omoplates, l’occiput.</li><li>Braden repose sur 6 critères ; plus le score est bas, plus le risque est élevé.</li><li>Repositionnement toutes les 2 à 3 heures, au lit comme au fauteuil.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Quel est le mécanisme de l’escarre ?</p><ol class="opts"><li class="ok">Pression prolongée → ischémie → nécrose</li><li class="">Une infection de la peau</li><li class="">Une allergie de contact</li><li class="">Un manque de vitamines</li></ol></div><div class="qblock"><p class="q">2. Au test de vitropression, une rougeur qui NE blanchit PAS correspond à…</p><ol class="opts"><li class="ok">Une peau saine</li><li class="">Une mycose</li><li class="">Un stade 1 d’escarre</li><li class="">Un stade 4</li></ol></div><div class="qblock"><p class="q">3. Face à une phlyctène (stade 2), l’AS doit…</p><ol class="opts"><li class="ok">La masser doucement</li><li class="">La percer pour évacuer le liquide</li><li class="">La laisser sans rien transmettre</li><li class="">Ne jamais la percer et prévenir l’IDE</li></ol></div><div class="qblock"><p class="q">4. Quelle est la zone d’escarre la PLUS fréquente chez une personne alitée ?</p><ol class="opts"><li class="ok">Le genou</li><li class="">Le sacrum</li><li class="">Le coude</li><li class="">Le poignet</li></ol></div><div class="qblock"><p class="q">5. À quelle fréquence repositionne-t-on une personne à risque ?</p><ol class="opts"><li class="ok">Seulement la nuit</li><li class="">Toutes les 8 heures</li><li class="">Une fois par jour</li><li class="">Toutes les 2 à 3 heures</li></ol></div><div class="qblock"><p class="q">6. L’effleurage doit être ARRÊTÉ…</p><ol class="opts"><li class="ok">Seulement au stade 4</li><li class="">Dès une rougeur persistante (stade 1)</li><li class="">Jamais, on masse toujours</li><li class="">Après le décès</li></ol></div><div class="qblock"><p class="q">7. L’échelle de Braden évalue le risque avec…</p><ol class="opts"><li class="ok">Le seul poids</li><li class="">6 critères</li><li class="">3 critères</li><li class="">10 critères</li></ol></div><div class="qblock"><p class="q">8. Pourquoi la nutrition est-elle essentielle en prévention de l’escarre ?</p><ol class="opts"><li class="ok">Pour faire plaisir au résident</li><li class="">Pour éviter l’hypoglycémie</li><li class="">Les protéines densifient le derme et réparent les tissus</li><li class="">Cela n’a aucun lien</li></ol></div><div class="qblock"><p class="q">9. Où dépose-t-on une goutte de collyre ?</p><ol class="opts"><li class="ok">Dans le cul-de-sac conjonctival inférieur</li><li class="">Au coin externe de l’œil</li><li class="">Directement sur la cornée</li><li class="">Sur la paupière fermée</li></ol></div><div class="qblock"><p class="q">10. Le lavage oculaire se fait…</p><ol class="opts"><li class="ok">Peu importe le sens</li><li class="">De bas en haut</li><li class="">De l’angle interne vers l’extérieur</li><li class="">De l’extérieur vers l’angle interne</li></ol></div><div class="qblock"><p class="q">11. L’application de crème/pommade par l’AS est…</p><ol class="opts"><li class="ok">Un nouveau geste AS, sur prescription/protocole</li><li class="">Réservée au médecin</li><li class="">Un soin stérile</li><li class="">Interdite</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L09.html" class="back">← SOCLE_L09</a><a href="SOCLE_L11.html">SOCLE_L11 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Expliquer le mécanisme de l’escarre, de la pression jusqu’à la nécrose.</li><li>Reconnaître les quatre stades et situer celui qui reste réversible.</li><li>Repérer les facteurs de risque et les points d’appui les plus exposés.</li><li>Conduire la prévention au quotidien : repositionnement, peau sèche, nutrition, matériel.</li><li>Tracer une observation cutanée en transmission ciblée DAR.</li><li>Réaliser un lavage oculaire et une instillation de collyre dans le bon sens et au bon endroit.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>1 · La peau, premier rempart à surveiller</h3>
+<p><strong>Définition :</strong> l’escarre est une <strong>lésion de la peau et des tissus sous-jacents</strong>, causée par une <strong>pression prolongée</strong> et/ou un <strong>cisaillement</strong> sur un point d’appui.</p>
+<p><strong>Mécanisme :</strong> pression → compression des vaisseaux → <strong>ischémie</strong> (manque d’oxygène) → <strong>nécrose</strong> des tissus → escarre. <strong>Quelques heures d’immobilité suffisent.</strong></p>
+<p><strong>Test de vitropression :</strong> j’appuie 3 secondes sur la rougeur puis je relâche. Si la rougeur <strong>ne blanchit pas</strong> = stade 1 débutant.</p>
+<p>épidermedermetissu sous-cutanéos (point d’appui)↓pression</p>
+</section><section class="partie"><h3>2 · Les 4 stades de l’escarre</h3>
+<p><strong>Mnémo :</strong> 1 Rougeur → 2 Phlyctène → 3 Cratère → 4 Os exposé.</p>
+<div class="tableau"><table><thead><tr>
+<th>Stade</th>
+<th>Aspect</th>
+<th>Repère AS</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Rougeur persistante, peau intacte, ne blanchit pas</td>
+<td><strong>Réversible</strong> — arrêter l’effleurage sur la zone</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>Phlyctène (cloque) ou perte de l’épiderme</td>
+<td><strong>Ne JAMAIS percer la phlyctène</strong></td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Cratère, graisse sous-cutanée visible</td>
+<td><strong>Irréversible</strong> — soin IDE sur prescription</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>Os, muscle ou tendon exposés, nécrose noire</td>
+<td><strong>Urgence médicale</strong></td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>3 · Facteurs de risque &amp; échelle de Braden</h3>
+<p><strong>Facteurs de risque :</strong> immobilité, cisaillement/friction, <strong>humidité / incontinence</strong> (macération), dénutrition, déshydratation, âge avancé, diabète.</p>
+<p><strong>Zones à risque (points d’appui) :</strong><strong>sacrum</strong> (le plus fréquent), <strong>talons</strong>, trochanters (hanches), omoplates, occiput.</p>
+<aside class="encadre"><h4>Échelle de Braden — 6 critères</h4><p>perception sensorielle, humidité, activité, mobilité, nutrition, friction.</p>
+<p>Score <strong>≥ 18</strong> = risque bas · <strong>13–17</strong> = modéré · <strong>8–12</strong> = élevé · <strong>≤ 7</strong> = très élevé. À réaliser <strong>à l’entrée</strong> puis régulièrement.</p></aside>
+</section><section class="partie"><h3>4 · Prévention &amp; rôle de l’AS</h3>
+<p><strong>Au quotidien, l’AS :</strong></p>
+<ul>
+<li><strong>Repositionne toutes les 2 à 3 h</strong> (protocole de retournement), même au fauteuil.</li>
+</ul>
+<ul>
+<li>Maintient la <strong>peau propre et sèche</strong> ; changes réguliers pour limiter la macération.</li>
+</ul>
+<ul>
+<li>Pratique l’<strong>effleurage doux</strong> sur les points d’appui… mais l’<strong>ARRÊTE dès le stade 1</strong> (rougeur persistante).</li>
+</ul>
+<ul>
+<li>Soutient la <strong>nutrition</strong> (protéines, CNO) et l’<strong>hydratation</strong> — la dénutrition est un facteur majeur.</li>
+</ul>
+<ul>
+<li>Met en place le <strong>matériel</strong> : matelas à air, coussins de décharge/gel, arceau.</li>
+</ul>
+<ul>
+<li><strong>Signale immédiatement</strong> toute anomalie cutanée à l’IDE.</li>
+</ul>
+<aside class="encadre"><h4>⛔ Les 2 interdits</h4><p>JAMAIS masser une rougeur · JAMAIS percer une phlyctène.</p></aside>
+</section><section class="partie"><h3>5 · Transmettre &amp; tracer (DAR)</h3>
+<p>Toute observation cutanée se trace en transmission ciblée :</p>
+<aside class="encadre"><h4></h4><p><strong>D</strong> (Données) : localisation précise, taille, stade, douleur associée.</p>
+<p><strong>A</strong> (Actions) : effleurage, latéralisation, coussin/arceau, IDE prévenue.</p>
+<p><strong>R</strong> (Résultats) : évolution depuis le dernier soin, efficacité des mesures.</p></aside>
+</section><section class="partie"><h3>L’œil &amp; soins associés (nouveaux gestes AS)</h3>
+<p>La peau et l’œil sont deux <strong>organes des sens</strong> (toucher, vue). L’œil : <strong>cornée</strong> (laisse passer la lumière), <strong>cristallin</strong> (mise au point), <strong>rétine</strong> (transforme l’image en signal), <strong>nerf optique</strong> (vers le cerveau) ; l’appareil lacrymal protège et lubrifie.</p>
+<p><strong>Instillation de collyre :</strong> hygiène des mains, tête en arrière, déposer la goutte dans le <strong>cul-de-sac conjonctival inférieur</strong> (paupière basse tirée), sans toucher l’œil ; un seul œil à la fois, essuyer de l’angle interne vers l’externe. <strong>Lavage oculaire :</strong> de l’angle <strong>interne vers l’externe</strong>, une compresse par passage.</p>
+<aside class="encadre"><h4></h4><p><strong>Nouveaux gestes AS (réforme 2021), sur prescription/protocole :</strong><strong>lavage oculaire</strong> et <strong>instillation de collyre</strong> · <strong>application de crème/pommade</strong>.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<p>Entraînez-vous comme à l’oral : lisez la situation, formulez votre conduite à voix haute, puis vérifiez.</p>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Mme L., 86 ans, alitée, sacrum rouge</p></p>
+<div class="cas-piste"><p><em>Lors de la toilette, vous observez une rougeur au sacrum qui ne blanchit pas à la vitropression.</em></p>
+<p><strong>Conduite AS étape par étape :</strong></p>
+<ul>
+<li>Reconnaître un <strong>stade 1</strong> (rougeur non blanchissante).</li>
+<li><strong>Arrêter l’effleurage</strong> sur la zone (autour = possible), ne pas masser.</li>
+<li>Repositionner, décharger le sacrum (latéralisation, coussin), peau propre et sèche.</li>
+<li>Prévenir l’IDE, vérifier le matelas à air et le protocole de retournement.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — M. R., 79 ans, talon avec une cloque</p></p>
+<div class="cas-piste"><p><em>Vous découvrez une phlyctène intacte au talon droit.</em></p>
+<p><strong>Conduite AS étape par étape :</strong></p>
+<ul>
+<li>Reconnaître un <strong>stade 2</strong> (phlyctène).</li>
+<li><strong>Ne JAMAIS percer</strong> la phlyctène ; protéger le talon (décharge, talonnière/coussin).</li>
+<li>Prévenir l’IDE (pansement sur prescription), surveiller la douleur.</li>
+<li>Renforcer la prévention : nutrition/CNO, hydratation, repositionnement 2-3 h.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Jamais masser une rougeur, jamais percer une phlyctène.</li><li>L’effleurage se pratique sur peau saine ; il s’arrête sur la zone dès la rougeur persistante.</li><li>Peau propre et sèche, changes réguliers contre la macération ; protéines, CNO et hydratation.</li><li>Décharger le point d’appui : matelas à air, coussin de gel, arceau — et signaler toute anomalie cutanée à l’IDE.</li><li>En DAR : localisation, taille, stade, douleur ; puis les actions posées ; puis l’évolution depuis le dernier soin.</li><li>Collyre dans le cul-de-sac conjonctival inférieur, sans toucher l’œil ; lavage oculaire de l’angle interne vers l’externe, une compresse par passage.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Pression prolongée ou cisaillement, puis ischémie, puis nécrose — quelques heures d’immobilité suffisent.</li><li>Vitropression : trois secondes d’appui ; une rougeur qui ne blanchit pas signe un stade 1.</li><li>1 rougeur · 2 phlyctène · 3 cratère · 4 os exposé — au stade 3 la lésion est irréversible, au stade 4 c’est une urgence médicale.</li><li>Le sacrum d’abord, puis les talons, les trochanters, les omoplates, l’occiput.</li><li>Braden repose sur 6 critères ; plus le score est bas, plus le risque est élevé.</li><li>Repositionnement toutes les 2 à 3 heures, au lit comme au fauteuil.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> Quel est le mécanisme de l’escarre ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Pression prolongée → ischémie → nécrose</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une infection de la peau</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une allergie de contact</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un manque de vitamines</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La pression écrase les vaisseaux : les tissus manquent d’oxygène (ischémie) puis meurent (nécrose).<strong> 🎓 À l’oral VAE :</strong> reliez toujours la cause (pression sur un point d’appui) au mécanisme.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q1">
+<p class="q"><strong>Q2.</strong> Au test de vitropression, une rougeur qui NE blanchit PAS correspond à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une peau saine</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une mycose</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un stade 1 d’escarre</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un stade 4</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Rougeur non blanchissante = souffrance tissulaire débutante = stade 1.<strong> 🎓 À l’oral VAE :</strong> montrez que vous savez faire et interpréter le test à 3 secondes.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q2">
+<p class="q"><strong>Q3.</strong> Face à une phlyctène (stade 2), l’AS doit…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">La masser doucement</li>
+<li data-cle="b" onclick="window._pickQ(this)">La percer pour évacuer le liquide</li>
+<li data-cle="c" onclick="window._pickQ(this)">La laisser sans rien transmettre</li>
+<li data-cle="d" onclick="window._pickQ(this)">Ne jamais la percer et prévenir l’IDE</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Percer ouvre une porte d’entrée aux infections. On protège et on transmet à l’IDE.<strong> 🎓 À l’oral VAE :</strong> c’est un interdit que le jury aime entendre clairement.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Quelle est la zone d’escarre la PLUS fréquente chez une personne alitée ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le genou</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le sacrum</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le coude</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le poignet</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le sacrum est le point d’appui principal en décubitus dorsal ; les talons viennent juste après.<strong> 🎓 À l’oral VAE :</strong> citez 4-5 zones d’appui pour montrer votre vigilance.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> À quelle fréquence repositionne-t-on une personne à risque ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Seulement la nuit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Toutes les 8 heures</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une fois par jour</li>
+<li data-cle="d" onclick="window._pickQ(this)">Toutes les 2 à 3 heures</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le protocole de retournement standard est de 2 à 3 heures, jour et nuit, au lit comme au fauteuil.<strong> 🎓 À l’oral VAE :</strong> associez la fréquence au matériel (matelas à air, coussins).</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q5">
+<p class="q"><strong>Q6.</strong> L’effleurage doit être ARRÊTÉ…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Seulement au stade 4</li>
+<li data-cle="b" onclick="window._pickQ(this)">Dès une rougeur persistante (stade 1)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Jamais, on masse toujours</li>
+<li data-cle="d" onclick="window._pickQ(this)">Après le décès</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Sur une rougeur persistante, frictionner aggrave la lésion : on stoppe l’effleurage sur la zone.<strong> 🎓 À l’oral VAE :</strong> ne confondez jamais effleurage (préventif, peau saine) et massage (proscrit sur rougeur).</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> L’échelle de Braden évalue le risque avec…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le seul poids</li>
+<li data-cle="b" onclick="window._pickQ(this)">6 critères</li>
+<li data-cle="c" onclick="window._pickQ(this)">3 critères</li>
+<li data-cle="d" onclick="window._pickQ(this)">10 critères</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>6 critères : perception sensorielle, humidité, activité, mobilité, nutrition, friction. Score bas = risque élevé.<strong> 🎓 À l’oral VAE :</strong> sachez qu’un score ≤ 12 traduit un risque élevé à très élevé.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q7">
+<p class="q"><strong>Q8.</strong> Pourquoi la nutrition est-elle essentielle en prévention de l’escarre ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Pour faire plaisir au résident</li>
+<li data-cle="b" onclick="window._pickQ(this)">Pour éviter l’hypoglycémie</li>
+<li data-cle="c" onclick="window._pickQ(this)">Les protéines densifient le derme et réparent les tissus</li>
+<li data-cle="d" onclick="window._pickQ(this)">Cela n’a aucun lien</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Protéines + hydratation + CNO maintiennent un derme solide ; la dénutrition est un facteur de risque majeur.<strong> 🎓 À l’oral VAE :</strong> reliez dénutrition ↔ escarre pour montrer une vision globale.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q8">
+<p class="q"><strong>Q9.</strong> Où dépose-t-on une goutte de collyre ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Dans le cul-de-sac conjonctival inférieur</li>
+<li data-cle="b" onclick="window._pickQ(this)">Au coin externe de l’œil</li>
+<li data-cle="c" onclick="window._pickQ(this)">Directement sur la cornée</li>
+<li data-cle="d" onclick="window._pickQ(this)">Sur la paupière fermée</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>On instille dans le <strong>cul-de-sac conjonctival inférieur</strong> (paupière basse tirée), sans toucher l’œil.<strong> 🎓 À l’oral VAE :</strong> c’est un nouveau geste AS, sur prescription.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q9">
+<p class="q"><strong>Q10.</strong> Le lavage oculaire se fait…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Peu importe le sens</li>
+<li data-cle="b" onclick="window._pickQ(this)">De bas en haut</li>
+<li data-cle="c" onclick="window._pickQ(this)">De l’angle interne vers l’extérieur</li>
+<li data-cle="d" onclick="window._pickQ(this)">De l’extérieur vers l’angle interne</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Toujours de l’angle <strong>interne vers l’externe</strong> , une compresse par passage.<strong> 🎓 À l’oral VAE :</strong> évite de ramener des germes vers le canal lacrymal.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q10">
+<p class="q"><strong>Q11.</strong> L’application de crème/pommade par l’AS est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un nouveau geste AS, sur prescription/protocole</li>
+<li data-cle="b" onclick="window._pickQ(this)">Réservée au médecin</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un soin stérile</li>
+<li data-cle="d" onclick="window._pickQ(this)">Interdite</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>C’est un des nouveaux gestes AS (réforme 2021), réalisé sur prescription ou protocole.<strong> 🎓 À l’oral VAE :</strong> citez-le parmi les nouveaux gestes.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L09.html" class="back">← SOCLE_L09</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L11.html">SOCLE_L11 →</a></div>
 </div>
 </body></html>

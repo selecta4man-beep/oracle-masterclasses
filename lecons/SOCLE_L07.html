@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOCLE · SOCLE_L07 · Pathologies urinaires — ORACLE VAE AS</title>
+<title>Socle · SOCLE_L07 · Pathologies urinaires — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L07</div>
@@ -56,7 +79,193 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Pathologies urinaires</h1>
     <div class="accroche"><p>, <strong>rétention</strong> (vessie pleine qui ne se vide pas), <strong>incontinence</strong>, <strong>globe vésical</strong>, présence d’une <strong>sonde urinaire</strong> ou d’un <strong>étui pénien</strong>. L’insuffisance rénale modifie la diurèse.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Nommer les troubles urinaires fréquents et suivre le trajet de l’urine, du rein à la miction.</li><li>Relier un aspect d’urine à ce qu’il peut signaler.</li><li>Reconnaître les signes d’un globe vésical et alerter l’IDE.</li><li>Appliquer les règles de surveillance d’une sonde urinaire.</li><li>Transmettre en DAR ce que vous observez, sans poser de diagnostic.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Les troubles urinaires fréquents</h3></section><section class="partie"><h3>L’appareil urinaire : du rein à la miction</h3></section><section class="partie"><h3>Observer les urines</h3></section><section class="partie"><h3>Le rôle de l’AS</h3></section><section class="partie"><h3>Transmettre &amp; tracer</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Observer à chaque fois quantité, aspect et odeur.</li><li>Poche à urine sous le niveau de la vessie, jamais posée au sol.</li><li>Sonde qui ne draine plus : chercher une coudure, vérifier la position de la poche, ne pas mobiliser la sonde.</li><li>Absence d’urine avec envie pressante et ventre tendu : alerter l’IDE rapidement.</li><li>Ne pas appuyer sur le ventre — rassurer, surveiller, tracer.</li><li>Encourager la boisson sauf restriction ; toilette intime de l’avant vers l’arrière chez la femme.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’urine est normalement stérile ; la diurèse normale va de 800 à 1500 ml par 24 h.</li><li>Urines troubles ou malodorantes : infection urinaire possible.</li><li>Une hématurie se signale systématiquement — jamais de banalisation.</li><li>Anurie : absence d’urine, urgence. Oligurie : simple diminution.</li><li>Globe vésical : vessie pleine qui ne se vide pas, douleur sus-pubienne.</li><li>Polyurie : excès d’urine — diabète ou traitement diurétique.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Des urines troubles et malodorantes évoquent…</p><ol class="opts"><li class="ok">Une infection urinaire possible</li><li class="">Une bonne hydratation</li><li class="">Rien à signaler</li><li class="">Une déshydratation toujours</li></ol></div><div class="qblock"><p class="q">2. La poche à urine d’une sonde doit être placée…</p><ol class="opts"><li class="ok">Au-dessus de la vessie</li><li class="">Sous le niveau de la vessie, jamais au sol</li><li class="">Sur le lit</li><li class="">Peu importe</li></ol></div><div class="qblock"><p class="q">3. « Anurie » signifie…</p><ol class="opts"><li class="ok">Urines troubles</li><li class="">Urines abondantes</li><li class="">Absence d’urine (urgence)</li><li class="">Sang dans les urines</li></ol></div><div class="qblock"><p class="q">4. Un globe vésical correspond à…</p><ol class="opts"><li class="ok">Une incontinence</li><li class="">Une infection</li><li class="">Une vessie qui se vide trop</li><li class="">Une rétention : vessie pleine qui ne se vide pas</li></ol></div><div class="qblock"><p class="q">5. Devant une hématurie, l’AS…</p><ol class="opts"><li class="ok">Signale systématiquement</li><li class="">Diagnostique l’origine</li><li class="">Ignore, c’est banal</li><li class="">Arrête l’hydratation</li></ol></div><div class="qblock"><p class="q">6. Pour prévenir les infections urinaires, l’AS…</p><ol class="opts"><li class="ok">Ne fait rien de spécial</li><li class="">Soigne l’hygiène intime et encourage l’hydratation</li><li class="">Limite les boissons</li><li class="">Pose une sonde</li></ol></div><div class="qblock"><p class="q">7. En l’absence d’infection, les urines sont…</p><ol class="opts"><li class="ok">Acides comme les selles</li><li class="">Pleines de germes</li><li class="">Stériles</li><li class="">Toujours troubles</li></ol></div><div class="qblock"><p class="q">8. La diurèse normale sur 24 heures se situe entre…</p><ol class="opts"><li class="ok">300 et 800 mL</li><li class="">100 et 300 mL</li><li class="">1500 et 3000 mL</li><li class="">800 et 1500 mL</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L06.html" class="back">← SOCLE_L06</a><a href="SOCLE_L08.html">SOCLE_L08 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Nommer les troubles urinaires fréquents et suivre le trajet de l’urine, du rein à la miction.</li><li>Relier un aspect d’urine à ce qu’il peut signaler.</li><li>Reconnaître les signes d’un globe vésical et alerter l’IDE.</li><li>Appliquer les règles de surveillance d’une sonde urinaire.</li><li>Transmettre en DAR ce que vous observez, sans poser de diagnostic.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Les troubles urinaires fréquents</h3>
+<p><strong>Infection urinaire</strong>, <strong>rétention</strong> (vessie pleine qui ne se vide pas), <strong>incontinence</strong>, <strong>globe vésical</strong>, présence d’une <strong>sonde urinaire</strong> ou d’un <strong>étui pénien</strong>. L’insuffisance rénale modifie la diurèse.</p>
+<aside class="encadre"><h4>📘 Référence livre ORACLE</h4><p>Surveiller les urines (quantité, aspect, odeur) et la diurèse fait partie du quotidien de l’AS. Un changement d’aspect oriente souvent un diagnostic.</p></aside>
+</section><section class="partie"><h3>L’appareil urinaire : du rein à la miction</h3>
+<p>Les <strong>reins</strong> filtrent le sang et fabriquent l’urine (normalement <strong>stérile</strong>) → <strong>uretères</strong> → <strong>vessie</strong> (stockage) → <strong>urètre</strong> (évacuation). Diurèse normale : 800–1500 ml/24 h.</p>
+<p><strong>Mécanismes :</strong></p>
+<ul>
+<li><strong>Infection urinaire</strong> : germes dans les urines → brûlures, urines troubles/odorantes.</li>
+</ul>
+<ul>
+<li><strong>Rétention</strong> (globe vésical) : la vessie ne se vide pas → douleur sus-pubienne.</li>
+</ul>
+<ul>
+<li><strong>Anurie</strong> : les reins ne fabriquent plus d’urine → urgence.</li>
+</ul>
+<ul>
+<li><strong>Incontinence</strong> : fuites → prévention par mictions programmées.</li>
+</ul>
+<aside class="encadre"><h4></h4><p>L’AS observe aspect, quantité, odeur ; il encourage l’hydratation et l’hygiène (de l’avant vers l’arrière chez la femme).</p></aside>
+</section><section class="partie"><h3>Observer les urines</h3>
+<div class="tableau"><table><thead><tr>
+<th>Observation</th>
+<th>Ce que ça peut signaler</th>
+</tr></thead><tbody>
+<tr>
+<td>Urines troubles / odeur forte</td>
+<td>Infection urinaire possible</td>
+</tr>
+<tr>
+<td>Hématurie (sang)</td>
+<td>À signaler systématiquement</td>
+</tr>
+<tr>
+<td>Oligurie / anurie</td>
+<td>Diminution / absence — urgence si anurie</td>
+</tr>
+<tr>
+<td>Polyurie</td>
+<td>Excès — diabète, traitement diurétique</td>
+</tr>
+<tr>
+<td>Brûlures, urgences mictionnelles</td>
+<td>Infection</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>Le rôle de l’AS</h3>
+<aside class="encadre"><h4>🩺 le rôle concret de l’AS</h4><p><strong>Diurèse</strong> : mesurer/estimer les entrées-sorties si demandé. <strong>Hydratation</strong> : encourager la boisson (sauf restriction). <strong>Sonde</strong> : poche sous le niveau de la vessie, jamais posée au sol, vidange propre, repérer un non-écoulement. <strong>Hygiène</strong> : prévenir les infections, toilette intime soignée. <strong>Confort</strong> : répondre vite à l’envie d’uriner.</p></aside>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🚨 signes d’alerte — on alerte l’IDE</strong></p>
+<p>Absence d’urine + envie pressante + douleur/ventre tendu : suspicion de <strong>globe vésical</strong> (rétention) → alerter l’IDE rapidement.</p></aside>
+</section><section class="partie"><h3>Transmettre &amp; tracer</h3>
+<div class="exemples">
+<div class="ex"><p>📖 transmission ciblée DAR — <strong>D</strong> : « Urines troubles et malodorantes depuis hier, Mme R. se plaint de brûlures ». <strong>A</strong> : « Hydratation encouragée, alerte IDE, recueil si demandé (ECBU) ». <strong>R</strong> : « Bandelette positive, traitement débuté ». On décrit l’aspect précis, on ne diagnostique pas l’infection.</p></div>
+</div>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas pratique corrigé — La sonde qui ne coule plus</strong></p></p>
+<div class="cas-piste"><p><em>En vidant la poche, vous constatez que la sonde de M. T. n’a presque rien drainé depuis plusieurs heures, et il se plaint d’une gêne au bas-ventre.</em></p>
+<p><strong>Conduite à tenir :</strong></p>
+<ul>
+<li>Vérifier l’absence de coudure/écrasement de la tubulure et la position de la poche (sous la vessie).</li>
+<li>Ne pas manipuler la sonde au-delà de votre champ ni la mobiliser brutalement.</li>
+<li>Surveiller le ventre (globe), évaluer la douleur.</li>
+<li>Alerter l’IDE : un arrêt de drainage avec gêne abdominale doit être traité rapidement.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — M. T. n’a pas uriné depuis le matin</p></p>
+<div class="cas-piste"><p><em>Il se plaint d’une douleur au bas-ventre.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Suspecter un globe vésical (rétention).</li>
+<li>Ne pas appuyer sur le ventre, rassurer.</li>
+<li>Alerter l’IDE, surveiller, tracer.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Observer à chaque fois quantité, aspect et odeur.</li><li>Poche à urine sous le niveau de la vessie, jamais posée au sol.</li><li>Sonde qui ne draine plus : chercher une coudure, vérifier la position de la poche, ne pas mobiliser la sonde.</li><li>Absence d’urine avec envie pressante et ventre tendu : alerter l’IDE rapidement.</li><li>Ne pas appuyer sur le ventre — rassurer, surveiller, tracer.</li><li>Encourager la boisson sauf restriction ; toilette intime de l’avant vers l’arrière chez la femme.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’urine est normalement stérile ; la diurèse normale va de 800 à 1500 ml par 24 h.</li><li>Urines troubles ou malodorantes : infection urinaire possible.</li><li>Une hématurie se signale systématiquement — jamais de banalisation.</li><li>Anurie : absence d’urine, urgence. Oligurie : simple diminution.</li><li>Globe vésical : vessie pleine qui ne se vide pas, douleur sus-pubienne.</li><li>Polyurie : excès d’urine — diabète ou traitement diurétique.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> Des urines troubles et malodorantes évoquent…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une infection urinaire possible</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une bonne hydratation</li>
+<li data-cle="c" onclick="window._pickQ(this)">Rien à signaler</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une déshydratation toujours</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Urines troubles et malodorantes → infection urinaire possible.<strong> 🎓 À l’oral VAE :</strong> encourager l’hydratation, alerter l’IDE.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> La poche à urine d’une sonde doit être placée…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Au-dessus de la vessie</li>
+<li data-cle="b" onclick="window._pickQ(this)">Sous le niveau de la vessie, jamais au sol</li>
+<li data-cle="c" onclick="window._pickQ(this)">Sur le lit</li>
+<li data-cle="d" onclick="window._pickQ(this)">Peu importe</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La poche à urine se place sous le niveau de la vessie, jamais au sol.<strong> 🎓 À l’oral VAE :</strong> évite le reflux et l’infection.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q2">
+<p class="q"><strong>Q3.</strong> « Anurie » signifie…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Urines troubles</li>
+<li data-cle="b" onclick="window._pickQ(this)">Urines abondantes</li>
+<li data-cle="c" onclick="window._pickQ(this)">Absence d’urine (urgence)</li>
+<li data-cle="d" onclick="window._pickQ(this)">Sang dans les urines</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Anurie = absence d’urine = urgence.<strong> 🎓 À l’oral VAE :</strong> à différencier de l’oligurie (diminution).</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un globe vésical correspond à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Une incontinence</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une infection</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une vessie qui se vide trop</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une rétention : vessie pleine qui ne se vide pas</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Globe vésical = rétention : vessie pleine qui ne se vide pas.<strong> 🎓 À l’oral VAE :</strong> douleur sus-pubienne, alerter l’IDE.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> Devant une hématurie, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Signale systématiquement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Diagnostique l’origine</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ignore, c’est banal</li>
+<li data-cle="d" onclick="window._pickQ(this)">Arrête l’hydratation</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Hématurie (sang dans les urines) = à signaler systématiquement.<strong> 🎓 À l’oral VAE :</strong> ne jamais banaliser.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q5">
+<p class="q"><strong>Q6.</strong> Pour prévenir les infections urinaires, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ne fait rien de spécial</li>
+<li data-cle="b" onclick="window._pickQ(this)">Soigne l’hygiène intime et encourage l’hydratation</li>
+<li data-cle="c" onclick="window._pickQ(this)">Limite les boissons</li>
+<li data-cle="d" onclick="window._pickQ(this)">Pose une sonde</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Prévention des infections : hygiène intime + hydratation.<strong> 🎓 À l’oral VAE :</strong> de l’avant vers l’arrière chez la femme.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q6">
+<p class="q"><strong>Q7.</strong> En l’absence d’infection, les urines sont…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Acides comme les selles</li>
+<li data-cle="b" onclick="window._pickQ(this)">Pleines de germes</li>
+<li data-cle="c" onclick="window._pickQ(this)">Stériles</li>
+<li data-cle="d" onclick="window._pickQ(this)">Toujours troubles</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Urines normalement stériles ; troubles/odeur = infection possible.<strong> 🎓 À l’oral VAE :</strong> encourager l’hydratation, alerter.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q7">
+<p class="q"><strong>Q8.</strong> La diurèse normale sur 24 heures se situe entre…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">300 et 800 mL</li>
+<li data-cle="b" onclick="window._pickQ(this)">100 et 300 mL</li>
+<li data-cle="c" onclick="window._pickQ(this)">1500 et 3000 mL</li>
+<li data-cle="d" onclick="window._pickQ(this)">800 et 1500 mL</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Diurèse normale : 800 à 1500 mL/24 h.<strong> 🎓 À l’oral VAE :</strong> citez toujours cette fourchette chiffrée.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L06.html" class="back">← SOCLE_L06</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L08.html">SOCLE_L08 →</a></div>
 </div>
 </body></html>

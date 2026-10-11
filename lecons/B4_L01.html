@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B4 · B4_L01 · Hygiène des mains &amp; EPI — ORACLE VAE AS</title>
+<title>Bloc 4 · B4_L01 · Hygiène des mains & EPI — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 4</strong> › B4_L01</div>
@@ -56,7 +79,266 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Hygiène des mains &amp; EPI</h1>
     <div class="accroche"><p>Les mains sont le <strong>premier vecteur</strong> de transmission croisée des micro-organismes. En collectivité (EHPAD, service), une simple négligence peut déclencher une épidémie : gastro-entérite, grippe, gale, COVID, <em>Clostridioides difficile</em>.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Citer les 5 moments OMS de l’hygiène des mains et les rattacher à une situation de soin.</li><li>Choisir entre friction hydro-alcoolique et lavage eau et savon selon l’état des mains et le germe en cause.</li><li>Dérouler les 7 étapes de la gestuelle sans oublier de zone.</li><li>Sélectionner l’EPI adapté au risque de contact avec des liquides biologiques.</li><li>Vérifier les prérequis avant tout soin : bijoux, ongles, avant-bras, état de la peau.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Le geste n°1 de la prévention</h3></section><section class="partie"><h3>Les 5 moments OMS — quand se laver les mains</h3></section><section class="partie"><h3>Friction SHA vs lavage simple</h3></section><section class="partie"><h3>Les 7 étapes — gestuelle commune</h3></section><section class="partie"><h3>Les EPI — protections selon le risque</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Jamais de SHA sur mains mouillées : l’eau dilue le produit ; on ne rince pas après la friction et on ne combine pas lavage et SHA.</li><li>Fermer le robinet avec l’essuie-mains à usage unique.</li><li>Ne pas oublier les pouces, les espaces interdigitaux et le bout des doigts.</li><li>Aucun bijou aux mains, ongles courts sans vernis ni faux ongles, avant-bras dégagés.</li><li>Plaie ou eczéma aux mains : en parler à l’IDE, gants à usage unique systématiques.</li><li>Ne jamais enchaîner d’un résident à l’autre sans hygiène des mains.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Les mains sont le premier vecteur de transmission croisée ; 80 % des infections nosocomiales sont manuportées.</li><li>Les 5 moments OMS : avant contact, avant geste aseptique, après exposition à un liquide biologique, après contact avec la personne, après contact avec l’environnement.</li><li>Friction SHA : 30 secondes, jusqu’au séchage complet à l’air. Elle est plus efficace et mieux tolérée.</li><li>Clostridioides difficile et gale : la SHA est inefficace, le lavage eau et savon est obligatoire.</li><li>Un soin = une paire de gants, un soin = un tablier.</li><li>Les gants ne remplacent pas l’hygiène des mains : on se désinfecte après les avoir retirés.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Quel pourcentage des infections nosocomiales sont manuportées ?</p><ol class="opts"><li class="ok">80 %</li><li class="">20 %</li><li class="">100 %</li><li class="">50 %</li></ol></div><div class="qblock"><p class="q">2. Combien de « moments OMS » de l&#x27;hygiène des mains existe-t-il ?</p><ol class="opts"><li class="ok">3</li><li class="">5</li><li class="">10</li><li class="">7</li></ol></div><div class="qblock"><p class="q">3. Dans quels cas le lavage eau + savon est-il OBLIGATOIRE (SHA inefficace) ?</p><ol class="opts"><li class="ok">Clostridioides difficile et gale</li><li class="">Avant de mettre des gants</li><li class="">Mains sèches et propres</li><li class="">Jamais</li></ol></div><div class="qblock"><p class="q">4. Durée minimum d&#x27;une friction SHA ?</p><ol class="opts"><li class="ok">5 secondes</li><li class="">30 secondes</li><li class="">1 minute</li><li class="">2 minutes</li></ol></div><div class="qblock"><p class="q">5. Quelle est la zone la plus souvent oubliée pendant la friction ?</p><ol class="opts"><li class="ok">Les pouces</li><li class="">Les avant-bras</li><li class="">Les paumes</li><li class="">Les ongles seulement</li></ol></div><div class="qblock"><p class="q">6. Peut-on appliquer la SHA sur des mains mouillées ?</p><ol class="opts"><li class="ok">Non, l&#x27;eau dilue le produit</li><li class="">Seulement avec des gants</li><li class="">Oui si on attend 5 s</li><li class="">Oui, c&#x27;est plus efficace</li></ol></div><div class="qblock"><p class="q">7. Concernant les gants non stériles, la règle est :</p><ol class="opts"><li class="ok">On les garde toute la journée</li><li class="">1 soin = 1 paire, puis hygiène des mains</li><li class="">On les réutilise après lavage</li><li class="">Ils remplacent l&#x27;hygiène des mains</li></ol></div><div class="qblock"><p class="q">8. Comment fermer le robinet après un lavage simple ?</p><ol class="opts"><li class="ok">À mains nues</li><li class="">Peu importe</li><li class="">Avec l&#x27;essuie-mains à usage unique</li><li class="">Avec le coude uniquement</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B3_L11.html" class="back">← B3_L11</a><a href="B4_L02.html">B4_L02 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Citer les 5 moments OMS de l’hygiène des mains et les rattacher à une situation de soin.</li><li>Choisir entre friction hydro-alcoolique et lavage eau et savon selon l’état des mains et le germe en cause.</li><li>Dérouler les 7 étapes de la gestuelle sans oublier de zone.</li><li>Sélectionner l’EPI adapté au risque de contact avec des liquides biologiques.</li><li>Vérifier les prérequis avant tout soin : bijoux, ongles, avant-bras, état de la peau.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Le geste n°1 de la prévention</h3>
+<p>Les mains sont le <strong>premier vecteur</strong> de transmission croisée des micro-organismes. En collectivité (EHPAD, service), une simple négligence peut déclencher une épidémie : gastro-entérite, grippe, gale, COVID, <em>Clostridioides difficile</em>. L'hygiène des mains protège la personne accompagnée, les autres résidents, les visiteurs et le soignant lui-même.</p>
+<p>80%</p>
+<p>des infections nosocomiales sont manuportées</p>
+<p>N°1</p>
+<p>geste de prévention le plus simple et efficace</p>
+<p>30 s</p>
+<p>durée minimum (friction SHA ou lavage)</p>
+<aside class="encadre"><h4></h4><p><strong>📘 Référence livre ORACLE — la mesure n°1</strong></p>
+<p>« L'<strong>hygiène des mains</strong> est la mesure n°1 de prévention des infections : avant et après chaque soin, après contact avec l'environnement, après retrait des gants. »</p></aside>
+<aside class="encadre"><h4>🎓 Attendu du jury VAE</h4><p>L'hygiène des mains est <strong>LA question incontournable</strong> de l'épreuve. Sachez citer les <strong>5 moments OMS</strong>, la différence friction / lavage, et expliquer pourquoi la SHA est privilégiée.</p></aside>
+</section><section class="partie"><h3>Les 5 moments OMS — quand se laver les mains</h3>
+<p>Le référentiel ORACLE reprend le SOCLE « Maîtrise de l'hygiène » (OMS / CPIAS). Mnémotechnique : <strong>AVANT — AVANT — APRÈS — APRÈS — APRÈS</strong>.</p>
+<div class="tableau"><table><thead><tr>
+<th>Moment</th>
+<th>Quand</th>
+<th>Pourquoi</th>
+</tr></thead><tbody>
+<tr>
+<td>M1 · AVANT de toucher la personne</td>
+<td>Tout contact direct (toilette, mobilisation, repas)</td>
+<td>Protège la personne de vos germes</td>
+</tr>
+<tr>
+<td>M2 · AVANT un geste aseptique</td>
+<td>Pansement, soin de bouche, pose de sonde</td>
+<td>Évite d'introduire une infection</td>
+</tr>
+<tr>
+<td>M3 · APRÈS exposition liquide bio</td>
+<td>Sang, urines, selles, sécrétions, vomissures</td>
+<td>Vous protège d'une contamination</td>
+</tr>
+<tr>
+<td>M4 · APRÈS avoir touché la personne</td>
+<td>Avant de toucher un autre résident ou du propre</td>
+<td>Évite la transmission croisée</td>
+</tr>
+<tr>
+<td>M5 · APRÈS contact environnement</td>
+<td>Lit, chevet, fauteuil, télécommande, poignées</td>
+<td>L'environnement immédiat est contaminé</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>Friction SHA vs lavage simple</h3>
+<p>La <strong>friction hydro-alcoolique (SHA)</strong> est la technique de référence ORACLE : plus efficace sur les micro-organismes, mieux tolérée par la peau, plus rapide.</p>
+<div class="tableau"><table><thead><tr>
+<th>Critère</th>
+<th>🧼 Lavage simple</th>
+<th>🧴 Friction SHA</th>
+</tr></thead><tbody>
+<tr>
+<td>Quand</td>
+<td>Mains visiblement sales, arrivée/départ, toilettes, <em>C. difficile</em> / gale</td>
+<td>Mains NON sales, entre soins/résidents, avant gants et après retrait</td>
+</tr>
+<tr>
+<td>Durée</td>
+<td>15 à 30 s minimum + rinçage + séchage</td>
+<td>30 s jusqu'au séchage complet (à l'air)</td>
+</tr>
+<tr>
+<td>Efficacité</td>
+<td>Élimine salissures + une partie des germes</td>
+<td><strong>PLUS efficace</strong> sur les micro-organismes</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🚨 Les 2 cas où la SHA est INEFFICACE</strong></p>
+<p><em>Clostridioides difficile</em> (diarrhée) et <strong>gale</strong> → <strong>LAVAGE EAU + SAVON OBLIGATOIRE</strong>. La SHA n'élimine pas les spores ni le sarcopte ; seule l'action mécanique du lavage les évacue.</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠️ Erreurs à ne jamais commettre</h4><p>SHA sur mains mouillées (l'eau dilue le produit), rincer après la SHA, combiner lavage + SHA (c'est l'un OU l'autre), fermer le robinet à mains nues (utiliser l'essuie-mains).</p></aside>
+</section><section class="partie"><h3>Les 7 étapes — gestuelle commune</h3>
+<p>Les 7 étapes sont <strong>identiques</strong> pour le lavage et la friction SHA. La gestuelle garantit que toutes les zones sont traitées — aucune zone oubliée.</p>
+<ul>
+<li>1️⃣ Paume contre paume (rotation)</li>
+</ul>
+<ul>
+<li>2️⃣ Paume sur dos de main, doigts entrelacés (une main puis l'autre)</li>
+</ul>
+<ul>
+<li>3️⃣ Paume contre paume, doigts entrelacés (espaces interdigitaux)</li>
+</ul>
+<ul>
+<li>4️⃣ Dos des doigts contre paume opposée (doigts repliés)</li>
+</ul>
+<ul>
+<li>5️⃣ <strong>Pouces</strong> enserrés en rotation — <em>zone la plus oubliée</em></li>
+</ul>
+<ul>
+<li>6️⃣ Bout des doigts et ongles (rotation dans la paume opposée)</li>
+</ul>
+<ul>
+<li>7️⃣ Poignets (rotation ; pour la SHA, étendre la friction si besoin)</li>
+</ul>
+<aside class="encadre"><h4>💡 Astuce ORACLE</h4><p>La zone n°1 oubliée, ce sont les <strong>pouces</strong> (étape 5), suivis des espaces interdigitaux et du bout des doigts. C'est pourquoi les 7 étapes sont indispensables.</p></aside>
+</section><section class="partie"><h3>Les EPI — protections selon le risque</h3>
+<div class="tableau"><table><thead><tr>
+<th>EPI</th>
+<th>Quand</th>
+<th>Règle d'or</th>
+</tr></thead><tbody>
+<tr>
+<td>🧤 Gants non stériles</td>
+<td>Contact sang, liquides, muqueuses, peau lésée</td>
+<td><strong>1 soin = 1 paire</strong>, retrait puis hygiène des mains</td>
+</tr>
+<tr>
+<td>🩱 Tablier plastique</td>
+<td>Toilette, change, aide au repas</td>
+<td><strong>1 tablier = 1 soin</strong>, jamais conservé</td>
+</tr>
+<tr>
+<td>😷 Masque</td>
+<td>Précautions gouttelettes, symptômes respiratoires</td>
+<td>Selon protocole affiché</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>📖 EPI</h4><p>Équipements de Protection Individuelle : gants, tablier, masque — choisis selon le risque de contact avec des liquides biologiques ou selon les précautions complémentaires.</p></aside>
+<aside class="encadre"><h4>💡 Réflexe</h4><p>Le port de gants <strong>ne remplace pas</strong> l'hygiène des mains : on se désinfecte les mains <strong>après</strong> avoir retiré les gants.</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠️ Prérequis avant tout soin</h4><p>ZÉRO bijou aux mains (bagues, alliance, montre, bracelet), ongles courts SANS vernis ni faux ongles, avant-bras dégagés. Plaie / eczéma aux mains → en parler à l'IDE, gants UU systématiques.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 8 (SOCLE hygiène, OMS/CPIAS).</p>
+<p><strong>5 moments OMS :</strong> avant contact · avant geste aseptique · après risque d’exposition · après contact · après contact avec l’environnement.</p>
+<p><strong>Friction SHA 30 s</strong> ; lavage eau + savon si mains souillées ou <strong>Clostridium difficile</strong>.</p>
+<p><strong>EPI :</strong> gants et tablier selon le risque — <strong>1 soin = 1 paire / 1 tablier</strong>.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Les 5 moments OMS et « friction 30 secondes » sont attendus presque mot pour mot.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Quel moment d’hygiène des mains ?</p></p>
+<div class="cas-piste"><p><em>Réfection d’un lit puis aide au repas d’un autre résident.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>5 moments OMS : friction SHA avant geste propre.</li>
+<li>Mains non souillées → SHA (sinon lavage).</li>
+<li>Changer de gants entre résidents.</li>
+<li>Jamais d’enchaînement sans hygiène.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Choix des EPI</p></p>
+<div class="cas-piste"><p><em>Soin en précautions « contact ».</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Vérifier la signalétique.</li>
+<li>EPI adaptés (tablier, gants).</li>
+<li>Ordre respecté, hygiène des mains.</li>
+<li>Élimination correcte.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Jamais de SHA sur mains mouillées : l’eau dilue le produit ; on ne rince pas après la friction et on ne combine pas lavage et SHA.</li><li>Fermer le robinet avec l’essuie-mains à usage unique.</li><li>Ne pas oublier les pouces, les espaces interdigitaux et le bout des doigts.</li><li>Aucun bijou aux mains, ongles courts sans vernis ni faux ongles, avant-bras dégagés.</li><li>Plaie ou eczéma aux mains : en parler à l’IDE, gants à usage unique systématiques.</li><li>Ne jamais enchaîner d’un résident à l’autre sans hygiène des mains.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Les mains sont le premier vecteur de transmission croisée ; 80 % des infections nosocomiales sont manuportées.</li><li>Les 5 moments OMS : avant contact, avant geste aseptique, après exposition à un liquide biologique, après contact avec la personne, après contact avec l’environnement.</li><li>Friction SHA : 30 secondes, jusqu’au séchage complet à l’air. Elle est plus efficace et mieux tolérée.</li><li>Clostridioides difficile et gale : la SHA est inefficace, le lavage eau et savon est obligatoire.</li><li>Un soin = une paire de gants, un soin = un tablier.</li><li>Les gants ne remplacent pas l’hygiène des mains : on se désinfecte après les avoir retirés.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> Quel pourcentage des infections nosocomiales sont manuportées ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">80 %</li>
+<li data-cle="b" onclick="window._pickQ(this)">20 %</li>
+<li data-cle="c" onclick="window._pickQ(this)">100 %</li>
+<li data-cle="d" onclick="window._pickQ(this)">50 %</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>80 % des infections nosocomiales sont manuportées.<strong> 🎓 À l’oral VAE :</strong> d’où l’hygiène des mains n°1.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Combien de « moments OMS » de l'hygiène des mains existe-t-il ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">3</li>
+<li data-cle="b" onclick="window._pickQ(this)">5</li>
+<li data-cle="c" onclick="window._pickQ(this)">10</li>
+<li data-cle="d" onclick="window._pickQ(this)">7</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>5 moments OMS de l’hygiène des mains.<strong> 🎓 À l’oral VAE :</strong> les connaître.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Dans quels cas le lavage eau + savon est-il OBLIGATOIRE (SHA inefficace) ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Clostridioides difficile et gale</li>
+<li data-cle="b" onclick="window._pickQ(this)">Avant de mettre des gants</li>
+<li data-cle="c" onclick="window._pickQ(this)">Mains sèches et propres</li>
+<li data-cle="d" onclick="window._pickQ(this)">Jamais</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Lavage eau + savon OBLIGATOIRE pour C. difficile et gale (SHA inefficace).<strong> 🎓 À l’oral VAE :</strong> exceptions à retenir.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Durée minimum d'une friction SHA ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">5 secondes</li>
+<li data-cle="b" onclick="window._pickQ(this)">30 secondes</li>
+<li data-cle="c" onclick="window._pickQ(this)">1 minute</li>
+<li data-cle="d" onclick="window._pickQ(this)">2 minutes</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Friction SHA : 30 secondes minimum.<strong> 🎓 À l’oral VAE :</strong> durée respectée.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> Quelle est la zone la plus souvent oubliée pendant la friction ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Les pouces</li>
+<li data-cle="b" onclick="window._pickQ(this)">Les avant-bras</li>
+<li data-cle="c" onclick="window._pickQ(this)">Les paumes</li>
+<li data-cle="d" onclick="window._pickQ(this)">Les ongles seulement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Zone oubliée : les pouces (et bouts des doigts).<strong> 🎓 À l’oral VAE :</strong> gestuelle complète.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> Peut-on appliquer la SHA sur des mains mouillées ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Non, l'eau dilue le produit</li>
+<li data-cle="b" onclick="window._pickQ(this)">Seulement avec des gants</li>
+<li data-cle="c" onclick="window._pickQ(this)">Oui si on attend 5 s</li>
+<li data-cle="d" onclick="window._pickQ(this)">Oui, c'est plus efficace</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Jamais de SHA sur mains mouillées : l’eau dilue le produit.<strong> 🎓 À l’oral VAE :</strong> mains sèches.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> Concernant les gants non stériles, la règle est :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">On les garde toute la journée</li>
+<li data-cle="b" onclick="window._pickQ(this)">1 soin = 1 paire, puis hygiène des mains</li>
+<li data-cle="c" onclick="window._pickQ(this)">On les réutilise après lavage</li>
+<li data-cle="d" onclick="window._pickQ(this)">Ils remplacent l'hygiène des mains</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Gants non stériles : 1 soin = 1 paire, puis hygiène des mains.<strong> 🎓 À l’oral VAE :</strong> changer entre soins.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q7">
+<p class="q"><strong>Q8.</strong> Comment fermer le robinet après un lavage simple ?</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">À mains nues</li>
+<li data-cle="b" onclick="window._pickQ(this)">Peu importe</li>
+<li data-cle="c" onclick="window._pickQ(this)">Avec l'essuie-mains à usage unique</li>
+<li data-cle="d" onclick="window._pickQ(this)">Avec le coude uniquement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Robinet fermé avec l’essuie-mains à usage unique.<strong> 🎓 À l’oral VAE :</strong> éviter la recontamination.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B3_L11.html" class="back">← B3_L11</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B4_L02.html">B4_L02 →</a></div>
 </div>
 </body></html>

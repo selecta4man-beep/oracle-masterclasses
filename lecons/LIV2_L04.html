@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIV2 · LIV2_L04 · Rédaction Livret 2 — Bloc 2 — ORACLE VAE AS</title>
+<title>Livret 2 · LIV2_L04 · Rédaction Livret 2 — Bloc 2 — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Livret 2</strong> › LIV2_L04</div>
@@ -56,7 +79,141 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Rédaction Livret 2 — Bloc 2</h1>
     <div class="accroche"><p>Le <strong>Bloc 2</strong> — évaluation de l’état clinique et mise en œuvre de soins adaptés — correspond aux <strong>Activités 3 à 5</strong>.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer le périmètre du Bloc 2 : évaluation de l’état clinique et mise en œuvre de soins adaptés.</li><li>Choisir une situation vécue qui prouve réellement ce bloc.</li><li>Construire le récit : contexte, intervention pas à pas, analyse, résultats et transmission.</li><li>Faire apparaître explicitement les valeurs attendues dans votre analyse.</li><li>Relire votre texte avec la check-list avant de le rendre.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>1 · Le Bloc 2 en bref</h3></section><section class="partie"><h3>2 · Exemple de situation</h3></section><section class="partie"><h3>3 · Les valeurs à démontrer</h3></section><section class="partie"><h3>4 · Check-list de rédaction</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Nommer correctement les gestes techniques que vous décrivez.</li><li>Situation type qui fonctionne : surveillance des paramètres vitaux et alerte de l’IDE.</li><li>Décrire dans l’ordre chronologique, sans raccourci.</li><li>Écrire ce que vous ne faites pas : l’aide-soignant observe, alerte et trace, il ne prescrit pas.</li><li>Terminer chaque situation par les résultats obtenus et la transmission effectuée.</li><li>Vérifier avant de rendre : contexte, description, analyse, résultats, anonymat.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le Bloc 2 correspond aux Activités 3 à 5.</li><li>Une situation vécue au minimum, décrite et analysée.</li><li>Le jury attend : raisonnement clinique, rigueur, traçabilité, collaboration avec l’IDE.</li><li>L’analyse réflexive expose le pourquoi de vos choix.</li><li>L’anonymat est obligatoire.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le Bloc 2 correspond aux…</p><ol class="opts"><li class="ok">Activités 1 et 2</li><li class="">Aucune activité</li><li class="">Activités 6 à 9</li><li class="">Activités 3 à 5</li></ol></div><div class="qblock"><p class="q">2. Pour le Bloc 2, le jury évalue notamment…</p><ol class="opts"><li class="ok">la vitesse</li><li class="">la longueur</li><li class="">raisonnement clinique</li><li class="">le hasard</li></ol></div><div class="qblock"><p class="q">3. Devant une anomalie clinique, l’AS…</p><ol class="opts"><li class="ok">Prescrit un traitement</li><li class="">Observe, alerte l’IDE et trace</li><li class="">Attend le lendemain</li><li class="">Décide seul</li></ol></div><div class="qblock"><p class="q">4. Devant une fièvre à 38,7 °C chez une résidente, la conduite attendue de l’AS est…</p><ol class="opts"><li class="ok">Recontrôler, observer les signes associés et alerter l’IDE sans délai</li><li class="">Donner un antipyrétique disponible dans l’armoire</li><li class="">Noter la valeur dans le dossier et poursuivre sa tournée</li><li class="">Attendre la visite médicale du lendemain</li></ol></div><div class="qblock"><p class="q">5. M. K. est retrouvé au sol. La priorité immédiate de l’AS est…</p><ol class="opts"><li class="ok">Le relever aussitôt pour le réinstaller au fauteuil</li><li class="">Attendre le passage de l’IDE prévu deux heures plus tard</li><li class="">Évaluer la conscience et la douleur avant tout geste, sans le relever brutalement</li><li class="">Noter l’heure de la chute en fin de service seulement</li></ol></div></div></section>
-  <div class="footer-nav"><a href="LIV2_L03.html" class="back">← LIV2_L03</a><a href="LIV2_L05.html">LIV2_L05 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer le périmètre du Bloc 2 : évaluation de l’état clinique et mise en œuvre de soins adaptés.</li><li>Choisir une situation vécue qui prouve réellement ce bloc.</li><li>Construire le récit : contexte, intervention pas à pas, analyse, résultats et transmission.</li><li>Faire apparaître explicitement les valeurs attendues dans votre analyse.</li><li>Relire votre texte avec la check-list avant de le rendre.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>1 · Le Bloc 2 en bref</h3>
+<p>Le <strong>Bloc 2</strong> — évaluation de l’état clinique et mise en œuvre de soins adaptés — correspond aux <strong>Activités 3 à 5</strong>.</p>
+<p>Concrètement, <strong>trois activités</strong> :</p>
+<p><strong>Activité 3</strong> — observer la personne et mesurer ses paramètres vitaux.</p>
+<p><strong>Activité 4</strong> — collaborer aux soins, en intégrant la qualité et la prévention des risques.</p>
+<p><strong>Activité 5</strong> — installer la personne et l’aider à se déplacer à partir de ses propres ressources.</p>
+<aside class="encadre"><h4></h4><p>Vous devez prouver ce bloc par au moins une situation vécue, décrite et analysée.</p></aside>
+</section><section class="partie"><h3>2 · Exemple de situation</h3>
+<p><strong>Situation type :</strong> surveillance des paramètres vitaux et alerte de l’IDE.</p>
+<p>Décrivez le contexte (résident anonymisé, service, état initial), votre intervention pas à pas, puis <strong>analysez</strong> vos choix et concluez par les résultats et la transmission.</p>
+</section><section class="partie"><h3>3 · Les valeurs à démontrer</h3>
+<p>Le jury attend que vous démontriez : <strong>raisonnement clinique, rigueur, traçabilité, collaboration IDE</strong>.</p>
+<p>Chaque geste décrit doit refléter ces valeurs — nommez-les explicitement dans votre analyse.</p>
+</section><section class="partie"><h3>4 · Check-list de rédaction</h3>
+<ul>
+<li>Contexte clair et complet ?</li>
+</ul>
+<ul>
+<li>Description chronologique et précise ?</li>
+</ul>
+<ul>
+<li>Gestes techniques nommés correctement ?</li>
+</ul>
+<ul>
+<li>Analyse réflexive présente (le POURQUOI) ?</li>
+</ul>
+<ul>
+<li>Résultats et transmission ?</li>
+</ul>
+<ul>
+<li>Anonymat respecté ?</li>
+</ul>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 1 — Température à 38,7 °C</p></p>
+<div class="cas-piste"><p><em>Vous mesurez une fièvre chez Mme P.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Recontrôler, observer les signes associés (frissons, confusion).</li>
+<li>Alerter l’IDE, ne pas administrer de médicament de soi-même.</li>
+<li>Tracer en DAR (donnée, action, résultat).</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Chute constatée</p></p>
+<div class="cas-piste"><p><em>M. K. est retrouvé au sol.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Ne pas le relever brutalement, évaluer conscience/douleur.</li>
+<li>Alerter l’IDE/le cadre, sécuriser.</li>
+<li>Transmettre précisément l’heure et les circonstances.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Nommer correctement les gestes techniques que vous décrivez.</li><li>Situation type qui fonctionne : surveillance des paramètres vitaux et alerte de l’IDE.</li><li>Décrire dans l’ordre chronologique, sans raccourci.</li><li>Écrire ce que vous ne faites pas : l’aide-soignant observe, alerte et trace, il ne prescrit pas.</li><li>Terminer chaque situation par les résultats obtenus et la transmission effectuée.</li><li>Vérifier avant de rendre : contexte, description, analyse, résultats, anonymat.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le Bloc 2 correspond aux Activités 3 à 5.</li><li>Une situation vécue au minimum, décrite et analysée.</li><li>Le jury attend : raisonnement clinique, rigueur, traçabilité, collaboration avec l’IDE.</li><li>L’analyse réflexive expose le pourquoi de vos choix.</li><li>L’anonymat est obligatoire.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le Bloc 2 correspond aux…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Activités 1 et 2</li>
+<li data-cle="b" onclick="window._pickQ(this)">Aucune activité</li>
+<li data-cle="c" onclick="window._pickQ(this)">Activités 6 à 9</li>
+<li data-cle="d" onclick="window._pickQ(this)">Activités 3 à 5</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le Bloc 2 couvre les Activités 3 à 5.<strong> 🎓 À l’oral VAE :</strong> sachez relier chaque situation au bloc qu’elle prouve.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q1">
+<p class="q"><strong>Q2.</strong> Pour le Bloc 2, le jury évalue notamment…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">la vitesse</li>
+<li data-cle="b" onclick="window._pickQ(this)">la longueur</li>
+<li data-cle="c" onclick="window._pickQ(this)">raisonnement clinique</li>
+<li data-cle="d" onclick="window._pickQ(this)">le hasard</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le Bloc 2 met en avant : raisonnement clinique, rigueur, traçabilité, collaboration IDE.<strong> 🎓 À l’oral VAE :</strong> nommez ces valeurs dans votre analyse.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q2">
+<p class="q"><strong>Q3.</strong> Devant une anomalie clinique, l’AS…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Prescrit un traitement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Observe, alerte l’IDE et trace</li>
+<li data-cle="c" onclick="window._pickQ(this)">Attend le lendemain</li>
+<li data-cle="d" onclick="window._pickQ(this)">Décide seul</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’AS observe, alerte et trace ; il ne prescrit jamais.<strong> 🎓 À l’oral VAE :</strong> posez clairement la limite de votre rôle.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q3">
+<p class="q"><strong>Q4.</strong> Devant une fièvre à 38,7 °C chez une résidente, la conduite attendue de l’AS est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Recontrôler, observer les signes associés et alerter l’IDE sans délai</li>
+<li data-cle="b" onclick="window._pickQ(this)">Donner un antipyrétique disponible dans l’armoire</li>
+<li data-cle="c" onclick="window._pickQ(this)">Noter la valeur dans le dossier et poursuivre sa tournée</li>
+<li data-cle="d" onclick="window._pickQ(this)">Attendre la visite médicale du lendemain</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Devant une fièvre, l’AS recontrôle, observe les signes associés (frissons, confusion) et alerte l’IDE sans délai ; il n’administre jamais de médicament de sa propre initiative.<strong> 🎓 À l’oral VAE :</strong> citez l’action immédiate, pas seulement l’observation.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> M. K. est retrouvé au sol. La priorité immédiate de l’AS est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le relever aussitôt pour le réinstaller au fauteuil</li>
+<li data-cle="b" onclick="window._pickQ(this)">Attendre le passage de l’IDE prévu deux heures plus tard</li>
+<li data-cle="c" onclick="window._pickQ(this)">Évaluer la conscience et la douleur avant tout geste, sans le relever brutalement</li>
+<li data-cle="d" onclick="window._pickQ(this)">Noter l’heure de la chute en fin de service seulement</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Face à une chute, l’AS ne relève jamais brutalement : il évalue la conscience et la douleur, sécurise, puis alerte l’IDE ou le cadre en précisant l’heure et les circonstances.<strong> 🎓 À l’oral VAE :</strong> montrez que vous évaluez avant d’agir.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="LIV2_L03.html" class="back">← LIV2_L03</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="LIV2_L05.html">LIV2_L05 →</a></div>
 </div>
 </body></html>

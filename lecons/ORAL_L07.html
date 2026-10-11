@@ -1,62 +1,231 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ORAL · ORAL_L07 · Simulation guidée d’oral — ORACLE VAE AS</title>
+<title>Oral jury · ORAL_L07 · Simulation guidée d’oral — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Oral</strong> › ORAL_L07</div>
+  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Oral jury</strong> › ORAL_L07</div>
   <div class="hero">
-    <div class="meta"><span class="bloc">Oral</span><span>Leçon 7</span><span>⏱ 45 min</span><span>VAE DEAS</span></div>
+    <div class="meta"><span class="bloc">Oral jury</span><span>Leçon 7</span><span>⏱ 45 min</span><span>VAE DEAS</span></div>
     <h1>Simulation guidée d’oral</h1>
-    <div class="accroche"><p>Cette leçon vous fait vivre une simulation d&#x27;oral complète, chronométrée et enregistrée : pitch de présentation, questions sur vos situations et par bloc, question piège, puis auto-évaluation sur les critères proches de la grille du jury.</p></div>
+    <div class="accroche"><p>Cette leçon vous fait vivre une simulation d'oral complète, chronométrée et enregistrée : pitch de présentation, questions sur vos situations et par bloc, question piège, puis auto-évaluation sur les critères proches de la grille du jury.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Vous entraîner seul à voix haute, enregistré et chronométré.</li><li>Dérouler un protocole de simulation complet, du pitch à l’auto-débrief.</li><li>Vous auto-évaluer sur des critères proches de la grille du jury.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>1 · Comment t’entraîner seul·e</h3></section><section class="partie"><h3>2 · Protocole de simulation</h3></section><section class="partie"><h3>3 · Grille d’auto-évaluation</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Filmez-vous ou enregistrez-vous : c’est en vous réécoutant que vous vous corrigez.</li><li>Minuteur imposé à chaque passage, sans exception.</li><li>Piochez vos questions dans la banque de questions du jury.</li><li>Structurez chaque réponse en S-A-R et gardez le pourquoi de vos choix.</li><li>« Je ne sais pas » est une réponse honnête, et elle est notée comme telle.</li><li>Notez-vous de 1 à 3 sur chaque critère, puis réévaluez-vous après la simulation suivante.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’oral se prépare comme un geste technique : à voix haute, pas dans la tête.</li><li>Le pitch de présentation dure 2 minutes, chronométrées.</li><li>Le protocole enchaîne pitch, questions sur une situation, questions par bloc tirées au sort, question piège, auto-débrief.</li><li>Cinq critères d’auto-évaluation : clarté et structure, analyse réflexive, posture, respect du temps, honnêteté.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. Le pitch d’ouverture dure…</p><ol class="opts"><li class="ok">2 min</li><li class="">10 min</li><li class="">libre</li><li class="">30 s</li></ol></div><div class="qblock"><p class="q">2. Le meilleur entraînement à l’oral est…</p><ol class="opts"><li class="ok">lire dans sa tête</li><li class="">ne rien faire</li><li class="">s’enregistrer et parler à voix haute</li><li class="">réviser la veille</li></ol></div><div class="qblock"><p class="q">3. L’auto-évaluation porte notamment sur…</p><ol class="opts"><li class="ok">clarté, analyse, posture, temps, honnêteté</li><li class="">la tenue</li><li class="">le nombre de mots</li><li class="">la météo</li></ol></div><div class="qblock"><p class="q">4. Dans le protocole de simulation, la question piège occupe…</p><ol class="opts"><li class="ok">5 minutes</li><li class="">2 minutes</li><li class="">10 minutes</li><li class="">un temps illimité</li></ol></div><div class="qblock"><p class="q">5. Pour préparer les questions de la simulation, la bonne pratique est de…</p><ol class="opts"><li class="ok">Les inventer sur le moment sans préparation</li><li class="">Éviter les questions pièges pour rester serein·e</li><li class="">Les piocher dans la banque de questions du jury et s’imposer un minuteur</li><li class="">Ne demander que des questions faciles à un proche</li></ol></div><div class="qblock"><p class="q">6. Sur la grille d’auto-évaluation, chaque critère se note…</p><ol class="opts"><li class="ok">sur 20</li><li class="">par oui/non uniquement</li><li class="">sur 100</li><li class="">de 1 à 3</li></ol></div></div></section>
-  <div class="footer-nav"><a href="ORAL_L06.html" class="back">← ORAL_L06</a><a href="../index-lecons.html">Catalogue →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Vous entraîner seul à voix haute, enregistré et chronométré.</li><li>Dérouler un protocole de simulation complet, du pitch à l’auto-débrief.</li><li>Vous auto-évaluer sur des critères proches de la grille du jury.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>1 · Comment t’entraîner seul·e</h3>
+<p>Filmez-vous ou enregistrez-vous. Chronomètre. Travaille à voix haute — l’oral se prépare comme un geste technique.</p>
+</section><section class="partie"><h3>2 · Protocole de simulation</h3>
+<div class="tableau"><table><thead><tr>
+<th>Étape</th>
+<th>Durée</th>
+</tr></thead><tbody>
+<tr>
+<td>Pitch de présentation</td>
+<td>2 min</td>
+</tr>
+<tr>
+<td>3 questions sur une de vos situations</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>2 questions par bloc (tirage)</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>1 question piège</td>
+<td>2 min</td>
+</tr>
+<tr>
+<td>Auto-débrief</td>
+<td>3 min</td>
+</tr>
+</tbody></table></div>
+<aside class="encadre"><h4>Astuce</h4><p>piochez les questions dans la « Banque de questions du jury » et imposez-vous le minuteur.</p></aside>
+</section><section class="partie"><h3>3 · Grille d’auto-évaluation</h3>
+<div class="tableau"><table><thead><tr>
+<th>Critère</th>
+<th>Je m’évalue (1-3)</th>
+</tr></thead><tbody>
+<tr>
+<td>Clarté &amp; structure (S-A-R)</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Analyse réflexive (le pourquoi)</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Posture &amp; calme</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Respect du temps (2 min)</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Honnêteté (« je ne sais pas »)</td>
+<td>…</td>
+</tr>
+</tbody></table></div>
+</section>
+  </section>
+
+  
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Filmez-vous ou enregistrez-vous : c’est en vous réécoutant que vous vous corrigez.</li><li>Minuteur imposé à chaque passage, sans exception.</li><li>Piochez vos questions dans la banque de questions du jury.</li><li>Structurez chaque réponse en S-A-R et gardez le pourquoi de vos choix.</li><li>« Je ne sais pas » est une réponse honnête, et elle est notée comme telle.</li><li>Notez-vous de 1 à 3 sur chaque critère, puis réévaluez-vous après la simulation suivante.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’oral se prépare comme un geste technique : à voix haute, pas dans la tête.</li><li>Le pitch de présentation dure 2 minutes, chronométrées.</li><li>Le protocole enchaîne pitch, questions sur une situation, questions par bloc tirées au sort, question piège, auto-débrief.</li><li>Cinq critères d’auto-évaluation : clarté et structure, analyse réflexive, posture, respect du temps, honnêteté.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> Le pitch d’ouverture dure…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">2 min</li>
+<li data-cle="b" onclick="window._pickQ(this)">10 min</li>
+<li data-cle="c" onclick="window._pickQ(this)">libre</li>
+<li data-cle="d" onclick="window._pickQ(this)">30 s</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>2 minutes, chronométrées.<strong> 🎓 À l’oral VAE :</strong> entraînez-vous au minuteur.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q1">
+<p class="q"><strong>Q2.</strong> Le meilleur entraînement à l’oral est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">lire dans sa tête</li>
+<li data-cle="b" onclick="window._pickQ(this)">ne rien faire</li>
+<li data-cle="c" onclick="window._pickQ(this)">s’enregistrer et parler à voix haute</li>
+<li data-cle="d" onclick="window._pickQ(this)">réviser la veille</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’oral se travaille à voix haute, chronométré.<strong> 🎓 À l’oral VAE :</strong> filmez-vous pour vous corriger.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> L’auto-évaluation porte notamment sur…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">clarté, analyse, posture, temps, honnêteté</li>
+<li data-cle="b" onclick="window._pickQ(this)">la tenue</li>
+<li data-cle="c" onclick="window._pickQ(this)">le nombre de mots</li>
+<li data-cle="d" onclick="window._pickQ(this)">la météo</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Des critères proches de la grille du jury.<strong> 🎓 À l’oral VAE :</strong> réévaluez après chaque simulation.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Dans le protocole de simulation, la question piège occupe…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">5 minutes</li>
+<li data-cle="b" onclick="window._pickQ(this)">2 minutes</li>
+<li data-cle="c" onclick="window._pickQ(this)">10 minutes</li>
+<li data-cle="d" onclick="window._pickQ(this)">un temps illimité</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La question piège occupe 2 minutes dans le protocole, après les questions par bloc.<strong> 🎓 À l’oral VAE :</strong> entraînez-vous à rester posé·e même sous 2 minutes chrono.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> Pour préparer les questions de la simulation, la bonne pratique est de…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Les inventer sur le moment sans préparation</li>
+<li data-cle="b" onclick="window._pickQ(this)">Éviter les questions pièges pour rester serein·e</li>
+<li data-cle="c" onclick="window._pickQ(this)">Les piocher dans la banque de questions du jury et s’imposer un minuteur</li>
+<li data-cle="d" onclick="window._pickQ(this)">Ne demander que des questions faciles à un proche</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>On pioche les questions dans la banque de questions du jury et on s’impose un minuteur à chaque étape.<strong> 🎓 À l’oral VAE :</strong> ne choisissez pas que les questions faciles, tirez au sort.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q5">
+<p class="q"><strong>Q6.</strong> Sur la grille d’auto-évaluation, chaque critère se note…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">sur 20</li>
+<li data-cle="b" onclick="window._pickQ(this)">par oui/non uniquement</li>
+<li data-cle="c" onclick="window._pickQ(this)">sur 100</li>
+<li data-cle="d" onclick="window._pickQ(this)">de 1 à 3</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Chaque critère de la grille se note de 1 à 3, et on réévalue après la simulation suivante.<strong> 🎓 À l’oral VAE :</strong> suivez votre progression simulation après simulation.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="ORAL_L06.html" class="back">← ORAL_L06</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="../index-lecons.html">Catalogue →</a></div>
 </div>
 </body></html>

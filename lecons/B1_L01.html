@@ -1,53 +1,76 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B1 · B1_L01 · Accueil et Projet d&#x27;Accompagnement Personnalisé — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L01 · Accueil et Projet d'Accompagnement Personnalisé — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L01</div>
@@ -56,7 +79,208 @@ section ul li,section ol li{margin-bottom:8px}
     <h1>Accueil et Projet d&#x27;Accompagnement Personnalisé</h1>
     <div class="accroche"><p>L’<strong>accueil</strong> d’un nouveau résident conditionne toute la suite de la prise en charge. Première impression, mise en confiance, repères : un accueil réussi réduit l’anxiété et le « syndrome de glissement ».</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Conduire un accueil qui rassure et pose les premiers repères.</li><li>Vérifier l’identité de la personne par l’identitovigilance, à chaque soin.</li><li>Recueillir habitudes de vie, histoire de vie et besoins pour nourrir le PAP.</li><li>Faire vivre le projet au quotidien et contribuer à sa réévaluation.</li><li>Transmettre vos observations de façon ciblée pour actualiser le projet.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>L’accueil : un soin à part entière</h3></section><section class="partie"><h3>Le Projet d’Accompagnement Personnalisé (PAP)</h3></section><section class="partie"><h3>La contribution de l’AS au projet</h3></section><section class="partie"><h3>Transmettre &amp; tracer</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Faire épeler nom, nom de naissance, prénom et date de naissance — à chaque soin.</li><li>Se présenter, expliquer simplement, montrer les lieux, l’équipe et les personnes ressources.</li><li>Recueillir la personne de confiance, les directives anticipées, une éventuelle tutelle ou curatelle.</li><li>Évaluer ce que la personne sait, peut et veut faire : 14 besoins de Henderson, repérage du GIR.</li><li>Poser des questions ouvertes — elles ouvrent la parole là où le oui/non la referme.</li><li>Transmettre en DAR : la donnée observée, l’action menée, le résultat obtenu.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’accueil conditionne toute la suite de la prise en charge.</li><li>Un accueil réussi réduit l’anxiété et prévient le syndrome de glissement.</li><li>Le PAP — Projet d’Accompagnement Personnalisé — est co-construit avec la personne, ses proches et l’équipe.</li><li>Il recense les habitudes de vie, les goûts, l’histoire de vie, les besoins et les objectifs.</li><li>Un PAP n’est jamais figé : il se réévalue selon l’évolution de la personne.</li><li>L’AS recueille, participe et applique — il ne rédige pas seul, il fait vivre le projet.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. « PAP » signifie…</p><ol class="opts"><li class="ok">Projet d’Accompagnement Personnalisé</li><li class="">Procédure d’Admission Préalable</li><li class="">Protocole d’Aide aux Patients</li><li class="">Plan d’Action Prioritaire</li></ol></div><div class="qblock"><p class="q">2. Le PAP est…</p><ol class="opts"><li class="ok">Un document figé</li><li class="">Co-construit avec la personne et l’équipe</li><li class="">Réservé à l’administration</li><li class="">Imposé par le médecin seul</li></ol></div><div class="qblock"><p class="q">3. Le rôle de l’AS dans le projet de vie est de…</p><ol class="opts"><li class="ok">Recueillir, participer et l’appliquer au quotidien</li><li class="">Le rédiger seul</li><li class="">Le valider juridiquement</li><li class="">L’ignorer</li></ol></div><div class="qblock"><p class="q">4. Un bon accueil permet de prévenir…</p><ol class="opts"><li class="ok">L’anxiété et le syndrome de glissement</li><li class="">L’hypertension</li><li class="">L’infection urinaire</li><li class="">Le diabète</li></ol></div><div class="qblock"><p class="q">5. Le PAP doit être…</p><ol class="opts"><li class="ok">Rédigé une fois pour toutes</li><li class="">Limité aux soins techniques</li><li class="">Confidentiel et jamais partagé en équipe</li><li class="">Réévalué régulièrement selon l’évolution</li></ol></div><div class="qblock"><p class="q">6. Connaître l’histoire de vie d’un résident permet…</p><ol class="opts"><li class="ok">Un accompagnement sur mesure et personnalisé</li><li class="">Rien d’utile</li><li class="">De diagnostiquer</li><li class="">De gagner du temps administratif</li></ol></div><div class="qblock"><p class="q">7. L’accueil conditionne…</p><ol class="opts"><li class="ok">Le planning du personnel</li><li class="">Le menu</li><li class="">Toute la suite de la prise en charge</li><li class="">Rien</li></ol></div><div class="qblock"><p class="q">8. Le projet de soins est…</p><ol class="opts"><li class="ok">Figé</li><li class="">Évolutif et réévalué</li><li class="">Secret</li><li class="">Rédigé par l’AS seul</li></ol></div><div class="qblock"><p class="q">9. L’AS contribue au projet par…</p><ol class="opts"><li class="ok">Ses prescriptions</li><li class="">Ses observations quotidiennes</li><li class="">Ses diagnostics</li><li class="">Rien</li></ol></div><div class="qblock"><p class="q">10. Les questions ouvertes servent à…</p><ol class="opts"><li class="ok">Obtenir un oui/non</li><li class="">Tester le résident</li><li class="">Gagner du temps</li><li class="">Recueillir plus d’informations</li></ol></div></div></section>
-  <div class="footer-nav"><a href="SOCLE_L13.html" class="back">← SOCLE_L13</a><a href="B1_L02.html">B1_L02 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Conduire un accueil qui rassure et pose les premiers repères.</li><li>Vérifier l’identité de la personne par l’identitovigilance, à chaque soin.</li><li>Recueillir habitudes de vie, histoire de vie et besoins pour nourrir le PAP.</li><li>Faire vivre le projet au quotidien et contribuer à sa réévaluation.</li><li>Transmettre vos observations de façon ciblée pour actualiser le projet.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>L’accueil : un soin à part entière</h3>
+<p>L’<strong>accueil</strong> d’un nouveau résident conditionne toute la suite de la prise en charge. Première impression, mise en confiance, repères : un accueil réussi réduit l’anxiété et le « syndrome de glissement ».</p>
+<aside class="encadre"><h4>📘 Référence livre ORACLE</h4><p>Bien accueillir, c’est reconnaître la personne dans son histoire et ses habitudes. L’AS, présent au quotidien, est un acteur clé de cet accueil et de son projet de vie.</p></aside>
+</section><section class="partie"><h3>Le Projet d’Accompagnement Personnalisé (PAP)</h3>
+<p>Le <strong>PAP</strong> (ou projet de vie individualisé) formalise les besoins, attentes et habitudes de la personne pour un accompagnement <strong>sur mesure</strong>. Il est <strong>co-construit</strong> avec la personne (et ses proches) et l’équipe pluriprofessionnelle.</p>
+<div class="tableau"><table><thead><tr>
+<th>Le PAP recense…</th>
+<th>Exemples</th>
+</tr></thead><tbody>
+<tr>
+<td>Habitudes de vie</td>
+<td>Heure du lever, douche/bain, rythme</td>
+</tr>
+<tr>
+<td>Goûts</td>
+<td>Alimentation, activités, musique</td>
+</tr>
+<tr>
+<td>Histoire de vie</td>
+<td>Métier, famille, valeurs</td>
+</tr>
+<tr>
+<td>Besoins / objectifs</td>
+<td>Autonomie à maintenir, accompagnement requis</td>
+</tr>
+</tbody></table></div>
+</section><section class="partie"><h3>La contribution de l’AS au projet</h3>
+<p>Un PAP n’est pas un document figé : il se réévalue régulièrement selon l’évolution de la personne.</p>
+<aside class="encadre"><h4>🩺 le rôle concret de l’AS</h4><p>L’AS <strong>recueille</strong> au quotidien des informations précieuses (préférences, capacités, difficultés), <strong>participe</strong> à l’élaboration et à la réévaluation du PAP, et l’<strong>applique</strong> concrètement dans chaque soin. C’est lui qui « fait vivre » le projet au jour le jour.</p></aside>
+</section><section class="partie"><h3>Transmettre &amp; tracer</h3>
+<div class="exemples">
+<div class="ex"><p>📖 transmission ciblée DAR — <strong>D</strong> : « M. G. préfère se lever tard et déteste être pressé le matin ». <strong>A</strong> : « Habitude intégrée au PAP, soin organisé en conséquence ». <strong>R</strong> : « Moins d’opposition, matin apaisé ». Les observations AS nourrissent et actualisent le projet.</p></div>
+</div>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 01 : Accueil &amp; identitovigilance).</p>
+<p><strong>Identitovigilance :</strong> faire épeler nom, nom de naissance, prénom, date de naissance — <strong>à chaque soin</strong>.</p>
+<p>Recueil de données par les <strong>14 besoins de Henderson</strong>.</p>
+<p>Droits : <strong>consentement (loi Kouchner 2002)</strong>, directives anticipées (2016), personne de confiance.</p>
+<p><strong>GIR</strong> : évaluer ce que la personne <strong>sait / peut / veut</strong> faire (autonomie).</p>
+<p><strong>🎓 À l’oral / piège :</strong> L’accueil n’est pas administratif : c’est le 1ᵉʳ acte de soin relationnel + de sécurité (identitovigilance).</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p><strong>Identitovigilance</strong> : faire épeler nom/prénom/date de naissance, vérifier l’identité (bracelet à l’hôpital).</p>
+<p>Accueil <strong>rassurant</strong> : ton doux, explications simples, présentation des lieux, de l’équipe et des personnes ressources.</p>
+<p>Recueil des <strong>habitudes de vie</strong> et des 14 besoins (Virginia Henderson) : besoins satisfaits / non satisfaits.</p>
+<p>Repérage du <strong>GIR</strong> (ce que la personne sait/peut/veut faire) + échelle de Braden si dépendance importante.</p>
+<p>Recueil de la <strong>personne de confiance</strong>, des <strong>directives anticipées</strong>, d’une éventuelle tutelle/curatelle.</p>
+<p>Participation au <strong>projet d’accompagnement personnalisé</strong> · raisonnement clinique (observer → hypothèses → vérifier → agir) · transmissions.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas pratique corrigé — Personnaliser l’accompagnement</strong></p></p>
+<div class="cas-piste"><p><em>Une nouvelle résidente, Mme L., pleure souvent et mange peu depuis son arrivée. En discutant, vous apprenez qu’elle était couturière et adore la musique classique.</em></p>
+<p><strong>Comment l’AS fait vivre le PAP :</strong></p>
+<ul>
+<li>Recueillir et transmettre ces éléments d’histoire de vie et de goûts pour enrichir le projet.</li>
+<li>Proposer des repères rassurants : musique qu’elle aime, activité liée à la couture.</li>
+<li>Respecter son rythme alimentaire, surveiller la prise (risque de dénutrition/glissement).</li>
+<li>Réévaluer en équipe : un accompagnement personnalisé restaure souvent l’appétit et le moral.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Arrivée de Mme C. en EHPAD</p></p>
+<div class="cas-piste"><p><em>Désorientée, elle pleure et cherche ses repères.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Accueil chaleureux, se présenter, sécuriser.</li>
+<li>Recueillir histoire de vie et habitudes (avec la famille).</li>
+<li>Contribuer au PAP, transmettre les besoins.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Faire épeler nom, nom de naissance, prénom et date de naissance — à chaque soin.</li><li>Se présenter, expliquer simplement, montrer les lieux, l’équipe et les personnes ressources.</li><li>Recueillir la personne de confiance, les directives anticipées, une éventuelle tutelle ou curatelle.</li><li>Évaluer ce que la personne sait, peut et veut faire : 14 besoins de Henderson, repérage du GIR.</li><li>Poser des questions ouvertes — elles ouvrent la parole là où le oui/non la referme.</li><li>Transmettre en DAR : la donnée observée, l’action menée, le résultat obtenu.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’accueil conditionne toute la suite de la prise en charge.</li><li>Un accueil réussi réduit l’anxiété et prévient le syndrome de glissement.</li><li>Le PAP — Projet d’Accompagnement Personnalisé — est co-construit avec la personne, ses proches et l’équipe.</li><li>Il recense les habitudes de vie, les goûts, l’histoire de vie, les besoins et les objectifs.</li><li>Un PAP n’est jamais figé : il se réévalue selon l’évolution de la personne.</li><li>L’AS recueille, participe et applique — il ne rédige pas seul, il fait vivre le projet.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> « PAP » signifie…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Projet d’Accompagnement Personnalisé</li>
+<li data-cle="b" onclick="window._pickQ(this)">Procédure d’Admission Préalable</li>
+<li data-cle="c" onclick="window._pickQ(this)">Protocole d’Aide aux Patients</li>
+<li data-cle="d" onclick="window._pickQ(this)">Plan d’Action Prioritaire</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>PAP = Projet d’Accompagnement Personnalisé.<strong> 🎓 À l’oral VAE :</strong> sachez nommer le sigle en entier.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q1">
+<p class="q"><strong>Q2.</strong> Le PAP est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un document figé</li>
+<li data-cle="b" onclick="window._pickQ(this)">Co-construit avec la personne et l’équipe</li>
+<li data-cle="c" onclick="window._pickQ(this)">Réservé à l’administration</li>
+<li data-cle="d" onclick="window._pickQ(this)">Imposé par le médecin seul</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le PAP est co-construit avec la personne et l’équipe.<strong> 🎓 À l’oral VAE :</strong> la personne est actrice de son projet.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Le rôle de l’AS dans le projet de vie est de…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Recueillir, participer et l’appliquer au quotidien</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le rédiger seul</li>
+<li data-cle="c" onclick="window._pickQ(this)">Le valider juridiquement</li>
+<li data-cle="d" onclick="window._pickQ(this)">L’ignorer</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Rôle de l’AS : recueillir, participer et appliquer au quotidien.<strong> 🎓 À l’oral VAE :</strong> vous êtes au plus près du résident.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q3">
+<p class="q"><strong>Q4.</strong> Un bon accueil permet de prévenir…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">L’anxiété et le syndrome de glissement</li>
+<li data-cle="b" onclick="window._pickQ(this)">L’hypertension</li>
+<li data-cle="c" onclick="window._pickQ(this)">L’infection urinaire</li>
+<li data-cle="d" onclick="window._pickQ(this)">Le diabète</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Un bon accueil prévient l’anxiété et le syndrome de glissement.<strong> 🎓 À l’oral VAE :</strong> le premier contact est déterminant.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q4">
+<p class="q"><strong>Q5.</strong> Le PAP doit être…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Rédigé une fois pour toutes</li>
+<li data-cle="b" onclick="window._pickQ(this)">Limité aux soins techniques</li>
+<li data-cle="c" onclick="window._pickQ(this)">Confidentiel et jamais partagé en équipe</li>
+<li data-cle="d" onclick="window._pickQ(this)">Réévalué régulièrement selon l’évolution</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Le PAP doit être réévalué régulièrement selon l’évolution.<strong> 🎓 À l’oral VAE :</strong> c’est un document vivant.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q5">
+<p class="q"><strong>Q6.</strong> Connaître l’histoire de vie d’un résident permet…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Un accompagnement sur mesure et personnalisé</li>
+<li data-cle="b" onclick="window._pickQ(this)">Rien d’utile</li>
+<li data-cle="c" onclick="window._pickQ(this)">De diagnostiquer</li>
+<li data-cle="d" onclick="window._pickQ(this)">De gagner du temps administratif</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Connaître l’histoire de vie permet un accompagnement sur mesure.<strong> 🎓 À l’oral VAE :</strong> habitudes, goûts, parcours = personnalisation.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q6">
+<p class="q"><strong>Q7.</strong> L’accueil conditionne…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le planning du personnel</li>
+<li data-cle="b" onclick="window._pickQ(this)">Le menu</li>
+<li data-cle="c" onclick="window._pickQ(this)">Toute la suite de la prise en charge</li>
+<li data-cle="d" onclick="window._pickQ(this)">Rien</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Premier contact = base de la relation de confiance.<strong> 🎓 À l’oral VAE :</strong> soignez ce moment fondateur.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q7">
+<p class="q"><strong>Q8.</strong> Le projet de soins est…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Figé</li>
+<li data-cle="b" onclick="window._pickQ(this)">Évolutif et réévalué</li>
+<li data-cle="c" onclick="window._pickQ(this)">Secret</li>
+<li data-cle="d" onclick="window._pickQ(this)">Rédigé par l’AS seul</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Il évolue avec l’état du résident ; co-construit en équipe.<strong> 🎓 À l’oral VAE :</strong> l’AS y contribue par ses observations.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q8">
+<p class="q"><strong>Q9.</strong> L’AS contribue au projet par…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ses prescriptions</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ses observations quotidiennes</li>
+<li data-cle="c" onclick="window._pickQ(this)">Ses diagnostics</li>
+<li data-cle="d" onclick="window._pickQ(this)">Rien</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Observer et transmettre nourrit le projet de soins.<strong> 🎓 À l’oral VAE :</strong> montrez votre rôle d’observation.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q9">
+<p class="q"><strong>Q10.</strong> Les questions ouvertes servent à…</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Obtenir un oui/non</li>
+<li data-cle="b" onclick="window._pickQ(this)">Tester le résident</li>
+<li data-cle="c" onclick="window._pickQ(this)">Gagner du temps</li>
+<li data-cle="d" onclick="window._pickQ(this)">Recueillir plus d’informations</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Elles invitent le résident à s’exprimer librement.<strong> 🎓 À l’oral VAE :</strong> ex. « comment aimez-vous votre toilette ? ».</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="SOCLE_L13.html" class="back">← SOCLE_L13</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L02.html">B1_L02 →</a></div>
 </div>
 </body></html>

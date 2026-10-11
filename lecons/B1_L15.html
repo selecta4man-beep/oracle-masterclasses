@@ -1,62 +1,373 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B1 · B1_L15 · Fin de vie et deuil — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L15 · Fin de vie et deuil — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L15</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 15</span><span>⏱ 45 min</span><span>VAE DEAS</span></div>
     <h1>Fin de vie et deuil</h1>
-    <div class="accroche"><p>Les soins palliatifs sont des <strong>soins actifs et globaux</strong> pour les personnes atteintes d&#x27;une maladie grave, évolutive ou terminale. L&#x27;objectif n&#x27;est pas de guérir mais de <strong>soulager la douleur et la souffrance</strong> sur 4 plans : physique, psychologique, social et spirituel.</p></div>
+    <div class="accroche"><p>Les soins palliatifs sont des <strong>soins actifs et globaux</strong> pour les personnes atteintes d'une maladie grave, évolutive ou terminale. L'objectif n'est pas de guérir mais de <strong>soulager la douleur et la souffrance</strong> sur 4 plans : physique, psychologique, social et spirituel.</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Expliquer ce que visent les soins palliatifs : soulager et accompagner, non guérir.</li><li>Distinguer sédation profonde et continue, euthanasie et obstination déraisonnable.</li><li>Situer les directives anticipées et la personne de confiance dans le respect des volontés.</li><li>Assurer les soins de confort majorés, à commencer par les soins de bouche.</li><li>Reconnaître les signes cliniques de la fin de vie comme un processus normal.</li><li>Accompagner la famille dans le pré-deuil et les étapes du deuil.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>Soins palliatifs : soulager, pas guérir</h3></section><section class="partie"><h3>Définitions juridiques à connaître</h3></section><section class="partie"><h3>Les 5 étapes du deuil (Kübler-Ross)</h3></section><section class="partie"><h3>Soins de confort majorés</h3></section><section class="partie"><h3>Le TOTAL PAIN (souffrance globale)</h3></section><section class="partie"><h3>Accompagner la famille &amp; les 4 vigilances AS</h3></section><section class="partie"><h3>Signes de fin de vie &amp; après le décès</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Soins de bouche toutes les une à deux heures : brumisateur, compresses, bâtonnets.</li><li>Ne jamais forcer l’alimentation ni l’hydratation — le refus est naturel en fin de vie.</li><li>Toilette douce, à deux si possible, effleurages et changements de position.</li><li>Parler à la personne, annoncer chaque geste, ne jamais parler d’elle comme si elle était absente.</li><li>Immobilisation, déshydratation et morphine : surveiller le transit et signaler.</li><li>Devant la famille : écouter, ne pas mentir, ne donner aucun pronostic — orienter vers l’IDE ou le médecin.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le total pain regroupe quatre souffrances : physique, psychique, sociale, spirituelle.</li><li>Leonetti 2005 interdit l’obstination déraisonnable ; Claeys-Leonetti 2016 rend les directives anticipées contraignantes.</li><li>Les quatre vigilances de l’aide-soignant : douleur, transit, soins de bouche, état cutané.</li><li>ALGOPLUS s’utilise quand la parole n’est plus possible : score supérieur ou égal à 2, il y a douleur.</li><li>L’ouïe est le dernier sens à disparaître.</li><li>Cheyne-Stokes, marbrures, râles, oligurie : le processus est normal, pas une aggravation à corriger.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. La sédation profonde et continue (loi 2016) consiste à :</p><ol class="opts"><li class="ok">Poursuivre tous les traitements à tout prix</li><li class="">Arrêter tous les soins de confort</li><li class="">Donner un médicament qui provoque la mort</li><li class="">Endormir le patient en cas de douleurs rebelles en phase terminale</li></ol></div><div class="qblock"><p class="q">2. L&#x27;obstination déraisonnable (ex-« acharnement thérapeutique ») est :</p><ol class="opts"><li class="ok">Des traitements inutiles ou disproportionnés</li><li class="">Une obligation de soin en fin de vie</li><li class="">Un droit du patient à tout tenter</li><li class="">Un autre nom de l’euthanasie</li></ol></div><div class="qblock"><p class="q">3. Depuis la loi Claeys-Leonetti 2016, les directives anticipées sont :</p><ol class="opts"><li class="ok">Décidées par la famille</li><li class="">Valables seulement 3 ans</li><li class="">Contraignantes et s&#x27;imposent au médecin</li><li class="">Simplement consultatives</li></ol></div><div class="qblock"><p class="q">4. Le TOTAL PAIN (Cicely Saunders) regroupe :</p><ol class="opts"><li class="ok">Le coût des soins</li><li class="">4 dimensions : physique, psychique, sociale, spirituelle</li><li class="">Uniquement la douleur physique</li><li class="">La douleur de la famille</li></ol></div><div class="qblock"><p class="q">5. Pour le confort de la bouche en fin de vie, on privilégie :</p><ol class="opts"><li class="ok">Des soins de bouche fréquents (brumisateur, compresses, toutes les 1-2h)</li><li class="">Ne rien faire</li><li class="">Forcer l&#x27;hydratation par perfusion</li><li class="">De grandes quantités d&#x27;eau d&#x27;un coup</li></ol></div><div class="qblock"><p class="q">6. Concernant l&#x27;alimentation et l&#x27;hydratation en fin de vie :</p><ol class="opts"><li class="ok">Supprimer toute alimentation immédiatement</li><li class="">Ne pas forcer ; alimentation plaisir, le refus est un processus naturel</li><li class="">Il faut toujours forcer le patient à manger</li><li class="">Imposer des horaires stricts</li></ol></div><div class="qblock"><p class="q">7. La constipation est quasi systématique en fin de vie à cause de :</p><ol class="opts"><li class="ok">Trop d&#x27;activité physique</li><li class="">Immobilisation + déshydratation + antalgiques (morphine)</li><li class="">Un excès de fibres</li><li class="">Une bonne hydratation</li></ol></div><div class="qblock"><p class="q">8. Une affirmation vraie sur la personne en fin de vie :</p><ol class="opts"><li class="ok">On peut arrêter tous les soins de confort</li><li class="">L&#x27;ouïe est le dernier sens : continuer à lui parler doucement</li><li class="">Elle n&#x27;entend plus rien dans le coma</li><li class="">On peut parler d&#x27;elle à la 3e personne devant elle</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B1_L14.html" class="back">← B1_L14</a><a href="B1_L16.html">B1_L16 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Expliquer ce que visent les soins palliatifs : soulager et accompagner, non guérir.</li><li>Distinguer sédation profonde et continue, euthanasie et obstination déraisonnable.</li><li>Situer les directives anticipées et la personne de confiance dans le respect des volontés.</li><li>Assurer les soins de confort majorés, à commencer par les soins de bouche.</li><li>Reconnaître les signes cliniques de la fin de vie comme un processus normal.</li><li>Accompagner la famille dans le pré-deuil et les étapes du deuil.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>Soins palliatifs : soulager, pas guérir</h3>
+<p>Les soins palliatifs sont des <strong>soins actifs et globaux</strong> pour les personnes atteintes d'une maladie grave, évolutive ou terminale. L'objectif n'est pas de guérir mais de <strong>soulager la douleur et la souffrance</strong> sur 4 plans : physique, psychologique, social et spirituel. Ils s'appliquent <strong>aussi en EHPAD</strong>, et l'<strong>AS fait partie intégrante de l'équipe</strong>.</p>
+<p><strong>Traitements des symptômes inconfortables</strong> (sans visée curative) :</p>
+<ul>
+<li>douleurs, constipation, fièvre → antalgiques, antibiotiques si besoin ;</li>
+</ul>
+<ul>
+<li><strong>morphine</strong> : en connaître les effets — sécheresse des muqueuses, constipation, somnolence ;</li>
+</ul>
+<ul>
+<li>antalgique de <strong>palier 3</strong> : peut hâter la mort en effet secondaire (« effet double », autorisé par la loi 2016).</li>
+</ul>
+<aside class="encadre"><h4>🔗 Mémo ORACLE</h4><p>SOULAGER → DÉFINIR → COMPRENDRE → CONFORTER → ACCOMPAGNER.</p></aside>
+</section><section class="partie"><h3>Définitions juridiques à connaître</h3>
+<div class="tableau"><table><thead><tr>
+<th>Notion</th>
+<th>Définition &amp; cadre légal</th>
+</tr></thead><tbody>
+<tr>
+<td>😴 Sédation profonde et continue</td>
+<td>Endormir le patient en cas de <strong>douleurs rebelles</strong> en phase terminale (altération profonde de la conscience + arrêt des traitements de maintien en vie). <strong>Droit du patient — loi Claeys-Leonetti 2016</strong>, décision collégiale obligatoire.</td>
+</tr>
+<tr>
+<td>💉 Euthanasie</td>
+<td>Médicament qui <strong>donne la mort</strong>. <strong>Distincte</strong> de la sédation profonde. Loi en évolution en France — ne pas confondre.</td>
+</tr>
+<tr>
+<td>🚫 Obstination déraisonnable</td>
+<td>Ex-« acharnement thérapeutique » : traitements <strong>inutiles ou disproportionnés</strong>. <strong>Interdite par la loi Leonetti 2005</strong>.</td>
+</tr>
+<tr>
+<td>📜 Directives anticipées</td>
+<td>Volontés <strong>écrites</strong> du patient, révisables/révocables. <strong>Contraignantes depuis 2016</strong> — s'imposent au médecin.</td>
+</tr>
+<tr>
+<td>👤 Personne de confiance</td>
+<td>Désignée par le patient (loi Kouchner 2002). Témoigne des volontés quand le patient ne peut plus s'exprimer. Désignation écrite, révocable.</td>
+</tr>
+</tbody></table></div>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Cadre juridique — à retenir pour le jury</strong></p>
+<p>Loi <strong>Kouchner (4 mars 2002)</strong> : droits du malade, personne de confiance · Loi <strong>Leonetti (22 avril 2005)</strong> : interdiction de l'obstination déraisonnable + directives anticipées · Loi <strong>Claeys-Leonetti (2 février 2016)</strong> : directives anticipées <strong>contraignantes</strong> + droit à la <strong>sédation profonde et continue</strong> jusqu'au décès.</p></aside>
+</section><section class="partie"><h3>Les 5 étapes du deuil (Kübler-Ross)</h3>
+<p>Un processus naturel, non linéaire :</p>
+<ul>
+<li><strong>1. Déni</strong> — « ce n'est pas possible » ; mécanisme de protection. Ne pas contredire, accompagner avec douceur.</li>
+</ul>
+<ul>
+<li><strong>2. Colère</strong> — « pourquoi lui / moi ? » ; colère dirigée vers soignants, famille, Dieu. Ne pas la prendre personnellement.</li>
+</ul>
+<ul>
+<li><strong>3. Tristesse</strong> — phase dépressive (pleurs, retrait). Présence silencieuse, écoute ; orienter vers le psychologue si besoin.</li>
+</ul>
+<ul>
+<li><strong>4. Négociation</strong> — « si seulement… » ; marchandage avec le destin, la médecine. Écouter sans juger.</li>
+</ul>
+<ul>
+<li><strong>5. Acceptation</strong> — « je peux avancer » ; pas une résignation mais une paix relative.</li>
+</ul>
+<aside class="vigilance"><h4>⚠ ⚠ Important</h4><p>Ces étapes ne sont <strong>pas forcément dans l'ordre</strong> et peuvent <strong>revenir</strong> à tout moment. Le deuil concerne aussi une <strong>situation</strong> (handicap, maladie chronique). Le <strong>pré-deuil</strong> permet à la famille de se préparer — parfois le décès est vécu comme un <strong>soulagement</strong>.</p></aside>
+</section><section class="partie"><h3>Soins de confort majorés</h3>
+<ul>
+<li><strong>🛁 Hygiène</strong> — doux et bienveillants, idéalement <strong>à 2 soignants</strong> et avec du temps ; effleurages, changements de position ; intimité préservée.</li>
+</ul>
+<ul>
+<li><strong>👄 Soins de bouche +++</strong> — <strong>priorité absolue</strong> (langue cartonnée, muqueuses déshydratées) ; brumisateur, compresses, bâtonnets ; <strong>toutes les 1 à 2 heures</strong>.</li>
+</ul>
+<ul>
+<li><strong>🍽️ Alimentation plaisir</strong> — salée ou sucrée selon l'envie, à tout moment (pas d'horaires imposés) ; vigilance déglutition ; <strong>ne pas forcer</strong> alimentation/hydratation.</li>
+</ul>
+<ul>
+<li><strong>🏡 Environnement</strong> — chambre calme, lumière tamisée, objets familiers, musique douce si souhaitée ; respecter les choix du résident.</li>
+</ul>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ La personne entend et ressent jusqu'au dernier moment</strong></p>
+<p>L'<strong>ouïe est le dernier sens à disparaître</strong>. Continuer à lui parler doucement, annoncer ses gestes, et ne <strong>jamais parler d'elle comme si elle n'était pas là</strong>.</p></aside>
+</section><section class="partie"><h3>Le TOTAL PAIN (souffrance globale)</h3>
+<ul>
+<li><strong>💪 Physique</strong> — douleur corporelle, symptômes inconfortables.</li>
+</ul>
+<ul>
+<li><strong>🧠 Psychique</strong> — angoisse, dépression, peur de mourir.</li>
+</ul>
+<ul>
+<li><strong>👨‍👩‍👧 Sociale</strong> — isolement, perte de rôle, dépendance.</li>
+</ul>
+<ul>
+<li><strong>🕊️ Spirituelle</strong> — sens de la vie, foi, transcendance.</li>
+</ul>
+<aside class="encadre"><h4>🔗 Concept de Cicely Saunders</h4><p>Le <strong>TOTAL PAIN</strong> = la somme de 4 dimensions de la souffrance, à prendre en charge ensemble.</p></aside>
+<aside class="encadre"><h4></h4><p><strong>🔗 Évaluer la douleur : échelle ALGOPLUS</strong></p>
+<p>Surtout si la <strong>communication verbale est impossible</strong> (troubles cognitifs, sédation). 5 items observables : visage, regard, plaintes, corps, comportements. <strong>Score ≥ 2 = douleur</strong>.</p></aside>
+<aside class="vigilance"><h4>⚠ ⚠ Vigilance transit</h4><p>Immobilisation + déshydratation + antalgiques (morphine) = <strong>constipation quasi systématique</strong> → surveiller, signaler à l'IDE, tracer.</p></aside>
+</section><section class="partie"><h3>Accompagner la famille &amp; les 4 vigilances AS</h3>
+<p><strong>Accompagner la famille :</strong></p>
+<ul>
+<li><strong>Écoute active</strong> — accueillir avec empathie, sans précipitation.</li>
+</ul>
+<ul>
+<li><strong>Annonce de fin de vie</strong> — mots simples, ne pas mentir mais ne pas tout dire d'un coup ; respecter le rythme.</li>
+</ul>
+<ul>
+<li><strong>Logistique</strong> — possibilité de dormir sur place, repas, appel de nuit ; horaires souples.</li>
+</ul>
+<ul>
+<li><strong>Pré-deuil &amp; soulagement</strong> — la famille vit un deuil anticipé ; le décès peut être ressenti comme un soulagement, ce qui génère parfois de la culpabilité : c'est normal et légitime.</li>
+</ul>
+<ul>
+<li><strong>Anxiété fréquente</strong> — non-alimentation, douleur visible : expliquer que le <strong>refus alimentaire en fin de vie est naturel</strong>, ne pas forcer.</li>
+</ul>
+<aside class="encadre"><h4></h4><p><strong>✅ Les 4 vigilances clés de l'AS</strong></p>
+<p><strong>1. Douleur</strong> (évaluer ALGOPLUS, signaler, réévaluer) · <strong>2. Transit</strong> (constipation : immobilisation + morphine) · <strong>3. Soins de bouche</strong> (hydrater les muqueuses) · <strong>4. État cutané</strong> (effleurages, prévenir les escarres). 👉 Confort et bien-être = priorité absolue.</p></aside>
+</section><section class="partie"><h3>Signes de fin de vie &amp; après le décès</h3>
+<p><strong>Signes cliniques de fin de vie</strong> — un processus <strong>normal</strong> à reconnaître :</p>
+<ul>
+<li><strong>🫁 Respiration</strong> — irrégulière, pauses (Cheyne-Stokes), râles agoniques.</li>
+</ul>
+<ul>
+<li><strong>💤 Conscience</strong> — somnolence croissante, coma progressif.</li>
+</ul>
+<ul>
+<li><strong>🖐️ Peau</strong> — marbrures, froideur, pâleur, cyanose.</li>
+</ul>
+<ul>
+<li><strong>💧 Élimination</strong> — oligurie puis anurie, relâchement des sphincters.</li>
+</ul>
+<aside class="encadre"><h4>🔗 Après le décès — l&#x27;essentiel</h4><p>Le médecin constate le décès et signe le certificat · la <strong>toilette mortuaire</strong> est réalisée par l'AS (voir la leçon « Soins post-mortem ») · respecter les rites · <strong>inventaire des objets de valeur signé</strong> · chambre digne pour la famille · transmettre (heure du décès, soins) · <strong>prendre soin de l'équipe</strong> : l'AS aussi est touchée, temps de parole et debriefing nécessaires.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 07 : Fin de vie &amp; deuil).</p>
+<p><strong>5 étapes du deuil</strong> (Kübler-Ross) : déni → colère → tristesse → négociation → acceptation.</p>
+<p><strong>Total pain :</strong> souffrance physique + psychique + sociale + spirituelle.</p>
+<p>Lois : <strong>Leonetti 2005</strong> (obstination déraisonnable), <strong>Claeys-Leonetti 2016</strong> (sédation profonde, directives anticipées).</p>
+<p><strong>4 vigilances AS :</strong> douleur, transit, <strong>soins de bouche +++</strong>, état cutané (effleurages).</p>
+<p><strong>🎓 À l’oral / piège :</strong> En fin de vie, le confort prime : les soins de bouche et le respect de la dignité sont au cœur du rôle AS.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>Visée <strong>non curative</strong> : traiter les symptômes inconfortables (douleur, constipation…) ; distinguer antalgique / <strong>sédation profonde et continue</strong> / euthanasie.</p>
+<p><strong>Directives anticipées</strong> et personne de confiance recueillies dès l’admission ; soins palliatifs sur prescription médicale.</p>
+<p>Soins de confort majorés : <strong>soins de bouche fréquents</strong>, hygiène douce (parfois à 2), vigilance état cutané (effleurages, changements de position).</p>
+<p>Priorités : <strong>douleur, transit, soins de bouche, prévention cutanée</strong>, alimentation plaisir.</p>
+<p>Accompagner la <strong>famille</strong> (écoute, pré-deuil, modalités pratiques) et la personne (écoute, reformulation des émotions, respect des croyances).</p>
+<p>Étapes du deuil (Kübler-Ross) · équipe mobile de soins palliatifs possible · gestion émotionnelle de l’équipe · transmissions.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas clinique &amp; points clés</h2>
+<p><strong>📌 L'essentiel à retenir :</strong></p>
+<ul>
+<li>soins palliatifs = <strong>soulager, accompagner — pas guérir</strong> ;</li>
+<li>lois : <strong>Leonetti 2005 + Claeys-Leonetti 2016</strong> (sédation profonde et continue) ;</li>
+<li><strong>directives anticipées + personne de confiance</strong> = volontés du patient ;</li>
+<li>signes : Cheyne-Stokes, marbrures, oligurie, râles = processus <strong>normal</strong> ;</li>
+<li>rôle AS : confort, douleur (ALGOPLUS), soins de bouche, présence ; ne pas forcer alimentation/hydratation ;</li>
+<li>famille : empathie, information, soutien, respect du deuil anticipé.</li>
+</ul>
+<div class="cas-item">
+<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Fin de vie, famille en détresse (Mme Moreau, 91 ans)</strong></p></p>
+<div class="cas-piste"><p><em>Mme Moreau, 91 ans, cancer du poumon en phase terminale, est en soins palliatifs depuis 2 semaines. Ce matin, elle présente une respiration de Cheyne-Stokes, des marbrures aux extrémités et refuse de boire depuis 24 heures. Sa fille arrive en pleurs et vous dit : « Faites quelque chose ! Vous ne pouvez pas la laisser comme ça ! »</em></p>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>Quelles observations retenir et pourquoi ?</li>
+<li>Comment adapter l'accompagnement dans l'immédiat ?</li>
+<li>Que transmettre, à qui, avec quel degré d'urgence ?</li>
+<li>Quelle erreur éviter dans ce contexte ?</li>
+</ul>
+<p><strong>Corrigé attendu (niveau IFAS/jury) :</strong></p>
+<p><strong>1. Observations.</strong> La respiration de Cheyne-Stokes, les marbrures aux extrémités et le refus de boire sont des signes cliniques normaux de la fin de vie, un processus naturel à reconnaître comme tel — pas une aggravation à « corriger » par une intervention curative.</p>
+<p><strong>2. Conduite immédiate.</strong> Poursuivre les soins de confort (soins de bouche fréquents, changements de position, effleurages), ne pas forcer l'hydratation ni l'alimentation, accueillir la détresse de la fille avec empathie et présence, sans donner de pronostic ni de diagnostic — cela relève du médecin.</p>
+<p><strong>3. Transmission.</strong> Transmettre à l'IDE l'évolution clinique observée (respiration, marbrures, refus de boire) ainsi que la détresse de la famille, afin qu'une réévaluation soit faite par l'équipe médicale (douleur, éventuelle sédation). Tracer en DAR l'heure et les signes constatés.</p>
+<p><strong>4. Erreur à éviter.</strong> Promettre à la fille que « tout ira bien » ou avancer un pronostic, comme forcer l'hydratation ou l'alimentation pour « faire quelque chose » : l'aide-soignant reste dans son rôle de confort, d'écoute et de transmission, pas de décision médicale.</p></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Famille en détresse</p></p>
+<div class="cas-piste"><p><em>La fille de M. B. (fin de vie) est angoissée et pose des questions médicales.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Accueillir l'émotion, présence.</li>
+<li>Pas de pronostic ; orienter IDE/médecin.</li>
+<li>Confort (bouche, position, calme).</li>
+<li>Transmettre le besoin d'accompagnement.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Soins de bouche toutes les une à deux heures : brumisateur, compresses, bâtonnets.</li><li>Ne jamais forcer l’alimentation ni l’hydratation — le refus est naturel en fin de vie.</li><li>Toilette douce, à deux si possible, effleurages et changements de position.</li><li>Parler à la personne, annoncer chaque geste, ne jamais parler d’elle comme si elle était absente.</li><li>Immobilisation, déshydratation et morphine : surveiller le transit et signaler.</li><li>Devant la famille : écouter, ne pas mentir, ne donner aucun pronostic — orienter vers l’IDE ou le médecin.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le total pain regroupe quatre souffrances : physique, psychique, sociale, spirituelle.</li><li>Leonetti 2005 interdit l’obstination déraisonnable ; Claeys-Leonetti 2016 rend les directives anticipées contraignantes.</li><li>Les quatre vigilances de l’aide-soignant : douleur, transit, soins de bouche, état cutané.</li><li>ALGOPLUS s’utilise quand la parole n’est plus possible : score supérieur ou égal à 2, il y a douleur.</li><li>L’ouïe est le dernier sens à disparaître.</li><li>Cheyne-Stokes, marbrures, râles, oligurie : le processus est normal, pas une aggravation à corriger.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="d" data-id="q0">
+<p class="q"><strong>Q1.</strong> La sédation profonde et continue (loi 2016) consiste à :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Poursuivre tous les traitements à tout prix</li>
+<li data-cle="b" onclick="window._pickQ(this)">Arrêter tous les soins de confort</li>
+<li data-cle="c" onclick="window._pickQ(this)">Donner un médicament qui provoque la mort</li>
+<li data-cle="d" onclick="window._pickQ(this)">Endormir le patient en cas de douleurs rebelles en phase terminale</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Sédation profonde et continue : endormir en cas de douleurs rebelles en phase terminale.<strong> 🎓 À l’oral VAE :</strong> loi Claeys-Leonetti 2016.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q1">
+<p class="q"><strong>Q2.</strong> L'obstination déraisonnable (ex-« acharnement thérapeutique ») est :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Des traitements inutiles ou disproportionnés</li>
+<li data-cle="b" onclick="window._pickQ(this)">Une obligation de soin en fin de vie</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un droit du patient à tout tenter</li>
+<li data-cle="d" onclick="window._pickQ(this)">Un autre nom de l’euthanasie</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Obstination déraisonnable = traitements inutiles/disproportionnés, interdits (Leonetti 2005).<strong> 🎓 À l’oral VAE :</strong> ex-« acharnement ».</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q2">
+<p class="q"><strong>Q3.</strong> Depuis la loi Claeys-Leonetti 2016, les directives anticipées sont :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Décidées par la famille</li>
+<li data-cle="b" onclick="window._pickQ(this)">Valables seulement 3 ans</li>
+<li data-cle="c" onclick="window._pickQ(this)">Contraignantes et s'imposent au médecin</li>
+<li data-cle="d" onclick="window._pickQ(this)">Simplement consultatives</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Depuis 2016, les directives anticipées sont contraignantes pour le médecin.<strong> 🎓 À l’oral VAE :</strong> la volonté du patient prime.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Le TOTAL PAIN (Cicely Saunders) regroupe :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Le coût des soins</li>
+<li data-cle="b" onclick="window._pickQ(this)">4 dimensions : physique, psychique, sociale, spirituelle</li>
+<li data-cle="c" onclick="window._pickQ(this)">Uniquement la douleur physique</li>
+<li data-cle="d" onclick="window._pickQ(this)">La douleur de la famille</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Total Pain (C. Saunders) : physique, psychique, sociale, spirituelle.<strong> 🎓 À l’oral VAE :</strong> souffrance globale.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q4">
+<p class="q"><strong>Q5.</strong> Pour le confort de la bouche en fin de vie, on privilégie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Des soins de bouche fréquents (brumisateur, compresses, toutes les 1-2h)</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ne rien faire</li>
+<li data-cle="c" onclick="window._pickQ(this)">Forcer l'hydratation par perfusion</li>
+<li data-cle="d" onclick="window._pickQ(this)">De grandes quantités d'eau d'un coup</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Bouche en fin de vie : soins fréquents (brumisateur, compresses) toutes les 1-2 h.<strong> 🎓 À l’oral VAE :</strong> confort prioritaire.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q5">
+<p class="q"><strong>Q6.</strong> Concernant l'alimentation et l'hydratation en fin de vie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Supprimer toute alimentation immédiatement</li>
+<li data-cle="b" onclick="window._pickQ(this)">Ne pas forcer ; alimentation plaisir, le refus est un processus naturel</li>
+<li data-cle="c" onclick="window._pickQ(this)">Il faut toujours forcer le patient à manger</li>
+<li data-cle="d" onclick="window._pickQ(this)">Imposer des horaires stricts</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Alimentation/hydratation : ne pas forcer ; alimentation plaisir, le refus est naturel.<strong> 🎓 À l’oral VAE :</strong> respecter le processus.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q6">
+<p class="q"><strong>Q7.</strong> La constipation est quasi systématique en fin de vie à cause de :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Trop d'activité physique</li>
+<li data-cle="b" onclick="window._pickQ(this)">Immobilisation + déshydratation + antalgiques (morphine)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Un excès de fibres</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une bonne hydratation</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Constipation quasi systématique : immobilisation + déshydratation + morphine.<strong> 🎓 À l’oral VAE :</strong> anticiper la prévention.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q7">
+<p class="q"><strong>Q8.</strong> Une affirmation vraie sur la personne en fin de vie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">On peut arrêter tous les soins de confort</li>
+<li data-cle="b" onclick="window._pickQ(this)">L'ouïe est le dernier sens : continuer à lui parler doucement</li>
+<li data-cle="c" onclick="window._pickQ(this)">Elle n'entend plus rien dans le coma</li>
+<li data-cle="d" onclick="window._pickQ(this)">On peut parler d'elle à la 3e personne devant elle</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>L’ouïe est le dernier sens : continuez à parler doucement.<strong> 🎓 À l’oral VAE :</strong> présence et parole jusqu’au bout.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B1_L14.html" class="back">← B1_L14</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L16.html">B1_L16 →</a></div>
 </div>
 </body></html>

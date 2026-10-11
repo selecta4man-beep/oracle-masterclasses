@@ -1,62 +1,230 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>B5 · B5_L12 · Responsabilité, posture réflexive &amp; VAE — ORACLE VAE AS</title>
+<title>Bloc 5 · B5_L12 · Responsabilité, posture réflexive & VAE — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b}
+:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.6;background:var(--cream)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
 .bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
 .bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:30px 20px 80px}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:32px;margin-bottom:28px;box-shadow:0 4px 20px rgba(13,115,119,.1);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(24px,4vw,36px);color:var(--teal-d);margin-bottom:14px;line-height:1.2;font-weight:900}
-.hero .accroche{font-size:17px;color:var(--ink-s)}
-section{background:#fff;border-radius:14px;padding:26px 30px;margin-bottom:20px;box-shadow:0 2px 10px rgba(13,115,119,.08)}
-section h2{color:var(--teal-d);font-size:22px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section ul,section ol{margin:12px 0 12px 24px}
-section ul li,section ol li{margin-bottom:8px}
-.partie{border-left:4px solid var(--teal);padding-left:18px;margin-bottom:18px;border-radius:0 10px 10px 0;background:var(--cream);padding:14px 18px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.reflexe{background:linear-gradient(135deg,var(--pink),#c62d6e);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.quiz-wrap{background:#fff;border-top:4px solid var(--gold);padding-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px}
-.qblock .q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:decimal}
-.qblock .opts li{padding:6px 10px;border-radius:6px;margin-bottom:4px}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:8px;padding:10px;background:#fff;border-radius:8px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:30px}
-.footer-nav a{flex:1;background:#fff;color:var(--teal-d);padding:14px 20px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .2s}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
 .breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
 .breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-@media(max-width:640px){.container{padding:20px 14px 60px}section{padding:20px}.hero{padding:22px}.footer-nav{flex-direction:column}}
-</style></head><body>
+.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.hero .meta .bloc{background:var(--gold);color:var(--ink)}
+.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
+.hero .accroche{font-size:16px;color:var(--ink-s)}
+.hero .accroche p{margin-bottom:8px}
+section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
+section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
+section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
+section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
+section p{margin-bottom:10px}
+section ul,section ol{margin:8px 0 12px 24px}
+section li{margin-bottom:6px}
+.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
+.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
+.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
+.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
+.vigilance h4{color:#9a4b00}
+.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+.tableau{overflow-x:auto;margin:12px 0}
+.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
+.tableau tbody tr:nth-child(even){background:#fbf8f0}
+.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
+.memo ul{list-style:none;margin-left:0}
+.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
+.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
+.points-cles ul{list-style:none;margin-left:0}
+.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
+.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
+.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
+.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
+.cas-piste{color:var(--ink-s)}
+.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
+.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+.reflexe p,.reflexe li{color:#fff}
+.quiz-wrap h3{margin-top:14px}
+.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.qblock .q{color:var(--teal-d);margin-bottom:8px}
+.qblock .opts{margin-left:20px;list-style:lower-alpha}
+.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.qblock .opts li:hover{background:#fff}
+.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
+.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
+.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
+.qblock .expl.hidden{display:none}
+.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
+.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
+.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+.footer-nav .back{background:var(--gold);color:var(--ink)}
+.footer-nav .mid{background:var(--cream);color:var(--ink)}
+@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+</style>
+</head><body>
 <div class="bar">
   <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">Catalogue des 113 leçons</a>
+  <a href="../index-lecons.html">📘 Retour catalogue</a>
 </div>
 <div class="container">
   <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 5</strong> › B5_L12</div>
   <div class="hero">
     <div class="meta"><span class="bloc">Bloc 5</span><span>Leçon 12</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
     <h1>Responsabilité, posture réflexive &amp; VAE</h1>
-    <div class="accroche"><p>La posture réflexive consiste à analyser sa pratique avec recul : « qu&#x27;ai-je bien fait ?</p></div>
+    <div class="accroche"><p>La posture réflexive consiste à analyser sa pratique avec recul : « qu'ai-je bien fait ?</p></div>
   </div>
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2><ul><li>Situer votre responsabilité dans les limites de votre champ de compétence.</li><li>Analyser votre pratique : qu’ai-je bien fait, que puis-je améliorer.</li><li>Planifier une action avec les 3QCOQP.</li><li>Repérer les leviers de développement professionnel à votre disposition.</li><li>Relier votre posture réflexive à ce que le jury attend du Livret 2.</li></ul></section><section class="parties"><h2>📚 Contenu</h2><section class="partie"><h3>La responsabilité de l&#x27;aide-soignant</h3></section><section class="partie"><h3>La posture réflexive (ACTIVITÉ 27)</h3></section><section class="partie"><h3>Se développer : DPC &amp; entretien annuel</h3></section><section class="partie"><h3>La VAE : preuve de posture réflexive (réf. J. Nérot)</h3></section><section class="partie"><h3>Synthèse du Bloc 5</h3></section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3></section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3></section></section><section class="memo"><h2>💡 Mémo</h2><ul><li>Un geste hors de son rôle se refuse : sécuriser, prévenir l’IDE, expliquer, tracer.</li><li>Après un soin difficile, nommer ce qui a marché et une amélioration concrète.</li><li>En parler en équipe quand c’est utile, et relier à une compétence du référentiel.</li><li>Envisager d’autres points de vue, d’autres façons de faire.</li><li>Identifier ses besoins en formation avant l’entretien annuel.</li><li>S’exprimer avec un vocabulaire médical employé à bon escient.</li></ul></section><section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’AS agit sur protocole et en collaboration ; connaître ses limites est une protection.</li><li>S’auto-évaluer, c’est justifier ses objectifs et argumenter ses réajustements.</li><li>3QCOQP : quoi, quand, comment, où, qui, pourquoi.</li><li>L’entretien annuel est une obligation de l’employeur (art. L6315-1).</li><li>Le jury attend une capacité à se remettre en question, illustrée d’exemples concrets.</li><li>Le message du Bloc 5 : soigner ensemble, soigner sûr.</li></ul></section><section><div class="quiz-wrap"><h3>Quiz</h3><div class="qblock"><p class="q">1. L&#x27;AS engage sa responsabilité :</p><ol class="opts"><li class="ok">Dans la limite de son champ de compétence, sur protocole et en collaboration</li><li class="">À la place de l&#x27;IDE</li><li class="">Uniquement s&#x27;il le souhaite</li><li class="">Sans aucune limite</li></ol></div><div class="qblock"><p class="q">2. La posture réflexive consiste à :</p><ol class="opts"><li class="ok">Ne jamais se remettre en question</li><li class="">Critiquer les collègues</li><li class="">Attendre les ordres</li><li class="">Analyser sa pratique : qu&#x27;ai-je bien fait ? que puis-je améliorer ?</li></ol></div><div class="qblock"><p class="q">3. Le DPC signifie :</p><ol class="opts"><li class="ok">Développement Professionnel Continu</li><li class="">Diplôme Professionnel Certifié</li><li class="">Dossier Patient Confidentiel</li><li class="">Document de Procédure Clinique</li></ol></div><div class="qblock"><p class="q">4. Les 3QCOQP servent à :</p><ol class="opts"><li class="ok">Remplir une FEI</li><li class="">Planifier une action (Quoi, Quand, Comment, Où, Qui, Pourquoi)</li><li class="">Mesurer la température</li><li class="">Trier le linge</li></ol></div><div class="qblock"><p class="q">5. Pour la VAE, le jury attend surtout :</p><ol class="opts"><li class="ok">Des diagnostics médicaux</li><li class="">Aucune analyse</li><li class="">Une capacité à se remettre en question avec des exemples concrets</li><li class="">Une récitation par cœur</li></ol></div><div class="qblock"><p class="q">6. Le message de synthèse du Bloc 5 est :</p><ol class="opts"><li class="ok">Tout transmettre à la famille</li><li class="">Éviter l&#x27;équipe</li><li class="">Soigner ensemble, soigner sûr</li><li class="">Soigner seul, soigner vite</li></ol></div></div></section>
-  <div class="footer-nav"><a href="B5_L11.html" class="back">← B5_L11</a><a href="LIV2_L01.html">LIV2_L01 →</a></div>
+
+  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
+    <ul><li>Situer votre responsabilité dans les limites de votre champ de compétence.</li><li>Analyser votre pratique : qu’ai-je bien fait, que puis-je améliorer.</li><li>Planifier une action avec les 3QCOQP.</li><li>Repérer les leviers de développement professionnel à votre disposition.</li><li>Relier votre posture réflexive à ce que le jury attend du Livret 2.</li></ul>
+  </section>
+
+  <section><h2>📚 Contenu</h2>
+    <section class="partie"><h3>La responsabilité de l&#x27;aide-soignant</h3>
+<aside class="encadre"><h4>✦ À retenir</h4><p>L'AS engage sa responsabilité dans la <strong>limite de son champ de compétence</strong>. Il agit <strong>sur protocole et en collaboration</strong> (notamment avec l'IDE), ne réalise pas un acte hors de son champ, et signale ce qui dépasse son rôle. Connaître ses limites est une <strong>protection</strong> — pour la personne et pour soi.</p></aside>
+</section><section class="partie"><h3>La posture réflexive (ACTIVITÉ 27)</h3>
+<p>La posture réflexive consiste à analyser sa pratique avec recul : « <strong>qu'ai-je bien fait ? que puis-je améliorer ?</strong> »</p>
+<p>L'<strong>auto-évaluation</strong> : énoncer les objectifs visés et les justifier, repérer ceux non réalistes, argumenter les réajustements, citer les difficultés rencontrées, se corriger de soi-même.</p>
+<aside class="encadre"><h4>💡 Planifier avec les 3QCOQP</h4><p><strong>Q</strong>uoi · <strong>Q</strong>uand · <strong>C</strong>omment · <strong>O</strong>ù · <strong>Q</strong>ui · <strong>P</strong>ourquoi — en tenant compte des protocoles, du matériel et des contraintes du service.</p></aside>
+</section><section class="partie"><h3>Se développer : DPC &amp; entretien annuel</h3>
+<ul>
+<li><strong>Développement :</strong> DPC (développement professionnel continu), e-learning, congrès ; partage en équipe.</li>
+</ul>
+<ul>
+<li><strong>Entretien annuel :</strong> obligation de l'employeur (art. L6315-1) ; objectifs co-construits avec le cadre.</li>
+</ul>
+<ul>
+<li><strong>Concertation pluriprofessionnelle :</strong> l'AS présente ses propositions à l'équipe ; les actions s'articulent avec celles de l'IDE, du kiné, du médecin.</li>
+</ul>
+</section><section class="partie"><h3>La VAE : preuve de posture réflexive (réf. J. Nérot)</h3>
+<aside class="encadre"><h4>🎓 Posture réflexive &amp; VAE</h4><p>« S'exprimer de façon professionnelle avec un vocabulaire médical à bon escient. » Le jury attend une <strong>capacité à se remettre en question</strong>, illustrée par des exemples concrets d'amélioration — c'est le cœur du Livret 2 de la VAE.</p></aside>
+</section><section class="partie"><h3>Synthèse du Bloc 5</h3>
+<aside class="encadre"><h4>✦ Soigner ensemble, soigner sûr</h4><p>Le Bloc 5 referme le diplôme : <strong>transmettre l'information</strong> (module 9) <strong>et travailler en équipe</strong> au service de la qualité et de la sécurité (module 10). La sécurité de la personne dépend de la cohérence de l'équipe — et l'AS en est un maillon décisif.</p></aside>
+</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
+<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p>Accepter d’être dans un <strong>processus d’amélioration</strong> de sa pratique · se questionner pour s’améliorer.</p>
+<p>Envisager d’<strong>autres points de vue</strong>, d’autres façons de faire · s’auto-évaluer avant l’entretien annuel, proposer des réajustements/objectifs.</p>
+<p><strong>Identifier ses besoins en formation</strong> · la posture réflexive est ce que le jury VAE attend par-dessus tout.</p></aside>
+</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
+<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 9 (ACTIVITÉ 27 : évaluation de sa pratique).</p>
+<p><strong>Posture réflexive :</strong> « qu’ai-je bien fait ? que puis-je améliorer ? ».</p>
+<p><strong>Développement :</strong> DPC, e-learning, congrès ; entretien annuel (obligation employeur, art. L6315-1).</p>
+<p><strong>VAE = preuve de posture réflexive :</strong> le Livret 2 analyse ses compétences avec des exemples concrets.</p>
+<p><strong>🎓 À l’oral / piège :</strong> Le jury attend une capacité à se remettre en question : c’est le cœur de la VAE.</p></aside>
+</section>
+  </section>
+
+  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
+<div class="cas-item">
+<p class="cas-q"><p>Cas — Geste hors de mon rôle</p></p>
+<div class="cas-piste"><p><em>Un résident demande un médicament trouvé dans sa chambre.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Ne pas administrer (hors rôle AS).</li>
+<li>Sécuriser, prévenir l’IDE.</li>
+<li>Expliquer, rester bienveillant.</li>
+<li>Tracer.</li>
+</ul></div>
+</div>
+<div class="cas-item">
+<p class="cas-q"><p>Cas 2 — Posture réflexive (VAE)</p></p>
+<div class="cas-piste"><p><em>Après un soin difficile, vous analysez votre pratique.</em></p>
+<p><strong>Conduite étape par étape :</strong></p>
+<ul>
+<li>Analyser ce qui a marché / pas.</li>
+<li>Identifier une amélioration concrète.</li>
+<li>En parler en équipe si utile.</li>
+<li>Relier à une compétence du référentiel.</li>
+</ul></div>
+</div>
+</section>
+
+  <section class="memo"><h2>💡 Mémo</h2><ul><li>Un geste hors de son rôle se refuse : sécuriser, prévenir l’IDE, expliquer, tracer.</li><li>Après un soin difficile, nommer ce qui a marché et une amélioration concrète.</li><li>En parler en équipe quand c’est utile, et relier à une compétence du référentiel.</li><li>Envisager d’autres points de vue, d’autres façons de faire.</li><li>Identifier ses besoins en formation avant l’entretien annuel.</li><li>S’exprimer avec un vocabulaire médical employé à bon escient.</li></ul></section>
+  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’AS agit sur protocole et en collaboration ; connaître ses limites est une protection.</li><li>S’auto-évaluer, c’est justifier ses objectifs et argumenter ses réajustements.</li><li>3QCOQP : quoi, quand, comment, où, qui, pourquoi.</li><li>L’entretien annuel est une obligation de l’employeur (art. L6315-1).</li><li>Le jury attend une capacité à se remettre en question, illustrée d’exemples concrets.</li><li>Le message du Bloc 5 : soigner ensemble, soigner sûr.</li></ul></section>
+  
+  <section class="quiz"><h2>🎯 Quiz</h2>
+<div class="qblock" data-correct="a" data-id="q0">
+<p class="q"><strong>Q1.</strong> L'AS engage sa responsabilité :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Dans la limite de son champ de compétence, sur protocole et en collaboration</li>
+<li data-cle="b" onclick="window._pickQ(this)">À la place de l'IDE</li>
+<li data-cle="c" onclick="window._pickQ(this)">Uniquement s'il le souhaite</li>
+<li data-cle="d" onclick="window._pickQ(this)">Sans aucune limite</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Responsabilité dans la limite de son champ, sur protocole, en collaboration.<strong> 🎓 À l’oral VAE :</strong> le cadre protège.</p></div>
+</div>
+<div class="qblock" data-correct="d" data-id="q1">
+<p class="q"><strong>Q2.</strong> La posture réflexive consiste à :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Ne jamais se remettre en question</li>
+<li data-cle="b" onclick="window._pickQ(this)">Critiquer les collègues</li>
+<li data-cle="c" onclick="window._pickQ(this)">Attendre les ordres</li>
+<li data-cle="d" onclick="window._pickQ(this)">Analyser sa pratique : qu'ai-je bien fait ? que puis-je améliorer ?</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Posture réflexive : qu’ai-je bien fait ? que puis-je améliorer ?<strong> 🎓 À l’oral VAE :</strong> s’auto-évaluer.</p></div>
+</div>
+<div class="qblock" data-correct="a" data-id="q2">
+<p class="q"><strong>Q3.</strong> Le DPC signifie :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Développement Professionnel Continu</li>
+<li data-cle="b" onclick="window._pickQ(this)">Diplôme Professionnel Certifié</li>
+<li data-cle="c" onclick="window._pickQ(this)">Dossier Patient Confidentiel</li>
+<li data-cle="d" onclick="window._pickQ(this)">Document de Procédure Clinique</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>DPC = Développement Professionnel Continu.<strong> 🎓 À l’oral VAE :</strong> formation continue.</p></div>
+</div>
+<div class="qblock" data-correct="b" data-id="q3">
+<p class="q"><strong>Q4.</strong> Les 3QCOQP servent à :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Remplir une FEI</li>
+<li data-cle="b" onclick="window._pickQ(this)">Planifier une action (Quoi, Quand, Comment, Où, Qui, Pourquoi)</li>
+<li data-cle="c" onclick="window._pickQ(this)">Mesurer la température</li>
+<li data-cle="d" onclick="window._pickQ(this)">Trier le linge</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>3QCOQP : Quoi, Quand, Comment, Où, Qui, Pourquoi.<strong> 🎓 À l’oral VAE :</strong> planifier une action.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q4">
+<p class="q"><strong>Q5.</strong> Pour la VAE, le jury attend surtout :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Des diagnostics médicaux</li>
+<li data-cle="b" onclick="window._pickQ(this)">Aucune analyse</li>
+<li data-cle="c" onclick="window._pickQ(this)">Une capacité à se remettre en question avec des exemples concrets</li>
+<li data-cle="d" onclick="window._pickQ(this)">Une récitation par cœur</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>La VAE attend une capacité à se remettre en question avec des exemples concrets.<strong> 🎓 À l’oral VAE :</strong> posture réflexive +++.</p></div>
+</div>
+<div class="qblock" data-correct="c" data-id="q5">
+<p class="q"><strong>Q6.</strong> Le message de synthèse du Bloc 5 est :</p>
+<ol class="opts" type="a">
+<li data-cle="a" onclick="window._pickQ(this)">Tout transmettre à la famille</li>
+<li data-cle="b" onclick="window._pickQ(this)">Éviter l'équipe</li>
+<li data-cle="c" onclick="window._pickQ(this)">Soigner ensemble, soigner sûr</li>
+<li data-cle="d" onclick="window._pickQ(this)">Soigner seul, soigner vite</li>
+</ol>
+<div class="expl hidden"><strong>Réponse :</strong> <p>Synthèse Bloc 5 : « soigner ensemble, soigner sûr ».<strong> 🎓 À l’oral VAE :</strong> le message clé.</p></div>
+</div>
+</section>
+<script>
+window._pickQ = function(li) {
+  const block = li.closest('.qblock');
+  if (block.dataset.answered) return;
+  block.dataset.answered = '1';
+  const correct = block.dataset.correct;
+  block.querySelectorAll('li').forEach(x => {
+    x.style.cursor = 'default';
+    const isCorrect = (x.dataset.cle === correct);
+    if (isCorrect) x.classList.add('ok');
+    else if (x === li) x.classList.add('ko');
+  });
+  const expl = block.querySelector('.expl');
+  if (expl) expl.classList.remove('hidden');
+};
+</script>
+  <div class="footer-nav"><a href="B5_L11.html" class="back">← B5_L11</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="LIV2_L01.html">LIV2_L01 →</a></div>
 </div>
 </body></html>
