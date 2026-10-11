@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC05 — Activité 3 — Évaluer l'état clinique · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC05</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC05 · Bloc 2</p>
+      <h1 class="hero">Activité 3 — Évaluer l'état clinique</h1>
+      <p class="subtitle">Paramètres vitaux, signes d'alerte, surveillance</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#E0F7FA;border-left:6px solid #006064;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#006064;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>énoncer ce que l'activité 3 recouvre, ce que le jury y cherche, et la distinguer des activités 2 et 4 ;</li>
+<li>décrire l'état habituel d'une personne et vous en servir comme référence pour repérer un changement ;</li>
+<li>mesurer chaque paramètre vital avec la bonne technique, le rapporter à sa valeur de référence exacte et éviter les pièges de mesure ;</li>
+<li>choisir l'échelle de douleur adaptée à une personne communicante ou non communicante, et l'utiliser correctement ;</li>
+<li>reconnaître les signes d'appel propres à la personne âgée et rester prudent face à un enfant ;</li>
+<li>discerner une urgence, alerter la bonne personne et construire une transmission orale structurée ;</li>
+<li>séparer, dans votre raisonnement, ce qui relève de l'aide-soignant (repérer, mesurer, alerter) et ce qui relève de l'infirmier (interpréter, décider, traiter) ;</li>
+<li>rédiger une situation d'activité 3 qui passe la grille de détection et résiste aux questions du jury.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#006064;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #006064;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;">0:00</td><td style="padding:9px;border:1px solid #B2EBF2;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #B2EBF2;">5&nbsp;min</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;">0:05</td><td style="padding:9px;border:1px solid #B2EBF2;">Partie 1 · L'activité 3 décodée</td><td style="padding:9px;border:1px solid #B2EBF2;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;">0:20</td><td style="padding:9px;border:1px solid #B2EBF2;">Partie 2 · Observer : l'état habituel et le raisonnement clinique</td><td style="padding:9px;border:1px solid #B2EBF2;">20&nbsp;min</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;">0:40</td><td style="padding:9px;border:1px solid #B2EBF2;">Partie 3 · Mesurer : paramètres vitaux, surveillance et douleur</td><td style="padding:9px;border:1px solid #B2EBF2;">25&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;">1:05</td><td style="padding:9px;border:1px solid #B2EBF2;">Partie 4 · À tout âge de la vie</td><td style="padding:9px;border:1px solid #B2EBF2;">10&nbsp;min</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;">1:15</td><td style="padding:9px;border:1px solid #B2EBF2;">Partie 5 · Discerner l'urgence, alerter, transmettre</td><td style="padding:9px;border:1px solid #B2EBF2;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;">1:30</td><td style="padding:9px;border:1px solid #B2EBF2;">Partie 6 · Situations modèles, grille de détection et questions du jury</td><td style="padding:9px;border:1px solid #B2EBF2;">20&nbsp;min</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;">1:50</td><td style="padding:9px;border:1px solid #B2EBF2;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #B2EBF2;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">1. Une fréquence respiratoire normale chez l'adulte se situe entre 12 et 20 mouvements par minute.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Entre <strong>12 et 20 /min</strong> au repos. Au-dessus de 20, on parle de polypnée ; en dessous de 12, de bradypnée. « 20 à 30 » est une erreur fréquente.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">2. On parle d'hypoglycémie en dessous de 0,70 g/L.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> La glycémie capillaire à jeun se situe entre <strong>0,70 et 1,10 g/L</strong>. En dessous de 0,70 g/L, il s'agit d'une hypoglycémie. Et rappel : vous ne réalisez la glycémie que <strong>sur protocole ou à la demande de l'infirmier</strong>.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">3. Une température de 37,8 °C chez une personne très âgée ne mérite pas d'être signalée, puisque ce n'est pas encore de la fièvre.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> La fièvre commence à 38 °C, mais chez la personne âgée elle est souvent <strong>atténuée</strong>. Une température à 37,8 °C chez quelqu'un qui est habituellement à 36,4 °C, surtout si elle s'accompagne d'une confusion ou d'une fatigue inhabituelle, se transmet.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">4. Devant une saturation qui baisse chez un résident sous oxygène, l'aide-soignant peut augmenter le débit si le protocole du service le prévoit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'aide-soignant <strong>ne touche jamais au débitmètre</strong>, même sur protocole, même sur consigne. Il vérifie les lunettes et la tubulure, installe la personne, reste auprès d'elle et alerte l'infirmier.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">5. L'échelle Algoplus sert à évaluer la douleur d'une personne âgée qui ne peut pas l'exprimer verbalement.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Hétéro-évaluation de la douleur aiguë : 5 items, douleur probable à partir de 2 sur 5.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">6. Si je lis « leucocytes positifs » sur une bandelette urinaire, je peux écrire que la personne a une infection urinaire.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Vous lisez la bandelette et vous transmettez le résultat, <strong>sans interprétation diagnostique</strong>. Écrire « infection urinaire » revient à poser un diagnostic : c'est hors champ.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">7. Une confusion apparue brutalement chez une personne âgée est souvent « l'âge » et ne justifie pas d'alerte.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Une confusion d'apparition récente est un <strong>signe d'appel</strong> : infection, déshydratation, hypoglycémie, rétention urinaire, douleur, effet d'un médicament… Vous ne cherchez pas la cause vous-même, mais vous alertez.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">8. Pour l'activité 3, une situation de prévention d'une chute qui n'a pas eu lieu convient parfaitement.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Un risque qui n'est pas survenu relève de l'<strong>activité 2</strong>. L'activité 3 porte sur un <strong>changement d'état clinique</strong> réellement constaté, que vous avez repéré, objectivé et signalé.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">9. Quand une personne fait un malaise, il faut d'abord terminer le soin en cours pour ne pas la laisser à moitié installée, puis prévenir l'infirmier.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, et c'est une mise en danger.</strong> L'alerte passe <strong>avant</strong> la poursuite du soin. Vous suspendez, vous sécurisez, vous alertez sans quitter la personne.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">10. Pour le jury, écrire « la tension était basse » suffit si c'était vrai.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le jury attend une valeur chiffrée, rapportée à la norme et à l'<strong>état habituel</strong> : « 92/54 mmHg, alors qu'elle est habituellement autour de 135/80 ».</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent. Les aides-soignants expérimentés observent très bien ; ce qui leur manque, c'est la façon de le prouver par écrit, avec des chiffres, des échelles nommées et une limite clairement dite.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 3 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">1.1 · Ce que dit la fiche RNCP, reformulé pour vous</p>
+
+<p>L'activité 3 appartient au <strong>bloc 2</strong>, le bloc clinique, avec les activités 4 et 5. La compétence 3 de la fiche RNCP 40692 se décompose en six éléments, que voici reformulés.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce que dit la compétence</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce que le jury doit lire dans votre livret</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Rechercher les informations utiles, selon l'âge de la personne</td><td style="padding:9px;border:1px solid #B2EBF2;">Ce que vous saviez d'elle <em>avant</em> le changement : état habituel, traitements, valeurs de base, recherchés dans le dossier, les transmissions, auprès de la personne et de ses proches.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Identifier les changements d'état clinique</td><td style="padding:9px;border:1px solid #B2EBF2;">La comparaison explicite : « d'habitude… ce matin… ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Évaluer la douleur, mesurer les paramètres vitaux et les données de surveillance avec les outils adaptés</td><td style="padding:9px;border:1px solid #B2EBF2;">Des valeurs chiffrées, rapportées à la norme, et des échelles <strong>nommées</strong> avec leur score.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Mettre en œuvre un raisonnement clinique</td><td style="padding:9px;border:1px solid #B2EBF2;">Les étapes de votre pensée : j'ai repéré, comparé, mesuré, j'ai pensé à, j'ai alerté.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Transmettre à l'oral et à l'écrit</td><td style="padding:9px;border:1px solid #B2EBF2;">Le contenu de votre alerte orale, puis la traçabilité écrite.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Discerner le caractère urgent d'une situation et alerter</td><td style="padding:9px;border:1px solid #B2EBF2;">Le délai de votre alerte, et le fait que vous n'avez pas laissé la personne seule.</td></tr>
+</table>
+
+<div style="background:#E0F7FA;border-left:6px solid #00838F;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Retenez le verbe de l'intitulé : « évaluer ».</strong> Évaluer, c'est décrire un état avec précision et le comparer à une référence ; l'infirmier interprète pour décider. Toute la difficulté de l'activité 3 est là : montrer un vrai raisonnement clinique sans franchir la ligne de l'interprétation diagnostique.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel et la phrase-clé</p>
+
+<div style="border:1px solid #B2EBF2;background:#F3FCFD;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;"><strong>Attendu officiel :</strong> décrire <strong>au moins un type de soins en collaboration</strong>. Un seul élément est demandé, que vous rédigez en <strong>une situation</strong>.</p>
+<p style="margin:0 0 8px 0;background:#E0F7FA;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà un changement d'état clinique que j'ai repéré, objectivé et signalé. »</p>
+<p style="margin:0;">Chaque mot correspond à une preuve : <strong>un changement</strong> (il y a un avant et un après), <strong>repéré</strong> (c'est vous qui l'avez vu), <strong>objectivé</strong> (vous l'avez mesuré ou évalué avec un outil), <strong>signalé</strong> (vous avez alerté et transmis). Si l'un des quatre manque, l'activité reste « à vérifier ».</p>
+</div>
+
+<p>« En collaboration » : l'infirmier apparaît dans votre récit ; vous lui transmettez, il décide, vous recontrôlez à sa demande. Une situation où vous réglez seul le problème est souvent hors champ.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">1.3 · Rubrique A et rubrique B pour l'activité 3</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Rubrique A · l'inventaire honnête</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Rubrique B · la situation analysée</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;">Les paramètres que vous mesurez <strong>réellement</strong> (pression artérielle, pouls, température, fréquence respiratoire, saturation, poids, IMC avec l'outil paramétré, diurèse) ; la glycémie capillaire <strong>seulement</strong> si vous la réalisez sur protocole ou à la demande de l'infirmier, en le précisant ; les échelles de douleur que vous utilisez ; les outils de surveillance du service.<br><strong style="color:#C62828;">À exclure :</strong> ce que vous n'avez jamais fait, et tout geste hors champ.</td><td style="padding:9px;border:1px solid #B2EBF2;">Une personne présentée <strong>avant</strong> le changement, avec son état habituel et ses traitements ; un changement daté ; des valeurs chiffrées rapportées à la norme ; une échelle nommée ; une alerte immédiate ; la décision de l'infirmier ; un recontrôle chiffré ; une traçabilité.<br><strong style="color:#C62828;">À éviter :</strong> une prise de constantes de routine où rien ne change.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">1.4 · Les deux confusions qui coûtent cher : activité 2 et activité 4</p>
+
+<p>Les jurys voient souvent une situation d'activité 3 qui prouve en réalité l'activité 2 ou l'activité 4. Le critère : <strong>que démontre principalement votre situation ?</strong></p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Activité 2 · prévenir</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Activité 3 · évaluer</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Activité 4 · soigner</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;">« Voilà un risque qui n'est <strong>pas encore survenu</strong>, et ce que je fais pour qu'il ne survienne pas. »</td><td style="padding:9px;border:1px solid #B2EBF2;">« Voilà un <strong>changement d'état clinique</strong> que j'ai repéré, objectivé et signalé. »</td><td style="padding:9px;border:1px solid #B2EBF2;">« Voilà comment je travaille <strong>avec</strong> l'infirmier, pas à sa place. »</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;">Le cœur : un score de risque (Braden, Morse), des mesures de prévention, leur évaluation.</td><td style="padding:9px;border:1px solid #B2EBF2;">Le cœur : l'écart entre l'habituel et l'actuel, des mesures chiffrées, une alerte.</td><td style="padding:9px;border:1px solid #B2EBF2;">Le cœur : un soin réalisé et adapté à l'état clinique, avec ses critères de qualité.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Le glissement le plus fréquent vers l'activité 4.</strong> Le candidat repère un changement, puis consacre les trois quarts de son récit au soin qui suit. Le jury lit une activité 4 déguisée, où l'évaluation tient en deux lignes. Dans une situation d'activité 3, <strong>le soin est le décor</strong> ; le changement repéré, la mesure, le raisonnement et l'alerte sont le sujet.</p>
+</div>
+
+<p>Frontière avec l'activité 2 : une chute qui <strong>a eu lieu</strong> n'en relève pas, mais peut nourrir une activité 3 si vous décrivez l'évaluation qui a suivi.</p>
+
+<p style="font-weight:bold;color:#006064;margin:24px 0 8px 0;">✍️ Exercice 1 (5&nbsp;min) · Activité 2, 3 ou 4 ?</p>
+<p>Pour chaque résumé de situation, dites quelle activité il prouve principalement, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">a) Un résident dont le score de Morse est élevé se lève seul la nuit. Je propose avec l'équipe une veilleuse, un lit en position basse et une sonnette à portée de main. Aucune chute en trois semaines.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 2.</strong> Le risque de chute est identifié <em>avant</em> qu'il ne survienne, la prévention est mise en place puis évaluée.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">b) En fin de repas, une résidente habituellement bavarde devient somnolente, ne répond plus que par des grognements. Je mesure sa pression artérielle, son pouls et sa saturation, je compare à ses valeurs habituelles et j'appelle l'infirmière sans la quitter.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 3.</strong> Changement d'état repéré par comparaison à l'habituel, objectivé par des mesures, signalé immédiatement.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">c) Un résident est retrouvé au sol. Avant de le relever, je lui demande s'il a mal, j'observe ses membres, je constate une douleur de hanche droite et une jambe raccourcie en rotation externe. Je ne le mobilise pas, je le couvre, j'alerte l'infirmière et je reste auprès de lui.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 3.</strong> La chute a eu lieu ; la situation prouve l'évaluation après la chute et une alerte adaptée.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">d) Une résidente a les urines foncées et malodorantes depuis deux jours. Je le note, puis je lui fais boire davantage et j'attends de voir si cela passe avant d'en parler à l'infirmière.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Activité 3 mal conduite, fragilisante.</strong> Le changement est repéré mais ni objectivé ni signalé à temps : décider seul d'attendre retarde l'alerte.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">e) J'observe qu'une résidente mange de moins en moins depuis dix jours. Je mets en place une feuille de surveillance alimentaire avec l'accord de l'infirmière, je la pèse : 51 kg, contre 55 kg un mois plus tôt. Je transmets.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions : activité 3 si vous rédigez le changement.</strong> La perte de poids est un changement constaté et objectivé : activité 3 si le récit porte sur le repérage, la mesure et l'alerte. S'il porte surtout sur l'accompagnement des repas, il glisse vers l'activité 1.</p></details>
+
+<div style="background:#E0F7FA;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> L'activité 3 demande au moins un type de soins en collaboration, rédigé en une situation. Elle prouve un <strong>changement d'état clinique repéré, objectivé et signalé</strong>. Le soin réalisé autour n'est que le décor. Un risque non survenu relève de l'activité 2 ; un soin adapté, de l'activité 4.</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 11 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Observer : l'état habituel et le raisonnement clinique <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 20&nbsp;min</span></div>
+
+<p>Vous voyez la personne plusieurs fois par jour : vous êtes souvent le premier professionnel à percevoir qu'« elle n'est pas comme d'habitude ». Encore faut-il connaître cette habitude, et le dire en termes précis.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">2.1 · L'état habituel : votre valeur de référence personnelle</p>
+
+<p>Une valeur n'a de sens que comparée à deux références : la <strong>norme</strong> (les valeurs de référence de l'adulte) et l'<strong>état habituel</strong> de cette personne. Une pression artérielle à 110/65 mmHg est normale en soi ; chez une résidente hypertendue habituellement à 150/85, elle traduit peut-être un changement. Une saturation à 92 % est basse pour la norme ; chez un résident atteint d'une insuffisance respiratoire chronique, le médecin a peut-être prescrit une cible différente, que l'infirmier vous a transmise. <strong>Vous ne fixez pas cette cible</strong> : vous la connaissez, vous comparez, vous transmettez. Dans votre livret, l'état habituel s'écrit <strong>avant</strong> le changement : c'est le « d'habitude » qui donne sa force au « ce matin ».</p>
+
+<p>Avant de pouvoir repérer un changement, vous devez connaître, pour chaque personne : ses <strong>valeurs de base</strong> (feuille de surveillance, dossier de soins) ; son <strong>état de conscience et son comportement</strong> habituels (orientation, humeur, façon de parler) ; son <strong>autonomie</strong> (projet personnalisé, plan de soins) ; ses <strong>habitudes d'élimination</strong> ; ses <strong>traitements</strong> et ce qu'ils font surveiller ; les <strong>consignes particulières</strong> transmises par l'infirmier (cible de saturation prescrite, douleur chronique connue, restriction hydrique).</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">2.2 · Ce que vous observez, et comment le dire</p>
+
+<p>Le jury attend un vocabulaire <strong>précis et descriptif</strong>, pas savant. Décrivez ce que vous voyez, entendez, touchez, et laissez les conclusions à l'infirmier.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Domaine</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce que vous regardez</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce qui doit vous alerter (à décrire, pas à interpréter)</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Peau</td><td style="padding:9px;border:1px solid #B2EBF2;">Couleur, chaleur, humidité, intégrité, élasticité (le pli cutané), œdèmes, points d'appui</td><td style="padding:9px;border:1px solid #B2EBF2;">Pâleur, teint gris, marbrures, cyanose des lèvres ou des ongles, sueurs, pli cutané qui persiste, œdème apparu ou augmenté, rougeur qui ne blanchit pas à la vitropression, hématome inexpliqué</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Muqueuses</td><td style="padding:9px;border:1px solid #B2EBF2;">Bouche, langue, lèvres, conjonctives</td><td style="padding:9px;border:1px solid #B2EBF2;">Bouche et langue sèches, lèvres fissurées, dépôts blanchâtres dans la bouche, conjonctives très pâles, saignement des gencives</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Conscience et comportement</td><td style="padding:9px;border:1px solid #B2EBF2;">Vigilance, orientation dans le temps et l'espace, cohérence du discours, humeur, réaction à la parole et au toucher</td><td style="padding:9px;border:1px solid #B2EBF2;">Somnolence inhabituelle, difficulté à se réveiller, désorientation nouvelle, propos incohérents, agitation ou au contraire repli, difficulté soudaine à parler, bouche déviée, faiblesse d'un côté</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Respiration</td><td style="padding:9px;border:1px solid #B2EBF2;">Fréquence, amplitude, rythme, bruits, effort respiratoire, toux, expectorations, position adoptée</td><td style="padding:9px;border:1px solid #B2EBF2;">Respiration rapide ou très lente, bruyante, pauses, tirage (creusement au-dessus du sternum ou entre les côtes), personne qui ne finit plus ses phrases ou refuse de s'allonger</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Élimination</td><td style="padding:9px;border:1px solid #B2EBF2;">Urines (quantité, couleur, odeur, aspect), selles (fréquence, consistance, couleur), vomissements</td><td style="padding:9px;border:1px solid #B2EBF2;">Urines rares, foncées, troubles ou rosées ; absence d'urines depuis des heures avec un bas-ventre tendu et douloureux ; selles noires ou sanglantes ; diarrhée répétée ; absence de selles depuis plusieurs jours ; vomissements</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Alimentation et hydratation</td><td style="padding:9px;border:1px solid #B2EBF2;">Quantités mangées et bues, appétit, déglutition, poids</td><td style="padding:9px;border:1px solid #B2EBF2;">Repas laissés, refus de boire, toux pendant le repas, perte de poids, bouche sèche associée à des urines foncées</td></tr>
+</table>
+
+<div style="border:1px solid #B2EBF2;background:#F3FCFD;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;"><strong>Décrire, pas conclure : trois exemples.</strong></p>
+<p style="margin:0 0 4px 0;">❌ « Elle était déshydratée. » → ✅ « Sa langue était sèche, le pli cutané sur le dos de la main persistait, elle n'avait bu que 400 mL depuis la veille et ses urines étaient foncées. »</p>
+<p style="margin:0 0 4px 0;">❌ « Il faisait un AVC. » → ✅ « À 14 h, sa bouche était déviée vers la gauche, sa parole était difficile à comprendre et il ne serrait plus ma main droite, alors qu'une heure avant il me parlait normalement. »</p>
+<p style="margin:0;">❌ « Elle faisait une infection pulmonaire. » → ✅ « Elle respirait à 26 /min, toussait, était à 38,4 °C et à 91 % de saturation. »</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">2.3 · Le raisonnement clinique en sept étapes</p>
+
+<p>Le raisonnement clinique de l'aide-soignant n'est pas une démarche diagnostique, mais une <strong>démarche d'alerte argumentée</strong>, en sept étapes qui forment aussi le squelette de votre situation.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Étape</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce que vous faites</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce que cela donne dans le livret</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">1 · Je repère</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous percevez un signe inhabituel.</td><td style="padding:9px;border:1px solid #B2EBF2;">« En entrant dans sa chambre à 7 h 15, j'ai remarqué que… »</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">2 · Je compare</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous rapportez ce signe à l'état habituel et à la norme.</td><td style="padding:9px;border:1px solid #B2EBF2;">« … alors que d'habitude elle… »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">3 · Je mesure</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous objectivez avec les paramètres et les échelles adaptés.</td><td style="padding:9px;border:1px solid #B2EBF2;">« J'ai mesuré sa pression artérielle : 94/58 mmHg (habituellement 140/80). »</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">4 · Je fais une hypothèse</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous reliez le signe à ce que vous savez (traitements, antécédents) pour justifier l'alerte, sans conclure.</td><td style="padding:9px;border:1px solid #B2EBF2;">« Sachant qu'elle est traitée par diurétique et qu'elle a peu bu, j'ai pensé à une déshydratation, ce qui justifiait d'alerter sans attendre. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">5 · J'alerte</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous prévenez la bonne personne, dans le bon délai, sans laisser la personne seule si la situation l'exige.</td><td style="padding:9px;border:1px solid #B2EBF2;">« J'ai appelé immédiatement l'infirmière et je lui ai transmis… »</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">6 · Je transmets</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous tracez dans le dossier de soins ce que vous avez vu, mesuré, fait et ce qui a été décidé.</td><td style="padding:9px;border:1px solid #B2EBF2;">« J'ai rédigé une transmission ciblée… »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">7 · Je réévalue</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous recontrôlez à la demande de l'infirmier et transmettez le résultat.</td><td style="padding:9px;border:1px solid #B2EBF2;">« Une heure plus tard, à sa demande, j'ai recontrôlé : 118/70 mmHg. Elle avait bu 300 mL. »</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ L'hypothèse : l'étape la plus délicate à écrire.</strong> Formulez-la toujours comme une <strong>raison d'alerter</strong>, jamais comme une conclusion. « J'ai pensé à une hypoglycémie, ce qui m'a conduite à appeler l'infirmière » est un raisonnement clinique dans votre champ. « Elle faisait une hypoglycémie, je l'ai resucrée » est un diagnostic suivi d'une décision de traitement : c'est hors champ, sauf si le resucrage est prévu par un protocole ou décidé par l'infirmier et que vous l'écrivez.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">2.4 · Ce qui relève de vous, ce qui relève de l'infirmier</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#2E7D32;color:#FFFFFF;"><th style="padding:9px;border:1px solid #2E7D32;text-align:left;">L'aide-soignant</th><th style="padding:9px;border:1px solid #2E7D32;text-align:left;">L'infirmier</th></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;">Observe, décrit, compare à l'habituel ; mesure et utilise les échelles</td><td style="padding:9px;border:1px solid #C8E6C9;">Analyse l'ensemble des données, y compris celles que vous n'avez pas ; interprète les résultats</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;">Formule une hypothèse pour justifier son alerte ; alerte, sécurise, reste auprès de la personne</td><td style="padding:9px;border:1px solid #C8E6C9;">Évalue la personne, décide de la conduite à tenir, appelle le médecin, adapte un traitement</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;">Recontrôle à la demande, transmet, trace</td><td style="padding:9px;border:1px solid #C8E6C9;">Définit la surveillance et sa fréquence</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Deux lignes à ne jamais franchir dans l'activité 3.</strong> ① <strong>Pas de diagnostic</strong> : ni « il faisait un infarctus », ni « c'était une infection urinaire », ni « elle était en fin de vie ». ② <strong>Pas d'interprétation pour traiter</strong> : vous ne décidez jamais d'un traitement, d'une dose, d'un débit d'oxygène, d'un resucrage hors protocole à partir de ce que vous avez mesuré. Vous mesurez, vous transmettez, l'infirmier décide.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;margin:24px 0 8px 0;">✍️ Exercice 2 (6&nbsp;min) · Observation descriptive ou diagnostic ?</p>
+<p>Pour chaque phrase de livret, dites si elle est recevable. Si elle ne l'est pas, réécrivez-la de façon descriptive, puis comparez.</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">a) « Mme T. était en rétention urinaire. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Diagnostic, à réécrire.</strong> « Mme T. n'avait pas uriné depuis 6 h du matin, soit dix heures ; son bas-ventre était tendu et elle gémissait quand je l'effleurais au-dessus du pubis. J'ai alerté l'infirmière. »</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">b) « Depuis la veille, M. F. répond à côté de mes questions, cherche sa femme décédée et a arraché ses lunettes à oxygène deux fois, alors qu'il est habituellement orienté et calme. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Recevable.</strong> Description précise, comparaison explicite avec l'habituel, faits datés. Il reste à ajouter les mesures et l'alerte.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">c) « Elle avait une escarre de stade 1 au talon, je l'ai massée pour réactiver la circulation. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Double erreur :</strong> un stade affirmé sans test décrit, et un massage, alors qu'<strong>on ne masse jamais</strong> une rougeur d'appui. Réécriture : « J'ai constaté une rougeur au talon droit qui ne blanchissait pas à la pression du doigt. J'ai supprimé l'appui en surélevant le mollet, sans masser, et j'ai alerté l'infirmière. »</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">d) « Au vu de ses selles noires et de son traitement anticoagulant, j'ai pensé à un saignement digestif et j'ai appelé l'infirmière sans attendre. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Recevable.</strong> L'hypothèse est formulée comme une raison d'alerter, et reliée à un traitement connu (chaînage traitement-surveillance). Elle ne débouche sur aucune décision de soin hors champ.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">e) « Il était en hypothermie, je l'ai couvert. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions : recevable si la valeur est écrite.</strong> Couvrir une personne est dans votre champ. Mais « hypothermie » n'est acceptable que si vous avez mesuré une température inférieure à 35 °C et que vous l'écrivez : « 34,8 °C au thermomètre tympanique, contrôlé à l'autre oreille ». Sans la valeur, c'est une conclusion non prouvée. Et l'alerte doit suivre.</p></details>
+
+<div style="background:#E0F7FA;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> L'état habituel est votre référence : écrivez-le avant le changement. Décrivez ce que vous observez au lieu de le nommer. Raisonnez en sept étapes : je repère, je compare, je mesure, je fais une hypothèse, j'alerte, je transmets, je réévalue. L'hypothèse justifie l'alerte ; elle ne débouche jamais sur un diagnostic ou une décision de traitement.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Mesurer : paramètres vitaux, surveillance et douleur <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:40 · 25&nbsp;min</span></div>
+
+<p>Mesurer, c'est objectiver. Le jury ne pose pas de question de cours, mais une valeur de référence fausse ou une technique douteuse racontée à l'oral fragilise immédiatement votre crédibilité clinique.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">3.1 · Le tableau des valeurs de référence de l'adulte</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Paramètre</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Valeurs de référence</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Seuils à connaître</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Pression artérielle</td><td style="padding:9px;border:1px solid #B2EBF2;">Environ 120/80 mmHg</td><td style="padding:9px;border:1px solid #B2EBF2;">Hypertension ≥ 140/90 mmHg · hypotension &lt; 90/60 mmHg</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Fréquence cardiaque (pouls)</td><td style="padding:9px;border:1px solid #B2EBF2;">60 à 100 battements/min au repos</td><td style="padding:9px;border:1px solid #B2EBF2;">Au-dessus de 100 : tachycardie · en dessous de 60 : bradycardie</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Température</td><td style="padding:9px;border:1px solid #B2EBF2;">36,5 à 37,5 °C</td><td style="padding:9px;border:1px solid #B2EBF2;">Fièvre ≥ 38 °C · hypothermie &lt; 35 °C · chez la personne âgée, fièvre parfois atténuée</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Fréquence respiratoire</td><td style="padding:9px;border:1px solid #B2EBF2;">12 à 20 mouvements/min</td><td style="padding:9px;border:1px solid #B2EBF2;">Au-dessus de 20 : polypnée · en dessous de 12 : bradypnée</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Saturation en oxygène</td><td style="padding:9px;border:1px solid #B2EBF2;">95 à 100 %</td><td style="padding:9px;border:1px solid #B2EBF2;">Mesure fiable sur main chaude, affichage stable · une cible différente peut être fixée pour certaines personnes : elle ne se décide pas par vous</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Glycémie capillaire à jeun</td><td style="padding:9px;border:1px solid #B2EBF2;">0,70 à 1,10 g/L</td><td style="padding:9px;border:1px solid #B2EBF2;">Hypoglycémie &lt; 0,70 g/L · <strong>sur protocole ou à la demande de l'infirmier</strong></td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Diurèse</td><td style="padding:9px;border:1px solid #B2EBF2;">1 à 1,5 L/24 h</td><td style="padding:9px;border:1px solid #B2EBF2;">Oligurie &lt; 500 mL/24 h · anurie = urgence</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Trois valeurs fausses qui circulent encore.</strong> La fréquence respiratoire normale de l'adulte n'est pas « 20 à 30 » : c'est <strong>12 à 20 /min</strong>. Le seuil d'hypoglycémie n'est pas « 0,60 » : c'est <strong>0,70 g/L</strong>. La fièvre commence à <strong>38 °C</strong>, pas à 37,5 °C. Vérifiez chacune de ces valeurs dans votre livret.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">3.2 · Chaque paramètre : technique et pièges de mesure</p>
+
+<p>Une valeur mal mesurée rassure à tort ou alarme sans raison. Le jury peut vous demander : « Comment avez-vous mesuré ? »</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Paramètre</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Technique en bref</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Pièges de mesure</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Pression artérielle</td><td style="padding:9px;border:1px solid #B2EBF2;">Au repos depuis au moins 5 minutes, bras nu, soutenu à hauteur du cœur, brassard adapté à la circonférence du bras. Recontrôle d'un chiffre anormal.</td><td style="padding:9px;border:1px solid #B2EBF2;">Brassard trop petit (surestime) ou trop grand (sous-estime) ; mesure juste après un effort ou pendant une douleur ; brassard sur un vêtement ; bras d'une fistule artério-veineuse ou d'une perfusion ; appareil électronique sur un pouls irrégulier.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Hypotension orthostatique</td><td style="padding:9px;border:1px solid #B2EBF2;">Sur demande de l'infirmier ou selon protocole : mesure couché, puis debout à 1 et 3 minutes.</td><td style="padding:9px;border:1px solid #B2EBF2;">Lever brutal ; personne laissée debout seule pendant la mesure, alors qu'elle risque le malaise.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Pouls</td><td style="padding:9px;border:1px solid #B2EBF2;">Index et majeur sur l'artère radiale, jamais le pouce. Compter <strong>une minute entière</strong>. Noter fréquence, régularité, amplitude.</td><td style="padding:9px;border:1px solid #B2EBF2;">Compter 15 secondes et multiplier par 4 sur un pouls irrégulier ; se fier au chiffre de l'oxymètre sans vérifier ; mesure juste après un effort.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Température</td><td style="padding:9px;border:1px solid #B2EBF2;">Selon le thermomètre du service (tympanique, frontal, buccal), embout à usage unique. Noter le site. Recontrôler une valeur inattendue.</td><td style="padding:9px;border:1px solid #B2EBF2;">Mesure juste après la toilette ou une boisson chaude ; cérumen ; front en sueur ; comparer deux sites différents sans le préciser.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Fréquence respiratoire</td><td style="padding:9px;border:1px solid #B2EBF2;">Observer le thorax pendant <strong>une minute entière</strong>, sans prévenir la personne (doigts sur le pouls pendant le comptage). Décrire aussi amplitude, rythme, bruits, signes d'effort.</td><td style="padding:9px;border:1px solid #B2EBF2;">Le paramètre le plus souvent « estimé » au lieu d'être compté. Une fréquence normale avec un tirage n'est pas une respiration normale.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Saturation</td><td style="padding:9px;border:1px solid #B2EBF2;">Doigt propre, main réchauffée, personne au repos ; lire sur un <strong>affichage stable</strong> avec une onde régulière. Sous oxygène, noter le débit en cours tel que réglé par l'infirmier, sans y toucher.</td><td style="padding:9px;border:1px solid #B2EBF2;">Main froide ; vernis foncé ou faux ongles ; tremblements ; lumière vive sur le capteur ; lecture avant stabilisation. Une valeur « normale » chez une personne qui étouffe ne rassure pas : la clinique prime, vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Glycémie capillaire</td><td style="padding:9px;border:1px solid #B2EBF2;"><strong>Sur protocole ou à la demande de l'infirmier.</strong> Identité vérifiée, friction hydro-alcoolique, gants, doigt de la personne lavé et séché, piqûre sur le côté de la pulpe, lancette dans le collecteur à objets piquants. Valeur transmise immédiatement.</td><td style="padding:9px;border:1px solid #B2EBF2;">Doigt sucré (valeur faussement haute), humide ou avec des traces d'alcool ; bandelette périmée. Piège de champ : décider seul d'un resucrage ou commenter la valeur pour ajuster un traitement.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Diurèse</td><td style="padding:9px;border:1px solid #B2EBF2;">Recueil sur une période définie avec un contenant gradué, à la demande de l'infirmier. Sur sonde, avec des gants, vous videz la poche collectrice par son robinet de vidange, sans ouvrir le système clos ni prélever : un prélèvement sur sonde relève de l'infirmier. Observer couleur, aspect, odeur.</td><td style="padding:9px;border:1px solid #B2EBF2;">Un recueil oublié fausse les 24 h ; volume « estimé ». Une absence d'urines depuis de nombreuses heures avec un ventre tendu s'alerte sans attendre la fin du recueil.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Poids et IMC</td><td style="padding:9px;border:1px solid #B2EBF2;">Même balance, même moment (le matin, après élimination), même tenue. IMC avec l'<strong>outil paramétré</strong> : poids (kg) divisé par la taille (m) au carré.</td><td style="padding:9px;border:1px solid #B2EBF2;">Changer de balance ; taille ancienne chez une personne âgée qui a perdu en hauteur ; œdèmes qui masquent une perte de masse. Une variation se date : « 3 kg perdus en un mois ».</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Bandelette urinaire</td><td style="padding:9px;border:1px solid #B2EBF2;">Urines fraîches (recueil aseptique <strong>hors sonde</strong>), temps de lecture du fabricant respecté, comparaison à l'échelle du flacon.</td><td style="padding:9px;border:1px solid #B2EBF2;">Lecture trop tardive ; bandelettes périmées. Piège de champ : <strong>aucune interprétation diagnostique</strong>. « Leucocytes ++, nitrites positifs, transmis à l'infirmière », jamais « infection urinaire ».</td></tr>
+</table>
+
+<div style="background:#E0F7FA;border-left:6px solid #00838F;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Hygiène de la mesure.</strong> Friction hydro-alcoolique avant et après chaque contact, désinfection du matériel partagé entre deux personnes, gants seulement en cas de risque de contact avec du sang, un liquide biologique ou une muqueuse. Un brassard qui passe de chambre en chambre sans être désinfecté expose à l'éliminatoire « hygiène ».</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;margin:24px 0 8px 0;">✍️ Exercice 3 (6&nbsp;min) · Repérez les valeurs anormales</p>
+
+<p>Voici des relevés extraits de feuilles de surveillance d'adultes. Pour chacun, dites quelle valeur est anormale, par rapport à quelle référence, et ce que vous faites. Ouvrez ensuite la correction.</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">a) Mme G., 88 ans : PA 88/52 mmHg · pouls 98 /min · T 36,9 °C · FR 22 /min · SpO2 95 %. Elle est habituellement à 145/85.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Pression artérielle sous 90/60 et très en dessous de son habitude ; FR à 22, au-dessus de 20.</strong> Vous ne la levez pas, vous recontrôlez et vous alertez sans attendre.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">b) Mme E., 67 ans, sous insuline : glycémie demandée par l'infirmière avant le repas, 0,64 g/L ; elle se sent « un peu bizarre ».</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Hypoglycémie : 0,64 g/L, sous 0,70 g/L.</strong> Vous restez auprès d'elle, assise en sécurité, et vous alertez immédiatement. Le resucrage se fait <strong>uniquement</strong> selon le protocole du service ou sur consigne de l'infirmière, après avoir vérifié qu'elle est consciente et avale correctement. Recontrôle à sa demande, traçabilité.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">c) M. H., 79 ans, sans oxygène : SpO2 89 % affiché dès la pose du capteur, main froide. Il est détendu, parle normalement, FR 16 /min.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions : à vérifier avant de conclure.</strong> Main froide et lecture instantanée sont deux pièges. Vous réchauffez la main, attendez un affichage stable ; si la valeur reste sous 95 %, vous transmettez. Au moindre signe de gêne respiratoire, vous alertez sans attendre.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">d) Mme C., 83 ans, sous diurétique : diurèse de 24 h, 420 mL ; 58 kg (61 kg il y a trois semaines) ; langue sèche.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Oligurie (sous 500 mL/24 h), perte de 3 kg en trois semaines, langue sèche.</strong> Sous diurétique, vous pensez à une déshydratation : c'est la raison d'alerter, pas un diagnostic. Vous transmettez l'ensemble et vous restez vigilant au lever.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">e) M. S., 70 ans, sous antalgique de palier 3 depuis la veille : FR 10 /min, très difficile à réveiller.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Urgence.</strong> FR sous 12 et trouble de la vigilance sous palier 3 : risque de dépression respiratoire. Alerte immédiate, sans le quitter ; procédure d'urgence du service si l'infirmière est injoignable.</p></details>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">3.3 · La douleur : un paramètre à part entière</p>
+
+<p>La douleur ne se devine pas : elle s'<strong>évalue avec une échelle</strong>, se <strong>chiffre</strong>, se <strong>transmet</strong> et se <strong>réévalue</strong> après l'action décidée par l'infirmier. Le choix de l'échelle dépend d'une seule question : <strong>la personne peut-elle évaluer elle-même sa douleur ?</strong></p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Échelle et score</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Pour qui</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Comment l'utiliser</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">EVA · échelle visuelle analogique<br><span style="font-weight:normal;">De 0 à 10 (ou 0 à 100 mm)</span></td><td style="padding:9px;border:1px solid #B2EBF2;">Personne communicante, capable de comprendre la consigne et de manipuler la réglette</td><td style="padding:9px;border:1px solid #B2EBF2;"><strong>Auto-évaluation</strong> sur réglette ; vous lisez le chiffre au dos.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">EN · échelle numérique<br><span style="font-weight:normal;">De 0 à 10</span></td><td style="padding:9px;border:1px solid #B2EBF2;">Personne communicante, même sans réglette, y compris par oral</td><td style="padding:9px;border:1px solid #B2EBF2;"><strong>Auto-évaluation.</strong> « Sur une échelle de 0 à 10, 0 étant pas de douleur et 10 la pire douleur imaginable, combien avez-vous mal ? »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">EVS · échelle verbale simple<br><span style="font-weight:normal;">Catégories de 0 à 4</span></td><td style="padding:9px;border:1px solid #B2EBF2;">Personne communicante qui a du mal avec les chiffres (certaines personnes âgées, troubles cognitifs légers)</td><td style="padding:9px;border:1px solid #B2EBF2;"><strong>Auto-évaluation.</strong> La personne choisit un mot : absente, faible, modérée, intense, extrêmement intense.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Algoplus<br><span style="font-weight:normal;">De 0 à 5 · douleur probable <strong>à partir de 2</strong></span></td><td style="padding:9px;border:1px solid #B2EBF2;">Personne âgée <strong>non communicante</strong>, douleur <strong>aiguë</strong> (y compris lors d'un soin)</td><td style="padding:9px;border:1px solid #B2EBF2;"><strong>Hétéro-évaluation</strong> rapide : visage, regard, plaintes, attitudes corporelles, comportements ; un point par item présent.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Doloplus<br><span style="font-weight:normal;">De 0 à 30 · douleur <strong>à partir de 5</strong></span></td><td style="padding:9px;border:1px solid #B2EBF2;">Personne âgée <strong>non communicante</strong>, douleur <strong>chronique ou prolongée</strong></td><td style="padding:9px;border:1px solid #B2EBF2;"><strong>Hétéro-évaluation</strong>, idéalement en équipe. Dix items (somatiques, psychomoteurs, psychosociaux) cotés de 0 à 3.</td></tr>
+</table>
+
+<div style="border:1px solid #B2EBF2;background:#F3FCFD;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;"><strong>Les règles d'or de l'évaluation de la douleur</strong></p>
+<ul style="margin:6px 0 8px 0;padding-left:20px;">
+<li><strong>L'auto-évaluation prime</strong> dès qu'elle est possible : c'est la personne qui sait combien elle a mal.</li>
+<li><strong>Toujours la même échelle</strong> pour une même personne, afin de pouvoir comparer d'une évaluation à l'autre.</li>
+<li><strong>Décrire autour du chiffre</strong> : localisation, type, circonstances (repos, mobilisation), ce qui soulage.</li>
+<li><strong>Réévaluer</strong> au délai indiqué par l'infirmier, et transmettre le nouveau score.</li>
+<li><strong>Chez la personne non communicante</strong>, observer pendant un soin qui mobilise : la douleur s'y révèle souvent.</li>
+</ul>
+</div>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Ce que vous ne faites pas.</strong> Vous ne décidez pas d'un antalgique et n'augmentez pas une dose. Vous évaluez, vous transmettez, puis vous appliquez ce que l'infirmier décide : adaptation du soin, et aide à la prise du traitement qu'il a préparé si toutes les conditions sont réunies.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;margin:24px 0 8px 0;">✍️ Exercice 4 (4&nbsp;min) · Quelle échelle de douleur ?</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">a) M. V., 58 ans, opéré du genou, parfaitement orienté, se plaint de douleur au lever.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>EVA ou échelle numérique.</strong> Il est communicant : c'est une auto-évaluation. Précisez que la douleur survient au lever, et réévaluez après l'action décidée par l'infirmier.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">b) Mme N., 91 ans, troubles neurocognitifs sévères, ne parle plus ; elle grimace et crie pendant la toilette depuis deux jours.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Algoplus.</strong> Personne âgée non communicante, douleur aiguë révélée pendant un soin. Vous cotez les cinq items pendant la toilette et vous transmettez le score.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">c) M. Q., 86 ans, troubles neurocognitifs à un stade avancé, de plus en plus replié, refuse de se lever depuis trois semaines, mange moins, dort mal.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Doloplus</strong>, rempli en équipe. Le tableau évoque une douleur prolongée, avec un retentissement sur le comportement et la vie sociale. L'Algoplus peut compléter lors des soins.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">d) M. W., 76 ans, aphasique après un accident vasculaire cérébral, comprend bien ce qu'on lui dit mais ne peut pas parler.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> S'il comprend la consigne et peut désigner un niveau sur la réglette, l'EVA reste possible : l'auto-évaluation prime. S'il ne peut pas la manipuler de façon fiable, on passe à une hétéro-évaluation (Algoplus pour une douleur aiguë). Le choix se fait avec l'infirmier, puis reste le même.</p></details>
+
+<div style="background:#E0F7FA;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Chaque valeur se rapporte à sa norme exacte (FR 12 à 20 /min, hypoglycémie sous 0,70 g/L, fièvre dès 38 °C, saturation 95 à 100 %) et à l'état habituel. Une mesure fiable suppose une technique rigoureuse : repos, bon matériel, une minute entière pour le pouls et la respiration, affichage stable pour la saturation. La glycémie se fait sur protocole ou à la demande de l'infirmier ; la bandelette se lit sans interprétation. La douleur s'évalue avec une échelle nommée, chiffrée, réévaluée.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · À tout âge de la vie <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:05 · 10&nbsp;min</span></div>
+
+<p>« À tout âge de la vie » ne vous oblige pas à rédiger une situation pédiatrique : une situation auprès d'un adulte ou d'une personne âgée est parfaitement recevable. Mais vous devez savoir <strong>adapter votre évaluation à l'âge</strong>, et le jury peut vous interroger sur ce point.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">4.1 · La personne âgée : des signes qui trompent</p>
+
+<p>Chez la personne âgée, les maladies se manifestent souvent de façon <strong>atténuée ou détournée</strong> : ce sont des signes indirects, parfois banalisés, qui donnent l'alerte, d'où l'importance de l'état habituel.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Particularité</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce que cela change pour vous</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Fièvre atténuée</td><td style="padding:9px;border:1px solid #B2EBF2;">Une infection peut s'accompagner d'une température à peine au-dessus de l'habituel, voire normale. Une élévation nette par rapport à la valeur habituelle se transmet, surtout avec d'autres signes.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Confusion comme signe d'appel</td><td style="padding:9px;border:1px solid #B2EBF2;">Une confusion d'apparition récente n'est jamais « l'âge ». Elle peut révéler une infection, une déshydratation, une hypoglycémie, une rétention urinaire, une douleur, un effet de médicament. Vous ne cherchez pas la cause : vous décrivez et vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Chute comme signe d'appel</td><td style="padding:9px;border:1px solid #B2EBF2;">Une chute peut révéler un malaise, une hypotension, une infection, un effet de traitement. Après toute chute, vous ne relevez pas la personne avant l'évaluation prévue par le protocole du service ; vous observez, vous mesurez et vous transmettez, même si la personne dit « ce n'est rien ». Sous anticoagulant, <strong>toute chute se transmet</strong>.</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Douleur sous-exprimée</td><td style="padding:9px;border:1px solid #B2EBF2;">Repli, agitation, refus de soin ou perte d'appétit peuvent en être la seule manifestation : d'où Algoplus et Doloplus.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Soif diminuée, traitements nombreux, signes atypiques</td><td style="padding:9px;border:1px solid #B2EBF2;">La déshydratation s'installe sans plainte ; les effets indésirables sont plus fréquents ; un problème cardiaque ou digestif sérieux peut ne se manifester que par une fatigue, un essoufflement ou une confusion. Tout changement brutal et inexpliqué se transmet.</td></tr>
+</table>
+
+<div style="background:#E0F7FA;border-left:6px solid #00838F;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Le réflexe « glissement ».</strong> Une personne âgée qui, en quelques jours, ne mange plus, ne se lève plus et semble « se laisser aller » présente un changement d'état majeur, à décrire chiffres à l'appui (poids, quantités, autonomie) et à transmettre, jamais une fatalité.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">4.2 · L'enfant : prudence et références du service</p>
+
+<p>Si vous avez exercé en pédiatrie, en maternité ou auprès d'enfants en situation de handicap, sachez que les valeurs de référence de l'enfant <strong>varient selon l'âge</strong> et diffèrent nettement de celles de l'adulte : le pouls et la fréquence respiratoire sont plus rapides, la pression artérielle plus basse. <strong>Ne citez jamais de valeurs pédiatriques de mémoire</strong> dans votre livret : référez-vous aux tableaux et aux protocoles du service, et dites-le.</p>
+
+<p>Matériel adapté à la taille de l'enfant, mesures au calme. Le <strong>périmètre crânien</strong>, que vous pouvez mesurer depuis 2021, se prend au mètre ruban souple, au plus grand tour de tête, et se reporte sur la courbe du service. La douleur s'évalue avec les échelles du service adaptées à l'âge. Les parents connaissent l'état habituel de l'enfant : « il n'est pas comme d'habitude » est une information clinique à transmettre. Difficulté à respirer, enfant inhabituellement mou, refus de boire, teint gris ou marbré s'alertent immédiatement.</p>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Pas de valeurs inventées.</strong> Un chiffre pédiatrique approximatif dans votre livret fragilise toute votre crédibilité clinique. Écrivez plutôt : « Sa fréquence respiratoire était à 48 /min, au-dessus des valeurs de référence de son âge indiquées sur le tableau du service. »</p>
+</div>
+
+<div style="background:#E0F7FA;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Chez la personne âgée, la fièvre peut être atténuée, la confusion et la chute sont des signes d'appel, la douleur est souvent muette : c'est l'écart avec l'état habituel qui donne l'alerte. Chez l'enfant, les références varient selon l'âge : appuyez-vous sur celles du service, sans jamais citer de valeurs de mémoire.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Discerner l'urgence, alerter, transmettre <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:15 · 15&nbsp;min</span></div>
+
+<p>Discerner l'urgence est l'élément de la compétence 3 qui engage le plus votre responsabilité : un retard d'alerte est une mise en danger, donc une éliminatoire.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">5.1 · Les signes d'alerte qui imposent un appel immédiat</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;">Signe d'alerte</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Ce que vous observez</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Ce que vous faites en attendant l'infirmier (dans votre champ)</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Détresse respiratoire</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">Respiration rapide ou très lente, tirage, cyanose, sueurs, impossibilité de parler, saturation qui chute</td><td style="padding:9px;border:1px solid #FFCDD2;">Installer assis, vérifier lunettes et tubulure, <strong>sans toucher au débitmètre</strong> ; rester auprès de la personne</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Trouble de la conscience</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">Somnolence inhabituelle, personne difficile ou impossible à réveiller, confusion brutale, perte de connaissance</td><td style="padding:9px;border:1px solid #FFCDD2;">Vérifier la respiration ; appliquer les gestes de l'AFGSU (position latérale de sécurité si elle respire, alerte et réanimation si elle ne respire pas) ; ne rien donner à boire</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Douleur thoracique</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">Douleur ou serrement dans la poitrine, irradiant parfois vers le bras ou la mâchoire, avec sueurs ou essoufflement</td><td style="padding:9px;border:1px solid #FFCDD2;">Repos strict, ne pas faire marcher ; mesurer pouls, pression artérielle, saturation</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Hypoglycémie</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">Sueurs, pâleur, tremblements, faim, confusion, somnolence, chez une personne diabétique traitée</td><td style="padding:9px;border:1px solid #FFCDD2;">Alerter ; glycémie capillaire <strong>sur protocole ou à la demande de l'infirmier</strong> ; resucrage uniquement selon le protocole ou sur sa consigne, et <strong>jamais</strong> chez une personne qui ne peut pas avaler ou dont la conscience est altérée (risque de fausse route)</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Chute avec traumatisme</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">Douleur, impossibilité de bouger un membre, déformation, membre raccourci ou tourné, plaie, choc à la tête, personne sous anticoagulant</td><td style="padding:9px;border:1px solid #FFCDD2;">Ne pas relever ni mobiliser : attendre l'évaluation de l'infirmier ; couvrir, rassurer, mesurer</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Hémorragie</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">Saignement extériorisé abondant, sang dans les vomissements ou les selles (selles noires), saignement qui ne s'arrête pas sous anticoagulant</td><td style="padding:9px;border:1px solid #FFCDD2;">Gants ; pour un saignement externe, compression manuelle directe selon les gestes de l'AFGSU, sans réaliser de pansement ; allonger la personne ; mesurer pouls et pression artérielle ; ne pas la laisser seule</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Agitation brutale</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">Agitation, agressivité ou angoisse apparues soudainement chez une personne habituellement calme</td><td style="padding:9px;border:1px solid #FFCDD2;">Sécuriser l'environnement, parler calmement, ne jamais décider d'une contention (décision médicale), rechercher des signes de douleur, mesurer la température, repérer une absence d'urines ou un bas-ventre tendu</td></tr>
+</table>
+
+<p>S'y ajoutent les signes neurologiques brutaux (bouche déviée, faiblesse d'un côté, trouble soudain de la parole) : notez l'heure de constat et l'heure où la personne a été vue normale pour la dernière fois, et alertez immédiatement.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">5.2 · Ne pas laisser la personne seule, et qui alerter</p>
+
+<div style="border:1px solid #B2EBF2;background:#F3FCFD;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;"><strong>Règle n° 1 : l'alerte passe avant la poursuite du soin.</strong> Vous suspendez la toilette, le repas ou le transfert. Vous ne finissez pas « pour ne pas la laisser à moitié ».</p>
+<p style="margin:0 0 8px 0;"><strong>Règle n° 2 : vous ne quittez pas une personne en danger.</strong> Sonnette, téléphone de service ou collègue appelé à voix haute : quelqu'un prévient l'infirmier pendant que vous restez.</p>
+<p style="margin:0;"><strong>Règle n° 3 : vous alertez la bonne personne, dans l'ordre prévu par le service.</strong> D'abord l'infirmier. S'il est injoignable, la procédure d'urgence du service : le 15, le médecin d'astreinte, le cadre. Vous ne sortez jamais de votre champ pour autant, et vous tracez l'heure de chaque appel. Seule exception : une personne qui ne respire pas. Vous déclenchez immédiatement l'alerte prévue par la procédure d'urgence du service (15 ou numéro d'urgence interne) et vous commencez les gestes de l'AFGSU.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">5.3 · La transmission orale structurée : cinq éléments</p>
+
+<p>L'infirmier doit pouvoir décider dès vos premières phrases, parfois au téléphone, sans avoir vu la personne. ORACLE propose une trame en cinq éléments.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Élément</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Contenu</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Exemple</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">1 · Qui</td><td style="padding:9px;border:1px solid #B2EBF2;">Vous vous présentez, vous identifiez la personne et le lieu</td><td style="padding:9px;border:1px solid #B2EBF2;">« [Votre prénom], aide-soignant(e) au premier étage. Je vous appelle pour M. A. »</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">2 · Quoi</td><td style="padding:9px;border:1px solid #B2EBF2;">Le changement constaté, en termes descriptifs</td><td style="padding:9px;border:1px solid #B2EBF2;">« Il est très essoufflé, il n'arrive pas à finir ses phrases, ses lèvres sont bleutées. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">3 · Depuis quand</td><td style="padding:9px;border:1px solid #B2EBF2;">L'heure d'apparition, ou l'heure où la personne a été vue normale pour la dernière fois ; l'évolution</td><td style="padding:9px;border:1px solid #B2EBF2;">« Depuis dix minutes. À 7 h, à la distribution des petits-déjeuners, il allait bien. »</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">4 · Valeurs</td><td style="padding:9px;border:1px solid #B2EBF2;">Les paramètres mesurés, avec l'habituel si vous le connaissez ; le score de douleur</td><td style="padding:9px;border:1px solid #B2EBF2;">« Saturation 86 % sous ses 2 litres, habituellement 93 %. Respiration à 30 par minute. Pouls 108. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">5 · Ce que j'ai fait</td><td style="padding:9px;border:1px solid #B2EBF2;">Les actions réalisées dans votre champ, et ce dont vous avez besoin</td><td style="padding:9px;border:1px solid #B2EBF2;">« Je l'ai installé assis, j'ai vérifié ses lunettes, elles étaient bien en place. Je reste avec lui. Pouvez-vous venir tout de suite ? »</td></tr>
+</table>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Dans votre livret, rapportez l'alerte au style indirect (« j'ai appelé l'infirmière et je lui ai transmis… ») en conservant les cinq éléments. Le numéro de chambre n'y figure jamais : il permettrait d'identifier la personne.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">5.4 · Puis la traçabilité écrite</p>
+
+<p>Une fois la situation stabilisée, vous tracez dans le dossier de soins, en <strong>transmission ciblée</strong> : une cible (le problème : « dyspnée », « douleur », « hypotension »), des <strong>données</strong> (ce que vous avez observé et mesuré, avec les heures), des <strong>actions</strong> (ce que vous avez fait, et ce que l'infirmier a décidé) et des <strong>résultats</strong> (le recontrôle, l'évolution). Vous reportez également les valeurs sur la feuille de surveillance. Ce qui n'est pas tracé n'existe ni pour l'équipe suivante ni pour le jury.</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">5.5 · Le chaînage traitement-surveillance appliqué à l'observation</p>
+
+<p>Chaque traitement cité dans votre recueil doit vous faire surveiller quelque chose de précis, et chaque signe observé doit vous faire penser aux traitements. Il suffit de connaître la <strong>classe</strong> du médicament et ce qu'elle fait surveiller.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#006064;color:#FFFFFF;"><th style="padding:9px;border:1px solid #006064;text-align:left;">Classe de traitement</th><th style="padding:9px;border:1px solid #006064;text-align:left;">Ce que vous observez et mesurez en priorité</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Antalgiques de palier 3</td><td style="padding:9px;border:1px solid #B2EBF2;">Fréquence respiratoire et vigilance (dépression respiratoire = alerte immédiate), constipation</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">AINS · antibiotiques</td><td style="padding:9px;border:1px solid #B2EBF2;">Selles noires, douleurs abdominales, diurèse · diarrhée, éruption, gêne respiratoire</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Antidiabétiques, insuline</td><td style="padding:9px;border:1px solid #B2EBF2;">Signes d'hypoglycémie et d'hyperglycémie</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Antihypertenseurs · bêtabloquants · diurétiques</td><td style="padding:9px;border:1px solid #B2EBF2;">Pression artérielle, lever en deux temps, chutes · bradycardie, hypotension · déshydratation, diurèse, poids</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Antiagrégants, anticoagulants</td><td style="padding:9px;border:1px solid #B2EBF2;">Saignements, hématomes ; toute chute se transmet</td></tr>
+<tr style="background:#F3FCFD;"><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Anxiolytiques, hypnotiques · antipsychotiques</td><td style="padding:9px;border:1px solid #B2EBF2;">Somnolence, chutes · raideur, marche, vigilance</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;font-weight:bold;">Bronchodilatateurs · corticoïdes inhalés</td><td style="padding:9px;border:1px solid #B2EBF2;">Tremblements, palpitations · rinçage buccal, mycose</td></tr>
+</table>
+
+<div style="background:#E0F7FA;border-left:6px solid #00838F;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Dans votre livret.</strong> Le chaînage s'écrit en deux temps. Dans le recueil : « Elle est traitée par bisoprolol, un bêtabloquant. » Dans le récit : « Son traitement bêtabloquant exposant à un ralentissement du cœur, j'ai compté son pouls sur une minute entière : 48 /min, alors qu'il est habituellement autour de 64. J'ai alerté l'infirmière. » Le jury voit alors que votre mesure n'était pas un hasard, mais un raisonnement.</p>
+</div>
+
+<p style="font-weight:bold;color:#006064;margin:24px 0 8px 0;">✍️ Exercice 5 (4&nbsp;min) · Construisez l'alerte orale</p>
+<p>À partir de chaque situation, formulez à voix haute l'alerte en cinq éléments (qui, quoi, depuis quand, valeurs, ce que j'ai fait), puis comparez.</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">a) 14 h 20. Mme K., 84 ans, sous anticoagulant, est retrouvée assise au sol de sa salle de bain. Elle dit avoir glissé, se plaint du poignet gauche, qui est gonflé. Elle est consciente et orientée, dit ne pas s'être cogné la tête et cote sa douleur à 6 sur 10 à l'échelle numérique. PA 132/78 mmHg, pouls 88 /min.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« [Votre prénom], aide-soignant(e) au premier étage. Mme K. a chuté dans sa salle de bain, trouvée assise au sol à 14 h 20. Elle est sous anticoagulant. Poignet gauche gonflé, douleur à 6 sur 10 à l'échelle numérique. Consciente, orientée, pas de choc à la tête selon elle. Tension 132/78, pouls 88. Je ne l'ai pas relevée, je l'ai couverte et je reste avec elle. Pouvez-vous venir ? » <strong>À éviter :</strong> la relever avant l'évaluation, oublier l'anticoagulant, dire « elle s'est cassé le poignet ».</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">b) 6 h 45. M. L., 77 ans, habituellement orienté, ne reconnaît pas sa chambre, tire sur ses draps, dit que « des gens entrent ». La veille à 21 h, il était calme. T 37,9 °C (habituellement 36,5 °C), FR 24 /min, SpO2 94 %. Il n'a pas uriné depuis la veille au soir et son bas-ventre est tendu.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« [Votre prénom], aide-soignant(e) de nuit. M. L. est confus et agité depuis ce matin ; hier à 21 h, il était calme et orienté. Température 37,9 pour 36,5 habituellement, respiration à 24, saturation 94 %. Pas d'urines depuis hier soir, bas-ventre tendu. J'ai mis le lit en position basse et je reste près de lui. Pouvez-vous passer ? »</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">c) L'infirmière est au téléphone avec le médecin et ne peut pas venir tout de suite. M. L. (situation b) est maintenant très difficile à réveiller.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions : l'urgence change la procédure.</strong> Un trouble de la conscience qui s'aggrave ne peut pas attendre. Vous faites prévenir l'infirmière de l'aggravation par un collègue sans quitter M. L. et, si elle ne peut pas intervenir immédiatement, vous appliquez la procédure d'urgence du service (le 15, le médecin d'astreinte, le cadre). Vous surveillez sa respiration, vous le placez en position latérale de sécurité s'il est inconscient et respire, et vous tracez les heures de chaque appel.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">d) Une collègue vous dit : « Il a 38,5 °C, mais je finis ma tournée de change et je le dirai à la relève. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Alerte retardée.</strong> Une fièvre à 38,5 °C se transmet sans attendre, avec les signes associés. Attendre la relève, c'est décider seul que cela peut attendre.</p></details>
+
+<div style="background:#E0F7FA;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Sept signes d'alerte imposent un appel immédiat : détresse respiratoire, trouble de la conscience, douleur thoracique, hypoglycémie, chute avec traumatisme, hémorragie, agitation brutale. L'alerte passe avant le soin, et vous ne laissez pas la personne seule. L'alerte orale suit cinq éléments : qui, quoi, depuis quand, valeurs, ce que j'ai fait. Puis vous tracez. Chaque traitement vous dit quoi surveiller.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Situations modèles, grille de détection et questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:30 · 20&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">6.1 · Deux situations modèles décortiquées</p>
+
+<p style="font-weight:bold;color:#006064;">⏱️ Lisez les deux situations avant la séance : en séance, vous travaillez les trois colonnes du tableau qui suit chacune d'elles.</p>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; les personnes sont désignées par des initiales. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots.</p>
+
+<!-- Situation A -->
+<div style="background:#00838F;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation A · Une désaturation chez un résident sous oxygène au long cours</div>
+
+<div style="background:#F3FCFD;border:1px solid #B2EBF2;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. J., 81 ans, vit en EHPAD depuis quatre ans, entré à la suite d'une hospitalisation après laquelle le maintien à domicile n'était plus possible ; ancien cheminot, veuf, il reçoit son fils le dimanche. Il a une bronchopneumopathie chronique obstructive (BPCO : maladie respiratoire chronique qui rétrécit les bronches et gêne l'expiration), liée à un tabagisme ancien, et une insuffisance cardiaque (le cœur ne pompe plus assez efficacement, ce qui peut entraîner essoufflement et œdèmes). Il est sous oxygène au long cours par lunettes, à 2 L/min, débit prescrit par le médecin et réglé par l'infirmière ; la cible de saturation, prescrite par le médecin et notée dans son dossier, est de 88 à 92 %, et il est habituellement à 92 %. Il est traité par tiotropium, bronchodilatateur inhalé (surveillance : tremblements, palpitations), et par furosémide, diurétique de l'anse (surveillance : poids, diurèse, déshydratation, chutes). Il pèse 70 kg pour 1,72 m (IMC 23,7, satisfaisant pour son âge, le seuil d'alerte étant de 22 après 70 ans). GIR 3 : il marche avec un déambulateur et fait sa toilette au lavabo avec une aide partielle. Il est orienté et parle, au repos, par phrases complètes.</p>
+<p style="margin:0;"><strong>La situation.</strong> Un mardi de mars, à 7 h 40, j'entre pour l'aider à la toilette. Je le trouve assis au bord du lit, penché en avant, les mains appuyées sur les genoux. Il me répond par mots isolés, alors qu'il me parle habituellement par phrases entières. Ses lèvres sont bleutées et il transpire. Je suspends la toilette et j'appuie aussitôt sur la sonnette ; je demande à ma collègue, qui arrive, d'appeler l'infirmière en urgence pendant que je reste auprès de M. J. Je vérifie d'abord ce qui relève de moi : les lunettes étaient sorties de sa narine gauche et la tubulure était coincée sous le pied du lit. Je dégage la tubulure et je replace les lunettes ; le débitmètre affiche toujours 2 L/min. <strong>Je ne touche pas au débitmètre : le réglage du débit relève de l'infirmière.</strong> Je le laisse assis penché en avant, position qui le soulage, et je desserre le col de son pyjama. En attendant l'infirmière, je mesure : sa respiration, comptée sur une minute, est à 30 /min, alors que la norme est de 12 à 20, avec un creusement au-dessus du sternum ; après une friction hydro-alcoolique, je pose l'oxymètre sur son index réchauffé et j'attends un affichage stable : 84 %, alors que sa cible est de 88 à 92 % ; son pouls est à 112 /min, régulier. Ses chevilles ne sont pas plus gonflées que d'habitude : son insuffisance cardiaque et son diurétique rendent cette observation utile à l'infirmière. L'infirmière arrive à 7 h 46. Je lui transmets : « M. J. est essoufflé depuis au moins mon arrivée à 7 h 40 ; hier soir, il allait bien. Respiration à 30, saturation 84 % pour une cible de 88 à 92, pouls 112. Ses chevilles ne sont pas plus gonflées et son poids d'hier était stable à 70 kg. Ses lunettes étaient déplacées et la tubulure coincée : je les ai remises en place, le débitmètre est à 2 litres, je n'y ai pas touché. Je l'ai laissé assis penché en avant. » Elle évalue M. J., décide de la conduite à tenir et appelle le médecin. À sa demande, je recontrôle la saturation et la respiration toutes les dix minutes pendant trente minutes : à 8 h 20, M. J. respire à 22 /min, sa saturation est à 91 % et il me parle de nouveau par phrases. Je reporte la toilette. Je trace l'épisode en transmission ciblée (cible : dyspnée ; données, actions, résultats avec les heures), je reporte les valeurs sur sa feuille de surveillance.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #B2EBF2;background:#E0F7FA;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #B2EBF2;">La personne est présentée avant le changement, avec son <strong>état habituel</strong> (92 %, phrases complètes) et sa cible prescrite par le médecin. Le changement est <strong>repéré</strong> (position, parole, lèvres), <strong>objectivé</strong> (FR 30, SpO2 84 %, pouls 112, chacun rapporté à la norme ou à la cible), <strong>signalé</strong> immédiatement, sans quitter la personne : l'alerte est donnée avant les mesures, faites en attendant l'infirmière. La mesure est fiable. L'alerte contient les cinq éléments. Le recontrôle chiffré ferme la boucle, la traçabilité est décrite. Le chaînage apparaît : l'insuffisance cardiaque et le diurétique cités dans le recueil conduisent à vérifier les œdèmes pendant l'évaluation et à transmettre le poids de la veille.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;background:#E0F7FA;font-weight:bold;width:30%;">Où la limite est dite</td><td style="padding:9px;border:1px solid #B2EBF2;">« Je ne touche pas au débitmètre : le réglage du débit relève de l'infirmière. » Ce que vous faites à la place : vérifier les lunettes et la tubulure, installer, rester, alerter. C'est l'infirmière qui « décide de la conduite à tenir », et le recontrôle se fait « à sa demande ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #B2EBF2;">« J'ai augmenté l'oxygène à 3 litres », même « selon le protocole du service » ou « sur consigne téléphonique » : c'est un acte hors champ, donc une éliminatoire. « J'ai terminé sa toilette, puis j'ai prévenu » : c'est une mise en danger. « Il faisait une décompensation de sa BPCO » : c'est un diagnostic. « Sa saturation était basse » sans chiffre, ou une saturation lue sur une main froide sans attendre la stabilisation : la preuve est affaiblie.</td></tr>
+</table>
+
+<!-- Situation B -->
+<div style="background:#00838F;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Une douleur chez une personne non communicante, évaluée par Algoplus</div>
+
+<div style="background:#F3FCFD;border:1px solid #B2EBF2;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme D., 89 ans, vit en unité de vie protégée depuis deux ans, entrée lorsque l'évolution de ses troubles n'a plus permis le maintien à domicile. Ancienne couturière, elle aime qu'on lui chante des chansons anciennes. Elle a des troubles neurocognitifs à un stade sévère (maladie d'Alzheimer : maladie qui altère progressivement la mémoire, le langage et l'autonomie) et une arthrose des hanches et des genoux. Elle ne s'exprime plus que par quelques mots isolés et ne peut pas utiliser une échelle d'auto-évaluation. Elle est traitée par un antalgique de palier 1, le paracétamol, en systématique (surveillance : efficacité sur la douleur), et par apixaban, anticoagulant oral, pour une fibrillation atriale (trouble du rythme cardiaque qui expose à la formation de caillots) (surveillance : saignements, hématomes ; toute chute se transmet). Elle pèse 47 kg pour 1,55 m (IMC 19,6, sous le seuil de 20 qui signe une dénutrition sévère après 70 ans ; elle est pesée chaque semaine selon le projet de soins). GIR 2 : elle est levée au fauteuil avec un verticalisateur. Habituellement, pendant la toilette au lit, elle est calme, fredonne, se laisse tourner sans résistance ; son score Algoplus habituel pendant les soins est de 0.</p>
+<p style="margin:0;"><strong>La situation.</strong> Un jeudi matin de novembre, lors de la toilette, je constate que Mme D. grimace et crie « non » quand je la tourne sur le côté droit, et qu'elle serre sa hanche droite avec sa main, alors qu'elle se laisse habituellement tourner en fredonnant. Je m'arrête et je la réinstalle sur le dos. La veille, ma collègue avait noté qu'elle avait refusé de se mettre debout. Je réalise une évaluation Algoplus pendant le soin : visage (froncement des sourcils, grimace) : oui ; regard (inattentif, fixe) : oui ; plaintes (« non », cris) : oui ; attitudes corporelles (protection de la hanche, refus de mobilisation) : oui ; comportements (agrippement) : oui. Le score est de <strong>5 sur 5</strong>, alors qu'une douleur est probable dès 2 et que son score habituel est de 0. J'observe sa hanche sans la mobiliser : pas de rougeur ni d'hématome visible, mais sa jambe droite me paraît tournée vers l'extérieur. Aucune chute n'est tracée. Sachant qu'elle est sous anticoagulant et qu'une chute non vue est possible, je fais l'hypothèse d'une douleur récente de hanche qui justifie une alerte rapide ; je ne cherche pas moi-même à savoir s'il y a une fracture. Je suspends la toilette, je la couvre et je l'installe en respectant la position qu'elle adopte, puis je préviens l'infirmière sans attendre : « Mme D. a une douleur de la hanche droite à la mobilisation, Algoplus à 5 alors qu'elle est habituellement à 0 ; elle a refusé de se lever hier ; sa jambe droite me semble tournée vers l'extérieur ; elle est sous anticoagulant ; aucune chute n'est tracée. Je l'ai laissée sur le dos et je n'ai pas fait le lever. » L'infirmière l'examine, demande l'avis du médecin, qui prescrit un antalgique et un examen de la hanche. Sur consigne de l'infirmière, je termine la toilette au lit sur le dos, sans la tourner, après la prise de l'antalgique, et le lever est suspendu. Une heure après la prise de l'antalgique donné par l'infirmière, je refais un Algoplus au repos : 1 sur 5 ; Mme D. fredonne de nouveau. Je trace les deux scores, l'heure et les consignes dans son dossier et sur la feuille d'évaluation de la douleur et je transmets à l'équipe la consigne de l'infirmière : réévaluer à chaque soin avec la même échelle.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #B2EBF2;background:#E0F7FA;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #B2EBF2;">Le <strong>choix de l'échelle</strong> est justifié (personne âgée non communicante, douleur aiguë). Les cinq items sont détaillés, le score est rapporté au seuil (2) et au score <strong>habituel</strong> (0). Le soin est suspendu avant l'alerte, puis adapté sur consigne. L'hypothèse est formulée comme une raison d'alerter. Le <strong>chaînage</strong> est présent : anticoagulant, donc vigilance sur une chute non vue. L'alerte contient les éléments utiles. La <strong>réévaluation</strong> avec la même échelle ferme la boucle (5 puis 1).</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;background:#E0F7FA;font-weight:bold;width:30%;">Où la limite est dite</td><td style="padding:9px;border:1px solid #B2EBF2;">« Je ne cherche pas moi-même à savoir s'il y a une fracture. » L'antalgique est prescrit par le médecin et donné par l'infirmière. Le lever est suspendu « sur consigne de l'infirmière ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #B2EBF2;">« Elle avait une fracture du col du fémur » : c'est un diagnostic. « Je lui ai donné un paracétamol en plus » : c'est une décision de traitement. « Je l'ai tournée quand même pour finir la toilette » : c'est une mise en danger. Utiliser une EVA chez Mme D., ou un score sans échelle nommée (« elle avait mal à 5 ») : l'outil n'est pas adapté ou pas identifiable. Oublier la réévaluation : la boucle reste ouverte et l'activité reste « à vérifier ».</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">6.2 · La grille de détection de l'activité 3</p>
+<p>Relisez votre situation d'activité 3 avec cette grille. Chaque formulation repérée se corrige avant l'envoi du livret.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai augmenté l'oxygène », « j'ai remis l'oxygène à 3 litres comme le prévoit le protocole »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Le débitmètre ne se touche jamais, même sur protocole ou sur consigne. Vous vérifiez les lunettes et la tubulure, vous installez, vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai diagnostiqué une infection urinaire », « la bandelette montrait une infection », « c'était un AVC », « elle faisait un infarctus »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> L'aide-soignant ne pose pas de diagnostic. Décrivez les signes et écrivez l'alerte.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je l'ai resucrée » sans mention du protocole ou de l'infirmier ; « je lui ai donné un antalgique »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Décision de traitement. Si le resucrage était prévu par le protocole du service ou demandé par l'infirmière, écrivez-le ; pour un médicament, écrivez qu'il a été préparé par l'infirmière et que vous avez aidé à la prise. Si ce n'était pas le cas, choisissez une autre situation.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai fini la toilette puis j'ai prévenu », « je l'ai laissé pour aller chercher l'infirmière »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire</strong> (mise en danger). L'alerte passe avant le soin ; vous faites appeler sans quitter la personne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai massé la rougeur »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire</strong> (mise en danger). On ne masse jamais une rougeur d'appui : on supprime l'appui et on transmet.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai fait la glycémie »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Ajoutez « sur protocole » ou « à la demande de l'infirmière », et la valeur rapportée à 0,70 g/L.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« la tension était basse », « il avait de la fièvre », « elle saturait mal », « elle avait mal », « on a pris les constantes »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Dites ce que <em>vous</em> avez fait. Chiffrez, rapportez à la norme et à l'état habituel, nommez l'échelle : « 92/54 mmHg, habituellement 135/80 » ; « 38,6 °C » ; « 86 % pour une cible de 88 à 92 » ; « EVA à 7 ».</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« elle était confuse, c'est l'âge », « j'ai attendu la relève pour transmettre », « c'était habituel chez elle, on n'appelle pas pour ça »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Vous apportez une preuve à charge : un signe d'appel banalisé, une alerte retardée, l'habitude du service à la place du raisonnement.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">6.3 · Six questions du jury, telles qu'elles tombent</p>
+<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Entraînez-vous à répondre à voix haute avec la méthode RAPIDE avant d'ouvrir l'attendu.</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">« Vous écrivez : “sa saturation était à 84 %”. Comment l'avez-vous mesurée, et étiez-vous sûre de votre valeur ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la technique (doigt propre, main réchauffée, personne au repos, affichage stable, onde régulière) et la cohérence avec la clinique (essoufflement, lèvres bleutées). À éviter : « l'appareil l'affichait ».</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">« Vous écrivez : “je n'ai pas touché au débitmètre”. Et si le protocole du service l'avait prévu ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> l'aide-soignant ne modifie jamais le débit d'oxygène, même sur protocole ou sur consigne ; vous changez les lunettes, vérifiez le matériel, surveillez et alertez. À éviter : « dans mon service, on a le droit ».</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">« Vous écrivez : “elle était habituellement à 0 sur Algoplus”. Pourquoi Algoplus, et pas l'EVA ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> personne âgée non communicante, douleur aiguë révélée pendant un soin, douleur probable dès 2. À éviter : « c'est celle qu'on utilise ».</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">« Vous écrivez : “j'ai pensé à une hypoglycémie”. Qu'avez-vous fait de cette hypothèse ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> elle a orienté votre alerte et la mesure demandée (glycémie sur protocole ou à la demande de l'infirmière) ; la décision de traitement est revenue à l'infirmière. À éviter : « je l'ai resucrée tout de suite, c'est évident ».</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">« Vous citez un traitement diurétique dans votre présentation. Qu'avez-vous surveillé en conséquence ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> signes de déshydratation (langue, urines, boissons), diurèse, poids, pression artérielle, risque de chute au lever. C'est le chaînage traitement-surveillance. À éviter : « c'est l'infirmière qui gère les traitements ».</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">« Vous écrivez : “une heure après, j'ai recontrôlé”. Qu'auriez-vous fait si la valeur ne s'était pas améliorée ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> une nouvelle alerte immédiate avec la valeur et l'évolution ; procédure d'urgence du service si l'infirmière est injoignable. À éviter : « j'aurais attendu un peu ».</p></details>
+
+<div style="background:#E0F7FA;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Personne et état habituel présentés, changement décrit et chiffré, limite dite, alerte en cinq éléments, recontrôle, traçabilité. Passez votre texte à la grille : aucune formulation éliminatoire, aucune valeur sans chiffre.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC05 · Clôture</p>
+      <div class="content-scroll"><div style="background:#006064;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#006064;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">1. Quelle est la phrase-clé ORACLE de l'activité 3 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà un changement d'état clinique que j'ai repéré, objectivé et signalé. »</strong></p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">2. Quel est l'attendu officiel de l'activité 3 ? A. Un risque non survenu · B. Au moins un type de soins en collaboration · C. Deux volets · D. Un inventaire raisonné</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B.</strong> Au moins un type de soins en collaboration, rédigé en une situation.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">3. Fréquence respiratoire normale de l'adulte : A. 8 à 12 · B. 12 à 20 · C. 20 à 30 · D. 30 à 40 /min</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B. 12 à 20 /min.</strong></p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">4. À partir de quelle valeur de glycémie capillaire parle-t-on d'hypoglycémie ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>En dessous de 0,70 g/L.</strong> La glycémie se réalise sur protocole ou à la demande de l'infirmier.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">5. Donnez les seuils de l'hypertension et de l'hypotension.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Hypertension ≥ 140/90 mmHg ; hypotension &lt; 90/60 mmHg.</strong> Valeur de référence : environ 120/80.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">6. Quelle diurèse définit l'oligurie ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Moins de 500 mL par 24 heures.</strong> La diurèse normale est de 1 à 1,5 L ; l'anurie est une urgence.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">7. Citez deux pièges de mesure de la saturation.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Au choix :</strong> main froide, vernis foncé ou faux ongles, personne qui bouge ou tremble, lecture avant affichage stable, lumière vive sur le capteur.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">8. La saturation d'un résident sous oxygène baisse. Le protocole du service prévoit d'augmenter le débit. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous ne touchez pas au débitmètre.</strong> Vous vérifiez les lunettes et la tubulure, vous installez la personne assise, vous restez auprès d'elle et vous alertez l'infirmier.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">9. Quelle échelle pour une douleur aiguë chez une personne âgée non communicante, et à partir de quel score la douleur est-elle probable ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Algoplus, douleur probable à partir de 2 sur 5.</strong></p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">10. Différence entre Algoplus et Doloplus ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Algoplus</strong> : douleur aiguë, 5 items. <strong>Doloplus</strong> : douleur prolongée, 10 items, score sur 30, douleur à partir de 5.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">11. Citez trois signes d'appel propres à la personne âgée.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Fièvre atténuée, confusion d'apparition récente, chute.</strong> On peut ajouter la douleur exprimée par un changement de comportement.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">12. Quels sont les cinq éléments d'une alerte orale structurée ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Qui, quoi, depuis quand, valeurs, ce que j'ai fait.</strong></p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">13. Vous lisez « nitrites positifs » sur une bandelette urinaire. Qu'écrivez-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le résultat lu et sa transmission</strong> : « nitrites positifs, leucocytes ++, transmis à l'infirmière ». Jamais « infection urinaire » : pas d'interprétation diagnostique.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">14. Une personne traitée par un antalgique de palier 3 respire à 10 /min et se réveille difficilement. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Alerte immédiate</strong>, sans la quitter : risque de dépression respiratoire.</p></details>
+
+<details style="border:1px solid #B2EBF2;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#006064;">15. Une situation de prévention d'une chute qui n'a pas eu lieu relève-t-elle de l'activité 3 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non, de l'activité 2.</strong> L'activité 3 porte sur un changement réellement constaté.</p></details>
+
+<div style="background:linear-gradient(135deg,#006064 0%,#00ACC1 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 05</p>
+<ol style="margin:0;padding-left:22px;">
+<li>L'activité 3 prouve un changement d'état clinique repéré, objectivé et signalé ; le soin autour n'est que le décor.</li>
+<li>L'état habituel, écrit avant le changement, est votre valeur de référence.</li>
+<li>Décrivez ce que vous observez ; l'hypothèse justifie l'alerte, jamais un diagnostic ni un traitement.</li>
+<li>Chiffrez avec les valeurs exactes : FR 12 à 20 /min, hypoglycémie sous 0,70 g/L, fièvre dès 38 °C, saturation 95 à 100 %.</li>
+<li>Nommez l'échelle de douleur adaptée, et réévaluez avec la même.</li>
+<li>L'alerte passe avant le soin, sans laisser la personne seule : qui, quoi, depuis quand, valeurs, ce que j'ai fait.</li>
+<li>Le débitmètre ne se touche jamais ; la glycémie se fait sur protocole ou à la demande de l'infirmier.</li>
+<li>Fermez la boucle : recontrôle chiffré, daté, tracé.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#006064;font-size:17px;margin:22px 0 8px 0;">✅ Votre plan d'action avant la masterclass 06</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #B2EBF2;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Choisir ma situation d'activité 3 : un changement d'état réellement constaté, mesuré et signalé, qui ne repose sur aucun geste hors champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Écrire l'état habituel de la personne dans le recueil de données, avant le changement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Remplacer chaque adjectif (« basse », « élevée », « mal ») par une valeur chiffrée rapportée à la norme et à l'habituel.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Vérifier chaque valeur de référence citée dans mon livret avec le tableau de la partie 3.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Nommer l'échelle de douleur utilisée et justifier son choix.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Rédiger mon alerte orale en cinq éléments et écrire la limite en deux temps.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Relier chaque traitement de mon recueil à une surveillance dans le récit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Passer ma situation à la grille de détection de la partie 6 et chasser les « on ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2EBF2;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2EBF2;">Réviser avec les ressources ORACLE : le livre du livret 2 (chapitre 11), le Livre Bloc 2 et les fiches de révision B2.</td></tr>
+</table></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">Lequel de ces paramètres <strong>ne peut pas</strong> être mesuré par un aide-soignant seul ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Pouls radial</button>
+        <button class="quiz-opt" data-correct="false">Température tympanique</button>
+        <button class="quiz-opt" data-correct="true">Pression intracrânienne</button>
+        <button class="quiz-opt" data-correct="false">Fréquence respiratoire</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. La pression intracrânienne est un geste médical, hors champ AS." data-ko="Non. Pouls, température, FR sont dans le champ AS. La pression intracrânienne, non."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

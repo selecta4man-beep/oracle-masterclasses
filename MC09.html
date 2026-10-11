@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC09 — Activité 6 — Communication personne & entourage · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC09</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC09 · Bloc 3</p>
+      <h1 class="hero">Activité 6 — Communication personne & entourage</h1>
+      <p class="subtitle">Écouter, informer, soutenir, respecter la dignité</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#FCE4EC;border-left:6px solid #880E4F;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#880E4F;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>énoncer ce que recouvre l'activité 6 et ce que le livret attend : un contexte relationnel qui couvre <strong>la personne et son entourage</strong> ;</li>
+<li>distinguer une situation d'activité 6 d'une situation d'activité 1 ou d'activité 7 ;</li>
+<li>nommer et employer les outils de la communication soignante : écoute active, reformulation, questions ouvertes et fermées, silence, non-verbal, paraverbal, toucher relationnel, empathie ;</li>
+<li>adapter votre communication à une personne atteinte de troubles neurocognitifs, de troubles sensoriels, d'aphasie, à une personne qui ne parle pas votre langue, anxieuse, agressive, à un enfant ou à une personne en fin de vie ;</li>
+<li>accueillir, écouter, informer dans votre champ et orienter l'entourage, y compris une famille en colère ou un aidant épuisé ;</li>
+<li>appliquer le secret professionnel, la confidentialité, le consentement et le respect du refus de soin, et dire la limite en deux temps ;</li>
+<li>rédiger une situation d'activité 6 où les techniques sont nommées et où l'effet de votre communication est mesuré ;</li>
+<li>repérer dans votre livret les formulations qui font tomber l'activité 6, et répondre aux questions du jury.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#880E4F;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;">0:00</td><td style="padding:9px;border:1px solid #F8BBD0;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #F8BBD0;">5&nbsp;min</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;">0:05</td><td style="padding:9px;border:1px solid #F8BBD0;">Partie 1 · L'activité 6 décodée</td><td style="padding:9px;border:1px solid #F8BBD0;">10&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;">0:15</td><td style="padding:9px;border:1px solid #F8BBD0;">Partie 2 · Les outils de la communication soignante</td><td style="padding:9px;border:1px solid #F8BBD0;">20&nbsp;min</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;">0:35</td><td style="padding:9px;border:1px solid #F8BBD0;">Partie 3 · Adapter la communication à chaque personne</td><td style="padding:9px;border:1px solid #F8BBD0;">20&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;">0:55</td><td style="padding:9px;border:1px solid #F8BBD0;">Partie 4 · L'entourage : accueillir, informer, orienter, soutenir</td><td style="padding:9px;border:1px solid #F8BBD0;">15&nbsp;min</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;">1:10</td><td style="padding:9px;border:1px solid #F8BBD0;">Partie 5 · Les limites : secret, confidentialité, consentement</td><td style="padding:9px;border:1px solid #F8BBD0;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;">1:25</td><td style="padding:9px;border:1px solid #F8BBD0;">Partie 6 · Deux situations modèles, grille de détection et questions du jury</td><td style="padding:9px;border:1px solid #F8BBD0;">25&nbsp;min</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;">1:50</td><td style="padding:9px;border:1px solid #F8BBD0;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #F8BBD0;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">1. Pour l'activité 6, une situation centrée sur la seule personne soignée suffit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'attendu officiel demande au moins un contexte relationnel qui couvre <strong>la personne et son entourage</strong>. Sans les proches, la moitié de l'attendu reste sans preuve.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">2. Reformuler, c'est répéter mot pour mot ce que la personne vient de dire.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Reformuler, c'est redire avec vos mots ce que vous avez compris, et souvent l'émotion qui l'accompagne, pour vérifier votre compréhension.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">3. Une résidente atteinte de troubles neurocognitifs réclame sa mère, décédée depuis longtemps. Il faut lui rappeler la réalité pour la réorienter.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Lui annoncer à nouveau ce décès lui fait revivre un deuil, à chaque fois. Vous ne la contredisez pas frontalement : vous accueillez l'émotion (« Vous pensez à votre maman. Parlez-moi d'elle »), sans mentir pour autant. C'est le principe de la validation.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">4. Si l'infirmière est occupée, l'aide-soignant peut donner à la famille les résultats de la prise de sang, puisqu'ils sont normaux.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Communiquer un résultat, un diagnostic, un pronostic ou une information sur le traitement ne relève pas de l'aide-soignant, même quand la nouvelle est bonne. Vous entendez la demande, vous orientez vers l'infirmier ou le médecin, et vous le prévenez.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">5. Le secret professionnel interdit à l'aide-soignant de transmettre à l'infirmière ce qu'un résident lui a confié.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Au sein de l'équipe de soins, vous partagez les informations <strong>nécessaires</strong> à la prise en charge de la personne. Une confidence qui touche à sa sécurité ou à sa santé se transmet.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">6. Une personne peut refuser un soin, même si ce soin est dans son intérêt.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> La loi du 4 mars 2002 pose qu'aucun acte ni traitement ne peut être pratiqué sans le consentement libre et éclairé de la personne, qui peut le retirer à tout moment.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">7. Avec une personne malentendante, il suffit de parler plus fort.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Crier déforme les sons et peut paraître agressif. Vous vérifiez ses appareils auditifs, vous vous placez face à elle, visage éclairé, et vous parlez lentement, sans crier.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">8. La personne de confiance et la personne à prévenir sont la même chose.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> La personne à prévenir est contactée en cas d'événement. La personne de confiance, désignée par écrit par la personne majeure, peut l'accompagner dans ses démarches et assister aux entretiens médicaux, et elle est consultée si la personne ne peut plus exprimer sa volonté.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">9. Un enfant de la famille peut servir d'interprète pour expliquer un soin à sa grand-mère qui ne parle pas français.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, en règle générale.</strong> Un enfant n'a pas à porter des informations intimes ou inquiétantes. Vous recherchez un interprète ou un membre du personnel qui parle la langue.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">10. Dans un échange avec une personne inquiète, le silence est un temps perdu.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Un silence attentif laisse à la personne le temps de chercher ses mots ; c'est souvent après lui que vient la vraie inquiétude.</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent : on communique souvent bien d'instinct, sans avoir jamais eu à <strong>nommer</strong> ses outils ni à <strong>mesurer</strong> leur effet. C'est ce que le jury attend ici.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 6 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 10&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">1.1 · Ce que recouvre l'activité 6</p>
+
+<p>Intitulé officiel de l'activité : <strong>accueil, information et communication auprès des personnes et de leur entourage</strong> ; la compétence 6 qui lui répond : <strong>établir une communication adaptée pour informer et accompagner la personne et son entourage</strong>. L'activité ouvre le bloc 3 avec l'activité 7. Les éléments de la compétence 6 (fiche RNCP 40692), reformulés :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:36%;">Élément de compétence (reformulé)</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que cela veut dire sur le terrain</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;"><strong>Écouter</strong> la personne et son entourage, en prenant en compte le verbal et le non-verbal</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Ce qui est dit, et ce qui ne l'est pas : visage fermé, mains crispées, silence.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;"><strong>Mettre en œuvre des soins relationnels</strong> adaptés à chaque public, dans le respect de la <strong>confidentialité</strong></td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous ne parlez pas de la même façon à une personne désorientée, à un enfant, à un fils en colère. Et jamais dans un couloir.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;"><strong>Identifier les informations pertinentes</strong> à transmettre, en lien avec l'infirmier et dans le respect de la réglementation</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous savez ce que vous pouvez dire (votre soin, l'organisation, la vie quotidienne) et ce qui revient à l'infirmier ou au médecin (diagnostic, résultats, pronostic, traitement).</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Apporter des <strong>conseils</strong> d'éducation à la santé, d'hygiène de vie et de <strong>sécurité domestique</strong></td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Hydratation, éclairage de nuit, tapis qui glissent, chaussures fermées : des conseils simples, dans votre champ, transmis à l'équipe.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;"><strong>Permettre à la personne d'exprimer</strong> ses attentes et ses besoins sur le soin</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Lui laisser dire ce qu'elle veut, craint ou refuse.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Donner les <strong>informations pratiques</strong> utiles à l'accueil</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Le fonctionnement du service, les horaires, la sonnette, le livret d'accueil, à qui s'adresser.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel : ce que le livret demande vraiment</p>
+
+<p>Pour l'activité 6, le livret demande <strong>un élément</strong> : décrire « au moins un contexte relationnel », en couvrant <strong>la personne et son entourage</strong>. Chez ORACLE, cet élément se rédige en <strong>une situation</strong>, qui porte deux volets relationnels, chacun réellement développé : ce que vous avez fait avec la personne, et ce que vous avez fait avec un proche (conjoint, enfant, parent d'un enfant hospitalisé, aidant, personne de confiance).</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:24%;">Rubrique</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que vous y écrivez pour l'activité 6</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:24%;vertical-align:top;">Rubrique A</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">L'inventaire honnête des situations relationnelles que vous avez <strong>réellement</strong> vécues : accueil d'une personne et de sa famille, accompagnement d'une personne désorientée, d'une personne malentendante, d'une personne anxieuse avant un examen, d'une famille en fin de vie, conseils de sécurité à domicile… Rien que vous n'ayez jamais fait, et aucune « information » hors champ (« j'explique les traitements aux familles »).</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:24%;vertical-align:top;">Rubrique B</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Une situation précise, vécue et datée : la personne présentée <strong>avant</strong> l'échange, la difficulté de communication, vos techniques <strong>nommées</strong>, la réaction de la personne, le volet entourage, la limite dite, le résultat <strong>mesuré</strong> et la transmission.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Le piège le plus fréquent de l'activité 6 :</strong> une belle situation avec la personne, puis une dernière phrase du type « j'ai aussi rassuré sa famille ». Le volet entourage est alors <strong>affirmé</strong>, pas démontré. Deuxième piège, aussi fréquent : un récit où le candidat explique la maladie ou le traitement à la famille. C'est un acte hors champ décrit comme réalisé.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">1.3 · La phrase-clé, mot à mot</p>
+
+<p style="margin:0 0 10px 0;background:#FCE4EC;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment ma communication a changé le cours de la situation. »</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:28%;vertical-align:top;">« ma communication »</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;"><em>Votre</em> parole, votre écoute, votre posture, et une communication <strong>outillée</strong> : des techniques nommées, pas « je lui ai parlé gentiment ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:28%;vertical-align:top;">« a changé »</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Il faut un <strong>avant</strong> et un <strong>après</strong>. Une angoisse qui s'apaise, une famille qui passe de la colère à la collaboration. Sans changement, votre situation raconte un échange sans prouver une compétence.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:28%;vertical-align:top;">« le cours de la situation »</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Le changement se <strong>mesure</strong> à distance : appels à la sonnette, refus sur une semaine, temps pour retrouver le calme, habitude inscrite au projet personnalisé.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">1.4 · Ne pas confondre avec les activités 1 et 7</p>
+
+<p>Ce qui décide du rattachement, c'est <strong>ce que votre récit démontre</strong>.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:22%;">Question</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:26%;">Activité 1 (BC1)</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:26%;">Activité 6 (BC3)</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Activité 7 (BC3)</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:22%;vertical-align:top;">Phrase-clé</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Voilà comment j'accompagne au quotidien, dans le respect de l'autonomie et de la dignité. »</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Voilà comment ma communication a changé le cours de la situation. »</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Voilà comment j'ai transmis mon savoir-faire, tout en restant garant du soin. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:22%;vertical-align:top;">Le cœur du récit</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">L'acte essentiel personnalisé et la vie sociale.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Une difficulté de communication et les techniques qui l'ont levée.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Un besoin d'apprentissage, une démarche pédagogique, une évaluation.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ La frontière la plus fine : 1 et 6.</strong> Un refus de toilette levé par la parole peut s'écrire dans les deux activités. En activité 1, le récit se concentre sur la toilette personnalisée et ce que la personne fait elle-même. En activité 6, le soin se résume en une phrase, et le récit se concentre sur l'échange : ce que la personne a exprimé, les techniques employées, ce que vous avez fait avec son entourage.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;margin:24px 0 8px 0;">✍️ Exercice 1 (4&nbsp;min) · Activité 1, 6 ou 7 ?</p>
+<p>Pour chaque résumé de situation, dites à quelle activité il se rattache, et pourquoi. Ouvrez ensuite la correction.</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">a) M. V., 70 ans, est angoissé la veille d'une coloscopie. Je l'écoute, je reformule sa peur, je l'oriente vers l'infirmière pour ses questions sur l'examen. Son épouse, présente, me demande à quelle heure elle pourra revenir : je lui donne les horaires de visite et le numéro du service. M. V. s'endort à 22 h, sans rappeler.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 6.</strong> Difficulté relationnelle, techniques nommées, limite dite, volet entourage et effet mesuré.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">b) J'accueille une élève aide-soignante qui n'ose pas parler aux résidents désorientés. Je lui montre comment je me place face à eux, je lui fais pratiquer la reformulation, puis nous faisons le point avec son outil de suivi.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 7.</strong> Le contenu est la communication, mais la situation prouve la transmission d'un savoir-faire à une apprenante, évaluée.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">c) J'ai expliqué à la fille de Mme S. que sa mère avait fait un petit AVC, et qu'il fallait s'attendre à d'autres.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Hors champ, quelle que soit l'activité.</strong> Annoncer un diagnostic et un pronostic revient au médecin. Cette situation ne peut pas être présentée telle quelle ; elle pourrait être réécrite si, en réalité, vous avez entendu la question et orienté vers le médecin.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">d) M. J., hémiplégique et aphasique après un AVC, s'énerve parce que personne ne comprend qu'il veut ses lunettes. Je lui propose un tableau de pictogrammes et des questions fermées ; il désigne ses lunettes. J'explique ce tableau à son épouse, qui l'utilise dès le lendemain lors de sa visite.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 6.</strong> Communication adaptée à l'aphasie, effet immédiat, et volet entourage : l'épouse repart avec un outil pour communiquer avec son mari.</p></details>
+
+<div style="background:#FCE4EC;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> L'activité 6 demande un contexte relationnel qui couvre la personne <strong>et</strong> son entourage, dans une seule situation où les deux volets sont développés. Sa phrase-clé exige un avant et un après : votre communication doit avoir <em>changé</em> quelque chose, et ce changement se mesure. Le rattachement dépend de ce que le récit prouve : accompagner un acte (1), communiquer pour faire évoluer une situation (6), former (7).</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 14 · Livre Bloc 3 · Fiches de révision B3</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Les outils de la communication soignante <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:15 · 20&nbsp;min</span></div>
+
+<p>Le jury vous demande <strong>ce que vous avez fait</strong> pour que la communication passe. Cette partie donne leur nom professionnel aux outils que vous employez déjà.</p>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">2.1 · Les trois canaux : verbal, paraverbal, non-verbal</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:20%;">Canal</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:38%;">Ce qu'il contient</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que vous observez et ajustez</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Verbal</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Les mots choisis, la longueur des phrases, le vocabulaire.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Des mots simples, sans jargon, une idée par phrase.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Paraverbal</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">La voix : le ton, le volume, le débit, les pauses, l'intonation.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Une voix posée et plutôt grave, un débit ralenti, des pauses pour laisser le temps de comprendre.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Non-verbal</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Le regard, les expressions du visage, les gestes, la posture, la distance, le toucher.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Se placer face à la personne et à sa hauteur, garder les mains visibles, ne pas croiser les bras, respecter une distance que la personne accepte, sourire quand c'est juste.</td></tr>
+</table>
+
+<div style="background:#FCE4EC;border-left:6px solid #AD1457;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Quand les canaux se contredisent, c'est le non-verbal qui l'emporte.</strong> « Prenez votre temps », dit la main sur la poignée, transmet l'inverse. Dans votre livret, une phrase sur votre posture (« je me suis assise à côté d'elle, à sa hauteur ») prouve souvent plus qu'un paragraphe sur vos paroles.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">2.2 · L'écoute active et ses techniques</p>
+
+<p>L'écoute active <strong>se voit</strong> et <strong>se vérifie</strong> : vous montrez que vous écoutez, et vous vérifiez que vous avez compris.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:22%;">Technique</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:38%;">Ce que c'est</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Exemple de phrase</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Reformulation</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Redire avec vos mots ce que vous avez compris, pour le vérifier et montrer que vous avez entendu.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Si je comprends bien, vous avez peur de ne pas vous réveiller après l'anesthésie ? »</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Reformulation du ressenti</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Nommer l'émotion perçue derrière les mots, sans l'interpréter au-delà.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Vous êtes en colère parce que vous avez attendu longtemps. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Question ouverte</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Une question qui laisse la personne répondre librement ; elle ouvre l'échange.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Qu'est-ce qui vous inquiète le plus ? », « Comment se passaient vos soirées chez vous ? »</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Question fermée</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Une question à laquelle on répond par oui, par non, ou par un mot ; elle précise, et elle aide la personne qui s'exprime difficilement.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Avez-vous mal ? », « Voulez-vous le pull bleu ? »</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Silence</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Un temps sans parole, le regard disponible, pour laisser la personne chercher ses mots.</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous attendez, sans remplir le vide, sans regarder ailleurs.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Trois contre-exemples qui ferment l'échange.</strong> La question en rafale (« Vous avez mal ? Où ? Depuis quand ? C'est fort ? ») qui ne laisse pas répondre. La fausse réassurance (« Ne vous inquiétez pas, tout va bien se passer »), qui coupe l'émotion au lieu de l'accueillir et promet ce que vous ne savez pas. Le conseil immédiat (« Il faut que vous mangiez »), qui répond avant d'avoir compris.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">2.3 · L'empathie, le toucher relationnel et la relation d'aide</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:24%;">Notion</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que c'est, et comment l'écrire</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Empathie</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Comprendre ce que vit l'autre, de son point de vue, <strong>sans le vivre à sa place</strong> : ni sympathie (partager l'émotion) ni pitié. Dans votre livret : « j'ai reconnu sa peur » plutôt que « j'étais aussi bouleversée qu'elle ».</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Toucher relationnel</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Un toucher qui n'a pas de but technique : une main posée sur l'avant-bras, un effleurement des mains pendant un échange, une présence physique rassurante. Il se propose, il ne s'impose pas : vous <strong>demandez l'accord</strong> (« Je peux vous prendre la main ? ») ou vous observez l'acceptation chez une personne qui ne parle plus, et vous vous retirez au moindre signe de refus.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Relation d'aide</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Le soignant aide la personne à exprimer ce qu'elle vit et à mobiliser ses propres ressources, sans solutions toutes faites. Elle repose sur trois attitudes : l'<strong>acceptation</strong> sans jugement, l'<strong>empathie</strong>, et l'<strong>authenticité</strong> (être sincère, ne pas jouer un rôle, ne pas promettre ce que l'on ne peut pas tenir).</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">2.4 · Les obstacles à la communication</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:30%;">Obstacle</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Exemples, et ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Liés à la personne</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Douleur, fatigue, troubles cognitifs, troubles sensoriels, aphasie, langue étrangère, anxiété, colère, effets de certains traitements (somnolence sous anxiolytiques ou hypnotiques). Vous évaluez avant de parler : a-t-elle ses lunettes, ses appareils ? A-t-elle mal ? Une douleur se mesure et se transmet.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Liés au soignant et à l'environnement</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Le manque de temps, le jargon, les préjugés (« de toute façon, il ne comprend plus »), les surnoms, parler de la personne devant elle à la troisième personne ; le bruit, la télévision, la porte ouverte, les interruptions. Vous fermez la porte et vous éteignez la télévision, avec son accord.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Le vouvoiement n'est pas une option.</strong> Dans votre livret comme dans votre pratique, vous vouvoyez la personne et vous l'appelez par son nom (« Madame R. »), sauf si elle a clairement exprimé une autre préférence, que vous avez transmise et qui figure dans son projet personnalisé. Un « ma petite dame » ou un tutoiement non demandé dans une situation est une preuve à charge : il signale un défaut de respect de la dignité.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;margin:24px 0 8px 0;">✍️ Exercice 2 (6&nbsp;min) · Reformulez</p>
+<p>Pour chaque parole, écrivez sur votre feuille une reformulation (du contenu, du ressenti, ou des deux), puis comparez avec la proposition.</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">a) Mme B., 83 ans, le soir de son entrée en EHPAD : « Mes enfants m'ont mise ici pour se débarrasser de moi. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Vous avez le sentiment que vos enfants ne voulaient plus de vous chez eux… » Puis un silence. <strong>À éviter :</strong> « Mais non, ils vous aiment, ils ont fait ça pour votre bien » : c'est une contradiction et une fausse réassurance, qui coupent court à ce qu'elle essaie de dire.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">b) M. D., 58 ans, la veille d'une opération : « Et si je ne me réveillais pas ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Vous avez peur de l'anesthésie. » Puis une question ouverte : « Qu'est-ce qui vous fait le plus peur ? » Et la limite : « Ce sont des questions importantes. Je préviens l'infirmière, pour qu'elle ou l'anesthésiste puisse vous répondre avant demain. » <strong>À éviter :</strong> « Il n'y a aucun risque », qui est une information médicale inexacte et hors champ.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">c) La femme de M. P., épuisée, dans la chambre : « Je n'en peux plus, il m'appelle vingt fois par nuit. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Vous êtes à bout, vos nuits sont hachées par ses appels. » Puis : « Depuis combien de temps cela dure-t-il ? » Et vous transmettez cet épuisement à l'infirmière coordinatrice. <strong>À éviter :</strong> « Il faut vous reposer », conseil impossible à suivre qui ne l'aide pas.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">d) M. A., 88 ans, dit à voix basse, pendant la toilette : « À quoi bon tout ça, maintenant. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions : reformuler, oui, et ne pas s'arrêter là.</strong> « Vous vous demandez à quoi servent tous ces soins… » Puis un silence, et une question ouverte (« Qu'est-ce qui vous fait dire cela aujourd'hui ? »). Une parole de découragement ou d'idées noires chez une personne âgée se <strong>transmet sans délai</strong> à l'infirmière, avec les mots exacts entre guillemets, et immédiatement si elle évoque l'envie de mourir. Reformuler sans transmettre laisserait seul un signe d'alerte.</p></details>
+
+<div style="background:#FCE4EC;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Trois canaux, et c'est le non-verbal qui l'emporte. L'écoute active se nomme : reformulation, reformulation du ressenti, questions ouvertes et fermées, relance, silence, résumé. L'empathie comprend sans se confondre, le toucher relationnel se propose avec l'accord, la relation d'aide repose sur l'acceptation, l'empathie et l'authenticité. Nommez vos outils dans votre livret : c'est ce qui transforme un échange en compétence.</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 14 · Livre Bloc 3 · Fiches de révision B3</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Adapter la communication à chaque personne <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:35 · 20&nbsp;min</span></div>
+
+<p>L'intitulé dit « communication <strong>adaptée</strong> » : qu'avez-vous changé dans votre manière de communiquer, <em>pour cette personne-là</em> ? Votre recueil de données doit donc contenir ce qui rend la communication difficile : troubles cognitifs, audition, vue, langue, anxiété, histoire de vie.</p>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">3.1 · La personne atteinte de troubles neurocognitifs</p>
+
+<p>Les troubles neurocognitifs (le terme « démence » est abandonné) touchent la mémoire, le langage, l'orientation. La personne comprend de moins en moins les mots, mais perçoit longtemps le ton, le visage et l'émotion.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#2E7D32;color:#FFFFFF;"><th style="padding:9px;border:1px solid #2E7D32;text-align:left;width:36%;">Ce que vous faites</th><th style="padding:9px;border:1px solid #2E7D32;text-align:left;">Pourquoi</th></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;vertical-align:top;">Vous vous présentez à chaque fois, face à elle, à sa hauteur, en l'appelant par son nom</td><td style="padding:9px;border:1px solid #C8E6C9;vertical-align:top;">Elle ne se souvient pas forcément de vous ; arriver par derrière ou de côté peut l'effrayer.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;vertical-align:top;">Des phrases courtes, un message à la fois, une consigne à la fois</td><td style="padding:9px;border:1px solid #C8E6C9;vertical-align:top;">Elle ne peut pas retenir deux informations en même temps. « Asseyez-vous. » Puis, une fois assise : « Donnez-moi votre bras. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;vertical-align:top;">Des questions fermées ou à choix limité</td><td style="padding:9px;border:1px solid #C8E6C9;vertical-align:top;">« Le pull bleu ou le pull rouge ? » plutôt que « Qu'est-ce que vous voulez mettre ? », qui la met en échec.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;vertical-align:top;">Vous ne la contredisez pas frontalement, vous validez l'émotion</td><td style="padding:9px;border:1px solid #C8E6C9;vertical-align:top;">Lui dire « Votre mari est mort depuis dix ans » lui fait revivre un deuil. La <strong>validation</strong> consiste à reconnaître l'émotion et le besoin qui se cachent derrière les mots (« Vous l'attendez, il vous manque. Comment était-il ? »), sans mentir et sans entrer dans un faux récit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;vertical-align:top;">Vous vous appuyez sur son histoire de vie</td><td style="padding:9px;border:1px solid #C8E6C9;vertical-align:top;">Le métier, les habitudes, les chansons, les prénoms des enfants sont des portes d'entrée.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">3.2 · Les troubles sensoriels, la barrière de la langue, l'aphasie</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:24%;">Situation</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Surdité ou baisse d'audition</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vérifier que les appareils auditifs sont en place, allumés, avec une pile chargée. Se placer face à la personne, visage éclairé, bouche visible (sans masque si les consignes d'hygiène du moment le permettent, sinon un masque transparent dit inclusif, s'il est disponible). Supprimer le bruit de fond. Parler lentement, d'une voix plutôt grave, sans crier. Écrire les mots importants sur une ardoise. Vérifier la compréhension par une question, et non par « vous avez compris ? ».</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Déficience visuelle</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">S'annoncer en entrant, prévenir avant de toucher, décrire ce que l'on fait (« Je pose votre verre à droite de votre assiette »). Ne jamais déplacer ses objets sans le dire. Guider en offrant son bras plutôt qu'en poussant la personne. Vérifier que les lunettes sont propres et portées.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Barrière de la langue</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Recourir à un interprète professionnel ou à un membre du personnel qui parle la langue. Utiliser des pictogrammes, des gestes, des mots simples, des outils de traduction pour les messages pratiques du quotidien. Ne pas faire traduire un enfant, et se méfier d'un proche qui filtre. Pour une information médicale, c'est à l'infirmier ou au médecin d'organiser la traduction : vous le signalez.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Aphasie (après un AVC, par exemple)</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">L'aphasie est un trouble du langage : la personne comprend souvent plus qu'elle ne peut dire, ou dit un mot pour un autre. Ne pas finir ses phrases à sa place sans son accord, ne pas lui parler comme à un enfant. Poser des questions fermées, une à la fois. Proposer un tableau de communication (pictogrammes, alphabet), les gestes, le regard, le « oui » et le « non » convenus. Transmettre ce qui marche, pour que toute l'équipe l'utilise, et le montrer aux proches.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">3.3 · La personne anxieuse, agressive ou opposante</p>
+
+<p>L'agressivité exprime presque toujours autre chose : peur, douleur, incompréhension, atteinte à la dignité, sentiment d'abandon. Votre but est de <strong>désamorcer</strong>, en gardant votre sécurité et celle des autres.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:26%;">Temps</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">1 · Vous vous mettez en sécurité</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Distance suffisante, accès à la sortie gardé, autres résidents éloignés si nécessaire.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">2 · Vous baissez la tension</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Voix calme et basse, débit lent, mains visibles et ouvertes, pas de geste brusque, pas de contact physique non sollicité. Vous ne haussez pas la voix et ne répondez pas à l'insulte.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">3 · Vous écoutez et vous reformulez</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Vous êtes en colère. Dites-moi ce qui se passe. » Se sentir entendue fait souvent baisser la tension en quelques phrases.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">4 · Vous cherchez la cause</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Douleur ? Besoin d'aller aux toilettes ? Faim, froid, bruit ? Une mauvaise nouvelle ? Un changement dans le traitement, que vous signalez à l'infirmière ? Une agitation inhabituelle peut aussi être le signe d'un changement de l'état clinique (fièvre, rétention urinaire, constipation, douleur) : vous la transmettez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">5 · Vous passez le relais, vous transmettez</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Si la tension ne baisse pas, ou si vous êtes la cible, vous passez le relais (collègue, infirmière, cadre) : c'est une compétence, pas un échec. Vous ne décidez jamais d'une contention. Vous transmettez les faits sans jugement : l'heure, les mots entre guillemets, ce qui a apaisé.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ L'opposition n'est pas l'agressivité.</strong> Une personne qui dit non exerce un droit. La personne anxieuse, elle, a besoin d'informations claires sur ce qui va se passer dans <em>votre</em> soin (« Je vais vous aider à vous installer, puis l'infirmière viendra »), de repères de temps (« Je reviens dans dix minutes », et vous revenez dans dix minutes), et d'être écoutée. Les questions sur l'examen, la maladie ou le traitement, vous les orientez.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">3.4 · L'enfant, et la personne en fin de vie</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:24%;">Situation</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">L'enfant</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous vous adressez <strong>à l'enfant</strong>, à sa hauteur, avec des mots adaptés à son âge, et pas seulement à ses parents. Vous expliquez votre soin juste avant, sans mentir (« ça va être froid »), avec le jeu ou le doudou. Les parents sont des partenaires : ils connaissent ses habitudes, leur présence rassure. Les questions sur la maladie ou le traitement, vous les orientez vers l'infirmier ou le médecin.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">La personne en fin de vie</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">La communication devient surtout présence : une voix douce, le toucher relationnel accepté, les mots simples, le silence partagé. L'audition peut persister jusqu'au bout : vous continuez de lui parler, de vous annoncer, d'expliquer chaque soin, même quand elle ne répond plus, et vous ne parlez jamais d'elle devant elle comme si elle n'était pas là. Vous accueillez ses paroles, y compris ses souhaits sur sa fin de vie, sans esquiver ni répondre à la place du médecin, et vous les transmettez à l'infirmier. Les proches sont accueillis, informés de ce qui relève de votre soin, orientés pour le reste.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;margin:24px 0 8px 0;">✍️ Exercice 3 (5&nbsp;min) · Communication adaptée ou non ?</p>
+<p>Adaptée, inadaptée, ou adaptée sous conditions ? Justifiez, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">a) Mme G., troubles neurocognitifs : « Allez, on se lève, on va à la douche, on s'habille et ensuite on descend manger. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Inadaptée.</strong> Quatre consignes en une phrase, et un « on » infantilisant. Une consigne à la fois, en vouvoyant : « Madame G., je vous aide à vous lever. »</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">b) Mme T., aphasique, cherche un mot. Je lui propose : « C'est la télévision que vous voulez ? », puis j'attends qu'elle confirme par un signe de tête.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Adaptée.</strong> Une question fermée, une seule, et vous attendez sa confirmation au lieu de décider pour elle.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">c) M. R., très agité, crie dans le couloir. Je le prends fermement par le bras pour le ramener dans sa chambre.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Inadaptée.</strong> Un contact physique imposé augmente l'agitation et vous met en danger. Vous gardez vos distances, vous parlez calmement, vous reformulez, vous cherchez la cause et vous passez le relais si nécessaire.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">d) Je pose la main sur celle de M. E., en fin de vie, qui ne parle plus, pendant que je lui parle doucement.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Adaptée sous conditions.</strong> Le toucher relationnel aide en fin de vie, à condition d'observer son acceptation (main qui se détend, visage apaisé) et de retirer la main au moindre signe de refus (crispation, retrait, grimace).</p></details>
+
+<div style="background:#FCE4EC;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Adapter, c'est changer sa manière de communiquer pour <em>cette</em> personne. Troubles neurocognitifs : face à elle, un message à la fois, validation de l'émotion, jamais de contradiction frontale. Troubles sensoriels : appareils, lumière, visage visible, description. Langue : interprète, pictogrammes, jamais un enfant. Agressivité : se mettre en sécurité, désamorcer, chercher la cause, passer le relais. Enfant : lui parler à lui. Fin de vie : présence, voix, toucher accepté, et parler jusqu'au bout.</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 14 · Livre Bloc 3 · Fiches de révision B3</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · L'entourage : accueillir, informer, orienter, soutenir <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:55 · 15&nbsp;min</span></div>
+
+<p>L'entourage, ce sont les proches : conjoint, enfants, parents d'un enfant, aidant principal, personne de confiance, tuteur. Inquiets, parfois épuisés ou en colère, ils sont aussi une ressource. Le jury attend de voir que vous savez les <strong>accueillir</strong>, les <strong>écouter</strong>, les <strong>informer dans votre champ</strong>, les <strong>orienter</strong> et les <strong>soutenir</strong>.</p>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">4.1 · Accueillir et écouter les proches</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:28%;">Moment</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">À l'entrée de la personne</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous vous présentez, puis vous présentez la chambre, la sonnette, les horaires, le livret d'accueil, les personnes à qui s'adresser. Vous recueillez auprès des proches l'histoire de vie et les habitudes, que vous transmettez pour le projet personnalisé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Quand un proche vous interpelle</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous écoutez jusqu'au bout avant de répondre, dans un lieu calme et à l'écart. Vous reformulez. Vous distinguez la demande (« Je veux voir le médecin ») de l'inquiétude qui la porte (« J'ai peur qu'il souffre »).</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Le proche comme ressource</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous lui demandez ce qu'il sait : « Comment votre mère se couchait-elle, chez elle ? », « Qu'est-ce qui l'apaise quand elle est inquiète ? ».</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">4.2 · Informer dans son champ, orienter pour le reste</p>
+
+<p>C'est le point le plus surveillé de l'activité 6 : vous parlez de ce que vous faites et observez dans votre rôle ; vous orientez pour le reste.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:9px;border:1px solid #2E7D32;text-align:left;width:50%;">✅ Ce que vous pouvez dire</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">⛔ Ce qui revient à l'infirmier ou au médecin</th></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;vertical-align:top;">L'organisation du service, les horaires, les règles de vie, les personnes à qui s'adresser.<br><br>Ce qui relève de votre soin : comment s'est passée la toilette, le repas, la nuit, ce que la personne a mangé, si elle a participé à l'animation, si elle a paru apaisée.<br><br>Les conseils d'hygiène de vie et de sécurité domestique de votre champ.<br><br>Que vous avez entendu la question, et à qui vous la transmettez.</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;">Un diagnostic, une maladie, son évolution.<br><br>Un résultat d'examen (prise de sang, radio, bandelette urinaire, glycémie), même normal.<br><br>Un pronostic (« c'est la fin », « il va s'en remettre »).<br><br>Un traitement : son nom, son effet, sa modification, son arrêt.<br><br>Une information que la personne a demandé de ne pas communiquer.</td></tr>
+</table>
+
+<div style="background:#FCE4EC;border-left:6px solid #AD1457;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0 0 8px 0;"><strong>💡 La limite en deux temps, appliquée à l'entourage.</strong> Ce que je ne fais pas : répondre sur le diagnostic, le résultat, le pronostic ou le traitement. Ce que je fais à la place : j'entends la question, je reformule l'inquiétude, je propose un temps d'échange avec l'infirmier ou le médecin, <strong>je le préviens moi-même</strong>, et je vérifie que le rendez-vous a eu lieu.</p>
+<p style="margin:0;">Formule type : « C'est une question importante. Ce n'est pas à moi d'y répondre, parce que c'est le médecin qui a toutes les informations. Je préviens l'infirmière maintenant, pour qu'elle puisse vous voir ou vous proposer un rendez-vous avec lui. » Répondre « ce n'est pas mon travail », c'est fermer la porte, pas dire la limite.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">4.3 · La famille en colère</p>
+
+<p>La colère d'une famille exprime souvent une inquiétude, une culpabilité, un deuil qui commence, ou un vrai dysfonctionnement : elle se reçoit avant de se discuter.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:26%;">Temps</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">1 · Mettre à l'écart</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Venez, nous allons en parler au calme. » Un petit salon, un bureau, jamais le couloir ni la chambre partagée : la confidentialité protège la personne, et une famille qui n'a plus de public se calme plus vite.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">2 · Écouter sans interrompre</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous laissez vider le sac, sans vous justifier, sans accuser un collègue, sans minimiser.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">3 · Reformuler le ressenti</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Vous êtes inquiet de trouver votre père seul et sans ses lunettes. » C'est souvent le moment où la tension retombe.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">4 · Reconnaître ce qui est juste</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Un dysfonctionnement réel (lunettes perdues, sonnette hors de portée) se reconnaît simplement, avec ce que vous faites tout de suite, sans promettre ce que vous ne pouvez pas tenir.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">5 · Orienter et transmettre</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Ce qui dépasse votre champ (organisation du service, soins médicaux, plainte) est orienté vers l'infirmier, le cadre de santé ou l'infirmière coordinatrice, que vous prévenez. Vous tracez l'échange, avec les faits et les mots du proche.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">6 · Fermer la boucle</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Au passage suivant du proche, vous vérifiez que la réponse a été donnée. C'est ce résultat que vous mesurez dans votre livret.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">4.4 · Soutenir l'aidant épuisé, conseiller à domicile</p>
+
+<p>L'aidant principal, souvent un conjoint âgé, s'épuise. Les signes se repèrent : fatigue visible, irritabilité, pleurs, « je n'en peux plus », négligence de sa propre santé, gestes brusques envers la personne aidée. Votre rôle : <strong>écouter</strong>, <strong>reconnaître</strong> ce qu'il fait, <strong>valoriser</strong> son savoir, <strong>transmettre</strong> son épuisement à l'infirmière coordinatrice, qui peut mobiliser les solutions (accueil de jour, hébergement temporaire, plateforme de répit, aides à domicile).</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:28%;">Domaine</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Exemples de conseils dans votre champ, transmis à l'équipe</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Hygiène de vie</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Proposer à boire régulièrement, surtout en période de chaleur ; garder des horaires de repas réguliers ; encourager la marche ; maintenir les sorties et les visites ; soigner le sommeil (routine du coucher, lumière du jour dans la journée).</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Sécurité domestique</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Retirer les tapis qui glissent, dégager les passages, éclairer le trajet chambre-toilettes la nuit (veilleuse), porter des chaussures fermées plutôt que des mules, placer le téléphone et la téléassistance à portée de main, ranger les objets usuels à hauteur, installer des barres d'appui (conseil transmis à l'infirmière coordinatrice pour l'évaluation de l'ergothérapeute), vérifier la température de l'eau chaude.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Ce qui n'est jamais un conseil de l'aide-soignant :</strong> « donnez-lui son médicament plus tôt », « vous pouvez arrêter ce comprimé, il le fatigue », « mettez-lui de la crème sur sa plaie », « il faudrait lui mettre des barrières la nuit ». Chacune de ces phrases est une décision sur un traitement, un soin de plaie ou une contention : hors champ. Vous observez, vous transmettez à l'infirmière, qui décide ou oriente vers le médecin.</p>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;margin:24px 0 8px 0;">✍️ Exercice 4 (6&nbsp;min) · Répondez à la famille</p>
+<p>Écrivez ce que vous répondez, dans votre champ, puis comparez. Cherchez les deux temps de la limite.</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">a) La fille de Mme R., dans le couloir, devant deux résidents : « Alors, les résultats du scanner de ma mère, c'est grave ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Je comprends que vous attendiez ces résultats avec inquiétude. Venez, nous allons parler au calme. » Puis, à l'écart : « Je n'ai pas à vous donner ces résultats ; c'est le médecin qui peut vous les expliquer. Je préviens l'infirmière tout de suite pour qu'elle organise ce rendez-vous. » Vous prévenez l'infirmière, et vous tracez la demande.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">b) Le fils de M. B., en fin de vie : « Combien de temps il lui reste ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Un silence, puis : « C'est une question très difficile, et je vois combien vous êtes inquiet. Personne ne peut vraiment le dire ; c'est le médecin qui pourra vous en parler. Je peux prévenir l'infirmière pour que vous le rencontriez. En attendant, vous pouvez rester auprès de votre père aussi longtemps que vous le souhaitez. » <strong>À éviter :</strong> « C'est une question d'heures » ou « Il peut encore tenir des semaines » : c'est un pronostic.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">c) Le fils de Mme P., très énervé : « C'est inadmissible, ma mère a encore sa chemise de nuit sale ! »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Mettre à l'écart, écouter, reformuler (« Vous êtes choqué de la trouver ainsi »), reconnaître ce qui est juste (« Vous avez raison, je l'aide à se changer tout de suite »), sans accuser de collègue, et transmettre à l'infirmière ou au cadre. <strong>À éviter :</strong> « On n'a que deux mains » ou « Ce n'est pas moi qui l'ai fait ce matin ».</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">d) La nièce de Mme V., qui téléphone : « Je suis sa nièce, comment va ma tante ? Elle a été hospitalisée hier, c'est ça ? »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Au téléphone, vous ne pouvez vérifier ni l'identité de l'interlocuteur ni ce que la personne a autorisé. Vous ne confirmez pas l'hospitalisation, vous ne donnez aucune information de santé ; vous prenez ses coordonnées et transmettez à l'infirmière, qui vérifiera et rappellera.</p></details>
+
+<div style="background:#FCE4EC;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> L'entourage s'accueille, s'écoute et s'informe dans votre champ : organisation, votre soin, vos observations du quotidien, conseils d'hygiène de vie et de sécurité domestique. Le diagnostic, les résultats, le pronostic et le traitement s'orientent vers l'infirmier ou le médecin, que vous prévenez vous-même. Une famille en colère se met à l'écart, s'écoute et se reformule avant de s'expliquer. Un aidant épuisé se repère, se reconnaît et se signale.</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 14 · Livre Bloc 3 · Fiches de révision B3</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Les limites : secret, confidentialité, consentement <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:10 · 15&nbsp;min</span></div>
+
+<p>L'activité 6 est celle où l'on sort du champ <strong>par la parole</strong> : une seule phrase suffit, comme « j'ai expliqué son diagnostic à sa fille ».</p>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">5.1 · Le secret professionnel et le partage d'informations dans l'équipe</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:30%;">Règle</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce qu'elle veut dire pour vous</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Vous êtes tenu au secret professionnel</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Tout ce que vous apprenez sur la personne dans votre métier est couvert : sa santé, sa vie privée, ses confidences. Cela vaut à l'extérieur (voisins, réseaux sociaux) et envers ses proches.</td></tr>
+<tr style="background:#FEF5F8;"><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Le partage au sein de l'équipe de soins est possible</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Vous partagez avec les professionnels qui participent à sa prise en charge les informations <strong>strictement nécessaires</strong> à la continuité et à la sécurité des soins. Une confidence qui touche à sa sécurité ou à sa santé se transmet à l'infirmier. Vous ne promettez donc pas « je ne dirai rien à personne ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">La personne peut s'opposer à ce que sa famille soit informée</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Ce sont ses informations. Tant que vous ne savez pas ce qu'elle a autorisé, vous ne donnez rien et vous orientez vers l'infirmier.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">5.2 · La confidentialité au quotidien</p>
+
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li><strong>Jamais d'échange sur un résident dans un couloir</strong>, un ascenseur, une salle à manger, devant d'autres résidents ou d'autres familles. Vous proposez un lieu à l'écart.</li>
+<li>La porte fermée et le paravent pendant un échange intime, comme pendant un soin.</li>
+<li>Au téléphone, aucune information de santé à un interlocuteur dont vous ne pouvez pas vérifier l'identité et l'autorisation.</li>
+</ul>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">5.3 · Personne de confiance, directives anticipées, personne à prévenir</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#880E4F;color:#FFFFFF;"><th style="padding:9px;border:1px solid #880E4F;text-align:left;width:26%;">Notion</th><th style="padding:9px;border:1px solid #880E4F;text-align:left;">Ce qu'il faut savoir pour votre livret et pour l'oral</th></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Personne de confiance</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">À distinguer de la personne à prévenir, appelée en cas d'événement. Désignée <strong>par écrit</strong> par la personne majeure (un proche, un ami, son médecin traitant), elle peut l'accompagner dans ses démarches et assister aux entretiens médicaux, et elle est consultée en priorité si la personne ne peut plus exprimer sa volonté. Son rôle a été posé par la loi du 4 mars 2002 et renforcé par la loi du 2 février 2016.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;vertical-align:top;">Directives anticipées</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">Les volontés écrites de la personne sur sa fin de vie, pour le cas où elle ne pourrait plus s'exprimer. Si une personne vous en parle, vous l'écoutez et vous transmettez à l'infirmier ; vous ne les rédigez pas avec elle.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">5.4 · Consentement et refus de soin</p>
+
+<p>La loi du 4 mars 2002 fonde deux principes que votre communication rend concrets : la personne reçoit une information adaptée avant un soin, et aucun soin ne se fait sans son consentement libre et éclairé, qu'elle peut retirer à tout moment. Pour votre soin, c'est vous qui informez et recueillez l'accord, y compris chez une personne désorientée, avec des mots simples et en observant son non-verbal.</p>
+
+<div style="border:1px solid #F8BBD0;background:#FEF5F8;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;"><strong>Les cinq temps face à un refus de soin :</strong></p>
+<ol style="margin:0;padding-left:22px;">
+<li><strong>Respecter</strong> le refus sur le moment, sans contraindre.</li>
+<li><strong>Rechercher la cause</strong> par l'écoute : peur, douleur, pudeur, fatigue, froid, heure inhabituelle, soignant inconnu, habitude de vie.</li>
+<li><strong>Proposer autrement</strong> : un autre moment, un autre lieu, un autre soignant, une autre manière.</li>
+<li><strong>Transmettre</strong> le refus, sa cause et la solution trouvée à l'infirmier ; un refus qui se répète ou qui porte sur un soin important est signalé sans délai.</li>
+<li><strong>Ne jamais insister</strong> : « il a fallu insister » ou « elle a fini par accepter » sont des preuves à charge.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">5.5 · L'accueil et le règlement de fonctionnement</p>
+
+<p>Donner les informations pratiques à l'accueil fait partie de la compétence 6 : livret d'accueil, horaires, fonctionnement, droits (le règlement de fonctionnement et le contrat de séjour en établissement médico-social, issus de la loi du 2 janvier 2002), règles de vie collective, interlocuteurs. Vous expliquez le règlement avec des mots simples, et vous en donnez le sens (« Le déjeuner est servi à midi en salle à manger, pour que chacun puisse être aidé à temps »). Une réclamation s'oriente vers le cadre.</p>
+
+<p style="font-weight:bold;color:#880E4F;margin:24px 0 8px 0;">✍️ Exercice 5 (5&nbsp;min) · Dans le champ, hors champ, ou sous conditions ?</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">a) Dire au mari d'une résidente qu'elle a bien mangé à midi et qu'elle a participé à l'atelier chant.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Dans le champ.</strong> Vos observations du quotidien, dans votre rôle.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">b) Confirmer à la famille que « la glycémie de ce matin était bonne ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Même mesuré par vous sur protocole, un résultat se communique par l'infirmier. Vous orientez.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">c) Annoncer à la fille d'un résident que « son père est entré en fin de vie ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Pronostic : l'annonce revient au médecin. Vous prévenez l'infirmière et accompagnez la famille ensuite.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">d) Répondre à une résidente qui demande pourquoi elle a « un nouveau comprimé blanc » ce soir.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> L'aide à la prise n'est possible que si toutes ses conditions sont réunies (non injectable, non stupéfiant, préparé par l'infirmière ou la pharmacie, emballé individuellement, identifiable, daté, identité et concordance vérifiées). Un comprimé que la résidente ne reconnaît pas crée un doute sur la concordance : vous n'expliquez pas le médicament et vous ne réalisez pas l'aide à la prise tant que ce doute n'est pas levé. Vous laissez le comprimé dans son emballage, vous prévenez l'infirmière tout de suite ; c'est elle qui vérifie, répond et décide. Vous tracez.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">e) Promettre à un résident que vous ne direz à personne qu'il est tombé cette nuit en allant seul aux toilettes.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Mise en danger.</strong> Toute chute se transmet, a fortiori s'il est sous anticoagulant. Vous lui dites honnêtement que vous prévenez l'infirmière pour sa sécurité, et cherchez avec lui pourquoi il n'a pas sonné.</p></details>
+
+<div style="background:#FCE4EC;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Secret professionnel envers l'extérieur, partage du nécessaire au sein de l'équipe de soins. Jamais de conversation sur un résident dans un couloir. Diagnostic, résultat, pronostic, traitement : vous ne dites pas, vous orientez et vous prévenez. Personne de confiance, désignée par écrit, et personne à prévenir ne sont pas la même chose. Face au refus : respecter, chercher la cause, proposer autrement, transmettre, ne jamais insister.</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 14 · Livre Bloc 3 · Fiches de révision B3</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Deux situations modèles, grille de détection et questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:25 · 25&nbsp;min</span></div>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots.</p>
+
+<!-- Situation A -->
+<div style="background:#AD1457;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation A · EHPAD · Une agitation du soir apaisée, et un fils en colère devenu partenaire</div>
+
+<div style="background:#FEF5F8;border:1px solid #F8BBD0;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. G., 84 ans, vit en EHPAD depuis deux mois, à la suite de plusieurs sorties de son domicile la nuit, seul et désorienté. Il a des troubles neurocognitifs de type Alzheimer à un stade modéré, c'est-à-dire une atteinte progressive de la mémoire, de l'orientation et du langage, traités par donépézil, anticholinestérasique (surveillance : ralentissement du pouls, malaises, nausées, perte d'appétit), et une hypertension traitée par amlodipine, antihypertenseur (surveillance : lever en deux temps, vertiges, chutes). Il pèse 70 kg pour 1,72 m, soit un IMC de 23,7, dans les valeurs normales. GIR 3. Ancien éleveur de vaches laitières, veuf, il a un fils qui vient le mardi et le samedi après le travail. Il se lave seul le haut du corps avec une guidance verbale, marche sans aide technique, mange seul. Il comprend les phrases courtes, s'exprime par phrases simples, porte des lunettes, entend bien. Son projet personnalisé inscrit le risque de sortie non accompagnée et de chute. Chaque soir, vers 17 h 30, il devient anxieux et cherche la sortie.</p>
+<p style="margin:0;"><strong>La situation.</strong> Le samedi 14 octobre, à 17 h 40, je trouve M. G. devant la porte de l'unité, secouant la poignée : « Laissez-moi sortir, il faut que je rentre traire les vaches ! » Je me place face à lui, à distance d'un bras, les mains visibles, et je me présente. Je ne le contredis pas sur la ferme, vendue il y a vingt ans, parce que le lui rappeler raviverait sa détresse. Je valide son émotion : « Vous êtes inquiet pour vos bêtes. » Puis je pose une question ouverte : « Comment se passait la traite, chez vous ? » Il se met à raconter, sa main lâche la poignée. Je lui propose mon bras jusqu'au petit salon, son antihypertenseur l'exposant à des vertiges. Là, je vérifie qu'il n'a ni douleur ni envie d'uriner, et je prends son pouls, que son anticholinestérasique peut ralentir : 68/min, régulier. Il parle de ses vaches dix minutes, puis me suit à la salle à manger à 18 h. Son fils arrive à ce moment et m'interpelle devant deux résidents : « On le laisse errer comme ça ? » Je lui propose de poursuivre au petit salon, pour préserver la confidentialité. Je l'écoute sans l'interrompre, puis je reformule : « Vous avez eu peur en le voyant à la porte, et vous vous demandez s'il est en sécurité ici. » Il acquiesce, s'assoit, sa voix baisse. Je lui dis ce que j'ai fait dans mon rôle, puis je lui demande comment se passaient les soirées de son père : il rentrait les bêtes à 17 h 30 « tous les jours de sa vie », puis écoutait la radio en patois. Quand il me demande si « la maladie s'aggrave », je lui réponds que c'est une question importante, que ce n'est pas à moi d'y répondre, et que je préviens l'infirmière pour qu'il rencontre le médecin. Je le fais le soir même, et je transmets en transmission ciblée l'agitation, le pouls, les mots de M. G., ce qui l'a apaisé et l'histoire de la traite. En réunion d'équipe, l'infirmière propose d'inscrire au projet personnalisé, avec l'accord de M. G., un temps à 17 h 15 : marche au jardin, puis radio régionale au petit salon. Son fils apporte des photos de la ferme. Sur les quinze jours suivants, M. G. se présente à la porte deux soirs sur quinze, contre tous les soirs auparavant, et retrouve son calme en moins de cinq minutes. Son fils, reçu par le médecin le jeudi, me dit le samedi suivant avoir « compris ce qui se passait à cette heure-là ».</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:30%;vertical-align:top;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">La personne est présentée avant l'échange, avec ce qui rend la communication difficile. Les techniques sont nommées : posture et distance, présentation, <strong>validation</strong> sans contradiction, question ouverte appuyée sur l'histoire de vie avec M. G. ; mise à l'écart, écoute, <strong>reformulation du ressenti</strong>, recueil de l'histoire de vie avec son fils. Les deux volets sont développés. Le chaînage traitement-surveillance est fait (bras proposé, pouls pris). L'effet est mesuré à distance (2 soirs sur 15, moins de 5 minutes) et inscrit au projet personnalisé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:30%;vertical-align:top;">Où la limite est dite</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">La question sur l'évolution de la maladie est entendue et orientée vers le médecin, par l'infirmière, prévenue le soir même. Le temps d'accompagnement de 17 h 15 est proposé par l'infirmière et validé en équipe, avec l'accord de M. G. Aucune contrainte : il est accompagné, pas retenu.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FFEBEE;font-weight:bold;vertical-align:top;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Je lui ai rappelé qu'il n'avait plus de ferme » : contradiction frontale. « Je l'ai ramené fermement dans sa chambre » ou « nous l'avons attaché au fauteuil » : contrainte, et contention qui ne se décide pas. « J'ai expliqué à son fils que la maladie progressait » : pronostic, hors champ. Répondre au fils dans le couloir, devant les résidents : défaut de confidentialité. « Il s'est calmé » sans chiffre : l'effet est affirmé, pas mesuré.</td></tr>
+</table>
+
+<!-- Situation B -->
+<div style="background:#AD1457;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Domicile · Une personne malentendante qui refuse la douche, et un mari épuisé</div>
+
+<div style="background:#FEF5F8;border:1px solid #F8BBD0;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme H., 81 ans, est accompagnée depuis trois semaines par le service de soins infirmiers à domicile où je travaille, pour l'aide à la toilette trois matins par semaine, à la suite d'une hospitalisation pour une chute dans sa cuisine. Elle a une presbyacousie, c'est-à-dire une baisse de l'audition liée à l'âge, appareillée des deux oreilles, une arthrose des hanches traitée par paracétamol, antalgique de palier 1 (surveillance : douleur évaluée à l'EVA, efficacité transmise), et une anxiété traitée le soir par oxazépam, anxiolytique de la famille des benzodiazépines (surveillance : somnolence, équilibre, chutes). Elle pèse 62 kg pour 1,58 m, soit un IMC de 24,8, dans les valeurs normales. GIR 4. Ancienne couturière, elle vit avec son mari, 84 ans, qui l'aide seul pour tout le reste de la journée ; leur fille habite à 300 km. Elle se lave seule le haut du corps assise et marche avec un déambulateur. Elle est orientée et comprend bien quand elle porte ses appareils. Son plan d'aide inscrit le risque de chute.</p>
+<p style="margin:0;"><strong>La situation.</strong> Le lundi 6 novembre, à 9 h, son mari m'ouvre, les traits tirés. Mme H. est au salon, la télévision à fort volume, et refuse la douche : « Non, pas aujourd'hui, de toute façon je n'entends rien de ce que vous dites. » D'un geste vers mon oreille, je lui demande si elle veut mettre ses appareils ; ils sont sur la table, éteints. Je l'aide à les mettre, je vérifie qu'ils fonctionnent et, avec son accord, je baisse la télévision. Je m'assois face à elle, près de la fenêtre pour que mon visage soit éclairé, et je parle lentement, d'une voix posée. Je reformule : « Quand vous n'entendez pas, vous ne savez pas ce qu'on va vous faire, et c'est inquiétant. » Elle hoche la tête puis, après un silence que je laisse s'installer, dit qu'elle a peur de tomber dans la douche « comme dans la cuisine ». Elle cote la douleur de ses hanches à 2 sur 10 à l'EVA. Je lui propose une toilette assise sur un tabouret de douche, en annonçant chaque étape avant de la faire ; elle accepte. Ensuite, son mari me confie dans la cuisine, à voix basse : « Je n'en peux plus, elle m'appelle toute la nuit, je dors trois heures. » Je reformule son épuisement, je lui dis que ce qu'il fait pour elle est considérable, et je lui demande depuis quand : « depuis sa sortie de l'hôpital ». Il me demande s'il peut lui donner « un demi-comprimé de plus le soir » : je lui réponds que je ne peux pas conseiller sur son traitement, et que je transmets aujourd'hui à l'infirmière coordinatrice pour qu'elle en parle avec leur médecin. Son anxiolytique l'exposant à la somnolence et aux chutes la nuit, je lui conseille, dans mon champ, une veilleuse sur le trajet de la chambre aux toilettes, le déambulateur au pied du lit, et de retirer le tapis de la chambre, ce qu'il fait devant moi. J'écris sur le cahier de liaison, avec leur accord, la toilette assise et le rappel des appareils. À 11 h, je transmets à l'infirmière coordinatrice le refus levé, la peur de tomber, les appels nocturnes, la question sur le traitement et l'épuisement du mari. Elle rencontre le couple le jeudi, contacte leur médecin et leur présente l'accueil de jour. Trois semaines plus tard, Mme H. a accepté ses neuf toilettes sur neuf, appareils en place à mon arrivée ; son mari n'est plus réveillé qu'une ou deux fois par nuit, et sa femme va à l'accueil de jour deux fois par semaine.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:30%;vertical-align:top;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">La difficulté est identifiée avant d'agir (appareils éteints, télévision) et levée par des gestes adaptés à la surdité : appareils, bruit supprimé, visage éclairé, débit ralenti. Reformulation du ressenti et silence font émerger la vraie cause du refus. Le volet entourage est complet : écoute, reconnaissance, repérage de l'épuisement, conseils de sécurité domestique, transmission. Le chaînage traitement-surveillance est fait (EVA avant la toilette, anxiolytique relié aux conseils de nuit). Le résultat est chiffré à trois semaines pour la personne et pour l'aidant.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FCE4EC;font-weight:bold;width:30%;vertical-align:top;">Où la limite est dite</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">La question sur le demi-comprimé est entendue et orientée, en deux temps. L'accueil de jour est proposé par l'infirmière coordinatrice. Les conseils donnés sont des conseils de sécurité domestique, de votre champ, écrits et transmis.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;background:#FFEBEE;font-weight:bold;vertical-align:top;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #F8BBD0;vertical-align:top;">« Je lui ai conseillé de donner un demi-comprimé de plus » : décision sur un traitement, hors champ. « J'ai haussé la voix pour qu'elle m'entende » : inadapté. « Elle a fini par accepter la douche » : fragilisant, le jury ne sait pas comment le refus a été levé. « Le mari est fatigué » sans transmission : l'aidant est repéré mais pas soutenu. « Je lui ai conseillé de mettre des barrières au lit la nuit » : contention, qui ne se conseille pas.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">6.1 · La grille de détection de l'activité 6</p>
+
+<p>Les formulations fragilisantes se corrigent par suppression ou réécriture, jamais par un ajout.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai expliqué son diagnostic à sa fille », « je lui ai dit qu'elle avait fait un AVC »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> Annoncer un diagnostic est hors champ. Écrivez : « j'ai entendu sa question, je lui ai dit que le médecin pourrait lui répondre, et j'ai prévenu l'infirmière ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai dit à la famille que c'était la fin », « je les ai prévenus qu'il n'en avait plus pour longtemps »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> C'est un pronostic. L'annonce revient au médecin ; vous accompagnez avant et après.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« je les ai rassurés, les résultats étaient bons »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> Communiquer un résultat, même bon, est hors champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« je l'ai attaché pour qu'il arrête de déambuler », « j'ai conseillé des barrières la nuit »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> Contention décidée ou conseillée par l'aide-soignant : mise en danger et acte hors champ.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« je l'ai rassurée, tout va bien »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À clarifier.</strong> Fausse réassurance, et affirmation sans preuve. Qu'avez-vous dit et observé ? Est-ce à vous de dire que « tout va bien » ?</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« j'ai parlé avec sa fille dans le couloir »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À clarifier, voire fragilisant.</strong> Le lieu dit votre respect de la confidentialité. Écrivez où et pourquoi : « je lui ai proposé de poursuivre au petit salon ».</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« j'ai communiqué avec elle », « je lui ai parlé calmement »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À réécrire.</strong> Aucune technique nommée. Qu'avez-vous fait exactement : reformulation, question ouverte, validation, silence, posture ?</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« il s'est calmé », « la famille était contente »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À réécrire.</strong> L'effet est affirmé, pas mesuré. En combien de temps ? Combien de refus, d'appels, de sorties avant et après ? Qu'est-ce qui l'a montré ?</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« elle a fini par accepter », « il a fallu insister », « je l'ai convaincue »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>Fragilisant.</strong> Preuve à charge : le refus n'a pas été respecté. À supprimer ou à réécrire avec les cinq temps du refus.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« je lui ai rappelé que son mari était mort », « je l'ai recadrée »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>Fragilisant.</strong> Contradiction frontale d'une personne atteinte de troubles neurocognitifs, et absence de validation.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« ma puce », « mamie », le tutoiement dans les paroles rapportées</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>Fragilisant.</strong> Atteinte à la dignité. Vouvoiement et nom de famille.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">6.2 · Six questions du jury sur l'activité 6</p>
+<p>Chaque question part d'une phrase <em>citée</em> du livret. Répondez à voix haute avec la méthode RAPIDE (Reformuler, Ancrer, Préciser, Illustrer, Discuter, Évaluer), puis ouvrez l'attendu.</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">« Vous écrivez : "J'ai reformulé ce qu'elle disait." Pouvez-vous nous redire la phrase exacte, et ce qu'elle a changé ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la phrase réelle, avec l'émotion reformulée (« Vous avez peur de… »), puis ce qui s'est passé juste après : la personne a acquiescé, s'est tue, a pleuré, a dit enfin la vraie cause. <strong>À éviter :</strong> une définition de cours de la reformulation, sans rapport avec votre situation.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">« Vous écrivez : "Son fils m'a demandé si la maladie s'aggravait." Que lui avez-vous répondu, mot pour mot ? Et s'il avait insisté ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la limite en deux temps, dite avec humanité : l'inquiétude entendue, le « ce n'est pas à moi d'y répondre », l'infirmière prévenue par vous, le rendez-vous vérifié. S'il insiste : vous restez dans votre rôle, sans vous fermer, et vous faites en sorte que l'infirmière le voie le jour même. <strong>À éviter :</strong> « Je lui ai dit que ce n'était pas mon travail. »</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">« Vous écrivez : "Je ne l'ai pas contredit sur sa ferme." Ce n'est pas lui mentir ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la validation n'est pas le mensonge : vous ne confirmez pas une réalité fausse (« oui, les vaches vous attendent »), vous accueillez l'émotion et le besoin qui la portent (l'inquiétude, le devoir, l'habitude de fin de journée). La contradiction frontale ravive la détresse et fait monter l'agitation, sans rien apporter. <strong>À éviter :</strong> « Il faut toujours aller dans son sens. »</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">« Vous écrivez : "Je lui ai proposé de poursuivre au petit salon." Pourquoi ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le secret professionnel et la confidentialité (des résidents et une famille autour), et l'apaisement d'une personne en colère qui n'a plus de public. <strong>À éviter :</strong> « Parce que c'était plus pratique. »</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">« Vous écrivez : "Son mari est épuisé." Qu'avez-vous fait de cette information ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> l'écoute et la reconnaissance, les signes observés (nuits, propos, fatigue), les conseils de votre champ, et surtout la <strong>transmission</strong> à l'infirmière coordinatrice, qui a mobilisé les solutions de répit. Le résultat pour l'aidant. <strong>À éviter :</strong> « Je lui ai dit de se reposer. »</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">« Vous écrivez : "Il s'est présenté beaucoup moins souvent à la porte." Comment le savez-vous, et qu'auriez-vous fait si cela n'avait pas marché ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le chiffre et sa source (observation sur plusieurs jours, transmissions, relevé des soirées), puis les alternatives : revoir la cause avec l'équipe, chercher une douleur ou un besoin non repérés, en parler en réunion, solliciter le psychologue ou l'ergothérapeute par l'intermédiaire de l'infirmière. <strong>À éviter :</strong> « J'ai vu qu'il allait mieux. »</p></details>
+
+
+<div style="background:#FCE4EC;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Une bonne situation d'activité 6 présente la personne avant l'échange, avec ce qui rend la communication difficile, nomme les techniques employées avec la personne <strong>et</strong> avec son entourage, dit la limite en deux temps, respecte la confidentialité, et mesure l'effet à distance.</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 14 · Livre Bloc 3 · Fiches de révision B3</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC09 · Clôture</p>
+      <div class="content-scroll"><div style="background:#880E4F;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#880E4F;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">1. Que demande l'attendu officiel de l'activité 6 ? A. Un entretien d'accueil · B. Au moins un contexte relationnel, qui couvre la personne et son entourage · C. Deux situations distinctes · D. Une information sur la maladie donnée à la famille</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B.</strong> Chez ORACLE, une seule situation porte les deux volets, chacun développé.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">2. Quelle est la phrase-clé de l'activité 6 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà comment ma communication a changé le cours de la situation. »</strong> Elle exige un avant, un après, et un changement mesuré.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">3. À quel bloc appartient l'activité 6, et avec quelle autre activité ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Au bloc 3</strong>, avec l'activité 7.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">4. Qu'est-ce qu'une reformulation du ressenti ? Donnez un exemple.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Nommer l'émotion perçue : <strong>« Vous êtes inquiet de le voir aussi agité. »</strong></p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">5. Question ouverte ou fermée : laquelle aide le plus une personne aphasique à se faire comprendre ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La question fermée</strong>, une à la fois, à laquelle elle peut répondre par oui, par non ou par un geste, avec le temps de répondre.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">6. Quels sont les trois canaux de la communication, et lequel l'emporte quand ils se contredisent ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Verbal, paraverbal, non-verbal.</strong> Le non-verbal l'emporte.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">7. Une résidente atteinte de troubles neurocognitifs réclame sa mère décédée. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Sans contredire ni mentir, vous <strong>validez l'émotion</strong> (« Vous pensez à votre maman, elle vous manque ») et vous l'invitez à en parler.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">8. Citez quatre gestes de communication adaptés à une personne malentendante.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Vérifier que les <strong>appareils</strong> sont en place et fonctionnent, se placer <strong>face</strong> à elle, visage éclairé, supprimer le <strong>bruit</strong> de fond, parler <strong>lentement</strong> d'une voix posée sans crier, écrire les mots importants.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">9. Face à une personne agressive, quelle est la première chose à faire ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous mettre en sécurité</strong> : distance, accès à la sortie, autres résidents éloignés. Puis désamorcer, chercher la cause, passer le relais.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">10. La fille d'une résidente vous demande les résultats de la prise de sang. Que répondez-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">La <strong>limite en deux temps</strong> : vous ne communiquez pas un résultat ; vous entendez son inquiétude, prévenez l'infirmière et tracez.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">11. Le secret professionnel vous interdit-il de transmettre à l'infirmière une confidence d'un résident sur ses idées noires ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> Le partage du nécessaire au sein de l'équipe de soins est possible, et une parole de découragement ou d'idées noires se transmet sans délai.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">12. Quelle différence entre la personne de confiance et la personne à prévenir ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">La <strong>personne de confiance</strong> est désignée par écrit, accompagne la personne si elle le souhaite et est consultée si elle ne peut plus s'exprimer. La <strong>personne à prévenir</strong> est appelée en cas d'événement.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">13. Quelle loi fonde le consentement aux soins et le droit de refuser un soin ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La loi du 4 mars 2002</strong>, relative aux droits des malades.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">14. Citez trois conseils de sécurité domestique que l'aide-soignant peut donner à domicile.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Retirer les tapis</strong>, <strong>éclairer</strong> le trajet chambre-toilettes la nuit, porter des <strong>chaussures fermées</strong>, garder le téléphone à portée de main ; ces conseils se transmettent.</p></details>
+
+<details style="border:1px solid #F8BBD0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#880E4F;">15. « Elle a fini par accepter » : quel diagnostic dans la grille, et comment réécrire ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Fragilisant</strong> : le refus n'a pas été respecté, ou le récit le laisse croire. Réécrire avec les cinq temps : j'ai respecté son refus, j'ai recherché la cause par l'écoute, j'ai proposé autrement, elle a accepté cette autre proposition, j'ai transmis.</p></details>
+
+<div style="background:linear-gradient(135deg,#880E4F 0%,#D81B60 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 09</p>
+<ol style="margin:0;padding-left:22px;">
+<li>L'activité 6 demande un contexte relationnel qui couvre la personne <strong>et</strong> son entourage : deux volets développés dans une seule situation.</li>
+<li>La phrase-clé exige un changement : un avant, un après, et un effet mesuré à distance.</li>
+<li>Nommez vos outils : reformulation, questions ouvertes et fermées, silence, validation, non-verbal, toucher relationnel avec accord.</li>
+<li>Adaptez à <em>cette</em> personne : troubles neurocognitifs, troubles sensoriels, langue, aphasie, anxiété, agressivité, enfant, fin de vie.</li>
+<li>L'entourage s'accueille, s'écoute, s'informe dans votre champ, s'oriente et se soutient ; l'aidant épuisé se signale.</li>
+<li>Diagnostic, résultat, pronostic, traitement : vous ne dites pas, vous orientez et vous prévenez vous-même l'infirmier.</li>
+<li>Jamais de conversation sur une personne dans un couloir ; le refus de soin se respecte, sans jamais insister.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#880E4F;font-size:17px;margin:22px 0 8px 0;">✅ Votre plan d'action avant la masterclass 10</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #F8BBD0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F8BBD0;">Choisir ma situation d'activité 6 : une vraie difficulté de communication, avec un volet entourage réellement vécu, différente de ma situation d'activité 1.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F8BBD0;">Rédiger le recueil de données de la personne avant l'échange, en y mettant ce qui rend la communication difficile, et chaîner chaque traitement cité à sa surveillance.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F8BBD0;">Nommer dans mon récit au moins trois techniques avec la personne et deux avec son entourage.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F8BBD0;">Vérifier que ma limite est dite en deux temps, et que je n'ai donné aucune information de diagnostic, de résultat, de pronostic ou de traitement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F8BBD0;">Mesurer l'effet : un chiffre avant, un chiffre après, vérifié à distance, et la transmission.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F8BBD0;">Relire ma situation avec la grille de détection de la partie 6, et m'entraîner à voix haute sur les six questions du jury.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F8BBD0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F8BBD0;">Réviser avec les ressources ORACLE : le livre du livret 2 (chapitre 14), le Livre Bloc 3 et les fiches de révision B3.</td></tr>
+</table></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">Face à une personne agressive, la posture AS attendue est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="true">Rester calme, écouter, chercher à comprendre la cause</button>
+        <button class="quiz-opt" data-correct="false">Hausser le ton pour imposer l'autorité</button>
+        <button class="quiz-opt" data-correct="false">Appeler immédiatement la sécurité</button>
+        <button class="quiz-opt" data-correct="false">Ignorer la personne jusqu'à ce qu'elle se calme</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Posture d'écoute, de calme et de compréhension — base de la communication soignante." data-ko="Non. L'agressivité est souvent un symptôme : écouter et comprendre d'abord."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

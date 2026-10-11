@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC08 — Activité 5 — Installation, mobilisation, déplacements · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC08</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC08 · Bloc 2</p>
+      <h1 class="hero">Activité 5 — Installation, mobilisation, déplacements</h1>
+      <p class="subtitle">Prévention des chutes, ergonomie, aide à la marche</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#EFEBE9;border-left:6px solid #3E2723;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#3E2723;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>énoncer ce que recouvre l'activité 5 et honorer ses deux volets, un contexte d'installation et un type de déplacement ;</li>
+<li>distinguer une situation d'activité 5 d'une situation d'activité 1, 2 ou 9 à l'aide de la phrase-clé ;</li>
+<li>évaluer les capacités de la personne à chaque étape d'un déplacement, son état clinique du jour et les effets de ses traitements avant de la mobiliser ;</li>
+<li>décrire une guidance verbale et non verbale qui mobilise les ressources de la personne au lieu de faire à sa place ;</li>
+<li>choisir une aide technique de façon raisonnée, la vérifier avant usage et l'utiliser en respectant les règles d'ergonomie ;</li>
+<li>installer une personne au lit et au fauteuil selon sa singularité : prévention de l'escarre, respiration, douleur, hémiplégie, risque de chute ;</li>
+<li>situer la contention hors de votre décision, et dire la limite en deux temps dans votre récit ;</li>
+<li>répondre aux questions du jury sur vos mobilisations avec des faits, des chiffres et un raisonnement.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#3E2723;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;">0:00</td><td style="padding:9px;border:1px solid #D7CCC8;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #D7CCC8;">5&nbsp;min</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;">0:05</td><td style="padding:9px;border:1px solid #D7CCC8;">Partie 1 · L'activité 5 décodée</td><td style="padding:9px;border:1px solid #D7CCC8;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;">0:20</td><td style="padding:9px;border:1px solid #D7CCC8;">Partie 2 · Évaluer avant de mobiliser</td><td style="padding:9px;border:1px solid #D7CCC8;">15&nbsp;min</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;">0:35</td><td style="padding:9px;border:1px solid #D7CCC8;">Partie 3 · Stimuler, sécuriser, choisir l'aide technique et protéger son dos</td><td style="padding:9px;border:1px solid #D7CCC8;">25&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;">1:00</td><td style="padding:9px;border:1px solid #D7CCC8;">Partie 4 · Installer selon la singularité de la personne</td><td style="padding:9px;border:1px solid #D7CCC8;">15&nbsp;min</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;">1:15</td><td style="padding:9px;border:1px solid #D7CCC8;">Partie 5 · Trois situations modèles décortiquées</td><td style="padding:9px;border:1px solid #D7CCC8;">20&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;">1:35</td><td style="padding:9px;border:1px solid #D7CCC8;">Partie 6 · Grille de détection et questions du jury</td><td style="padding:9px;border:1px solid #D7CCC8;">15&nbsp;min</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;">1:50</td><td style="padding:9px;border:1px solid #D7CCC8;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #D7CCC8;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">1. Pour l'activité 5, une belle situation d'installation au fauteuil suffit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'attendu officiel comporte <strong>deux volets</strong> : un contexte d'<strong>installation</strong> ET un type de <strong>déplacement</strong>. Une situation qui n'en traite qu'un laisse la consigne à moitié honorée, et le jury le voit en quelques secondes.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">2. L'activité 5 appartient au bloc 1, avec l'accompagnement de la vie quotidienne.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Elle appartient au <strong>BC2</strong>, le bloc clinique, avec les activités 3 et 4. Une mobilisation y est lue comme une décision fondée sur l'état clinique et les ressources réelles de la personne, pas comme un simple geste de confort.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">3. Porter une personne légère est plus rapide et plus sûr que de la faire participer.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Porter une personne, c'est faire à sa place : elle perd ses capacités restantes, elle perd ses repères, et votre dos supporte une charge instable. Le référentiel demande de mobiliser ses ressources, avec l'aide technique adaptée si elle en a besoin.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">4. Le verticalisateur convient à une personne qui n'a aucun appui sur ses jambes.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le verticalisateur demande un <strong>appui partiel</strong> : la personne tient sa tête et son tronc, porte une partie de son poids et coopère. Sans aucun appui, c'est le <strong>lève-personne</strong> qui s'impose.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">5. J'accompagne la marche d'une personne hémiplégique en me plaçant de son côté sain.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Vous vous placez du <strong>côté atteint</strong>, celui où elle risque de chuter. La canne, elle, se tient du <strong>côté sain</strong>.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">6. Une résidente agitée risque de tomber du lit la nuit : je peux relever les barrières pour la protéger.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Les barrières de lit sont une <strong>contention</strong>. Sa décision est médicale et encadrée par le protocole de l'établissement. Vous signalez le risque, vous proposez des alternatives (lit en position basse, veilleuse, sonnette à portée), et vous appliquez et surveillez ce qui a été décidé.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">7. Une personne traitée par diurétique se lève en deux temps.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Le diurétique, comme l'antihypertenseur, expose à l'hypotension orthostatique. Vous la faites asseoir au bord du lit, vous observez, vous attendez, puis vous la levez. C'est le <strong>chaînage traitement-surveillance</strong>, et le jury le cherche.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">8. Devant une rougeur au sacrum après un long temps au fauteuil, un massage de la zone relance la circulation.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> On ne masse <strong>jamais</strong> un point d'appui rougi : le massage aggrave les lésions des tissus profonds. Vous supprimez l'appui, vous réalisez le test de vitropression, vous transmettez à l'infirmier.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">9. Le plan de soins prévoit un transfert à deux. Ma collègue est occupée : je peux le faire seule si je fais attention.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Écrit dans un livret, c'est une <strong>mise en danger</strong> de la personne, donc une éliminatoire, et un risque pour votre dos. La consigne passe avant la rapidité : vous attendez votre collègue ou vous réorganisez avec l'équipe.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">10. Protéger mon propre dos fait partie de la compétence évaluée dans l'activité 5.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> La compétence 5 demande d'identifier les risques <strong>pour la personne et pour soi-même</strong>. La phrase-clé le dit : « son corps <em>et le mien</em> ». Une situation qui ne mentionne jamais l'ergonomie du soignant laisse une moitié de la compétence sans preuve.</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent : vos gestes de mobilisation sont devenus automatiques. Le jury, lui, veut voir le raisonnement derrière l'automatisme.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 5 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p>L'activité 5, <strong>accompagner la personne dans son installation et ses déplacements</strong>, est l'une des plus techniques du métier et l'une des plus exposées à l'éliminatoire « mise en danger ».</p>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:18px 0 8px 0;">1.1 · La compétence 5, reformulée élément par élément</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:38%;">Ce que demande la fiche</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Ce que le jury cherche dans votre texte</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Évaluer les capacités de la personne à réaliser un déplacement</td><td style="padding:9px;border:1px solid #D7CCC8;">Un passage évaluatif explicite : « j'ai d'abord vérifié que… ». Des capacités décrites étape par étape, pas un « elle est dépendante » global.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Mettre en œuvre une guidance verbale et non verbale, et mobiliser les ressources humaines et matérielles</td><td style="padding:9px;border:1px solid #D7CCC8;">Les consignes données, avec les mots employés. Qui était présent et pourquoi. Le matériel nommé précisément.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Aménager un espace sécurisé</td><td style="padding:9px;border:1px solid #D7CCC8;">La préparation de l'environnement <em>avant</em> le mouvement, et la sécurité de la personne <em>après</em>, quand vous quittez la pièce.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Utiliser les aides à la mobilisation dans le respect des règles de sécurité et d'ergonomie</td><td style="padding:9px;border:1px solid #D7CCC8;">Le choix raisonné de l'aide (pourquoi celle-là), la vérification avant usage, et au moins une phrase sur votre posture.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Identifier les risques pour la personne et pour soi, et alerter</td><td style="padding:9px;border:1px solid #D7CCC8;">Le risque nommé, et l'alerte faite quand il se manifeste : à qui, quand, avec quelles données.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Installer la personne en tenant compte de sa singularité</td><td style="padding:9px;border:1px solid #D7CCC8;">Une installation justifiée point par point, et vérifiée à distance (confort exprimé, peau contrôlée, position maintenue).</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel : deux volets, pas un</p>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:12px 0;">
+<p style="margin:0 0 8px 0;"><strong>🚨 L'activité 5 demande deux éléments :</strong> un contexte d'<strong>installation</strong> ET un type de <strong>déplacement</strong>. Chez ORACLE, vous les rédigez dans une seule situation, à condition que <strong>chaque volet soit réellement développé</strong> : évaluation, préparation, déroulé, justification, résultat.</p>
+<p style="margin:0;">L'oubli le plus fréquent est le volet déplacement. Le candidat raconte avec soin une installation au fauteuil, puis conclut par « je l'ai ensuite emmenée en salle à manger ». Une phrase ne fait pas un volet.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#3E2723;color:#FFFFFF;border:1px solid #3E2723;text-align:left;width:50%;">Volet INSTALLATION · exemples de contextes</th><th style="padding:10px;background:#4E342E;color:#FFFFFF;border:1px solid #4E342E;text-align:left;">Volet DÉPLACEMENT · exemples de types</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #D7CCC8;vertical-align:top;">• Installation au lit pour prévenir l'escarre (décubitus latéral à 30°, décharge des talons)<br>• Installation en position demi-assise pour faciliter la respiration<br>• Installation au fauteuil d'une personne hémiplégique<br>• Installation pour le repas, pour limiter le risque de fausse route<br>• Installation antalgique d'une personne douloureuse<br>• Installation pour la nuit d'une personne à risque de chute</td>
+<td style="padding:12px;border:1px solid #D7CCC8;vertical-align:top;">• Transfert du lit au fauteuil (avec ou sans aide technique)<br>• Premier lever après un alitement<br>• Marche accompagnée, avec canne ou déambulateur<br>• Déplacement aux toilettes, de jour ou de nuit<br>• Déplacement en fauteuil roulant vers un lieu de vie ou un examen<br>• Montée et descente d'escaliers, sortie extérieure</td>
+</tr>
+</table>
+
+<div style="background:#EFEBE9;border-left:6px solid #4E342E;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Conseil ORACLE : titrez vos deux volets.</strong> Dans votre rubrique B, écrivez en toutes lettres « <em>Volet installation</em> » puis « <em>Volet déplacement</em> ». Le jury n'a pas à chercher, et vous vérifiez que chacun contient son évaluation, son déroulé justifié et son résultat.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">1.3 · La phrase-clé, mot à mot</p>
+
+<p style="margin:0 0 10px 0;background:#EFEBE9;border-radius:6px;padding:10px 14px;font-style:italic;">🔑 « Voilà comment je protège son corps et le mien pendant la mobilisation. »</p>
+
+<p>Chaque mot compte. <strong>« Je protège »</strong> : vous êtes l'acteur de la sécurité, jamais « on ». <strong>« Son corps »</strong> : ses capacités à préserver, sa peau, ses articulations, sa douleur, sa pudeur ; protéger n'est pas faire à sa place. <strong>« Et le mien »</strong> : votre dos et vos épaules, car un soignant blessé ne soigne plus personne. <strong>« Pendant la mobilisation »</strong> : avant (l'évaluation), pendant (le mouvement) et après (l'installation et sa surveillance).</p>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">1.4 · Pourquoi l'activité 5 est dans le bloc clinique</p>
+
+<p>Beaucoup de candidats s'étonnent de trouver la mobilisation dans le BC2, à côté de l'évaluation de l'état clinique (activité 3) et des soins adaptés (activité 4). La raison est simple : <strong>une mobilisation est une décision clinique</strong>. Vous ne levez pas « Mme B. » ; vous levez Mme B. <em>ce matin</em>, avec sa tension de ce matin, sa douleur de ce matin, sa vigilance de ce matin et les traitements qu'elle a pris la veille au soir.</p>
+
+<p>Concrètement, l'activité 5 s'appuie sur l'activité 3 (vous observez et mesurez avant de mobiliser, et un changement d'état peut suspendre le lever) et sur l'activité 4 (vous adaptez le geste à l'état clinique, en lien avec l'infirmier). Ce qui lui est propre, c'est le raisonnement sur le <strong>mouvement</strong> : capacités étape par étape, choix de l'aide technique, ergonomie du soignant, installation finale et sa surveillance.</p>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>⚠️ Conséquence directe.</strong> Le BC2 se valide en entier ou pas du tout, sans compensation. Une activité 5 faible, ou une mise en danger décrite dans votre transfert, peut faire tomber un bloc dont les activités 3 et 4 étaient excellentes.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">1.5 · Les confusions à éviter : activité 5 ou activité 1 ?</p>
+
+<p>Le couple 5/1 est une confusion classique. Ce qui distingue les deux activités, c'est <strong>ce que la situation prouve</strong>.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:22%;">Question</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:39%;">Activité 1 · accompagner</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Activité 5 · mobiliser</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Le cœur du récit</td><td style="padding:9px;border:1px solid #D7CCC8;">Un acte essentiel de la vie quotidienne (toilette, repas, habillage) et la vie sociale, personnalisés selon les habitudes et les choix.</td><td style="padding:9px;border:1px solid #D7CCC8;">Le mouvement : se tourner, s'asseoir, se lever, se transférer, marcher, et la position finale.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Ce qu'on évalue</td><td style="padding:9px;border:1px solid #D7CCC8;">L'autonomie dans l'acte, les habitudes, les ressources de l'entourage.</td><td style="padding:9px;border:1px solid #D7CCC8;">Les capacités motrices étape par étape, l'équilibre, la douleur, l'état clinique du jour, l'effet des traitements.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Les savoirs mobilisés</td><td style="padding:9px;border:1px solid #D7CCC8;">Habitudes de vie, projet personnalisé, communication, dignité.</td><td style="padding:9px;border:1px solid #D7CCC8;">Aides techniques, ergonomie, prévention de l'escarre et de la chute, hémiplégie, hypotension orthostatique.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">La phrase-clé</td><td style="padding:9px;border:1px solid #D7CCC8;font-style:italic;">« Voilà comment j'accompagne au quotidien, dans le respect de l'autonomie et de la dignité. »</td><td style="padding:9px;border:1px solid #D7CCC8;font-style:italic;">« Voilà comment je protège son corps et le mien pendant la mobilisation. »</td></tr>
+</table>
+
+<p>Deux autres voisinages méritent votre attention :</p>
+<ul style="padding-left:20px;">
+<li><strong>Activité 2</strong> : si votre situation raconte l'identification d'un risque de chute <em>qui n'est pas survenu</em> et les mesures de prévention que vous avez proposées puis évaluées, c'est l'activité 2. Si elle raconte <em>comment vous avez accompagné le déplacement</em> d'une personne à risque, c'est l'activité 5.</li>
+<li><strong>Activité 9</strong> : si le cœur du récit est la sangle effilochée repérée, mise hors service, signalée et suivie jusqu'au remplacement, c'est l'activité 9. Dans l'activité 5, la vérification de la sangle n'est qu'une étape de la préparation.</li>
+</ul>
+
+<p style="font-weight:bold;color:#3E2723;margin:24px 0 8px 0;">✍️ Exercice 1 (4&nbsp;min) · Activité 5, ou une autre ?</p>
+<p>Lisez chaque résumé de situation et rattachez-le à la bonne activité, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">a) Mme J. ne tient plus debout depuis sa fracture. J'évalue qu'elle tient sa tête et son tronc mais n'a aucun appui. Avec ma collègue, je vérifie la sangle et la batterie du lève-personne, je réalise le transfert au fauteuil, puis je l'installe bassin au fond, pieds sur les repose-pieds, et je l'accompagne en fauteuil roulant jusqu'au salon.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 5</strong>, avec ses deux volets : installation au fauteuil, déplacement en fauteuil roulant. Évaluation, choix raisonné de l'aide technique, vérification, travail à deux : tout y est, à condition que chaque volet soit développé et justifié.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">b) Je remarque que M. H., traité par hypnotique, se lève seul la nuit pour aller aux toilettes. Aucune chute n'est survenue. Je propose à l'équipe une veilleuse, un urinal à portée et un passage à 2 h, que nous évaluons au bout de dix jours.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 2.</strong> Un risque identifié, non survenu, des mesures de prévention proposées puis évaluées. Si vous racontiez plutôt la façon dont vous accompagnez M. H. aux toilettes la nuit, avec son déambulateur, la situation relèverait de l'activité 5.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">c) Avant un transfert, je découvre que la batterie du lève-personne ne tient plus la charge. Je le mets hors service, je fais une demande d'intervention tracée et je vérifie deux jours plus tard qu'il a été réparé.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 9</strong>, volet « matériel traité ». Le récit porte sur l'anomalie du matériel et son traitement, pas sur la mobilisation de la personne.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">d) J'installe Mme V. en décubitus latéral à 30°, talons dans le vide, pour prévenir une escarre. Je n'écris rien d'autre sur ses déplacements.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Activité 5 incomplète.</strong> Le volet installation est présent, mais il manque un type de déplacement. L'attendu officiel n'est pas honoré : ajoutez un déplacement développé (premier lever, transfert, marche) ou choisissez une autre situation qui porte les deux volets.</p></details>
+
+<div style="background:#EFEBE9;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> L'activité 5 appartient au bloc clinique : chaque mobilisation est une décision fondée sur l'état du jour et les ressources réelles de la personne. Elle exige deux volets, une installation ET un déplacement, chacun développé. Sa phrase-clé tient en deux corps : celui de la personne et le vôtre.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Évaluer avant de mobiliser <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 15&nbsp;min</span></div>
+
+<p>Dans la séquence ORACLE en 8 temps, le <strong>passage évaluatif avant d'agir</strong> est le temps le plus oublié. En activité 5, c'est lui qui justifie l'aide technique, le nombre de soignants, le lever en deux temps ou son report. Cinq questions le structurent.</p>
+
+<div style="border:1px solid #D7CCC8;background:#FAF7F6;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;font-weight:bold;color:#3E2723;">Les 5 questions à se poser avant toute mobilisation</p>
+<ol style="margin:0;padding-left:22px;">
+<li><strong>Que peut-elle faire</strong>, étape par étape, aujourd'hui ?</li>
+<li><strong>A-t-elle mal</strong>, où, combien, et à quel mouvement ?</li>
+<li><strong>Son état clinique du jour</strong> est-il habituel ?</li>
+<li><strong>Quels traitements</strong> modifient son équilibre, sa tension, sa vigilance ou le risque de saignement ?</li>
+<li><strong>Que prévoit le plan de soins</strong> (nombre de soignants, matériel, restrictions), et <strong>quels dispositifs</strong> sont en place ?</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">2.1 · Les capacités de la personne, à chaque étape du mouvement</p>
+
+<p>« Elle est dépendante pour les transferts » ne dit rien d'utile. Chaque étape appelle une observation et une décision différentes.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:20%;">Étape</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:40%;">Ce que vous observez</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Ce que cela décide</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Retournement dans le lit</td><td style="padding:9px;border:1px solid #D7CCC8;">Tourne-t-elle la tête, plie-t-elle un genou, attrape-t-elle le bord du lit avec la main valide ? Peut-elle suivre une consigne ?</td><td style="padding:9px;border:1px solid #D7CCC8;">Retournement guidé, ou aidé au drap de glisse ; à un ou deux soignants.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Redressement</td><td style="padding:9px;border:1px solid #D7CCC8;">Peut-elle passer du couché au latéral puis pousser sur son coude et sa main pour se redresser ? Se plaint-elle d'un vertige ?</td><td style="padding:9px;border:1px solid #D7CCC8;">Redressement par le côté, en s'aidant de la tête de lit relevée ; pause si vertige.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Assis au bord du lit</td><td style="padding:9px;border:1px solid #D7CCC8;">Tient-elle assise sans appui, pieds au sol, le tronc droit ? Combien de temps ? Pâlit-elle, transpire-t-elle ?</td><td style="padding:9px;border:1px solid #D7CCC8;">C'est <strong>le temps d'observation clé</strong> : premier temps du lever en deux temps, repérage de l'hypotension orthostatique, décision de poursuivre ou non.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Lever (assis-debout)</td><td style="padding:9px;border:1px solid #D7CCC8;">Pousse-t-elle sur ses jambes ? Sur les deux, ou sur une seule ? Tient-elle sa tête et son tronc ? Tient-elle debout, et combien de secondes ?</td><td style="padding:9px;border:1px solid #D7CCC8;">Lever guidé, verticalisateur (appui partiel) ou lève-personne (aucun appui).</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Transfert</td><td style="padding:9px;border:1px solid #D7CCC8;">Fait-elle des petits pas pour pivoter ? Garde-t-elle l'équilibre pendant la rotation ? Se repère-t-elle dans l'espace ?</td><td style="padding:9px;border:1px solid #D7CCC8;">Transfert en pas, avec disque de transfert si elle tient debout sans pivoter, ou au lève-personne.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Marche</td><td style="padding:9px;border:1px solid #D7CCC8;">Longueur et régularité du pas, équilibre, demi-tour, distance tolérée, essoufflement, usage correct de l'aide de marche.</td><td style="padding:9px;border:1px solid #D7CCC8;">Aide de marche adaptée, distance fixée, chaise prévue en chemin, place du soignant.</td></tr>
+</table>
+
+<div style="background:#EFEBE9;border-left:6px solid #4E342E;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Capacités d'hier ou capacités d'aujourd'hui ?</strong> Le plan de soins décrit les capacités habituelles. Votre évaluation porte sur celles <em>du jour</em>. Une personne qui marche habituellement avec un déambulateur peut, ce matin, être somnolente, fébrile ou douloureuse. Écrivez-le : « D'habitude, elle marche avec son déambulateur ; ce matin, je constate que… ». C'est exactement la comparaison avec l'état habituel que le jury attend du bloc clinique.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">2.2 · La douleur</p>
+
+<p>Une personne douloureuse se crispe, bloque sa respiration, refuse le mouvement ou chute. Évaluer la douleur <strong>avant</strong>, <strong>pendant</strong> et <strong>après</strong> la mobilisation est une preuve directe de compétence.</p>
+<ul style="padding-left:20px;">
+<li><strong>Nommez l'échelle</strong> : EVA ou échelle numérique chez la personne qui communique ; Algoplus chez la personne âgée qui ne peut pas s'exprimer de façon fiable.</li>
+<li><strong>Anticipez avec l'infirmier</strong> : si la mobilisation est douloureuse, vous le lui signalez. C'est lui qui, selon la prescription médicale, administre un antalgique avant le soin et en fixe l'horaire. Vous organisez ensuite la mobilisation au moment où il agit.</li>
+<li><strong>Mesurez l'effet</strong> : « EVA à 6 au retournement la veille ; ce matin, avec l'antalgique donné par l'infirmière 45 minutes avant et l'installation au drap de glisse, EVA à 3 ».</li>
+</ul>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">2.3 · L'état clinique du jour</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:30%;">Ce que vous observez ou mesurez</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:32%;">Valeurs de référence</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Conséquence sur la mobilisation</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;">Vigilance, orientation, compréhension des consignes</td><td style="padding:9px;border:1px solid #D7CCC8;">À comparer à l'état habituel de la personne</td><td style="padding:9px;border:1px solid #D7CCC8;">Somnolence ou confusion inhabituelle : pas de lever seule, surveillance renforcée, alerte si le changement est brutal.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;">Pression artérielle</td><td style="padding:9px;border:1px solid #D7CCC8;">≈ 120/80 mmHg · hypotension &lt; 90/60</td><td style="padding:9px;border:1px solid #D7CCC8;">Chiffres bas ou chute au passage assis : lever reporté, personne recouchée, alerte.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;">Fréquence cardiaque</td><td style="padding:9px;border:1px solid #D7CCC8;">60 – 100 /min</td><td style="padding:9px;border:1px solid #D7CCC8;">Pouls très rapide ou très lent, palpitations : arrêt du mouvement et alerte.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;">Fréquence respiratoire, saturation</td><td style="padding:9px;border:1px solid #D7CCC8;">12 – 20 /min · 95 – 100 % (main chaude, affichage stable)</td><td style="padding:9px;border:1px solid #D7CCC8;">Essoufflement à l'effort : pauses, distance réduite, mesure au repos et après l'effort ; saturation sous 95 % (ou sous la cible fixée pour cette personne) : personne assise, infirmier prévenu sans attendre la fin du soin.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;">Peau des points d'appui</td><td style="padding:9px;border:1px solid #D7CCC8;">Rougeur qui blanchit ou non à la vitropression</td><td style="padding:9px;border:1px solid #D7CCC8;">Toute rougeur : suppression de l'appui, vitropression, transmission ; jamais de massage.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>🚨 L'alerte passe avant le lever.</strong> Si l'évaluation révèle un changement d'état (malaise, douleur thoracique, confusion brutale, chiffres anormaux), vous ne poursuivez pas « pour finir le soin ». Vous installez la personne en sécurité, vous restez auprès d'elle et vous alertez l'infirmier. Écrire l'inverse, c'est décrire une mise en danger.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">2.4 · Les traitements : le chaînage traitement-surveillance appliqué à la mobilisation</p>
+
+<p>Chaque traitement cité dans votre recueil de données doit appeler, plus loin dans le récit, une phrase de surveillance. En activité 5, cette phrase porte sur la manière dont vous mobilisez.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:26%;">Classe</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:26%;">Risque au moment de la mobilisation</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Ce que vous faites, et ce que vous écrivez</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Antihypertenseurs, diurétiques</td><td style="padding:9px;border:1px solid #D7CCC8;">Hypotension orthostatique, vertige, chute ; pour le diurétique, déshydratation et envies pressantes</td><td style="padding:9px;border:1px solid #D7CCC8;"><strong>Lever en deux temps</strong> : assise au bord du lit, observation, attente, puis lever. Toilettes accessibles sans précipitation. « Traitée par furosémide, diurétique de l'anse, je l'accompagne au lever en deux temps. »</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Bêtabloquants</td><td style="padding:9px;border:1px solid #D7CCC8;">Bradycardie, hypotension, fatigue à l'effort</td><td style="padding:9px;border:1px solid #D7CCC8;">Pouls pris si fatigue ou malaise, effort progressif, pauses.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Hypnotiques, anxiolytiques</td><td style="padding:9px;border:1px solid #D7CCC8;">Somnolence, troubles de l'équilibre, surtout la nuit et au réveil</td><td style="padding:9px;border:1px solid #D7CCC8;"><strong>Vigilance</strong> : lever nocturne accompagné, éclairage, aide de marche à portée, sonnette. Vigilance évaluée avant le lever du matin.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Antiagrégants, anticoagulants</td><td style="padding:9px;border:1px solid #D7CCC8;">Hématomes, saignements ; une chute peut provoquer un saignement grave, parfois retardé</td><td style="padding:9px;border:1px solid #D7CCC8;">Prises douces, sans pincer ni serrer ; observation de la peau. <strong>Toute chute se transmet</strong>, même si elle paraît bénigne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Antalgiques de palier 3</td><td style="padding:9px;border:1px solid #D7CCC8;">Somnolence, dépression respiratoire, constipation</td><td style="padding:9px;border:1px solid #D7CCC8;">Vigilance et fréquence respiratoire observées avant le lever ; une dépression respiratoire est une alerte immédiate.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Antipsychotiques</td><td style="padding:9px;border:1px solid #D7CCC8;">Raideur, marche à petits pas, baisse de vigilance</td><td style="padding:9px;border:1px solid #D7CCC8;">Marche accompagnée, distance adaptée, observation des changements de la marche à transmettre.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">2.5 · Les consignes du plan de soins et les dispositifs en place</p>
+
+<p>Avant de mobiliser, vous consultez le plan de soins : il fixe le <strong>nombre de soignants</strong>, le <strong>matériel</strong> (lève-personne, verticalisateur, taille de la sangle, aide de marche), les <strong>restrictions</strong> éventuelles (appui interdit ou partiel après une chirurgie, lever autorisé ou non, durée maximale au fauteuil) et le rythme des changements de position. Une mobilisation qui s'en écarte se lit comme une mise en danger.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:28%;">Dispositif en place</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Ce que vous faites pendant la mobilisation</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Sonde urinaire</td><td style="padding:9px;border:1px solid #D7CCC8;">Vous gardez la poche <strong>sous le niveau de la vessie</strong>, sans traction sur la tubulure, et vous la déplacez avec la personne. Vous ne clampez pas et vous ne déconnectez pas le système.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Oxygène (lunettes)</td><td style="padding:9px;border:1px solid #D7CCC8;">Vous vérifiez la longueur de la tubulure et la bonne position des lunettes, avant et après le transfert. Vous ne touchez <strong>jamais au débitmètre</strong>, même sur protocole ou consigne. Si la personne s'essouffle, vous l'installez, vous mesurez et vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Perfusion</td><td style="padding:9px;border:1px solid #D7CCC8;">Vous déplacez le pied à perfusion avec la personne, sans tirer sur la tubulure. Vous ne réglez rien ; tout reflux, arrachement ou douleur au point de ponction est signalé à l'infirmier.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Pansement</td><td style="padding:9px;border:1px solid #D7CCC8;">Vous protégez la zone et évitez tout frottement ou appui dessus. Si le pansement est décollé, souillé ou saigne après le mouvement, vous n'y touchez pas : vous alertez l'infirmier, qui intervient. <strong>Aucun soin de pansement ne relève de l'aide-soignant.</strong></td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Contention prescrite</td><td style="padding:9px;border:1px solid #D7CCC8;">Vous l'appliquez et la retirez selon ce qui a été décidé et selon le protocole de l'établissement, vous surveillez, vous tracez. Vous ne la décidez jamais, et vous ne la prolongez pas de vous-même.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#3E2723;margin:24px 0 8px 0;">✍️ Exercice 2 (5&nbsp;min) · Chaînez le traitement à la mobilisation</p>
+<p>Pour chaque traitement cité dans un recueil de données, écrivez la phrase de surveillance qui doit apparaître dans le récit de mobilisation, puis comparez.</p>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">a) « Traitée par ramipril, antihypertenseur de la famille des inhibiteurs de l'enzyme de conversion. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Avant de la lever, je l'ai laissée assise au bord du lit une minute, pieds au sol, en observant sa coloration et en lui demandant si la tête lui tournait, car son antihypertenseur l'expose à une hypotension orthostatique. »</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">b) « Traité par zolpidem, hypnotique, au coucher. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« À 3 h, lorsqu'il a sonné pour aller aux toilettes, j'ai allumé la veilleuse, je l'ai fait asseoir au bord du lit et j'ai vérifié qu'il était bien réveillé avant de lui tendre son déambulateur, car son hypnotique diminue sa vigilance et son équilibre la nuit. »</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">c) « Traitée par apixaban, anticoagulant. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Pendant le transfert, j'ai évité toute prise serrée sur ses avant-bras, où apparaissent facilement des hématomes sous anticoagulant. Je sais que toute chute doit être transmise immédiatement, même sans blessure visible, en raison du risque de saignement. »</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">d) « Traité par bisoprolol, bêtabloquant. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Quand il s'est dit fatigué à mi-parcours, je l'ai fait asseoir et j'ai pris son pouls : 58 /min, alors qu'il est habituellement autour de 62. Je l'ai transmis à l'infirmière, car son bêtabloquant ralentit le cœur et limite l'adaptation à l'effort. »</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">e) « Traitée par morphine à libération prolongée, antalgique de palier 3. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Avant le lever, j'ai vérifié qu'elle était bien éveillée et j'ai compté sa fréquence respiratoire : 16 /min. Son antalgique de palier 3 peut entraîner une somnolence et une dépression respiratoire ; une fréquence inférieure à 12 /min ou une somnolence inhabituelle m'aurait fait suspendre le lever et alerter immédiatement. »</p></details>
+
+<div style="background:#EFEBE9;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Avant de mobiliser, vous évaluez : les capacités étape par étape et du jour, la douleur avec une échelle nommée, l'état clinique comparé à l'habitude, les traitements et leurs effets sur le mouvement, les consignes du plan de soins et les dispositifs en place. Ce passage évaluatif justifie tout le reste de votre récit.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Stimuler, sécuriser, choisir l'aide technique et protéger son dos <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:35 · 25&nbsp;min</span></div>
+
+<p>Restent trois questions : comment faire participer la personne, comment sécuriser l'espace, et avec quel matériel, dans quelle posture.</p>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:18px 0 8px 0;">3.1 · Stimuler plutôt que faire à la place</p>
+
+<p>Le référentiel vous demande de <strong>mobiliser les ressources de la personne</strong>. Chaque mouvement qu'elle fait elle-même entretient sa force, son équilibre, ses repères et sa confiance. Chaque mouvement que vous faites à sa place les fait reculer un peu. Faire à la place peut sembler plus rapide ; c'est en réalité une perte de chance pour la personne, et une charge inutile pour vous.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:22%;">Outil</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">En pratique</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Guidance verbale</td><td style="padding:9px;border:1px solid #D7CCC8;">Annoncer le mouvement avant de le commencer ; une consigne courte à la fois ; des mots concrets (« le nez au-dessus des pieds ») ; un signal de départ partagé ; encourager et nommer ce qui réussit.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Guidance non verbale</td><td style="padding:9px;border:1px solid #D7CCC8;">Se placer dans son champ visuel ; montrer le geste ; toucher-guidage sur la zone à mobiliser (une main sur l'omoplate pour inviter à se pencher, une main sur le genou pour orienter la jambe) ; voix calme.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Décomposition du mouvement</td><td style="padding:9px;border:1px solid #D7CCC8;">Découper le lever en séquences qu'elle peut réussir : avancer les fesses au bord du siège, reculer les pieds à plat sous les genoux, mains sur les accoudoirs, pencher le buste en avant, pousser sur les jambes, se redresser.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Laisser le temps</td><td style="padding:9px;border:1px solid #D7CCC8;">Attendre la réponse motrice, surtout chez la personne âgée, ralentie ou atteinte de troubles neurocognitifs ; ne pas « finir » le mouvement à sa place ; organiser sa tournée pour ne pas se presser.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>⚠️ Stimuler n'est pas insister.</strong> Si la personne refuse de se lever, vous cherchez la raison (douleur, peur de tomber, fatigue, moment mal choisi), vous proposez un autre moment ou une autre façon, et vous transmettez. « Il a fallu insister pour qu'elle se lève » est une formulation fragilisante : le refus de soin se respecte, conformément à la loi du 4 mars 2002.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">3.2 · Sécuriser l'espace, avant et après</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:24%;">Point de contrôle</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Ce que vous vérifiez</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Freins</td><td style="padding:9px;border:1px solid #D7CCC8;">Lit, fauteuil roulant, chaise percée : freins serrés au moment du transfert. Lève-personne : freins utilisés selon la notice du fabricant et le protocole du service.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Hauteur du lit</td><td style="padding:9px;border:1px solid #D7CCC8;">Pendant les soins au lit : à hauteur de votre bassin. Pour le lever : pieds de la personne à plat au sol, genoux à angle droit. Après : position basse.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Éclairage</td><td style="padding:9px;border:1px solid #D7CCC8;">Lumière suffisante, veilleuse la nuit, interrupteur accessible.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Sol et trajet</td><td style="padding:9px;border:1px solid #D7CCC8;">Sol sec, pas de tapis ni de fil, trajet dégagé, fauteuil ou chaise prévu en chemin pour une pause.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Chaussage et tenue</td><td style="padding:9px;border:1px solid #D7CCC8;">Chaussures fermées, tenant le talon, semelle antidérapante ; pas de chaussettes seules ni de mules ; vêtement qui ne traîne pas au sol ; lunettes et appareils auditifs en place.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">À portée de main, en partant</td><td style="padding:9px;border:1px solid #D7CCC8;">Sonnette, aide de marche, verre d'eau, lunettes, téléphone, objets usuels, du côté où la personne peut les attraper.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Hygiène</td><td style="padding:9px;border:1px solid #D7CCC8;">Friction hydro-alcoolique avant et après le contact ; sangle, drap de glisse et disque propres, attribués à la personne ou désinfectés entre deux utilisations selon le protocole ; gants seulement en cas de contact avec un liquide biologique.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">3.3 · Les aides techniques et leur choix raisonné</p>
+
+<p>Le jury ne vous demande pas de citer tout le matériel du service. Il veut comprendre <strong>pourquoi vous avez choisi cette aide pour cette personne</strong>. Le choix découle directement de l'évaluation de la partie 2.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:18%;">Aide</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:30%;">Pour qui</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:26%;">Vérifications avant usage</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Piège à éviter</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Drap de glisse</td><td style="padding:9px;border:1px solid #D7CCC8;">Personne alitée à remonter dans le lit ou à tourner : il supprime le frottement et le cisaillement de la peau.</td><td style="padding:9px;border:1px solid #D7CCC8;">Propre, intact, bien positionné sous la zone à déplacer.</td><td style="padding:9px;border:1px solid #D7CCC8;">L'oublier sous la personne après le soin : il la fait glisser et favorise la macération.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Disque de transfert</td><td style="padding:9px;border:1px solid #D7CCC8;">Personne qui tient debout avec un appui, mais pivote mal (hémiplégie, douleur, raideur).</td><td style="padding:9px;border:1px solid #D7CCC8;">Posé sur un sol sec, stable, surface propre.</td><td style="padding:9px;border:1px solid #D7CCC8;">L'utiliser chez une personne qui ne tient pas debout : il tourne sous des pieds qui ne portent pas.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Verticalisateur</td><td style="padding:9px;border:1px solid #D7CCC8;"><strong>Appui partiel</strong> : la personne tient sa tête et son tronc, pose ses pieds, tient la poignée, porte une partie de son poids et comprend les consignes.</td><td style="padding:9px;border:1px solid #D7CCC8;">Sangle adaptée à la taille, intacte ; batterie chargée ; arrêt d'urgence fonctionnel ; charge maximale respectée.</td><td style="padding:9px;border:1px solid #D7CCC8;">Continuer à l'utiliser chez une personne qui a perdu l'appui : elle « pend » dans la sangle.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Lève-personne</td><td style="padding:9px;border:1px solid #D7CCC8;"><strong>Aucun appui</strong>, ou appui interdit par consigne médicale ; personne qui ne peut pas coopérer au lever.</td><td style="padding:9px;border:1px solid #D7CCC8;">Sangle de la bonne taille, non effilochée, coutures et attaches intactes ; batterie chargée ; roues et freins fonctionnels ; arrêt d'urgence ; nombre de soignants prévu au protocole.</td><td style="padding:9px;border:1px solid #D7CCC8;">Utiliser une sangle usée ou mal ajustée ; s'éloigner de la personne suspendue ; manœuvrer seul quand le protocole prévoit deux soignants.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Déambulateur</td><td style="padding:9px;border:1px solid #D7CCC8;">Personne qui marche mais manque d'équilibre ou de force ; plus stable qu'une canne.</td><td style="padding:9px;border:1px solid #D7CCC8;">Poignées à hauteur du pli du poignet, bras le long du corps ; embouts ou roues et freins en bon état.</td><td style="padding:9px;border:1px solid #D7CCC8;">Un déambulateur trop loin devant : la personne se penche et chute en avant.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Canne</td><td style="padding:9px;border:1px solid #D7CCC8;">Personne qui a besoin d'un appui léger ou d'un élargissement de sa base d'appui ; canne tripode pour plus de stabilité.</td><td style="padding:9px;border:1px solid #D7CCC8;">Hauteur au pli du poignet, embout antidérapant en bon état.</td><td style="padding:9px;border:1px solid #D7CCC8;">La tenir du côté atteint : elle se tient <strong>du côté sain</strong>.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>🚨 Matériel défectueux = matériel non utilisé.</strong> Une sangle effilochée, une batterie qui ne tient pas, un frein qui ne bloque pas : vous n'utilisez pas l'appareil, vous le mettez hors service selon la procédure, vous le signalez et vous trouvez une autre solution sûre avec l'équipe. Utiliser une aide technique dont vous savez qu'elle est défectueuse, c'est une mise en danger. Le traitement de l'anomalie elle-même relève de l'activité 9.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">3.4 · L'ergonomie du soignant : protéger son propre corps</p>
+
+<p>Les troubles musculosquelettiques (lombalgies, douleurs d'épaule et de nuque) sont un risque professionnel majeur du métier. Ils s'installent par la répétition de postures contraignantes, jour après jour. Le jury attend que vous les nommiez et que vous montriez les principes que vous appliquez.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#2E7D32;color:#FFFFFF;"><th style="padding:9px;border:1px solid #2E7D32;text-align:left;width:30%;">Principe</th><th style="padding:9px;border:1px solid #2E7D32;text-align:left;">En pratique</th></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Dos droit, jambes fléchies</td><td style="padding:9px;border:1px solid #C8E6C9;">La force vient des cuisses, pas des lombaires. Vous fléchissez les genoux au lieu de vous pencher.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Base d'appui élargie</td><td style="padding:9px;border:1px solid #C8E6C9;">Pieds écartés, un pied légèrement en avant dans le sens du mouvement : vous êtes stable et vous transférez votre poids d'une jambe sur l'autre.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Charge rapprochée</td><td style="padding:9px;border:1px solid #C8E6C9;">Vous travaillez près de la personne, coudes près du corps. Plus la charge est loin, plus l'effort sur le dos est grand.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Jamais de torsion du tronc</td><td style="padding:9px;border:1px solid #C8E6C9;">Pour changer de direction, vous déplacez vos pieds : le tronc suit, il ne pivote pas sur un bassin fixe.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Hauteur de travail réglée</td><td style="padding:9px;border:1px solid #C8E6C9;">Lit monté à hauteur de votre bassin pour les soins, redescendu ensuite.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Travail à deux quand c'est prévu</td><td style="padding:9px;border:1px solid #C8E6C9;">Un seul soignant donne le signal (« à trois, on y va »), les rôles sont répartis avant le mouvement, la personne est informée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">On ne porte pas</td><td style="padding:9px;border:1px solid #C8E6C9;">Vous accompagnez, vous guidez, vous faites glisser ; quand la personne ne peut pas participer, l'aide technique porte à votre place.</td></tr>
+</table>
+
+<div style="background:#EFEBE9;border-left:6px solid #4E342E;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Une phrase suffit, mais elle doit exister.</strong> « J'ai monté le lit à hauteur de mon bassin et j'ai travaillé dos droit, jambes fléchies, en déplaçant mes pieds plutôt qu'en tournant le tronc, pour protéger mon dos. » Si vous avez suivi une formation à la manutention des personnes, mentionnez-la en rubrique A et dans votre parcours : elle montre que votre ergonomie repose sur un apprentissage, pas sur l'habitude.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;margin:24px 0 8px 0;">✍️ Exercice 3 (6&nbsp;min) · Quelle aide technique pour quel profil ?</p>
+<p>Pour chaque personne, choisissez l'aide technique la plus adaptée et justifiez votre choix en une phrase, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">a) Mme C., 92 ans, alitée, douloureuse au bassin (EVA à 5 au mouvement), doit être remontée dans son lit et tournée pour la prévention d'escarre.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Drap de glisse, à deux.</strong> Il supprime le frottement et le cisaillement de la peau et réduit l'effort, donc la douleur et la charge pour les soignants. Avec l'infirmière, vous anticipez le moment de la mobilisation par rapport à l'antalgique qu'elle administre selon la prescription.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">b) M. E., 74 ans, hémiplégie droite, tient debout avec un appui sur la barre, mais ne parvient pas à faire les petits pas pour pivoter vers le fauteuil.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Disque de transfert.</strong> Il tient debout, il manque seulement la rotation : le disque la permet sans torsion pour lui ni pour vous. Fauteuil placé du côté sain, freins serrés.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">c) Mme K., 86 ans, tient sa tête et son tronc, pose ses pieds, tient une poignée et comprend les consignes, mais ses jambes ne la portent plus que partiellement.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Verticalisateur.</strong> Appui partiel, coopération, maintien de la tête et du tronc : ce sont exactement ses conditions d'usage. Il entretient en plus l'appui qu'elle conserve.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">d) M. N., 80 ans, troubles neurocognitifs sévères, ne tient pas assis sans appui, n'a aucun appui sur les jambes et ne peut pas suivre une consigne.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Lève-personne</strong>, avec le nombre de soignants prévu au protocole. Sans appui ni coopération, le verticalisateur serait dangereux et le portage exclu. Sangle de la bonne taille, vérifiée ; vous restez près de lui et vous le rassurez pendant toute la manœuvre.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">e) M. L., 79 ans, utilise habituellement le verticalisateur. Ce matin, il est somnolent, sa tête tombe en avant et il ne pousse plus sur ses jambes.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions : pas de verticalisateur ce matin.</strong> Les conditions d'usage (tête tenue, appui, coopération) ne sont plus réunies. Vous ne le levez pas avec cet appareil ; vous observez sa vigilance, vous mesurez ses paramètres et vous alertez l'infirmière, car ce changement brutal est un signe clinique. Le lever, s'il est maintenu, se fera au lève-personne selon la décision de l'équipe.</p></details>
+
+<div style="background:#EFEBE9;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Vous guidez par la parole et le geste, vous décomposez le mouvement et vous laissez le temps. Vous sécurisez l'espace avant et après. Vous choisissez l'aide technique d'après l'évaluation (drap de glisse, disque, verticalisateur pour l'appui partiel, lève-personne sans appui, déambulateur, canne côté sain) et vous la vérifiez. Vous protégez votre dos : dos droit, jambes fléchies, charge rapprochée, jamais de torsion, à deux quand c'est prévu.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · Installer selon la singularité de la personne <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:00 · 15&nbsp;min</span></div>
+
+<p>Une installation n'est jamais « standard » : chacun de ses éléments se justifie par un besoin précis de cette personne (peau, respiration, douleur, épaule hémiplégique, repas, chute).</p>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:18px 0 8px 0;">4.1 · Installer au lit</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:26%;">Installation</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:40%;">Comment</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Pourquoi</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Décubitus latéral à 30°</td><td style="padding:9px;border:1px solid #D7CCC8;">La personne est légèrement tournée, un coussin calé dans le dos, et non à 90° sur le flanc ; genoux légèrement fléchis, un coussin entre eux.</td><td style="padding:9px;border:1px solid #D7CCC8;">Répartir l'appui sur la masse musculaire de la fesse et épargner le sacrum et le trochanter.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Décharge des talons</td><td style="padding:9px;border:1px solid #D7CCC8;">Un coussin sous les mollets, sur toute leur longueur, talons dans le vide ; jamais un simple rouleau sous le tendon d'Achille.</td><td style="padding:9px;border:1px solid #D7CCC8;">Le talon est l'un des sites d'escarre les plus fréquents chez la personne alitée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Alternance des positions</td><td style="padding:9px;border:1px solid #D7CCC8;">Selon le rythme fixé au plan de soins, adapté au score de Braden et au support ; changements tracés.</td><td style="padding:9px;border:1px solid #D7CCC8;">La durée de l'appui compte autant que sa pression. Le matelas adapté ne dispense pas de changer de position.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Position demi-assise</td><td style="padding:9px;border:1px solid #D7CCC8;">Tête de lit relevée, bassin bien au fond du pli du lit, genoux légèrement relevés pour éviter le glissement.</td><td style="padding:9px;border:1px solid #D7CCC8;">Faciliter la respiration (le diaphragme descend mieux) et limiter le risque de fausse route pendant et après le repas.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">Après l'installation</td><td style="padding:9px;border:1px solid #D7CCC8;">Draps tendus sans plis, drap de glisse retiré, lit en position basse, sonnette et objets à portée.</td><td style="padding:9px;border:1px solid #D7CCC8;">Supprimer les causes d'irritation cutanée et de chute, et permettre à la personne d'appeler.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>🚨 Devant une rougeur à un point d'appui :</strong> vous supprimez l'appui, vous réalisez le test de vitropression (une rougeur qui ne blanchit pas sous la pression du doigt signe une escarre de stade 1), vous <strong>ne massez jamais</strong> la zone, et vous transmettez à l'infirmier. Le massage écrase les tissus déjà en souffrance.</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">4.2 · Installer au fauteuil</p>
+<ul style="padding-left:20px;">
+<li><strong>Bassin au fond du fauteuil</strong>, dos contre le dossier : la personne ne glisse pas vers l'avant, ce qui évite le cisaillement au sacrum.</li>
+<li><strong>Pieds à plat</strong> au sol ou sur les repose-pieds, genoux à angle droit : l'appui est réparti et l'équilibre assuré.</li>
+<li><strong>Coussin d'aide à la prévention de l'escarre</strong> si le plan de soins le prévoit, et durée au fauteuil respectée.</li>
+<li><strong>Membre supérieur hémiplégique soutenu</strong> sur un accoudoir large, une tablette ou un coussin : l'épaule paralysée, tirée vers le bas par le poids du bras, se subluxe et devient douloureuse.</li>
+<li><strong>Tablette, sonnette, verre, lunettes</strong> à portée, du côté où la personne peut les saisir.</li>
+</ul>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">4.3 · Trois profils qui demandent une installation singulière</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#3E2723;color:#FFFFFF;"><th style="padding:9px;border:1px solid #3E2723;text-align:left;width:22%;">Profil</th><th style="padding:9px;border:1px solid #3E2723;text-align:left;">Ce que vous faites, et pourquoi</th></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">La personne douloureuse</td><td style="padding:9px;border:1px solid #D7CCC8;"><strong>Installation antalgique</strong> : vous cherchez avec elle la position qui la soulage, vous calez les zones douloureuses avec des coussins, vous évitez les appuis sur la zone atteinte. Vous évaluez la douleur avant et après avec l'échelle du service, et vous transmettez l'écart. L'antalgique relève de la prescription médicale et de l'infirmier.</td></tr>
+<tr style="background:#FAF7F6;"><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">La personne hémiplégique</td><td style="padding:9px;border:1px solid #D7CCC8;">Vous stimulez le côté atteint : vous vous placez de ce côté pour lui parler et le solliciter, selon les consignes de l'équipe de rééducation. La sonnette et les objets utiles restent à portée de sa main valide. Vous protégez l'épaule : jamais de traction sur le bras paralysé, jamais de prise sous l'aisselle de ce côté. Au transfert, le fauteuil est placé <strong>du côté sain</strong>. À la marche, vous vous placez <strong>du côté atteint</strong>, et la canne se tient <strong>du côté sain</strong>.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;font-weight:bold;">La personne âgée à risque de chute</td><td style="padding:9px;border:1px solid #D7CCC8;">Lit en position basse, veilleuse, sonnette et aide de marche à portée, chaussage fermé, trajet vers les toilettes dégagé, lever accompagné aux moments à risque (la nuit, après l'hypnotique, après le diurétique). Vous nommez le risque avec l'échelle utilisée dans votre service, par exemple le score de Morse, et vous transmettez toute quasi-chute.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">4.4 · La contention : jamais décidée par l'aide-soignant</p>
+
+<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 « Je lui ai mis la ceinture au fauteuil pour qu'elle ne tombe pas. »</p>
+<p style="margin:0 0 8px 0;">Barrières de lit, ceinture de maintien au fauteuil, tablette bloquée, drap serré : toute mesure qui empêche la personne de se mouvoir librement est une <strong>contention</strong>. Sa décision est <strong>médicale</strong>, réévaluée, et encadrée par le protocole de l'établissement. L'aide-soignant ne la décide jamais, même « pour la sécurité », même la nuit, même en urgence.</p>
+<p style="margin:0;"><strong>Ce que vous faites à la place :</strong> vous repérez et signalez le risque, vous proposez des alternatives (lit bas, veilleuse, accompagnement programmé aux toilettes, présence), vous appliquez la contention prescrite, vous la surveillez (peau, confort, agitation) et vous tracez. Écrivez-le ainsi : « Les barrières ne sont pas prescrites pour elle ; je ne les relève pas, car c'est une contention qui relève d'une décision médicale. J'ai installé le lit en position basse et j'ai transmis le risque à l'infirmière. »</p>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;margin:24px 0 8px 0;">✍️ Exercice 4 (5&nbsp;min) · Dans le champ, hors champ, ou sous conditions ?</p>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">a) Relever les barrières de lit d'un résident agité la nuit, sans prescription, « pour sa sécurité ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> C'est décider d'une contention. Vous signalez l'agitation, vous proposez des alternatives et vous appliquez ce qui est décidé.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">b) Réaliser seul un transfert au lève-personne quand le protocole prévoit deux soignants, parce que « la résidente est légère ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Mise en danger.</strong> Le geste relève de votre rôle, mais pas dans ces conditions : la consigne n'est pas respectée. Écrit dans un livret, c'est une éliminatoire.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">c) Masser le sacrum rouge d'une résidente après deux heures au fauteuil.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors bonnes pratiques.</strong> On ne masse jamais un point d'appui. Vous supprimez l'appui, vous réalisez la vitropression et vous transmettez.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">d) Appliquer une crème sur les talons secs d'une personne alitée, après son installation.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Sur consigne de l'infirmier, avec le produit qu'il a désigné et identifié, sur une peau saine, sans frotter ni masser, jamais sur une plaie ; application tracée. Sans consigne, ou sur une lésion, le soin revient à l'infirmier.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">e) Après un transfert, constater que le pansement de la hanche opérée s'est décollé, et le recoller avant l'arrivée de l'infirmière.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ, même pour « dépanner ».</strong> Aucun soin de pansement ne relève de l'aide-soignant. Vous protégez la zone, vous installez la personne et vous alertez l'infirmière, qui intervient.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">f) Mettre la ceinture de maintien au fauteuil d'un résident pour qui elle est prescrite, la retirer aux horaires prévus et surveiller sa peau.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Dans le champ parce que la contention a été décidée et prescrite, et parce que vous l'appliquez selon le protocole : vous surveillez, vous tracez, vous signalez toute agitation ou lésion. Vous ne la décidez pas et vous ne la prolongez pas.</p></details>
+
+<div style="background:#EFEBE9;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Chaque installation répond à un besoin de cette personne : décubitus latéral à 30° et talons en décharge pour la peau, demi-assise pour la respiration, bassin au fond et pieds à plat au fauteuil, bras hémiplégique soutenu, installation antalgique. On ne masse jamais un point d'appui. La contention ne se décide jamais : vous signalez, vous proposez, vous appliquez ce qui est prescrit et vous surveillez.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Trois situations modèles décortiquées <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:15 · 20&nbsp;min</span></div>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; seules des initiales sont utilisées. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots.</p>
+
+<!-- Situation A -->
+<div style="background:#4E342E;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:20px 0 10px 0;font-weight:bold;">Situation A · Transfert au lève-personne, installation au fauteuil et déplacement en fauteuil roulant</div>
+
+<div style="background:#FAF7F6;border:1px solid #D7CCC8;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme D., 88 ans, vit en EHPAD depuis dix-huit mois. Elle a des troubles neurocognitifs majeurs à un stade sévère (atteinte progressive de la mémoire, du langage et de la compréhension) et une fibrillation atriale (trouble du rythme cardiaque exposant aux caillots). Elle est traitée par apixaban, anticoagulant (surveillance : hématomes, saignements, toute chute se transmet), par furosémide, diurétique de l'anse (surveillance : hypotension, déshydratation) et par paracétamol, antalgique de palier 1, en systématique. GIR 1. Elle pèse 58 kg pour 1,55 m, soit un IMC de 24,1, dans les valeurs attendues à son âge. Son score de Braden est de 12, soit un risque élevé d'escarre ; sa douleur est évaluée avec l'échelle Algoplus, habituellement à 1 sur 5. Ancienne couturière, elle aime la musique ; sa fille vient chaque dimanche. Elle a besoin d'une aide totale pour la toilette et l'habillage, mange avec une aide partielle et porte des protections jour et nuit. Elle ne porte plus son poids depuis trois mois, tient sa tête mais pas son tronc sans appui, et comprend les consignes simples par moments. Son plan de soins prévoit le lève-personne, <strong>à deux soignants</strong>, avec une sangle de taille M, et un temps au fauteuil de deux heures au maximum sur coussin d'aide à la prévention de l'escarre.</p>
+<p style="margin:0;"><strong>La situation.</strong> <em>Volet déplacement (transfert).</em> Un mardi à 14 h, je prépare son lever pour l'animation musicale. Après une friction hydro-alcoolique des mains, j'évalue d'abord son état : elle est éveillée, me regarde quand je lui parle, son Algoplus est à 1. Je vérifie avec ma collègue la sangle (taille M, sans effilochage, coutures et attaches intactes) et la batterie du lève-personne, chargée. Je place le fauteuil roulant près du lit, freins serrés, coussin en place, et je monte le lit à hauteur de mon bassin. Je lui explique chaque étape en phrases courtes, en me plaçant face à elle. Nous la tournons en décubitus latéral pour glisser la sangle, en la tenant à l'épaule et à la hanche, sans jamais serrer ses avant-bras, où l'anticoagulant favorise les hématomes. Je travaille dos droit, jambes fléchies, sans torsion. Nous accrochons la sangle en vérifiant la symétrie des attaches. Ma collègue manœuvre le lève-personne pendant que je reste près de Mme D., une main sur son épaule, en lui parlant : elle se crispe au décollement, je lui chante le refrain d'une chanson qu'elle aime et elle se détend. Nous la descendons au fond du fauteuil. <em>Volet installation.</em> Je retire la sangle, je vérifie que son bassin est bien au fond et que ses pieds reposent à plat sur les repose-pieds, et je cale son tronc avec un coussin latéral, car elle penche à gauche. Dans les premières minutes, j'observe sa coloration et son regard, son diurétique l'exposant à une hypotension au passage assis, et je lui propose à boire, car elle ne réclame plus. Elle sourit. Je note l'heure de lever pour respecter la durée de deux heures. <em>Volet déplacement (fauteuil roulant).</em> Je l'accompagne ensuite jusqu'au salon, à une trentaine de mètres, en poussant le fauteuil à allure lente, freins serrés à chaque arrêt, en lui annonçant les virages et en la plaçant près du piano. À 16 h, nous la recouchons au lève-personne. J'observe sa peau : une rougeur au sacrum blanchit à la vitropression. Je l'installe en décubitus latéral à 30°, je ne masse pas, et je transmets l'observation et l'heure à l'infirmière. Je trace le lever, la durée au fauteuil, l'Algoplus à 0 au salon et l'observation cutanée dans le dossier de soins.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#EFEBE9;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #D7CCC8;">Les <strong>deux volets</strong> sont titrés et développés. L'évaluation précède le geste (éveil, Algoplus, capacités : tête tenue, tronc non tenu, aucun appui), et elle justifie le choix du lève-personne. Le matériel est vérifié. Le chaînage est présent : anticoagulant, donc prises sans serrer ; diurétique, donc coloration observée et hydratation proposée ; antalgique, donc Algoplus avant et après. L'ergonomie du soignant est écrite. La guidance est adaptée aux troubles cognitifs (phrases courtes, face à elle, chanson connue). La boucle est fermée : durée respectée, peau contrôlée, rougeur objectivée, transmission et traçabilité.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#EFEBE9;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #D7CCC8;">Le nombre de soignants et la sangle viennent du plan de soins. La rougeur est observée, supprimée de l'appui et transmise, sans massage. L'observation cutanée est confiée à l'infirmière, qui en tire les conséquences.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #D7CCC8;">« Ma collègue était occupée, j'ai fait le transfert seule » : mise en danger. « La sangle était un peu usée mais elle a tenu » : mise en danger, et matériel défectueux utilisé en connaissance de cause. « Nous l'avons portée à deux jusqu'au fauteuil » : substitution et risque pour tous. « J'ai massé la rougeur » : contraire aux bonnes pratiques. « Je lui ai mis la ceinture pour qu'elle ne glisse pas » sans prescription : contention décidée seule. S'arrêter au fauteuil sans raconter le déplacement : volet manquant.</td></tr>
+</table>
+
+<!-- Situation B -->
+<div style="background:#4E342E;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Premier lever après alitement, marche au déambulateur et installation au fauteuil</div>
+
+<div style="background:#FAF7F6;border:1px solid #D7CCC8;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. G., 81 ans, est hospitalisé en service de médecine depuis six jours pour une pneumopathie (infection du poumon). Il est resté alité cinq jours. Il a une hypertension artérielle traitée par amlodipine, antihypertenseur de la famille des inhibiteurs calciques (surveillance : hypotension orthostatique, chutes). Il reçoit un antibiotique, l'amoxicilline (surveillance : diarrhée, éruption, gêne respiratoire), une injection quotidienne d'énoxaparine, anticoagulant préventif réalisé par l'infirmière (surveillance : hématomes, saignements, toute chute se transmet), et de l'oxygène par lunettes, dont le débit est fixé et réglé par l'infirmière. Il pèse 68 kg pour 1,72 m, soit un IMC de 23, dans les valeurs attendues à son âge ; score de Braden à 16, risque faible. Ancien cheminot, il vit seul dans un appartement au deuxième étage et marchait avec une canne avant l'hospitalisation. Il est orienté et coopérant, mais se dit « les jambes en coton ». Il fait sa toilette au lavabo avec une aide pour le dos et les jambes, mange seul et est continent. Le médecin a autorisé le premier lever ce jour ; le plan de soins précise : lever à deux soignants, déambulateur, fauteuil une heure, saturation surveillée.</p>
+<p style="margin:0;"><strong>La situation.</strong> <em>Volet déplacement (premier lever).</em> Un jeudi à 10 h, je prépare son premier lever avec ma collègue, après une friction hydro-alcoolique des mains. Je lui explique ce que nous allons faire et je lui demande s'il se sent prêt : il accepte. Au repos, en position demi-assise, je mesure sa pression artérielle à 128/76 mmHg, son pouls à 84 /min et sa saturation à 96 % sous oxygène ; son EVA est à 0. Je lui mets ses chaussures fermées, j'installe le déambulateur, réglé à la hauteur du pli de son poignet, et le fauteuil à trois mètres, freins serrés. Je vérifie que la tubulure d'oxygène est assez longue pour le trajet, sans toucher au débitmètre. Je l'aide à passer sur le côté puis à s'asseoir au bord du lit en poussant sur son coude, lit abaissé pour que ses pieds reposent à plat au sol. Parce que son antihypertenseur et ses cinq jours d'alitement l'exposent à l'hypotension orthostatique, je le laisse assis deux minutes en l'observant, puis je reprends sa tension : 118/72 mmHg, sans vertige. Je lui donne les consignes une par une : « Reculez les pieds », « Mains sur les poignées », « Penchez-vous en avant », « Poussez sur vos jambes ». Il se lève seul, ma main posée sur sa hanche, sans serrer son bras, car son anticoagulant l'expose aux hématomes, ma collègue de l'autre côté. Il tient debout, stable, une quinzaine de secondes. Nous marchons jusqu'au fauteuil en faisant avancer d'abord le déambulateur, puis les pieds, en restant à ses côtés, dos droit. Au fauteuil, sa saturation est à 94 % et il est un peu essoufflé ; je le fais asseoir, je reste auprès de lui et ma collègue prévient aussitôt l'infirmière, car ce chiffre est sous 95 %. À son arrivée, trois minutes plus tard, elle est remontée à 96 % au repos ; l'infirmière l'évalue et maintient le fauteuil. <em>Volet installation.</em> Je vérifie que son bassin est au fond du fauteuil, que ses pieds sont à plat au sol et que les lunettes à oxygène sont bien en place. Je place la sonnette, son verre d'eau et son téléphone à sa droite, du côté de sa main dominante. Une heure plus tard, nous le recouchons en deux temps, et je l'installe en position demi-assise pour faciliter sa respiration, talons en décharge. Je transmets à l'infirmière la distance parcourue (trois mètres), les chiffres de tension et de saturation, la désaturation passagère à 94 % à l'effort et sa récupération, l'absence de selles liquides et d'éruption, et sa satisfaction d'avoir « enfin quitté ce lit ». Je trace le lever dans le dossier de soins. Le lendemain, il parcourt huit mètres avec la même surveillance.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#EFEBE9;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #D7CCC8;">Les deux volets sont traités. Le premier lever est autorisé et encadré par le plan de soins. L'évaluation est chiffrée avant, pendant et après, avec les valeurs de référence. Le chaînage est explicite : antihypertenseur et alitement, donc lever en deux temps avec mesure de la tension. La guidance est décomposée et mobilise ses ressources : il se lève seul. L'aide technique est réglée. L'installation est justifiée (respiration, sonnette côté main dominante, talons). Le résultat est chiffré, transmis, et suivi le lendemain.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#EFEBE9;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #D7CCC8;">Le débit d'oxygène est « fixé et réglé par l'infirmière », et le candidat écrit ne pas toucher au débitmètre. L'injection d'anticoagulant est réalisée par l'infirmière. La désaturation est mesurée et signalée sur-le-champ à l'infirmière, qui évalue et décide ; aucune action sur le traitement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #D7CCC8;">« Il désaturait, j'ai monté l'oxygène à 3 litres » : acte hors champ. Un lever d'une traite, sans passage assis, chez un homme alité cinq jours sous antihypertenseur : mise en danger. Un premier lever seul alors que le plan de soins prévoit deux soignants. Un récit sans chiffres (« il allait bien »), ou qui s'arrête au fauteuil sans le déplacement développé.</td></tr>
+</table>
+
+<!-- Situation C -->
+<div style="background:#4E342E;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation C · Installation pour la nuit et déplacement nocturne d'une personne âgée à risque de chute</div>
+
+<div style="background:#FAF7F6;border:1px solid #D7CCC8;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme S., 90 ans, vit en EHPAD depuis un an. Elle a une arthrose de la hanche droite (usure du cartilage, douloureuse au premier pas) et une insuffisance cardiaque (le cœur pompe moins efficacement). Elle est traitée par hydrochlorothiazide, diurétique thiazidique (surveillance : hypotension, déshydratation, envies d'uriner la nuit) et par zopiclone, hypnotique, au coucher (surveillance : somnolence, troubles de l'équilibre, chutes). GIR 3. Elle pèse 61 kg pour 1,58 m, soit un IMC de 24,4, dans les valeurs attendues à son âge. Son score de Morse, réévalué par l'équipe, est à 60 : risque élevé de chute (seuil habituel : 45). Ancienne boulangère, elle se lève tôt depuis toujours. Elle fait sa toilette au lavabo avec une aide pour le dos, mange seule, est continente mais se lève souvent la nuit pour uriner. Elle marche avec un déambulateur et tient à aller seule aux toilettes. Les barrières de lit ne sont pas prescrites pour elle.</p>
+<p style="margin:0;"><strong>La situation.</strong> <em>Volet installation (pour la nuit).</em> À 21 h, après avoir évalué avec elle sa douleur de hanche (EVA à 2), je l'installe au lit en décubitus dorsal, un coussin sous les genoux, qu'elle dit soulager sa hanche. Je règle le lit en position basse, j'allume la veilleuse et je place, du côté où elle sort du lit, son déambulateur, ses chaussures fermées, sa sonnette et un verre d'eau. Je vérifie que le trajet vers les toilettes est dégagé. Je ne relève pas les barrières : elles ne sont pas prescrites, et ce serait une contention qui relève d'une décision médicale. Je lui demande de sonner si elle veut se lever, sans la contraindre. <em>Volet déplacement (nuit).</em> À 2 h 30, elle sonne pour aller aux toilettes. J'allume la lumière douce, je vérifie qu'elle est bien réveillée et orientée, car son hypnotique réduit sa vigilance et son équilibre. Je l'aide à s'asseoir au bord du lit et je la laisse ainsi une minute, pieds à plat, en raison de son diurétique ; elle ne signale aucun vertige. Je lui mets ses chaussures, je lui tends le déambulateur et je la laisse se lever seule, en lui rappelant de pousser sur le lit et non sur le déambulateur. Je marche à ses côtés, du côté de sa hanche douloureuse. Aux toilettes, je place le déambulateur à portée et je lui laisse son intimité, porte entrouverte ; je reste derrière la porte et lui demande de m'appeler. Au retour, je la réinstalle et je remets tout à portée. Je trace le lever, l'heure, son état de vigilance et l'absence de vertige. Je transmets cette organisation à l'infirmière, qui l'inscrit au plan de soins. Pendant les quinze nuits suivantes, l'équipe de nuit l'applique : Mme S. n'a pas chuté et a sonné à chacun de ses levers nocturnes.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#EFEBE9;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #D7CCC8;">Les deux volets sont traités. Le double chaînage est présent : hypnotique, donc vigilance vérifiée ; diurétique, donc lever en deux temps. L'installation est singulière (coussin qui soulage sa hanche, objets du côté de sortie). L'espace est sécurisé. Son autonomie et son intimité sont préservées. Le résultat est vérifié à distance, sur quinze nuits.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#EFEBE9;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #D7CCC8;">« Je ne relève pas les barrières : elles ne sont pas prescrites, et ce serait une contention. » La limite est dite en deux temps, avec l'alternative mise en place (lit bas, veilleuse, objets à portée, sonnette).</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #D7CCC8;">« J'ai relevé les barrières pour qu'elle ne se lève pas seule » : contention décidée seule. « Je lui ai mis une protection pour qu'elle n'ait pas à se lever » : atteinte à son autonomie et à sa dignité. Une chute survenue puis passée sous silence. Un récit centré sur l'identification du risque et l'évaluation des mesures, sans le déplacement accompagné : il relèverait alors de l'activité 2.</td></tr>
+</table>
+
+<div style="background:#EFEBE9;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Une bonne situation d'activité 5 titre ses deux volets, présente la personne avant le soin, évalue avant d'agir, justifie l'aide technique, chaîne chaque traitement à une surveillance, écrit l'ergonomie du soignant, dit la limite en deux temps et ferme la boucle par un résultat chiffré, transmis et vérifié à distance.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Grille de détection et questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:35 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:18px 0 8px 0;">6.1 · La grille de détection de l'activité 5</p>
+<p>Relisez votre situation avec cette grille avant l'envoi du livret.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai fait le transfert seule, ma collègue était occupée » (consigne : deux soignants)</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Mise en danger : la consigne du plan de soins n'est pas respectée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« la sangle était un peu usée, mais elle a tenu »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Mise en danger : un matériel défectueux ne s'utilise pas.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai relevé les barrières », « je lui ai mis la ceinture » (sans prescription)</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Contention décidée seul. Écrivez ce que vous avez signalé et proposé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« il s'essoufflait, j'ai augmenté l'oxygène »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Vous ne touchez jamais au débitmètre : vous installez, mesurez et alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« le pansement s'est décollé pendant le transfert, je l'ai recollé »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Aucun soin de pansement ne relève de l'aide-soignant : vous protégez et vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« elle a eu un malaise au lever, je l'ai assise au fauteuil et j'ai fini la toilette »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Mise en danger : l'alerte passe avant la poursuite du soin.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« je l'ai porté jusqu'au fauteuil », « je l'ai levée d'un coup »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Qu'a-t-elle fait elle-même ? Quelle aide technique ? Portage ou lever brusque signalent une substitution et un risque pour les deux.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« je l'ai installée au fauteuil », sans aucun déplacement développé</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Le volet déplacement manque : l'attendu n'est honoré qu'à moitié.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« elle est dépendante pour les transferts »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Décrivez les capacités étape par étape et du jour.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on l'a levée », « nous l'avons installé »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Précisez votre part exacte et celle de votre collègue.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">un traitement cité dans la présentation, jamais repris dans le récit</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Le chaînage manque : lever en deux temps, vigilance, prises douces, chute transmise.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« il a fallu insister pour qu'elle se lève », « ici, on les lève tous à 8 h »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Preuve à charge : refus non respecté, usage du service à la place de l'évaluation. Se corrige par suppression ou réécriture.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:22px 0 8px 0;">6.2 · Six questions du jury, telles qu'elles tombent</p>
+<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Répondez à voix haute avec la méthode RAPIDE (Reformuler, Ancrer, Préciser, Illustrer, Discuter, Évaluer), puis ouvrez l'attendu.</p>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">« Vous écrivez : "J'ai utilisé le lève-personne." Pourquoi celui-là plutôt que le verticalisateur ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le lien entre l'évaluation et le choix. Aucun appui sur les jambes, tronc non tenu ou coopération impossible : lève-personne. Appui partiel, tête et tronc tenus, consignes comprises : verticalisateur. Citez aussi la consigne du plan de soins. <strong>À éviter :</strong> « c'est celui qu'on utilise pour elle ».</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">« Vous écrivez : "Je l'ai laissé assis au bord du lit deux minutes." Pourquoi ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le lever en deux temps, justifié par son antihypertenseur et son alitement, qui exposent à l'hypotension orthostatique ; ce que vous observiez (coloration, vertige, tension reprise) et ce que vous auriez fait en cas de malaise : recoucher, rester, alerter. <strong>À éviter :</strong> « pour qu'il se réveille ».</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">« Vous écrivez : "Nous étions deux pour le transfert." Et si votre collègue n'avait pas été disponible ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> vous attendez, vous sollicitez un autre membre de l'équipe ou vous réorganisez avec l'infirmière ; la personne est installée en sécurité et prévenue du délai. La consigne passe avant la rapidité. <strong>À éviter :</strong> « je me serais débrouillée ».</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">« Vous écrivez : "Elle est à risque élevé de chute." Pourquoi ne pas avoir relevé les barrières ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> les barrières sont une contention, qui relève d'une décision médicale encadrée par le protocole ; une personne agitée qui les enjambe tombe de plus haut, ce qui peut aggraver la chute. Vous citez les alternatives mises en place et la transmission du risque. <strong>À éviter :</strong> « parce qu'on n'a pas le droit » sans autre explication.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">« Vous écrivez : "J'ai travaillé dos droit, jambes fléchies." Concrètement, que faites-vous pour votre dos ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> hauteur du lit réglée, base d'appui élargie, charge rapprochée, déplacement des pieds plutôt que torsion du tronc, aide technique au lieu du portage, travail à deux quand c'est prévu ; éventuellement une formation à la manutention suivie. <strong>À éviter :</strong> « j'ai l'habitude, je n'ai jamais eu mal ».</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">« Vous écrivez : "Je l'ai accompagnée au salon." Comment savez-vous que ce déplacement lui a été bénéfique ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> des résultats observés et chiffrés : distance parcourue, douleur avant et après, paramètres, fatigue, plaisir exprimé, peau contrôlée au retour, évolution les jours suivants, transmission. <strong>À éviter :</strong> « elle avait l'air contente ».</p></details>
+
+<div style="background:#EFEBE9;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Les éliminatoires de l'activité 5 sont presque toujours des mises en danger : consigne non respectée, matériel défectueux utilisé, contention décidée seul, alerte retardée. Le jury questionne vos choix (pourquoi cette aide, pourquoi ce temps assis, pourquoi pas de barrières) et vos résultats : préparez la réponse à chaque phrase de votre situation.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC08 · Clôture</p>
+      <div class="content-scroll"><div style="background:#3E2723;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#3E2723;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">1. Combien d'éléments l'activité 5 demande-t-elle, et lesquels ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Deux :</strong> un contexte d'installation ET un type de déplacement, chacun développé.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">2. Dans quel bloc se trouve l'activité 5 ? A. BC1 · B. BC2 · C. BC3 · D. BC4</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B. BC2</strong>, le bloc clinique, avec les activités 3 et 4.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">3. Citez la phrase-clé de l'activité 5.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà comment je protège son corps et le mien pendant la mobilisation. »</strong></p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">4. Quelles sont les étapes du mouvement à évaluer avant un transfert ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Retournement, redressement, assis au bord du lit, lever, transfert, marche</strong>, avec les capacités du jour.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">5. Quelles classes de médicaments imposent un lever en deux temps ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Surtout les antihypertenseurs et les diurétiques</strong> (ainsi que tout alitement prolongé), qui exposent à l'hypotension orthostatique.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">6. Une résidente sous anticoagulant glisse du fauteuil et se retrouve assise au sol, sans douleur apparente. Que faites-vous de cette information ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous restez auprès d'elle et vous prévenez l'infirmier sans attendre.</strong> Vous la relevez selon le protocole chute, sans la porter, après son évaluation, puis vous tracez. Sous anticoagulant, toute chute se transmet, même bénigne en apparence, en raison du risque de saignement.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">7. Verticalisateur ou lève-personne pour une personne sans aucun appui sur les jambes ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Lève-personne.</strong> Le verticalisateur demande un appui partiel, le maintien de la tête et du tronc, et la coopération.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">8. Que vérifiez-vous avant d'utiliser un lève-personne ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La sangle</strong> (taille prévue, intacte, coutures et attaches), <strong>la batterie</strong>, les roues et les freins, l'arrêt d'urgence et le nombre de soignants prévu.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">9. Citez quatre règles d'ergonomie du soignant.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Dos droit, jambes fléchies, charge rapprochée, jamais de torsion du tronc</strong> ; et aussi : base d'appui élargie, hauteur de travail réglée, travail à deux quand c'est prévu.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">10. Où vous placez-vous pour accompagner la marche d'une personne hémiplégique, et de quel côté tient-elle sa canne ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous : du côté atteint. La canne : du côté sain.</strong></p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">11. Pourquoi installer en décubitus latéral à 30° plutôt qu'à 90° ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Pour répartir l'appui sur la fesse</strong> et épargner le sacrum et le trochanter, qui sont des zones à risque d'escarre.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">12. Rougeur au talon qui ne blanchit pas à la vitropression : que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous supprimez l'appui, vous ne massez jamais, vous transmettez à l'infirmier.</strong> C'est un signe d'escarre de stade 1.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">13. Qui décide de relever les barrières de lit d'une personne ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le médecin</strong>, dans le cadre du protocole de l'établissement : c'est une contention. L'aide-soignant applique, surveille et trace.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">14. Au premier lever, la saturation d'un patient sous oxygène passe de 96 % à 91 %. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous l'asseyez, vous restez auprès de lui, vous vérifiez les lunettes, vous recontrôlez et vous alertez l'infirmière.</strong> Vous ne touchez jamais au débitmètre.</p></details>
+
+<details style="border:1px solid #D7CCC8;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#3E2723;">15. Quelle situation relève de l'activité 5 plutôt que de l'activité 1 ? A. Une toilette personnalisée selon les habitudes · B. Un transfert au verticalisateur suivi d'une marche accompagnée · C. Un atelier d'animation</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B.</strong> Le récit porte sur le mouvement, l'évaluation des capacités et le choix de l'aide technique. A et C relèvent de l'activité 1.</p></details>
+
+<div style="background:linear-gradient(135deg,#3E2723 0%,#6D4C41 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 08</p>
+<ol style="margin:0;padding-left:22px;">
+<li>L'activité 5 est clinique : chaque mobilisation est une décision fondée sur l'état du jour et les ressources réelles de la personne.</li>
+<li>Deux volets obligatoires, installation ET déplacement : titrez-les et développez chacun.</li>
+<li>Évaluez avant d'agir : capacités étape par étape, douleur, état clinique, traitements, plan de soins, dispositifs.</li>
+<li>Chaînez chaque traitement : antihypertenseurs et diurétiques, lever en deux temps ; hypnotiques, vigilance ; anticoagulants, toute chute se transmet.</li>
+<li>Stimulez plutôt que faire à la place, et choisissez l'aide technique d'après l'évaluation, vérifiée avant usage.</li>
+<li>Protégez votre dos et écrivez-le : dos droit, jambes fléchies, charge rapprochée, jamais de torsion, à deux quand c'est prévu.</li>
+<li>Installez selon la singularité ; ne massez jamais un point d'appui ; ne décidez jamais une contention.</li>
+<li>Fermez la boucle : résultat chiffré, transmis, vérifié à distance.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#3E2723;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 09</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #D7CCC8;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Choisir une situation vécue qui porte à la fois une installation et un déplacement, et vérifier qu'aucun geste hors champ n'en est le cœur.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Titrer dans ma rubrique B le « Volet installation » et le « Volet déplacement ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Rédiger le recueil de données en 4 temps, avec poids, taille, IMC interprété et échelles nommées.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Écrire le passage évaluatif : capacités étape par étape, douleur chiffrée, état du jour comparé à l'habitude.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Vérifier que chaque traitement cité appelle une phrase de surveillance dans le récit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Justifier le choix de l'aide technique, sa vérification, et ajouter une phrase sur mon ergonomie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Dire la limite en deux temps là où elle se pose : contention, oxygène, pansement, consigne à deux.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Relire avec la grille de détection de la partie 6, et préparer à voix haute les six questions du jury.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D7CCC8;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D7CCC8;">Réviser avec le livre du livret 2 (chapitre 13), le Livre Bloc 2 et les fiches de révision B2.</td></tr>
+</table>
+
+<p style="margin:18px 0 0 0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">La prévention des chutes chez la personne âgée passe prioritairement par :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="true">Un environnement sécurisé et une mobilisation adaptée</button>
+        <button class="quiz-opt" data-correct="false">La restriction systématique des déplacements</button>
+        <button class="quiz-opt" data-correct="false">La contention physique</button>
+        <button class="quiz-opt" data-correct="false">Une surveillance permanente par caméra</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Environnement sécurisé + aide à la mobilisation = prévention efficace et respectueuse." data-ko="Non. Prévention = environnement sécurisé + mobilisation adaptée. Contention et restriction sont à proscrire."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC03 — Activité 1 — Accompagner la vie quotidienne · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC03</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC03 · Bloc 1</p>
+      <h1 class="hero">Activité 1 — Accompagner la vie quotidienne</h1>
+      <p class="subtitle">Toilette, repas, habillage, mobilisation : prendre soin au quotidien</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#E0F2F1;border-left:6px solid #004D40;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#004D40;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>énoncer avec vos mots ce que recouvre l'activité 1 et ce que le livret 2 attend précisément ;</li>
+<li>distinguer une situation d'activité 1 d'une situation d'activité 2 ou 5 grâce aux phrases-clés ;</li>
+<li>recueillir les habitudes, la culture et les choix d'une personne, puis évaluer son autonomie, ses fragilités et ses ressources avant d'agir ;</li>
+<li>expliquer simplement la grille AGGIR et le GIR, et relier votre accompagnement au projet personnalisé ;</li>
+<li>accompagner la toilette, l'habillage, le repas, l'élimination et le sommeil en « faisant faire » plutôt qu'en faisant à la place ;</li>
+<li>respecter un refus de soin : en rechercher la cause, proposer autrement, transmettre, sans jamais insister ;</li>
+<li>rédiger le volet vie sociale et un réajustement chiffré, avec un avant et un après ;</li>
+<li>repérer dans votre livret les formulations qui fragilisent l'activité 1, et les réécrire.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#004D40;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;">0:00</td><td style="padding:9px;border:1px solid #B2DFDB;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #B2DFDB;">5&nbsp;min</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;">0:05</td><td style="padding:9px;border:1px solid #B2DFDB;">Partie 1 · L'activité 1 décodée</td><td style="padding:9px;border:1px solid #B2DFDB;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;">0:20</td><td style="padding:9px;border:1px solid #B2DFDB;">Partie 2 · Évaluer avant d'accompagner</td><td style="padding:9px;border:1px solid #B2DFDB;">20&nbsp;min</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;">0:40</td><td style="padding:9px;border:1px solid #B2DFDB;">Partie 3 · Accompagner les actes essentiels en « faisant faire »</td><td style="padding:9px;border:1px solid #B2DFDB;">25&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;">1:05</td><td style="padding:9px;border:1px solid #B2DFDB;">Partie 4 · Le volet vie sociale</td><td style="padding:9px;border:1px solid #B2DFDB;">10&nbsp;min</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;">1:15</td><td style="padding:9px;border:1px solid #B2DFDB;">Partie 5 · Bientraitance, réajustement et grille de détection</td><td style="padding:9px;border:1px solid #B2DFDB;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;">1:30</td><td style="padding:9px;border:1px solid #B2DFDB;">Partie 6 · Deux situations modèles et les questions du jury</td><td style="padding:9px;border:1px solid #B2DFDB;">20&nbsp;min</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;">1:50</td><td style="padding:9px;border:1px solid #B2DFDB;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #B2DFDB;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min). Les situations modèles A et B se lisent avant la séance.</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations sur l'activité 1. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass.</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">1. L'activité 1 peut se limiter à une toilette bien racontée.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'attendu officiel demande au moins un type de soins de la vie quotidienne <strong>et</strong> le traitement du volet <strong>vie sociale</strong>, qui figure dans l'intitulé même de l'activité. Une toilette parfaite sans vie sociale laisse l'activité incomplète.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">2. Pour l'activité 1, le meilleur choix est la personne la plus dépendante du service, parce que « c'est là qu'on fait le plus ».</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le jury mesure la <strong>personnalisation</strong>, pas la quantité de soins. Choisir une personne très dépendante reste possible, à condition de montrer ce qu'elle fait encore (un choix, un geste) et comment vous l'avez préservé.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">3. « Faire faire » prend souvent plus de temps que « faire à la place », et le jury le sait.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Le jury attend que vous expliquiez comment vous avez organisé ce temps, et pourquoi il était justifié pour <em>cette</em> personne.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">4. Quand l'hygiène l'impose, une personne qui refuse sa toilette peut être lavée malgré tout.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> La loi du 4 mars 2002 pose le principe du consentement aux soins. Un refus se respecte : vous en recherchez la cause, vous proposez autrement (un autre moment, un autre soignant, une autre façon de faire) et vous transmettez à l'infirmier. Vous n'insistez jamais, et vous ne contraignez jamais.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">5. C'est l'aide-soignant qui calcule le GIR de la personne.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'évaluation par la grille AGGIR se fait en équipe (en EHPAD sous la responsabilité du médecin coordonnateur, à domicile par l'équipe médico-sociale du département). Vous y contribuez par vos observations du quotidien.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">6. Le projet personnalisé est un document médical réservé au médecin et à l'infirmier.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Fondé sur la loi du 2 janvier 2002, qui s'applique aux établissements et services médico-sociaux, il se construit <strong>avec</strong> la personne, ses proches et toute l'équipe. L'aide-soignant y contribue directement, et il en est souvent le référent.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">7. Appliquer une crème pendant la toilette est toujours dans le champ, sans condition.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux tel que formulé.</strong> L'application d'une crème ou d'une pommade se fait <strong>sur consigne de l'infirmier</strong>, avec le produit qu'il a désigné et identifié, <strong>jamais sur une plaie</strong>, et elle se trace. Écrivez toujours qui a désigné le produit.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">8. Une rougeur découverte au talon pendant la toilette se masse pour relancer la circulation.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, et dangereux.</strong> Une rougeur ne se masse <strong>jamais</strong> : le massage aggrave les lésions des tissus sous la peau. Vous réalisez le test de vitropression, vous supprimez l'appui et vous transmettez à l'infirmier.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">9. Accompagner une résidente à l'atelier chant peut constituer le volet vie sociale de l'activité 1.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai</strong>, à condition de montrer <strong>pourquoi</strong> cette animation, <strong>comment</strong> vous l'avez rendue possible et <strong>ce que cela a changé</strong>, chiffres à l'appui.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">10. Chez une personne atteinte de troubles neurocognitifs, il n'est plus nécessaire de rechercher son consentement pour la toilette.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le consentement se recherche toujours, avec une communication adaptée : phrases courtes, une consigne à la fois, face à la personne et à sa hauteur. Un refus exprimé par la parole <em>ou par le corps</em> (repousser la main, se crisper, crier) se respecte et se transmet.</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent. L'activité 1 paraît simple parce qu'elle parle de gestes quotidiens : c'est pour cela qu'elle est souvent mal rédigée. Le candidat décrit ce qu'il fait et oublie de prouver pourquoi il le fait ainsi, pour cette personne-là.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 1 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">1.1 · Ce que recouvre l'activité 1</p>
+
+<p>Intitulé officiel de la compétence 1 : <strong>accompagner la personne dans les actes essentiels de la vie quotidienne et de la vie sociale, personnaliser cet accompagnement à partir de l'évaluation de sa situation personnelle et contextuelle, et apporter les réajustements nécessaires</strong>. Elle ouvre le bloc 1 avec l'activité 2. Les éléments de la compétence 1 de la fiche RNCP 40692 se lisent ainsi, reformulés pour votre livret :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:34%;">Élément de compétence (reformulé)</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Ce que cela veut dire sur le terrain</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Rechercher et analyser</strong> les habitudes, la culture et les choix de la personne et de son entourage</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous savez comment elle se lavait chez elle, à quelle heure elle se lève, ce qu'elle aime manger, ce qui compte pour elle.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Évaluer</strong> son autonomie, ses fragilités et ses ressources</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous savez ce qu'elle fait seule, ce qu'elle fait avec une aide, ce qu'elle ne fait plus, et ce qui la fragilise.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Identifier les besoins</strong> et ajuster l'accompagnement</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous partez de ce que vous observez ce jour-là, et pas seulement de la fiche.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Accompagner</strong> les actes essentiels de la vie quotidienne</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Toilette, habillage, repas, hydratation, élimination, sommeil.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Accompagner la <strong>vie sociale</strong></td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Animations, repas partagés, visites, sorties, maintien des liens et des rôles.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Mobiliser les ressources</strong> de la personne, en lien avec l'infirmier et les aidants</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous faites avec la personne, et vous associez l'infirmier et les proches.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Adapter la communication</strong></td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous parlez à cette personne comme elle peut entendre : troubles cognitifs, baisse d'audition, langue, fatigue.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Conforter les aidants</strong></td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous reconnaissez leur place, leur savoir sur la personne, leur fatigue.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>Réajuster</strong></td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Quand quelque chose ne va pas, vous changez votre façon de faire.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel : ce que le livret demande vraiment</p>
+
+<p>Pour l'activité 1, le livret demande <strong>un élément</strong> : décrire « au moins un type de soins ou d'activité de la vie quotidienne », en traitant aussi le <strong>volet vie sociale</strong> présent dans l'intitulé. Chez ORACLE, cet élément se rédige en <strong>une situation</strong>, qui porte deux volets, chacun réellement développé.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:24%;">Rubrique</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Ce que vous y écrivez pour l'activité 1</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">Rubrique A</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">L'inventaire honnête des soins de la vie quotidienne que vous avez <strong>réellement</strong> pratiqués : toilettes, soins de bouche non médicamenteux, habillage, aide au repas, change, accompagnement au coucher et aux animations… Rien que vous n'ayez jamais fait, rien qui sorte du champ.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">Rubrique B</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Une situation précise, vécue et datée : la personne présentée avant le soin, votre évaluation, votre accompagnement étape par étape, le volet vie sociale, le résultat, la transmission et le réajustement.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Le piège le plus fréquent de l'activité 1 :</strong> une toilette correctement décrite, suivie d'une phrase de conclusion du type « elle participe aussi aux animations ». Le volet vie sociale est alors <strong>affirmé</strong>, pas démontré. Le jury le cote « à vérifier », et il vous interrogera dessus. Le volet vie sociale mérite son propre développement : pourquoi, comment, avec quel résultat.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">1.3 · La phrase-clé, mot à mot</p>
+
+<p style="margin:0 0 10px 0;background:#E0F2F1;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment j'accompagne au quotidien, dans le respect de l'autonomie et de la dignité. »</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">« j'accompagne »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Accompagner n'est pas faire à la place : la personne agit, vous l'aidez à agir. Un récit où vous êtes le seul sujet des verbes (« je lave », « j'habille ») ne prouve pas l'accompagnement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">« au quotidien »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Les gestes ordinaires, répétés chaque jour. Un changement d'état clinique relève de l'activité 3.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">« l'autonomie »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Ce que la personne peut encore faire, et ce qu'elle choisit : choisir ses vêtements ou l'heure de sa douche, c'est aussi de l'autonomie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">« la dignité »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">La pudeur, l'intimité, le respect du rythme, le vouvoiement, le refus respecté. Tout ce qui fait qu'une personne dépendante reste traitée comme une personne.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">1.4 · Ne pas confondre avec les activités 2 et 5</p>
+
+<p>Une même matinée peut contenir une toilette, un risque de chute et un transfert. Ce qui décide du rattachement, c'est <strong>ce que votre récit démontre</strong>, et non le soin réalisé.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:22%;">Question</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:26%;">Activité 1 (BC1)</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:26%;">Activité 2 (BC1)</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Activité 5 (BC2)</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:22%;vertical-align:top;">Phrase-clé</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Voilà comment j'accompagne au quotidien, dans le respect de l'autonomie et de la dignité. »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Voilà un risque qui n'est pas encore survenu, et ce que je fais pour qu'il ne survienne pas. »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Voilà comment je protège son corps et le mien pendant la mobilisation. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:22%;vertical-align:top;">Le cœur du récit</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">La personnalisation d'un acte essentiel et de la vie sociale.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Un signe de fragilité, un risque nommé, une prévention évaluée.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">L'évaluation des capacités motrices, le choix d'une aide technique, l'ergonomie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:22%;vertical-align:top;">Le résultat attendu</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Plus d'autonomie, un choix respecté, un mieux-être, une participation sociale.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Le risque ne survient pas, la mesure est réévaluée.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Un déplacement ou une installation sécurisés, pour la personne et pour vous.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ La frontière la plus fine : 1 et 5.</strong> Dans une toilette au lavabo, la personne passe forcément du lit au fauteuil. Si le transfert occupe la moitié du récit, vous écrivez une activité 5. En activité 1, il se résume en une phrase (« je l'ai aidée à s'installer au fauteuil, comme le prévoit son plan de soins ») et le récit se concentre sur la toilette et ce que la personne fait elle-même.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;margin:24px 0 8px 0;">✍️ Exercice 1 (5&nbsp;min) · Activité 1, 2 ou 5 ?</p>
+<p>Pour chaque résumé de situation, dites à quelle activité il se rattache, et pourquoi. Ouvrez ensuite la correction.</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">a) Mme C., 87 ans, ancienne coiffeuse, refuse depuis son entrée qu'on lui coiffe les cheveux. J'apprends qu'elle se coiffait elle-même chaque matin devant son miroir. J'installe un miroir à sa hauteur et je lui tends sa brosse : elle se coiffe seule, et elle sourit pour la première fois depuis son arrivée.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 1.</strong> Habitude recherchée, capacité mobilisée, effet observé : c'est la phrase-clé.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">b) M. F. mange de moins en moins depuis dix jours et a perdu 2 kg en un mois. Je le signale à l'infirmière, je mets en place une fiche de surveillance alimentaire et nous réévaluons à une semaine. Il n'est pas encore dénutri.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 2.</strong> Un risque (la dénutrition) pas encore survenu, une prévention évaluée. Le repas est le support ; la situation prouve la prévention.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">c) Mme H., hémiplégique droite, doit passer du lit au fauteuil roulant. J'évalue sa capacité d'appui sur la jambe gauche, je choisis le disque de transfert, je place le fauteuil côté sain et je la guide par la parole en gardant le dos droit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 5.</strong> Évaluation des capacités motrices, choix de l'aide technique, ergonomie.</p></details>
+
+
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">d) Pendant la toilette de M. L., je découvre une rougeur au sacrum qui ne blanchit pas à la vitropression. Je supprime l'appui, je préviens l'infirmière et je trace.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Ni 1 ni 2.</strong> L'escarre de stade 1 est constituée : c'est un changement d'état repéré et signalé, qui relève de l'<strong>activité 3</strong>. La toilette est le contexte, pas le sujet.</p></details>
+
+<div style="background:#E0F2F1;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> L'activité 1 demande un soin de la vie quotidienne <strong>et</strong> un volet vie sociale, dans une seule situation où les deux sont développés. Sa phrase-clé tient en trois mots : accompagner, autonomie, dignité. Le rattachement dépend de ce que le récit prouve : personnaliser (1), prévenir un risque non survenu (2), mobiliser en sécurité (5).</p>
+</div>
+
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 9 · Livre Bloc 1 · Fiches de révision B1</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Évaluer avant d'accompagner <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 20&nbsp;min</span></div>
+
+<p>On ne personnalise que ce que l'on connaît. Avant le premier geste, votre livret montre <strong>qui</strong> est la personne, <strong>ce qu'elle peut faire</strong> et <strong>ce qu'elle veut</strong>.</p>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">2.1 · Recueillir les habitudes, la culture et les choix</p>
+
+<p>Le recueil ne se limite pas au dossier. Il se construit à partir de quatre sources, que vous pouvez citer dans votre récit :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:24%;">Source</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Ce que vous y trouvez</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">La personne elle-même</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Ses préférences, ses habitudes, ses refus, ce qui compte pour elle. Même avec des troubles neurocognitifs, elle peut dire ce qu'elle aime, par la parole ou par ses réactions.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">L'entourage</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">L'histoire de vie, les habitudes anciennes, les rituels. Les proches connaissent souvent ce que la personne ne peut plus dire.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">Le dossier et le projet personnalisé</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Pathologies, traitements, GIR, risques identifiés, objectifs de l'équipe, fiche d'histoire de vie.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">Votre observation directe</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Ce que la personne fait ce jour-là, ses gestes, sa fatigue, son humeur, ses réactions au toucher.</td></tr>
+</table>
+
+
+<div style="background:#E0F2F1;border-left:6px solid #00695C;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 La culture n'est pas un détail.</strong> Certaines personnes demandent, pour des raisons culturelles ou religieuses, à être lavées par un soignant du même sexe, à se laver à l'eau courante plutôt qu'au gant, à ne pas manger certains aliments ou à respecter une période de jeûne. Vous ne jugez pas ces choix : vous les recherchez, vous les respectez autant que possible et vous transmettez ce qui ne peut pas l'être. Une habitude culturelle respectée est une excellente preuve de personnalisation.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">2.2 · Évaluer l'autonomie : la grille AGGIR et le GIR, simplement</p>
+
+<p>La grille <strong>AGGIR</strong> (autonomie gérontologique, groupes iso-ressources) est l'outil national d'évaluation de la perte d'autonomie des personnes âgées. Elle observe ce que la personne <strong>fait seule</strong>, et non ce qu'elle serait capable de faire en théorie.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce qu'elle observe</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Dix variables « discriminantes », qui servent au calcul : cohérence, orientation, toilette, habillage, alimentation, élimination, transferts, déplacements à l'intérieur et à l'extérieur, communication à distance. Sept variables « illustratives » (gestion, cuisine, ménage, transports, achats, suivi du traitement, activités de temps libre) complètent le tableau sans entrer dans le calcul.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Comment chaque variable est cotée</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;"><strong>A</strong> : la personne fait seule, spontanément, totalement, habituellement et correctement. <strong>B</strong> : elle fait partiellement, ou pas toujours, ou pas correctement, ou seulement quand on la stimule. <strong>C</strong> : elle ne fait pas.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce qu'elle donne</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Un <strong>GIR</strong>, groupe iso-ressources, de 1 à 6. Le GIR 1 correspond à la dépendance la plus lourde, le GIR 6 à une personne autonome pour les actes essentiels.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Qui l'établit</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">En EHPAD, l'équipe, sous la responsabilité du médecin coordonnateur ; à domicile, l'équipe médico-sociale du département, dans le cadre de l'allocation personnalisée d'autonomie. Vous n'établissez pas le GIR, mais vos observations du quotidien l'alimentent.</td></tr>
+</table>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:14%;">GIR</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Ce que cela signifie, simplement</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:14%;vertical-align:top;">GIR 1</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Confinée au lit ou au fauteuil, fonctions mentales gravement altérées, présence continue indispensable.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:14%;vertical-align:top;">GIR 2</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Confinée au lit ou au fauteuil, fonctions mentales partiellement conservées ; ou fonctions mentales altérées mais capable de se déplacer.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:14%;vertical-align:top;">GIR 3</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Autonomie mentale conservée, autonomie motrice partielle ; aide plusieurs fois par jour pour les soins corporels.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:14%;vertical-align:top;">GIR 4</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Aide pour se lever, puis se déplace dans son logement ; aide parfois pour la toilette et l'habillage ; la plupart s'alimentent seules. Ou pas de difficulté motrice, mais aide pour les soins corporels et les repas.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:14%;vertical-align:top;">GIR 5</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Aide ponctuelle pour la toilette, la préparation des repas et le ménage.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:14%;vertical-align:top;">GIR 6</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Autonome pour les actes essentiels de la vie courante.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Le GIR ne suffit pas.</strong> « GIR 3 » dit combien d'aide il faut, pas laquelle. Deux personnes en GIR 3 peuvent avoir besoin d'accompagnements opposés. Dans votre livret, citez le GIR, puis <strong>détaillez acte par acte</strong> : « elle se lave seule le visage, les bras et le buste, assise au lavabo ; elle a besoin d'aide pour le dos, les jambes et les pieds, car elle ne peut pas se pencher ». C'est ce détail qui prouve votre évaluation.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">2.3 · Repérer les fragilités et les ressources</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#C62828;color:#FFFFFF;border:1px solid #C62828;text-align:left;width:50%;">Les fragilités à repérer</th><th style="padding:10px;background:#2E7D32;color:#FFFFFF;border:1px solid #2E7D32;text-align:left;">Les ressources à mobiliser</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;">Troubles neurocognitifs, baisse de la vue ou de l'audition<br>Douleur (EVA si la personne s'exprime, Algoplus sinon)<br>Fatigue, perte de poids, risque de chute<br>Fragilité de la peau (score de Braden)<br>Isolement, repli, deuil récent<br>Traitements qui exposent à un risque</td>
+<td style="padding:12px;border:1px solid #C8E6C9;background:#F1F8E9;vertical-align:top;">Les gestes qu'elle fait encore, même partiellement<br>Sa motivation, ses plaisirs, ses habitudes anciennes<br>Ses proches, leur savoir et leur présence<br>Les aides techniques (siège de douche, enfile-bas, couverts adaptés)<br>L'équipe pluriprofessionnelle<br>Les moments où elle est la plus disponible</td>
+</tr>
+</table>
+
+<p><strong>Le chaînage traitement-surveillance commence ici.</strong> Chaque traitement que vous citez dans la présentation de la personne doit appeler, plus loin, une surveillance ou une adaptation de votre accompagnement :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:34%;">Dans la présentation</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Plus loin, dans l'accompagnement</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« traitée par furosémide, diurétique de l'anse »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Je lui propose d'aller aux toilettes avant la douche, et je l'accompagne au lever en deux temps, son diurétique l'exposant à une hypotension orthostatique et à des besoins urgents d'uriner. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« traité par un anticoagulant »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Je le rase au rasoir électrique, comme le prévoit son plan de soins, et j'observe sa peau et ses gencives pendant la toilette, à la recherche d'un hématome ou d'un saignement. »</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">2.4 · Le projet personnalisé : le fil conducteur de l'activité 1</p>
+
+<p>La <strong>loi du 2 janvier 2002</strong>, qui rénove l'action sociale et médico-sociale, a posé les droits des personnes accueillies dans les établissements et services médico-sociaux (EHPAD, services de soins infirmiers à domicile, foyers…). Parmi eux, le droit à un <strong>accompagnement individualisé</strong>, qui se concrétise dans le <strong>projet personnalisé</strong>.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce que c'est</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Un projet construit <strong>avec</strong> la personne (et ses proches si elle le souhaite) : attentes, habitudes, besoins, risques, objectifs de l'équipe. Il couvre le soin <strong>et</strong> la vie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Qui le construit</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">L'équipe pluriprofessionnelle, avec la personne. Un soignant référent, très souvent un aide-soignant, en assure le suivi.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Comment il vit</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Il est réévalué régulièrement et à chaque changement : une habitude découverte, un refus répété, une nouvelle envie doivent y entrer.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce que vous y apportez</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vos observations, les habitudes recueillies, les réajustements qui ont fonctionné.</td></tr>
+</table>
+
+<div style="background:#E0F2F1;border-left:6px solid #00695C;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Dans votre livret, citez la loi au bon moment, sans la réciter.</strong> Une phrase suffit : « J'ai transmis cette habitude à l'infirmière et au référent, pour qu'elle soit inscrite dans son projet personnalisé. »</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">2.5 · Les besoins fondamentaux comme grille d'observation</p>
+
+<p>Le modèle des <strong>14 besoins fondamentaux</strong> de Virginia Henderson reste une bonne grille pour observer une personne de façon complète : respirer, boire et manger, éliminer, se mouvoir, dormir, se vêtir, maintenir sa température, être propre, éviter les dangers, communiquer, agir selon ses croyances et ses valeurs, s'occuper en vue de se réaliser, se récréer, apprendre. Le besoin de communiquer et les quatre derniers nourrissent le <strong>volet vie sociale</strong> : ce sont aussi ceux que les candidats oublient.</p>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">2.6 · Le recueil en 4 temps appliqué à l'activité 1</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:24%;">Temps</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Contenu attendu</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:34%;">Exemple</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">1 · Le contexte</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Âge, date et motif de l'entrée ou de la prise en soins, pathologies avec une définition courte, traitements correctement orthographiés avec leur classe, GIR, poids, taille, IMC interprété, échelles.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Mme R., 83 ans, entrée en EHPAD il y a quatre mois après une chute à domicile. Arthrose des genoux, usure du cartilage des articulations, traitée par paracétamol, antalgique de palier 1. GIR 4. 64 kg pour 1,58 m, soit un IMC de 25,6, sans dénutrition. Risque de chute évalué par l'échelle de Morse. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">2 · L'histoire de vie</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Métier, lieu de vie, entourage, habitudes, ce qui compte pour elle.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Ancienne cantinière, veuve, deux fils qui viennent le dimanche. Elle a toujours pris sa douche le soir. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">3 · L'autonomie actuelle</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Hygiène, alimentation, élimination, mobilité, communication, vie sociale, risques inscrits au projet personnalisé.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Elle se lave seule le haut du corps, assise ; aide pour le bas. Mange seule. Marche avec une canne. Reste en chambre l'après-midi. Risque de chute inscrit au projet. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">4 · Le soin</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Et seulement maintenant.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Le mardi 14 mars, à 19 h, … »</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Écrivez des faits, pas des jugements.</strong> « 90 kg pour 1,60 m », et non « corpulence importante ». « Elle me demande trois fois dans la matinée quel jour nous sommes », et non « elle perd la tête ». « Elle repousse ma main quand j'approche le gant », et non « elle est opposante ». Un jugement ne prouve rien ; un fait observé prouve votre observation.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;margin:24px 0 8px 0;">✍️ Exercice 2 (5&nbsp;min) · Du jugement au fait observé</p>
+<p>Réécrivez chaque formulation en fait observable et utile à l'accompagnement. Ouvrez ensuite la proposition.</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">a) « Mme T. est très dépendante. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Mme T., GIR 2, ne se lève plus seule. Assise au fauteuil, elle se lave le visage et les mains si je lui tends le gant ; elle ne peut plus se laver le reste du corps. » Le GIR situe, le détail acte par acte oriente l'accompagnement.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">b) « M. V. est agressif pendant la toilette. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Quand j'approche le gant sans l'avoir prévenu, M. V. crie et repousse ma main. Quand je me place face à lui et que j'annonce chaque geste, il accepte. » Le fait observé contient la solution.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">c) « Mme Z. ne mange rien. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Mme Z. a mangé un quart de son plat sur les trois derniers déjeuners, selon la fiche de surveillance alimentaire, mais elle finit toujours ses laitages. » Chiffré, et porteur d'une piste.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">d) « Mme P. est têtue pour s'habiller. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Mme P. accepte l'aide pour l'habillage, mais refuse qu'on choisisse ses vêtements à sa place. » Ce que « têtue » cache, c'est un <strong>choix</strong>, que l'activité 1 vous demande de respecter.</p></details>
+
+
+
+<div style="background:#E0F2F1;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> On évalue avant d'accompagner : habitudes, culture et choix ; autonomie acte par acte (le GIR ne suffit pas) ; fragilités et ressources. Chaque traitement cité appelle une surveillance plus loin. Le projet personnalisé, issu de la loi du 2 janvier 2002, est le fil conducteur : ce que vous découvrez y entre par votre transmission.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Accompagner les actes essentiels en « faisant faire » <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:40 · 25&nbsp;min</span></div>
+
+<p>« Faire faire » ne veut pas dire laisser faire : c'est <strong>donner à la personne la part du geste qu'elle peut encore accomplir</strong>, et l'aider pour le reste. Chaque geste fait à sa place, alors qu'elle pouvait le faire, accélère sa perte d'autonomie.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:33%;">Faire à la place</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:33%;">Faire avec</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Faire faire</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Je lave, j'habille, je nourris. La personne subit.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Je commence le geste, elle le termine ; ou je la guide main dans la main.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Je prépare, je propose, je guide par la parole, elle agit. Je reste présent pour la sécurité.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Justifié seulement quand la personne ne peut plus faire, ou en cas de fatigue ou de douleur ce jour-là.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Adapté aux capacités partielles et aux troubles de l'initiation du geste.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">L'objectif chaque fois que c'est possible.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.1 · La toilette personnalisée : lavabo, douche, lit</p>
+
+<p>Le choix du lieu de la toilette n'est pas une question d'organisation du service : il découle de l'évaluation de la personne et de ses habitudes.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:18%;">Toilette</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:28%;">Quand la choisir</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:28%;">Ce que la personne peut faire</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Points de vigilance</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:18%;vertical-align:top;">Au lavabo</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">La personne tient assise, au fauteuil ou sur une chaise, devant le lavabo. C'est souvent la toilette la plus proche de ses habitudes.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Se laver le visage, les mains, les bras, le buste ; se brosser les dents ; se coiffer devant le miroir.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Miroir à sa hauteur, matériel à portée, serviettes pour la pudeur et la chaleur.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:18%;vertical-align:top;">À la douche</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Selon ses habitudes et ses capacités, avec un siège de douche si la station debout est fragile.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Se laver tout ou partie du corps, assise, avec un gant ou une éponge à long manche.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Salle de bain préchauffée, sol antidérapant, température de l'eau vérifiée sur votre avant-bras puis sur la main de la personne, sonnette à portée, <strong>jamais seule sur le siège</strong> si son état ne le permet pas.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:18%;vertical-align:top;">Au lit</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Personne alitée, très fatiguée, douloureuse, en fin de vie, ou qui ne peut pas être levée ce jour-là.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Se laver le visage et les mains, tenir le gant, participer en se tournant, choisir ses produits.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Lit à hauteur de travail, une partie du corps découverte à la fois, peau observée aux points d'appui, du propre vers le sale.</td></tr>
+</table>
+
+<p><strong>Ce que votre récit de toilette doit toujours contenir :</strong></p>
+<ul style="padding-left:20px;">
+<li><strong>L'hygiène des mains</strong> : friction hydro-alcoolique avant et après le soin. Des <strong>gants</strong> seulement en cas de risque de contact avec un liquide biologique ou une muqueuse, c'est-à-dire pour la toilette intime ou un change, et non pour laver un visage.</li>
+<li><strong>Le consentement</strong> : vous annoncez le soin et vous recueillez l'accord de la personne avant de commencer.</li>
+<li><strong>Ce que la personne fait elle-même</strong>, et comment vous l'y aidez.</li>
+<li><strong>Ce que vous observez</strong> pendant la toilette : l'état de la peau, en particulier aux points d'appui, la douleur, la fatigue, l'humeur. Une rougeur ne se masse <strong>jamais</strong> : vous réalisez le test de vitropression, vous supprimez l'appui et vous transmettez.</li>
+<li><strong>Les soins de confort associés</strong> : soins de bouche non médicamenteux, prothèses dentaires, rasage, coiffure, soins des ongles hors situations à risque signalées.</li>
+<li><strong>Le juste tri</strong> : protections et gants souillés dans les déchets assimilés aux ordures ménagères (DAOM), et non dans les DASRI. Les DASRI sont réservés au contact avec un foyer infectieux avéré ou suspecté, à l'imprégnation avec risque d'écoulement, et aux objets piquants, coupants ou perforants. Une colonisation ou une BMR sans infection ne justifie pas le DASRI.</li>
+</ul>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Trois limites à dire pendant la toilette.</strong><br>① <strong>Crème ou pommade</strong> : vous l'appliquez <strong>sur consigne de l'infirmier</strong>, avec le produit qu'il a désigné et identifié, <strong>jamais sur une plaie</strong>, et vous tracez.<br>② <strong>Pansement</strong> : vous n'y touchez pas. Aucun soin de pansement ne relève de l'aide-soignant, ni retrait, ni pansement sec, ni réfection, même sur consigne. Vous protégez la zone pendant la toilette, vous observez (souillé, décollé, saignement, odeur) et vous prévenez l'infirmier.<br>③ <strong>Oxygène</strong> : chez une personne sous oxygénothérapie, vous pouvez changer des lunettes souillées, mais vous ne touchez jamais au débitmètre, même sur protocole ou sur consigne. Vous surveillez l'essoufflement pendant l'effort de la toilette et vous alertez.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.2 · L'habillage</p>
+
+<ul style="padding-left:20px;">
+<li><strong>Le choix</strong> : deux tenues présentées à une personne désorientée, un choix libre pour celle qui le peut. Choisir un vêtement est souvent le dernier espace de décision d'une personne très dépendante.</li>
+<li><strong>L'ordre</strong> : préparez les vêtements dans l'ordre où ils s'enfilent, pour qu'elle puisse s'habiller seule en suivant la pile.</li>
+<li><strong>Le côté atteint</strong> : chez une personne hémiplégique, on habille d'abord le côté atteint, et on déshabille d'abord le côté sain.</li>
+<li><strong>Les aides techniques</strong> : enfile-bas, chausse-pied à long manche, vêtements à fermeture facile, choisis avec l'équipe.</li>
+<li><strong>La dignité</strong> : ses vêtements à elle, et une tenue de jour dans la journée ; lunettes, appareils auditifs et prothèses dentaires en place dès le matin.</li>
+</ul>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.3 · Le repas et l'hydratation</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:28%;">Étape</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Ce que vous faites, et pourquoi</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">Avant le repas</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Hygiène des mains de la personne, prothèses dentaires et lunettes en place, passage aux toilettes proposé. Installation <strong>assise bien droite</strong>, au fauteuil ou à table, la tête légèrement penchée en avant, pour limiter le risque de fausse route.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">Pendant le repas</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous nommez le plat, vous coupez ou ouvrez ce qu'elle ne peut pas, vous proposez des couverts adaptés. Si vous l'aidez à manger, vous êtes <strong>assis à sa hauteur</strong>, jamais debout, vous attendez que chaque bouchée soit avalée et vous respectez son rythme. La texture est celle prescrite ou décidée en équipe ; vous ne la modifiez pas de vous-même.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">Les goûts et les choix</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Un plat refusé se remplace si possible, un régime choisi se respecte, une préférence découverte se transmet.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:28%;vertical-align:top;">L'hydratation</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous proposez à boire régulièrement, la boisson qu'elle aime, dans un verre qu'elle peut tenir, en respectant l'eau épaissie si l'équipe l'a décidée. Une diurèse normale se situe entre 1 et 1,5 L par 24 h ; des urines foncées et peu abondantes, une langue sèche ou une confusion inhabituelle se transmettent.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Les médicaments au moment du repas.</strong> L'aide à la prise n'est possible que si <strong>toutes</strong> les conditions sont réunies : le médicament n'est ni injectable ni stupéfiant ; il a été préparé par l'infirmier ou la pharmacie ; il est emballé individuellement, identifiable et daté. Vous vérifiez l'identité et la concordance, vous observez la prise et vous tracez. Vous ne coupez pas, vous n'écrasez pas, vous ne mélangez pas un comprimé à la nourriture : une difficulté à avaler se signale à l'infirmier, qui décide.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.4 · L'élimination au quotidien</p>
+
+<ul style="padding-left:20px;">
+<li><strong>Proposer plutôt qu'attendre</strong> : accompagner aux toilettes à heures régulières, selon son rythme, préserve souvent la continence mieux qu'une protection.</li>
+<li><strong>La protection n'est pas une facilité</strong> : elle se choisit en équipe, selon la continence réelle, de jour et de nuit, et se réévalue. Mettre une protection à une personne continente « pour gagner du temps » est une atteinte à sa dignité.</li>
+<li><strong>L'intimité</strong> : porte fermée, vous restez à proximité, sonnette à portée.</li>
+<li><strong>L'observation</strong> : selles, urines, douleur. Vous transmettez toute anomalie : absence de selles depuis plusieurs jours, urines troubles, oligurie (moins de 500 mL par 24 h). Une absence d'urines (anurie) est une urgence : vous alertez l'infirmier immédiatement.</li>
+<li><strong>La vidange d'une poche à urine</strong> relève de votre rôle. Poser une sonde urinaire ou recueillir des urines sur sonde n'en relève pas.</li>
+<li><strong>Le suppositoire</strong> : seul le suppositoire <strong>à la glycérine</strong>, d'aide à l'élimination, relève de votre rôle. Tout autre suppositoire relève de l'infirmier.</li>
+<li><strong>La colostomie</strong> : le renouvellement de la poche et du support n'est possible que sur une colostomie <strong>cicatrisée</strong>, et <strong>à condition d'avoir été formé</strong>. Si vous l'écrivez, mentionnez cette formation.</li>
+</ul>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.5 · Le sommeil</p>
+
+<ul style="padding-left:20px;">
+<li><strong>Respecter l'heure</strong> : coucher une personne à 19 h parce que c'est l'heure du service, alors qu'elle se couchait à 23 h chez elle, c'est fabriquer des réveils nocturnes et une somnolence le jour.</li>
+<li><strong>Respecter les rituels</strong> : tisane, radio, porte entrouverte, veilleuse.</li>
+<li><strong>Surveiller les traitements</strong> : un hypnotique ou un anxiolytique expose à la somnolence et aux chutes en cas de lever nocturne.</li>
+<li><strong>Les barrières de lit</strong> sont une <strong>contention</strong>. Elles ne se décident pas par l'aide-soignant, même « pour sa sécurité » : c'est une décision médicale, encadrée par le protocole de l'établissement. Vous appliquez ce qui a été décidé, vous surveillez, et vous transmettez ce que vous observez (agitation, tentative d'enjamber).</li>
+</ul>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.6 · Pudeur et intimité</p>
+
+<ul style="padding-left:20px;">
+<li><strong>Frapper, attendre la réponse, se présenter, annoncer le soin</strong> : la chambre est son domicile.</li>
+<li><strong>Fermer la porte et le rideau</strong>, pour la protéger des regards des autres résidents et des visiteurs.</li>
+<li><strong>Ne découvrir qu'une partie du corps à la fois</strong>, pour la pudeur et la chaleur.</li>
+<li><strong>Lui proposer de faire elle-même sa toilette intime</strong> dès qu'elle le peut : c'est souvent la partie du soin qu'elle vit le plus difficilement.</li>
+<li><strong>La vouvoyer, l'appeler par son nom</strong>, et ne jamais parler d'elle devant elle avec un collègue.</li>
+</ul>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.7 · Consentement et refus de soin</p>
+
+<p>La <strong>loi du 4 mars 2002</strong>, relative aux droits des malades, pose le principe : aucun acte ne peut être pratiqué sans le consentement libre et éclairé de la personne, et ce consentement peut être retiré à tout moment. Une toilette, un repas, un lever sont des soins : ils se proposent, ils ne s'imposent pas.</p>
+
+<div style="border:1px solid #B2DFDB;background:#F4FBFA;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#004D40;">Face à un refus, les cinq temps ORACLE</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#00695C;">1 · Respecter.</strong> Vous arrêtez le geste. Vous reconnaissez le refus à voix haute : « Vous n'avez pas envie maintenant, je l'entends. »</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#00695C;">2 · Rechercher la cause.</strong> Froid, douleur, fatigue, peur, pudeur, heure inhabituelle, soignant inconnu, habitude différente, incompréhension du soin, troubles neurocognitifs.</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#00695C;">3 · Proposer autrement.</strong> Un autre moment, un autre lieu (lavabo plutôt que douche), une autre façon de faire (toilette en deux temps), un autre soignant, un proche présent si elle le souhaite.</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#00695C;">4 · Transmettre.</strong> Vous informez l'infirmier du refus, de sa cause supposée et de la solution essayée, et vous tracez. Un refus répété, ou un refus qui expose la personne à un risque (refus de boire, de manger, de se lever), est signalé sans attendre.</p>
+<p style="margin:0;"><strong style="color:#C62828;">5 · Ne jamais insister.</strong> Insister, négocier jusqu'à l'épuisement, contraindre ou maintenir la personne ne sont pas des solutions. Dans votre livret, « elle a fini par accepter » ou « il a fallu insister » sont des preuves à charge.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.8 · Adapter l'accompagnement aux troubles neurocognitifs</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:34%;">Difficulté</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Adaptation</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Elle ne comprend pas une consigne longue.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Une consigne à la fois, des phrases courtes, un mot-clé montré par le geste (« le gant… le visage »).</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Elle ne sait plus commencer le geste.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous amorcez le geste avec elle, main dans la main, puis vous la laissez continuer.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Elle sursaute ou repousse quand on la touche.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Vous vous placez face à elle, à sa hauteur, vous captez son regard avant de parler, vous annoncez chaque geste, vous commencez par une zone moins intime (la main, le bras), avec un toucher lent et enveloppant.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Elle refuse par le corps sans pouvoir le dire.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Un refus non verbal est un refus : vous le respectez comme une parole, vous revenez plus tard, et vous transmettez.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">3.9 · Soutenir et associer les aidants</p>
+
+<ul style="padding-left:20px;">
+<li><strong>Reconnaître leur savoir</strong> : l'aidant connaît la personne depuis des années. Demandez-lui comment il faisait, ce qui marchait, ce qu'elle aimait.</li>
+<li><strong>Leur laisser une place</strong>, s'ils le souhaitent et si la personne l'accepte : repas, vêtements, animations.</li>
+<li><strong>Repérer l'épuisement</strong> : fatigue, irritabilité, culpabilité. Vous transmettez à l'infirmier ou au cadre, qui orienteront vers les ressources adaptées.</li>
+<li><strong>Rester dans votre rôle</strong> : vous écoutez, vous rassurez sur ce qui relève de votre accompagnement ; vous orientez vers l'infirmier ou le médecin toute question sur la maladie, le traitement ou l'évolution.</li>
+</ul>
+
+<p style="font-weight:bold;color:#004D40;margin:24px 0 8px 0;">✍️ Exercice 3 (6&nbsp;min) · Dans le champ, hors champ, ou sous conditions ?</p>
+<p>Voici des gestes rencontrés pendant les actes essentiels. Classez-les, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">a) Pendant la toilette, remarquer que le pansement du genou est décollé et le recoller avec un adhésif pour qu'il tienne jusqu'au passage de l'infirmière.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Recoller un pansement est un soin de pansement : aucun ne relève de l'aide-soignant. Vous protégez la zone, vous n'y touchez pas et vous prévenez l'infirmière.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">b) Appliquer une crème de confort sur les jambes sèches d'une résidente, avec le produit que l'infirmière a désigné et noté au plan de soins, sur une peau saine.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Dans le champ parce que l'infirmière a désigné et identifié le produit, que la peau est saine et que vous tracez l'application. Sur une plaie, ou sans consigne, c'est hors champ.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">c) Aider un résident à prendre ses comprimés du midi, préparés par la pharmacie en sachets individuels à son nom et datés, après avoir vérifié son identité.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Toutes les conditions sont réunies. Vous observez la prise et vous tracez ; s'il a du mal à avaler, vous le signalez, vous n'écrasez rien.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">d) Poser un suppositoire laxatif prescrit, « parce que ce n'est qu'un laxatif ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Seul le suppositoire à la glycérine relève de votre rôle. Tout autre suppositoire, même laxatif, relève de l'infirmier.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">e) Relever les barrières du lit d'une résidente agitée au coucher, pour éviter qu'elle ne tombe.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ si c'est votre décision.</strong> Les barrières sont une contention, décision médicale encadrée. Vous transmettez l'agitation ; si une contention a été décidée, vous l'appliquez et la surveillez.</p></details>
+
+
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">f) Changer les lunettes à oxygène souillées d'une résidente pendant sa toilette, et « remonter un peu l'oxygène parce qu'elle s'essouffle ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ à cause du débit.</strong> Le changement des lunettes est dans le champ. Le débitmètre ne se touche jamais, même sur protocole ou sur consigne : vous interrompez la toilette, vous l'installez en position demi-assise, vous mesurez la saturation et vous alertez l'infirmière.</p></details>
+
+<div style="background:#E0F2F1;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Faire faire, c'est donner à la personne la part du geste qu'elle peut accomplir. Le lieu de la toilette découle de l'évaluation, pas du planning. Pudeur, consentement et choix se respectent à chaque acte. Un refus se respecte, s'explore, se contourne autrement et se transmet, sans jamais insister. Les limites se disent : pas de pansement, crème sur consigne et jamais sur une plaie, suppositoire à la glycérine seulement, débitmètre jamais touché, contention jamais décidée par vous.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · Le volet vie sociale <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:05 · 10&nbsp;min</span></div>
+
+<p>L'intitulé de l'activité 1 parle de la vie quotidienne <strong>et sociale</strong>. Ce second volet est celui qui manque le plus souvent dans les livrets. Il est pourtant au cœur de la première mission de l'aide-soignant : accompagner la personne <strong>dans le respect de son projet de vie</strong>.</p>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">4.1 · Ce que recouvre la vie sociale</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:26%;">Dimension</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Exemples d'accompagnement</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:26%;vertical-align:top;">Les animations</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Atelier mémoire, chant, gymnastique douce, jardinage, culte : accompagner, installer pour qu'elle voie et entende, rester les premières fois.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:26%;vertical-align:top;">Le lien social</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Repas en salle près d'une personne qu'elle apprécie, appel vidéo avec un petit-enfant, visites, sorties en famille.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:26%;vertical-align:top;">Le projet de vie</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Ce que la personne souhaite pour les mois qui viennent : revoir sa maison, assister au mariage de sa petite-fille, continuer à tricoter pour ses arrière-petits-enfants.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:26%;vertical-align:top;">Le maintien des rôles sociaux</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Une ancienne couturière qui recoud un bouton pour une voisine, un ancien jardinier qui arrose les plantes du salon. Le sentiment d'être utile est un soin.</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:26%;vertical-align:top;">À domicile</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Maintenir la sortie au marché, la visite au club, le passage chez la voisine ; repérer un isolement et le transmettre à l'infirmier coordinateur.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">4.2 · Ce que fait l'aide-soignant, et ce qui revient à l'animateur</p>
+
+<p>L'animateur conçoit et conduit les animations. <strong>Votre rôle</strong> est ailleurs, et il est décisif :</p>
+<ul style="padding-left:20px;">
+<li><strong>vous connaissez l'histoire de vie</strong> et vous repérez ce qui pourrait faire plaisir ;</li>
+<li><strong>vous rendez la participation possible</strong> : toilette et habillage terminés à temps, appareil auditif en place, lunettes propres, passage aux toilettes avant, installation au fauteuil adapté ;</li>
+<li><strong>vous accompagnez</strong> les premières fois, quand la personne hésite ou a peur du groupe ;</li>
+<li><strong>vous transmettez</strong> à l'animateur, à l'infirmier et au référent, pour que le projet personnalisé évolue.</li>
+</ul>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Respecter aussi le choix de ne pas participer.</strong> La vie sociale n'est pas une obligation. Votre rôle est de <strong>proposer</strong>, de rechercher si un refus cache une gêne (incontinence, audition, tristesse) et de transmettre un repli inhabituel.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">4.3 · Comment écrire le volet vie sociale dans l'activité 1</p>
+
+<p>Le volet vie sociale se rédige avec la même méthode que le soin : <strong>quoi, comment, pourquoi</strong>, et un résultat.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:24%;">Étape</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Ce que vous écrivez</th><th style="padding:9px;border:1px solid #004D40;text-align:left;width:34%;">Exemple</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">Le lien avec l'histoire de vie</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Pourquoi cette dimension de la vie sociale, pour cette personne.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Ancienne choriste de sa paroisse pendant trente ans, elle m'avait parlé de ses concerts avec émotion. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">L'obstacle repéré</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Ce qui l'empêchait d'y participer.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Elle refusait l'atelier chant par peur de ne pas entendre, son appareil auditif n'étant jamais mis le mardi après-midi. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">Votre action</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Ce que vous avez fait, dans votre rôle.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« J'ai mis son appareil en place après le déjeuner, je l'ai installée au premier rang et je suis restée les dix premières minutes. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:24%;vertical-align:top;">Le résultat</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Observé, chiffré, daté.</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« En un mois, elle a participé à 4 ateliers sur 4 et elle a demandé à chanter un solo. »</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Deux erreurs à éviter.</strong> ① Une phrase isolée en fin de récit, sans pourquoi ni résultat. ② Un volet sans lien avec la personne présentée : la toilette porte sur Mme A., l'animation sur « les résidents ». Les deux volets portent sur la <strong>même personne</strong> et la <strong>même histoire de vie</strong>.</p>
+</div>
+
+<p style="font-weight:bold;color:#004D40;margin:24px 0 8px 0;">✍️ Exercice 4 (4&nbsp;min) · Ce volet vie sociale est-il démontré ?</p>
+<p>Pour chaque extrait, dites si le volet vie sociale est démontré, seulement affirmé, manquant ou fragilisant. Ouvrez ensuite la correction.</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">a) « Après la toilette, je l'ai amenée à l'animation. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>Seulement affirmé.</strong> Aucun pourquoi, aucune préparation, aucun résultat. Quelle animation ? Pourquoi celle-là, pour elle ? Qu'y a-t-elle vécu ?</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">b) « Il ne voulait pas aller au loto, mais je l'ai emmené quand même, sinon il reste seul toute la journée. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Fragilisant.</strong> Le choix n'est pas respecté. Il fallait rechercher la cause du refus, proposer autre chose et transmettre son isolement.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">c) « Ancien jardinier, M. D. restait en chambre depuis son entrée. Je lui ai proposé d'arroser les plantes du salon chaque matin, après sa toilette. Il a accepté. Trois semaines plus tard, il le fait seul tous les jours et prend son café en salle avec deux autres résidents. J'ai transmis à l'animatrice et à l'infirmière, et ce rôle a été inscrit dans son projet personnalisé. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Démontré.</strong> Histoire de vie, obstacle, action, résultat chiffré, transmission : le rôle social est maintenu.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">d) « Tous les résidents sont invités au goûter d'anniversaire du mois. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>Manquant.</strong> La phrase décrit le service, pas la personne présentée : le volet vie sociale n'est pas traité.</p></details>
+
+
+<div style="background:#E0F2F1;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> La vie sociale fait partie de l'intitulé de l'activité 1 : elle se développe, elle ne s'ajoute pas en une phrase. Votre rôle : connaître l'histoire de vie, rendre la participation possible, accompagner, observer, transmettre. Le choix de ne pas participer se respecte, mais un repli inhabituel se transmet.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Bientraitance, réajustement et grille de détection <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:15 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">5.1 · Soin standard ou accompagnement personnalisé ?</p>
+
+<p>La bientraitance n'est pas l'absence de maltraitance. C'est une <strong>manière d'être et d'agir</strong> qui place la personne, ses choix et son rythme au centre. Elle se lit dans les détails de votre récit.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#546E7A;color:#FFFFFF;border:1px solid #546E7A;text-align:left;width:50%;">Soin standard</th><th style="padding:10px;background:#00695C;color:#FFFFFF;border:1px solid #00695C;text-align:left;">Accompagnement personnalisé</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Je fais la toilette à 8 h, comme tous les jours. »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Je fais sa toilette à 9 h 30, après son café, parce qu'elle est mieux réveillée et moins raide. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Je la lave entièrement. »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Elle se lave seule le visage, les bras et le buste ; je l'aide pour le dos et les jambes. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Je l'habille. »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Je lui présente deux tenues ; elle choisit la robe bleue que sa fille lui a offerte. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Elle a refusé, je suis revenue plus tard et elle a accepté. »</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Elle a refusé ; j'ai compris qu'elle avait froid ; je suis revenue avec une salle de bain préchauffée, et elle a accepté. J'ai transmis ce réglage à l'équipe. »</td></tr>
+</table>
+
+<p>Le repérage des situations à risque de maltraitance relève de l'<strong>activité 2</strong>. Dans l'activité 1, la bientraitance se <strong>montre</strong> : elle n'a pas besoin d'être proclamée.</p>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">5.2 · Le réajustement chiffré : avant, après</p>
+
+<p>Le mot « réajuster » figure dans l'intitulé de l'activité. Le jury attend un changement concret de votre accompagnement, motivé par une observation, et mesuré. C'est ce qui ferme la boucle.</p>
+
+<div style="border:1px solid #B2DFDB;background:#F4FBFA;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;"><strong style="color:#00695C;">AVANT</strong> : ce que vous observiez, chiffré (« elle refusait la douche du matin 4 fois sur 5 »).</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#E65100;">ANALYSE</strong> : la cause recherchée (« elle se douchait le soir chez elle, et elle a froid le matin »).</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#6A1B9A;">RÉAJUSTEMENT</strong> : ce que vous avez modifié, avec l'accord de l'infirmier si l'organisation change (« douche le soir, salle de bain préchauffée »).</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#2E7D32;">APRÈS</strong> : le résultat, chiffré et daté (« trois semaines plus tard, 5 douches acceptées sur 5 »).</p>
+<p style="margin:0;padding-top:10px;border-top:1px solid #B2DFDB;"><strong>TRANSMISSION</strong> : à qui, et ce qui a été inscrit au projet personnalisé.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#004D40;color:#FFFFFF;"><th style="padding:9px;border:1px solid #004D40;text-align:left;width:30%;">Ce que vous pouvez mesurer</th><th style="padding:9px;border:1px solid #004D40;text-align:left;">Exemple d'avant et après</th></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">La part de la toilette faite seule</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Au début, elle ne se lavait que le visage ; au bout de trois semaines, elle fait seule tout le haut du corps. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Le nombre de refus</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« 4 refus sur 5 la première semaine, aucun la troisième. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Les quantités mangées ou bues</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Un quart de plateau en moyenne, puis trois quarts après le changement d'horaire et de place à table. »</td></tr>
+<tr style="background:#F4FBFA;"><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">La participation sociale</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Aucune animation le premier mois, 4 ateliers sur 4 le suivant. »</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">5.3 · La grille de détection de l'activité 1</p>
+
+<p>Relisez votre situation avec cette grille. Une formulation fragilisante se corrige par suppression ou réécriture, jamais par simple ajout.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je lui ai refait son pansement pendant la toilette », « j'ai remis un pansement sec »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Aucun soin de pansement ne relève de l'aide-soignant, même sur consigne. Écrivez : « j'ai protégé la zone, constaté que le pansement était décollé et prévenu l'infirmière, qui l'a refait ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je lui ai écrasé ses comprimés dans la compote »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Modifier la forme d'un traitement est hors champ. Vous signalez la difficulté à avaler à l'infirmier.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je l'ai lavée alors qu'elle se débattait », « je l'ai tenue pendant la toilette »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Soin imposé par la contrainte : atteinte au consentement et mise en danger. Si c'est vécu, choisissez une autre situation.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai massé la rougeur du talon »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Une rougeur ne se masse jamais. Vitropression, suppression de l'appui, transmission.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai relevé les barrières pour la nuit »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire si c'est votre décision.</strong> Précisez qu'elle a été décidée et que vous l'appliquez et la surveillez.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai mis de la crème sur ses fesses rouges »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Quelle crème, désignée par qui ? Sur une peau saine ou sur une lésion ? Écrivez : « j'ai réalisé le test de vitropression (la rougeur blanchissait), j'ai transmis la rougeur à l'infirmière, qui a désigné la crème au plan de soins ; je l'ai appliquée sur une peau intacte, non lésée, et j'ai tracé ».</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« je lui ai donné son traitement pendant le repas »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Précisez les conditions de l'aide à la prise, la vérification d'identité, l'observation et la traçabilité.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« je l'ai lavée entièrement pour aller plus vite »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Faire à la place pour gagner du temps. Écrivez ce qu'elle a fait elle-même, ou pourquoi, ce jour-là, elle ne le pouvait pas.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on l'a douchée », « on la lève à 7 h »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Le « on » efface votre part et la personne. Écrivez « je l'ai accompagnée pour sa douche », et justifiez l'heure par ses habitudes, pas par le service.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« elle participe aux animations »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Volet vie sociale affirmé. Laquelle, pourquoi, comment, avec quel résultat ?</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« elle est opposante », « il est agressif », « elle est têtue »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Jugement. Décrivez le comportement observé, sa cause probable et votre adaptation.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« elle a fini par accepter », « il a fallu insister »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Preuve à charge : un refus de soin surmonté par l'insistance. Réécrivez ce que vous avez réellement fait (cause recherchée, proposition différente) ; si l'accord a été obtenu par l'insistance, choisissez une autre situation.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« c'est l'heure du service », « c'est comme ça qu'on fait ici »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> L'organisation du service passe avant la personne : c'est l'inverse de la phrase-clé.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;margin:24px 0 8px 0;">✍️ Exercice 5 (5&nbsp;min) · Réécrivez pour prouver l'activité 1</p>
+<p>Réécrivez chaque phrase avec le quoi, le comment et le pourquoi, puis comparez avec la proposition.</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">1. « Je l'ai lavée entièrement pour aller plus vite, on était en sous-effectif. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Assise au lavabo, elle s'est lavé seule le visage, les bras et le buste, pendant que je préparais ses vêtements ; je l'ai aidée pour le dos et les jambes, qu'elle ne peut plus atteindre. Préserver ces gestes, c'est préserver sa capacité à les faire demain. » Si, ce jour-là, vous avez réellement tout fait à sa place, ne racontez pas ce jour-là.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">2. « On l'a douchée ce matin. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Je l'ai accompagnée pour sa douche à 9 h, heure qu'elle a choisie. Assise sur le siège de douche, dans la salle de bain préchauffée, elle s'est lavé le visage et le buste avec son gant ; j'ai lavé son dos et ses pieds. Je suis restée à ses côtés tout au long du soin. »</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">3. « Elle ne voulait pas se lever, elle a fini par accepter. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Elle a refusé de se lever à 8 h. Je n'ai pas insisté et je lui ai demandé ce qui n'allait pas : elle avait mal dormi et froid. Je suis revenue à 9 h 30, après son petit-déjeuner au lit, et elle a accepté. J'ai transmis à l'infirmière son refus, la cause et la solution trouvée. »</p></details>
+
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">4. « Je lui ai mis sa crème pour les rougeurs. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Pendant la toilette, j'ai observé une rougeur au pli de l'aine, sur une peau intacte. Je l'ai transmise à l'infirmière, qui a désigné la crème à appliquer et l'a notée au plan de soins. Je l'ai appliquée sur la peau propre et sèche, et j'ai tracé le soin. Je n'applique jamais de crème sur une plaie. »</p></details>
+
+
+<div style="background:#E0F2F1;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> La bientraitance se montre dans les détails : l'heure choisie, le geste préservé, la tenue choisie, le refus compris. Le réajustement se chiffre : avant, analyse, réajustement, après, transmission. Passez votre situation à la grille de détection et chassez les « on », les jugements et les « elle a fini par accepter ».</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Deux situations modèles et les questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:30 · 20&nbsp;min</span></div>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots. Elles sont volontairement condensées ; dans votre livret, chaque étape sera plus développée.</p>
+
+<!-- Situation A -->
+<div style="background:#00695C;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:20px 0 10px 0;font-weight:bold;">Situation A · EHPAD · Un refus de douche respecté, et une vie sociale retrouvée</div>
+
+<div style="background:#F4FBFA;border:1px solid #B2DFDB;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme D., 84 ans, vit en EHPAD depuis trois mois, à la suite d'une hospitalisation pour une chute dans sa salle de bain. Elle a une insuffisance cardiaque, c'est-à-dire un cœur qui ne pompe plus assez efficacement, traitée par furosémide, diurétique de l'anse (surveillance : hypotension au lever, besoins urgents d'uriner, déshydratation), et une arthrose des genoux traitée par paracétamol, antalgique de palier 1. Elle pèse 58 kg pour 1,60 m, soit un IMC de 22,7, dans les valeurs normales. GIR 4. Ancienne fleuriste, veuve, elle a une fille qui vient le samedi. Elle se lave seule le visage, les bras et le buste, assise ; elle a besoin d'aide pour le dos, les jambes et les pieds. Elle marche avec un déambulateur. Elle reste dans sa chambre l'après-midi. Son projet personnalisé mentionne un risque de chute.</p>
+<p style="margin:0;"><strong>La situation.</strong> Le jeudi 9 mars, à 9 h, jour de douche prévu au planning, j'entre dans sa chambre après avoir frappé et attendu sa réponse. Je lui propose la douche. Elle refuse fermement : « Pas la douche, je vous l'ai déjà dit. » Je n'insiste pas. Je lui dis que je respecte son choix, et je lui demande ce qui la gêne. Après un silence, elle m'explique qu'elle est tombée dans sa douche chez elle, et qu'elle a « peur de glisser et de se retrouver par terre toute nue ». Je lui propose une toilette au lavabo, qu'elle accepte. Après une friction hydro-alcoolique, je l'accompagne d'abord aux toilettes, son diurétique lui donnant des envies pressantes. Assise devant le lavabo, serviettes sur les épaules et les cuisses, elle se lave seule le visage, les bras et le buste. Je lave son dos et ses jambes ; elle fait elle-même sa toilette intime avec le gant que je lui tends, et je porte des gants pour l'aider à la terminer. Pas de rougeur aux talons ni au sacrum. Elle choisit son chemisier. Je transmets à l'infirmière son refus, la cause qu'elle m'a confiée et la toilette réalisée à la place. Le lendemain, avec l'accord de l'infirmière, je lui montre la salle de douche : siège fixé au mur, barre d'appui, tapis antidérapant, et je lui explique que je resterai à ses côtés tout au long du soin. Elle accepte d'essayer la semaine suivante. Le jeudi 16 mars, je préchauffe la salle de bain, je vérifie la température de l'eau sur mon avant-bras puis sur sa main. Avant de l'installer, je lui demande d'évaluer la douleur de ses genoux : EVA à 2 sur 10, ce qui permet le lever ; je la note et je la transmets, son paracétamol étant pris au petit-déjeuner. Je l'installe sur le siège après un lever en deux temps, en raison de son diurétique. Elle se lave seule le haut du corps avec son gant ; je l'aide pour le dos et les jambes, sans jamais la laisser seule. Pendant ce soin, elle me parle de son magasin de fleurs. J'en parle à l'animatrice, qui propose un atelier de composition florale le mardi. Ce jour-là, je l'accompagne aux toilettes avant l'atelier, je l'installe au premier rang, déambulateur à portée, et je reste les cinq premières minutes. Elle montre aux autres résidentes comment tailler les tiges. Bilan à trois semaines : trois douches acceptées sur trois (16, 23 et 30 mars), toilette au lavabo les autres jours comme elle le souhaite, participation à trois ateliers floraux sur trois, et elle déjeune désormais en salle avec deux participantes de l'atelier. J'ai transmis ces éléments à l'infirmière et à la référente, et son projet personnalisé a été mis à jour.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">L'histoire de vie explique à la fois le refus (la chute) et la solution sociale (le métier de fleuriste). Le refus est respecté, sa cause recherchée, une alternative proposée, puis un accompagnement progressif construit. La personne fait tout ce qu'elle peut. Le chaînage traitement-surveillance apparaît pour chaque traitement cité : lever en deux temps et passage aux toilettes pour le diurétique, EVA pour l'antalgique. Le volet vie sociale est développé, le réajustement chiffré à trois semaines et inscrit au projet.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Où la limite est dite</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Le changement d'organisation se fait « avec l'accord de l'infirmière ». L'animatrice conduit l'atelier ; l'aide-soignante le rend possible. Les gants sont justifiés par la toilette intime, et seulement par elle.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« Elle a refusé, mais je l'ai convaincue d'aller à la douche » : c'est fragilisant. « Je suis sortie chercher une serviette pendant qu'elle était sur le siège » : c'est une mise en danger. « Elle participe aux animations » en dernière ligne : le volet vie sociale est affirmé, pas démontré.</td></tr>
+</table>
+
+<!-- Situation B -->
+<div style="background:#00695C;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Domicile · Faire faire, soutenir l'aidante, maintenir le lien social</div>
+
+<div style="background:#F4FBFA;border:1px solid #B2DFDB;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. T., 79 ans, est accompagné à domicile par le service de soins infirmiers où je travaille, depuis deux mois, pour l'aide à la toilette trois matins par semaine. Il a une maladie de Parkinson, une atteinte neurologique qui ralentit et raidit les mouvements, traitée par lévodopa, antiparkinsonien (surveillance : blocages en fin d'effet du traitement, hypotension au lever, chutes). Il pèse 68 kg pour 1,75 m, soit un IMC de 22,2, proche du seuil de dénutrition retenu chez la personne âgée : son poids est surveillé. GIR 4. Ancien facteur, il vit avec son épouse, 76 ans, qui l'aidait seule jusqu'ici. Il se lève avec l'aide d'une personne, marche avec une canne dans l'appartement. Il se rase seul au rasoir électrique quand il n'est pas bloqué. Il allait chaque samedi matin au club de pétanque de son quartier, mais il n'y va plus depuis trois mois.</p>
+<p style="margin:0;"><strong>La situation.</strong> Lors de mes premiers passages, à 8 h, je trouve M. T. raide et lent : il lui faut plusieurs minutes pour se lever du lit, et il me dit se sentir « comme bloqué ». Son épouse m'explique qu'il prend son traitement à 8 h, au petit-déjeuner, et qu'il « va beaucoup mieux vers 9 h ». Je transmets cette observation à l'infirmière coordinatrice et je propose de décaler mon passage. Avec son accord, je passe désormais à 9 h. Après une friction hydro-alcoolique, je le fais asseoir au bord du lit une minute avant de se lever, en raison du risque d'hypotension. Assis devant le lavabo, les objets posés dans l'ordre d'utilisation et guidé par des consignes courtes, il se lave seul le visage, le torse et les bras, et se rase ; je l'aide pour le dos et les jambes. Il enfile seul un pull sans boutons que je lui propose. La toilette dure 35 minutes au lieu de 20 lorsque je l'aidais pour tout, durée validée avec l'infirmière coordinatrice dans l'organisation de la tournée ; il en réalise lui-même plus de la moitié. Son épouse me confie qu'elle est « à bout » et qu'elle a mal au dos. Je l'écoute, je lui montre comment le guider par la parole plutôt que de le porter, et je transmets son épuisement à l'infirmière coordinatrice, qui lui propose d'envisager des solutions de répit. Un matin, M. T. me dit qu'il n'ose plus aller à la pétanque « parce qu'il tremble devant les copains ». Avec son accord, j'en parle à son épouse et à l'infirmière coordinatrice : un voisin, membre du club, propose de passer le prendre. Avec l'accord de l'infirmière coordinatrice, mon passage du samedi reste à 9 h : la toilette terminée vers 9 h 40, il est prêt quand son voisin passe le prendre à 10 h. Bilan à cinq semaines : il fait seul plus de la moitié de sa toilette et s'habille seul le haut du corps, aucune chute n'a été signalée, il est retourné trois samedis sur quatre au club, et son épouse dit avoir « retrouvé ses matinées ». Tout est tracé dans le dossier de soins et transmis à l'infirmière coordinatrice.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Le blocage du matin est observé et relié au traitement ; le réajustement de l'horaire est motivé, validé et mesuré. La personne fait avant qu'on fasse pour elle. L'aidante est soutenue et son épuisement transmis. Le volet vie sociale s'appuie sur l'histoire de vie. Le résultat est chiffré et daté.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Où la limite est dite</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">Le traitement est pris par M. T. avec son épouse ; l'aide-soignante ne décide ni de l'heure ni de la dose, elle observe et elle transmet. Le décalage de passage se fait « avec l'accord » de l'infirmière coordinatrice. Les solutions de répit sont proposées par l'infirmière coordinatrice.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;background:#E0F2F1;font-weight:bold;width:30%;vertical-align:top;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #B2DFDB;vertical-align:top;">« J'ai conseillé à son épouse de lui donner son médicament plus tôt » : c'est une décision sur un traitement, hors champ. « Je le lave entièrement pour gagner du temps sur ma tournée » : c'est l'inverse de la phrase-clé. « Sa femme est épuisée » sans transmission : l'aidante est repérée mais pas soutenue.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:22px 0 8px 0;">6.1 · Six questions du jury sur l'activité 1</p><p>En séance, 3 questions sur 6 sont travaillées à l'oral ; les autres en travail personnel.</p>
+<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Répondez à voix haute avec la méthode RAPIDE (Reformuler, Ancrer, Préciser, Illustrer par un chiffre, Discuter, Évaluer), avant d'ouvrir l'attendu.</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">« Vous écrivez : “Elle se lave seule le haut du corps.” Comment le savez-vous, et qu'avez-vous fait pour que ce soit possible ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> votre évaluation (ce que vous avez observé les jours précédents, ce que dit le projet personnalisé), puis votre organisation concrète : installation assise, miroir, matériel à portée, temps laissé. <strong>À éviter :</strong> « c'est marqué dans son dossier ».</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">« Vous écrivez : “Elle a refusé la douche.” Qu'avez-vous fait ensuite, et qu'auriez-vous fait si elle avait refusé toute toilette pendant plusieurs jours ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> les cinq temps du refus (respecter, rechercher la cause, proposer autrement, transmettre, ne pas insister) et la loi du 4 mars 2002 sur le consentement. Pour un refus prolongé : transmission à l'infirmier, réflexion en équipe, recherche d'une cause, sans jamais de contrainte. <strong>À éviter :</strong> « au bout d'un moment, on est bien obligé ».</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">« Vous écrivez : “Je l'ai accompagnée à l'atelier floral.” Pourquoi cet atelier-là, et qu'est-ce que cela a changé pour elle ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le lien avec l'histoire de vie, l'obstacle levé, le résultat chiffré (nombre de participations, repas en salle, liens noués) et la transmission. <strong>À éviter :</strong> « c'était l'animation du jour ».</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">« Vous écrivez : “traitée par furosémide, diurétique de l'anse”. Qu'est-ce que ce traitement a changé à votre toilette ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le chaînage traitement-surveillance : accompagnement aux toilettes avant le soin, lever en deux temps à cause du risque d'hypotension orthostatique, attention à l'hydratation, toute chute transmise. <strong>À éviter :</strong> ne pas savoir pourquoi vous l'avez cité.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">« Vous écrivez : “La toilette a duré 35 minutes au lieu de 20.” Comment justifiez-vous ce temps dans une journée chargée ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> faire faire préserve l'autonomie et ralentit la perte des capacités ; vous avez organisé votre tournée en conséquence, avec l'accord de l'infirmière. <strong>À éviter :</strong> « quand on a le temps, on le fait ».</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">« Vous écrivez : “Son projet personnalisé a été mis à jour.” Qu'est-ce qu'un projet personnalisé, et quelle est votre place dans sa construction ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> un projet construit avec la personne et ses proches, issu de la loi du 2 janvier 2002, qui rassemble ses attentes, ses habitudes, ses besoins et les objectifs de l'équipe, et qui se réévalue. Votre place : observer, recueillir, transmettre, parfois être référent. <strong>À éviter :</strong> « c'est l'infirmière qui s'en occupe ».</p></details>
+
+
+
+<div style="background:#E0F2F1;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Une bonne situation d'activité 1 présente la personne avant le soin, montre ce qu'elle fait elle-même, respecte ses choix et ses refus, développe la vie sociale à partir de son histoire, et ferme la boucle par un résultat chiffré, transmis et inscrit au projet. Au jury, répondez depuis votre texte, avec un chiffre et la limite dite.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC03 · Clôture</p>
+      <div class="content-scroll"><div style="background:#004D40;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#004D40;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">1. Que demande l'attendu officiel de l'activité 1 ? A. Une toilette complète · B. Au moins un type de soins ou d'activité de la vie quotidienne, et le volet vie sociale · C. Deux situations distinctes · D. Une journée type</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B.</strong> Chez ORACLE, une seule situation porte les deux volets, chacun développé.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">2. Quelle est la phrase-clé de l'activité 1 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà comment j'accompagne au quotidien, dans le respect de l'autonomie et de la dignité. »</strong></p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">3. Une rougeur au talon ne blanchit pas à la vitropression pendant une toilette. À quelle activité rattacher une situation centrée sur cette découverte ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>À l'activité 3.</strong> C'est un changement d'état clinique repéré, objectivé et signalé. L'escarre est déjà constituée : ce n'est ni de l'activité 1 ni de l'activité 2.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">4. Que signifie GIR, et qui l'établit ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Groupe iso-ressources</strong>, de 1 (dépendance la plus lourde) à 6, issu de la grille AGGIR. Il est établi en équipe (en EHPAD sous la responsabilité du médecin coordonnateur, à domicile par l'équipe médico-sociale du département) ; vous y contribuez par vos observations.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">5. Dans la grille AGGIR, que signifie la cotation B pour une variable ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">La personne la fait <strong>partiellement</strong>, ou pas toujours, ou pas correctement, ou seulement quand on la stimule. A : elle fait seule, spontanément, totalement, habituellement et correctement. C : elle ne fait pas.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">6. Sur quelle loi repose le projet personnalisé dans les établissements et services médico-sociaux ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La loi du 2 janvier 2002</strong>.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">7. Quelle loi fonde le consentement aux soins et le droit de refuser un soin ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La loi du 4 mars 2002</strong>, relative aux droits des malades.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">8. Quels sont les cinq temps ORACLE face à un refus de soin ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Respecter, rechercher la cause, proposer autrement, transmettre, ne jamais insister.</strong></p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">9. Des gants pour laver le visage et les bras d'une résidente : oui ou non ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> Les gants se portent en cas de risque de contact avec un liquide biologique ou une muqueuse (toilette intime, change). Friction hydro-alcoolique avant et après le soin.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">10. Les gants et la protection souillés d'urine après un change, sans infection connue : DAOM ou DASRI ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>DAOM.</strong> Les DASRI concernent un foyer infectieux avéré ou suspecté, une imprégnation avec risque d'écoulement, ou un objet piquant, coupant ou perforant.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">11. Une résidente vous demande d'appliquer « sa pommade » sur une petite plaie du tibia. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous n'appliquez rien sur une plaie.</strong> Vous protégez la zone, vous observez et vous prévenez l'infirmier.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">12. Chez une personne hémiplégique, par quel côté commence-t-on l'habillage ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Par le côté atteint.</strong> On déshabille en commençant par le côté sain.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">13. Une personne sous oxygène s'essouffle pendant la toilette. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Vous <strong>interrompez</strong> le soin, vous l'installez en position demi-assise, vous mesurez la saturation et vous <strong>alertez l'infirmier</strong>. Vous ne touchez jamais au débitmètre, même sur protocole ou sur consigne.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">14. « Elle a fini par accepter la toilette. » Quel est le diagnostic de cette phrase dans la grille ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Fragilisant.</strong> Preuve à charge : un refus surmonté par l'insistance.</p></details>
+
+<details style="border:1px solid #B2DFDB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#004D40;">15. Quelles sont les étapes d'un réajustement chiffré ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Avant, analyse, réajustement, après, transmission</strong>, avec l'accord de l'infirmier si l'organisation change.</p></details>
+
+<div style="background:linear-gradient(135deg,#004D40 0%,#00897B 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 03</p>
+<ol style="margin:0;padding-left:22px;">
+<li>L'activité 1 demande un soin de la vie quotidienne <strong>et</strong> un volet vie sociale, développés dans la même situation, autour de la même personne.</li>
+<li>La personne est présentée avant le soin : contexte, histoire de vie, autonomie acte par acte. Le GIR situe, le détail prouve.</li>
+<li>Chaque traitement cité appelle une surveillance ou une adaptation plus loin dans le récit.</li>
+<li>Faire faire plutôt que faire à la place : écrivez ce que la personne a fait elle-même.</li>
+<li>Un refus se respecte, s'explore, se contourne autrement et se transmet, sans jamais insister.</li>
+<li>Les limites se disent : aucun pansement, crème sur consigne et jamais sur une plaie, glycérine seulement, débitmètre jamais touché, contention jamais décidée par vous, médicaments sous conditions.</li>
+<li>Le réajustement ferme la boucle : avant, après, chiffré, daté, transmis, inscrit au projet personnalisé.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#004D40;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 04</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #B2DFDB;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Choisir ma situation d'activité 1 : une personne dont j'ai personnalisé l'accompagnement, avec un réajustement que je peux chiffrer.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Vérifier qu'elle ne relève pas plutôt de l'activité 2 (risque non survenu) ou de l'activité 5 (mobilisation).</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Rédiger le recueil en 4 temps : contexte, histoire de vie, autonomie acte par acte, puis le soin.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Pour chaque traitement cité, écrire la surveillance ou l'adaptation correspondante dans le récit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Développer le volet vie sociale : lien avec l'histoire de vie, obstacle levé, résultat, transmission.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Écrire mon réajustement en avant/après chiffré et daté.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Passer ma situation à la grille de détection de la partie 5 : chasser les « on », les jugements, les « elle a fini par accepter », et toute crème, tout suppositoire ou toute barrière sans condition précisée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Relire ma rubrique A de l'activité 1 : uniquement les soins réellement pratiqués et dans mon champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #B2DFDB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B2DFDB;">Réviser avec les ressources ORACLE : Livre du livret 2, chapitre 9 · Livre Bloc 1 · Fiches de révision B1.</td></tr>
+</table></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">L'aide au repas d'une personne âgée relève de quelle activité DEAS ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="true">Activité 1 — Accompagner la vie quotidienne</button>
+        <button class="quiz-opt" data-correct="false">Activité 3 — Évaluation clinique</button>
+        <button class="quiz-opt" data-correct="false">Activité 7 — Informer et former</button>
+        <button class="quiz-opt" data-correct="false">Activité 10 — Transmissions</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. L'aide aux repas est au cœur de l'activité 1 : accompagnement dans les actes essentiels de la vie quotidienne." data-ko="Non. C'est l'activité 1 : accompagner la vie quotidienne (bloc 1)."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC15 — Présenter et défendre son Livret 2 · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC15</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC15 · Préparation jury</p>
+      <h1 class="hero">Présenter et défendre son Livret 2</h1>
+      <p class="subtitle">Préparation de l'oral face au jury</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#F9E8EB;border-left:6px solid #6D1B2B;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#6D1B2B;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>expliquer ce qu'est l'entretien avec le jury, ce qu'il n'est pas, et ce que le jury y vérifie ;</li>
+<li>relire votre livret avec la grille du jury et préparer une réponse pour chaque passage fragile ;</li>
+<li>construire une fiche de préparation par situation, avec les connaissances qui la sous-tendent ;</li>
+<li>rédiger, puis raconter sans réciter, un pitch PMAA de deux minutes au plus ;</li>
+<li>reconnaître les 3 familles de questions et ce que le jury cherche dans chacune ;</li>
+<li>répondre à une question avec la méthode RAPIDE, en restant dans votre champ de compétence ;</li>
+<li>adopter la posture attendue : écouter, dire « je ne sais pas » utilement, reconnaître ce que vous feriez autrement ;</li>
+<li>évaluer votre propre prestation lors d'un oral blanc et savoir ce qui se passe après l'entretien.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;">0:00</td><td style="padding:9px;border:1px solid #EFC4CC;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #EFC4CC;">5&nbsp;min</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;">0:05</td><td style="padding:9px;border:1px solid #EFC4CC;">Partie 1 · Comprendre l'entretien : ce qu'il est, ce qu'il n'est pas</td><td style="padding:9px;border:1px solid #EFC4CC;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;">0:20</td><td style="padding:9px;border:1px solid #EFC4CC;">Partie 2 · Se préparer : relire son livret comme le jury</td><td style="padding:9px;border:1px solid #EFC4CC;">20&nbsp;min</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;">0:40</td><td style="padding:9px;border:1px solid #EFC4CC;">Partie 3 · Le pitch PMAA en deux minutes</td><td style="padding:9px;border:1px solid #EFC4CC;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;">0:55</td><td style="padding:9px;border:1px solid #EFC4CC;">Partie 4 · Les 3 familles de questions</td><td style="padding:9px;border:1px solid #EFC4CC;">15&nbsp;min</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;">1:10</td><td style="padding:9px;border:1px solid #EFC4CC;">Partie 5 · La méthode RAPIDE et deux extraits d'entretien décortiqués</td><td style="padding:9px;border:1px solid #EFC4CC;">25&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;">1:35</td><td style="padding:9px;border:1px solid #EFC4CC;">Partie 6 · Auto-évaluation, questions du jury et après l'entretien</td><td style="padding:9px;border:1px solid #EFC4CC;">15&nbsp;min</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;">1:50</td><td style="padding:9px;border:1px solid #EFC4CC;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #EFC4CC;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations de l'entretien. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">1. L'entretien est un examen de connaissances : le jury pose des questions de cours.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le jury part de <strong>votre texte</strong>. Il vérifie que vous avez réellement fait ce que vous avez écrit, et que vous savez expliquer pourquoi. Les connaissances servent à expliquer votre raisonnement.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">2. Le jury découvre votre livret le jour de l'entretien.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Il l'a lu <strong>plusieurs semaines avant</strong>. Il arrive avec des passages soulignés et des questions préparées. L'entretien sert à questionner le livret, page par page.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">3. Le jury d'entretien réunit généralement trois personnes.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Le plus souvent : un aide-soignant, un formateur ou un infirmier, et un directeur de structure.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">4. Un entretien très réussi sur le bloc 1 peut compenser un bloc 4 fragile.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Chaque bloc se valide en entier ou pas du tout, <strong>sans compensation</strong> entre blocs, ni entre activités d'un même bloc. Vous préparez donc les 11 activités, pas seulement vos préférées.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">5. Apprendre son pitch de présentation par cœur, mot pour mot, rassure le jury.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Un texte récité s'entend et casse le contact. Le pitch se <strong>prépare par écrit</strong>, puis se <strong>raconte</strong>.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">6. Répondre « je ne sais pas » à une question fait perdre l'activité.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, à une condition.</strong> « Je ne sais pas » suivi de « voilà ce que je ferais » ou « voilà qui je solliciterais » est une réponse professionnelle. Ce qui fait tomber, c'est d'inventer une réponse.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">7. Reconnaître devant le jury qu'on ferait autrement aujourd'hui, c'est avouer une faute.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le jury valorise la <strong>prise de conscience</strong>. Dire ce que vous feriez autrement, et pourquoi, vaut beaucoup mieux que défendre une pratique au nom de l'habitude du service.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">8. Si le jury relève un geste hors champ, il suffit d'expliquer que tout le service le fait.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'usage du service ne rend pas un geste légitime : un acte hors champ décrit comme réalisé reste une éliminatoire. Une situation qui repose sur un geste hors champ se remplace avant le dépôt ; elle ne se défend pas.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">9. À l'issue de l'entretien, il est possible de ne valider qu'une partie des blocs.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> C'est la validation partielle : les blocs validés sont capitalisés. Ce qui se passe ensuite est traité au chapitre 24 du livre du livret 2.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">10. L'AFGSU de niveau 2 est facultative si les 5 blocs sont validés.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'AFGSU de niveau 2 est <strong>exigée</strong> pour obtenir la certification. Sans elle, le diplôme ne peut pas être délivré, même avec les 5 blocs validés.</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 ? C'est fréquent : l'entretien ressemble moins à un examen scolaire qu'à une conversation professionnelle exigeante autour de votre texte.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · Comprendre l'entretien : ce qu'il est, ce qu'il n'est pas <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p>L'entretien est le moment où votre livret prend une voix : la vôtre. Voyons d'abord ce qui s'y joue.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:18px 0 8px 0;">1.1 · La phrase-clé de cette masterclass, mot à mot</p>
+
+<p style="margin:0 0 10px 0;background:#F9E8EB;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Le jury ne me fait pas passer un examen : il vérifie que c'est bien moi qui ai fait ce que j'ai écrit. »</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;width:28%;vertical-align:top;">« pas un examen »</td><td style="padding:9px;border:1px solid #EFC4CC;vertical-align:top;">Pas de programme, pas de questions de cours. Vous n'avez pas à tout savoir : vous avez à expliquer ce que vous avez fait.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;vertical-align:top;">« c'est bien moi »</td><td style="padding:9px;border:1px solid #EFC4CC;vertical-align:top;">Le jury vérifie l'<strong>authenticité</strong> : la situation est vécue, et c'est vous qui avez observé, agi dans votre champ et transmis. Derrière un « on », il vous fera préciser votre part.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;vertical-align:top;">« ce que j'ai fait »</td><td style="padding:9px;border:1px solid #EFC4CC;vertical-align:top;">Une situation vécue se raconte avec des détails qu'aucun livre ne contient. Une situation recomposée s'effondre dès la deuxième question précise.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;vertical-align:top;">« ce que j'ai écrit »</td><td style="padding:9px;border:1px solid #EFC4CC;vertical-align:top;">Le livret est le point de départ de <strong>toutes</strong> les questions, rubriques A comprises : chaque soin listé en A peut être questionné.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">1.2 · Ce qu'est l'entretien</p>
+
+<ul style="padding-left:20px;">
+<li>Le jury a lu votre livret <strong>plusieurs semaines avant</strong> l'entretien. Il ne le découvre pas : il le <strong>questionne</strong>, page par page, activité par activité.</li>
+<li>Il arrive avec des passages repérés : bien démontrés, seulement affirmés, manquants, fragilisants. Vos réponses confirment ou fragilisent ce qu'il a lu.</li>
+<li>Le diplôme est attribué par un jury nommé par le préfet de région.</li>
+<li>La durée, l'horaire, le lieu et les documents à apporter figurent <strong>sur votre convocation</strong>. Lisez-la en entier dès réception : c'est elle qui fait foi pour vous, pas ce que vous aurez entendu d'un autre candidat.</li>
+</ul>
+
+<p>Composition habituelle du jury d'entretien : chaque membre lit les mêmes pages avec l'éclairage de son métier, mais chacun peut vous interroger sur tout.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:30%;">Membre du jury</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">L'éclairage que son regard peut apporter</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Un aide-soignant</td><td style="padding:9px;border:1px solid #EFC4CC;">Il connaît le geste de l'intérieur et repère vite une situation qui « sonne faux », un matériel mal nommé, une étape oubliée.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Un formateur ou un infirmier</td><td style="padding:9px;border:1px solid #EFC4CC;">Le raisonnement clinique, le lien entre traitements et surveillance, et surtout la frontière entre votre rôle et celui de l'infirmier.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Un directeur de structure</td><td style="padding:9px;border:1px solid #EFC4CC;">Votre place dans l'équipe, l'organisation, la traçabilité, la qualité, la façon dont vous parlez des personnes et de vos collègues.</td></tr>
+</table>
+
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">1.3 · Ce que l'entretien n'est pas</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#C62828;color:#FFFFFF;border:1px solid #C62828;text-align:left;width:50%;">Ce n'est pas…</th><th style="padding:10px;background:#2E7D32;color:#FFFFFF;border:1px solid #2E7D32;text-align:left;">C'est…</th></tr>
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;">un examen de connaissances, avec un programme de cours</td><td style="padding:10px;border:1px solid #C8E6C9;background:#F1F8E9;">une vérification de <strong>votre</strong> pratique, à partir de <strong>votre</strong> texte</td></tr>
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;">une série de questions de cours (« citez les 4 stades de l'escarre »)</td><td style="padding:10px;border:1px solid #C8E6C9;background:#F1F8E9;">des questions qui partent d'une phrase du livret (« vous écrivez avoir supprimé l'appui : pourquoi, et comment avez-vous vérifié ? »)</td></tr>
+</table>
+
+<div style="background:#F9E8EB;border-left:6px solid #8B2336;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Alors pourquoi ORACLE vous fait-il réviser les connaissances ?</strong> Parce que le jury ne vous demandera pas « qu'est-ce qu'un diurétique ? », mais « vous citez le furosémide : qu'est-ce qu'il vous a fait surveiller chez elle ? ». Pour répondre, il faut savoir que ce diurétique de l'anse expose à la déshydratation, à l'hypotension et aux chutes, d'où le lever en deux temps et le suivi des apports hydriques. <strong>Les connaissances servent à expliquer votre raisonnement.</strong></p>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">1.4 · Les 3 piliers que le jury questionne</p>
+
+<p>Quelle que soit la page, les questions du jury reviennent presque toujours à l'un de ces trois piliers. Les connaître, c'est savoir quoi mettre dans votre réponse.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 14px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:22%;">Pilier</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:40%;">Ce que le jury veut savoir</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Exemples de questions</th></tr>
+<tr><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">1 · La pertinence</td><td style="padding:10px;border:1px solid #EFC4CC;">Votre manière de faire était-elle ajustée à <em>cette</em> personne, ce jour-là, dans cet état ?</td><td style="padding:10px;border:1px solid #EFC4CC;"><em>« Pourquoi avez-vous procédé ainsi avec lui précisément ? »</em><br><em>« Auriez-vous fait la même chose avec une autre résidente ? »</em></td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">2 · Le pourquoi</td><td style="padding:10px;border:1px solid #EFC4CC;">Le risque que vous préveniez, la bonne pratique que vous appliquiez, le besoin auquel vous répondiez.</td><td style="padding:10px;border:1px solid #EFC4CC;"><em>« Qu'est-ce qui a motivé cette décision ? »</em><br><em>« Que se serait-il passé si vous ne l'aviez pas fait ? »</em></td></tr>
+<tr><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">3 · Les résultats</td><td style="padding:10px;border:1px solid #EFC4CC;">Votre action a-t-elle produit un effet, l'avez-vous mesuré, et qu'auriez-vous fait sinon ?</td><td style="padding:10px;border:1px solid #EFC4CC;"><em>« Comment avez-vous su que c'était efficace ? »</em><br><em>« Et le lendemain, où en était-il ? »</em></td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Le pilier le plus souvent manqué : les résultats.</strong> Beaucoup de candidats racontent et justifient bien, puis s'arrêtent ; le jury demande alors : « Et après ? ». Préparez pour chaque situation un résultat chiffré, daté, vérifié à distance : c'est ce qu'ORACLE appelle <strong>fermer la boucle</strong>.</p>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">1.5 · La cotation : acquis, à vérifier, non acquis</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">
+<tr><td style="padding:12px;border:1px solid #C8E6C9;background:#E8F5E9;width:33%;vertical-align:top;"><strong style="color:#2E7D32;">ACQUIS</strong><br>Démontré avec des preuves solides dans le livret, et confirmé à l'entretien.</td><td style="padding:12px;border:1px solid #FFE082;background:#FFF8E1;width:33%;vertical-align:top;"><strong style="color:#E65100;">À VÉRIFIER</strong><br>Partiellement démontré, ou affirmé sans preuve. Le doute n'a pas été levé.</td><td style="padding:12px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;"><strong style="color:#C62828;">NON ACQUIS</strong><br>Absence de preuve, ou incapacité à expliquer ce qui est écrit.</td></tr>
+</table>
+
+<p><strong>L'objectif ORACLE est simple : ne laisser aucune activité « à vérifier ».</strong> Préparez en priorité les passages où la preuve est incomplète : une réponse précise, vécue et chiffrée peut y lever le doute.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">1.6 · Les règles de validation à connaître</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:34%;">Règle</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce qu'elle change pour votre préparation</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Validation par bloc, sans compensation</td><td style="padding:9px;border:1px solid #EFC4CC;">Une activité insuffisamment prouvée peut faire tomber tout son bloc. Préparez les 11 activités avec le même soin.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Blocs validés capitalisés</td><td style="padding:9px;border:1px solid #EFC4CC;">Ce qui est validé reste acquis. Une validation partielle n'efface rien de ce qui a été obtenu.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Validation partielle possible</td><td style="padding:9px;border:1px solid #EFC4CC;">Le jury peut valider une partie des blocs seulement. La suite du parcours est détaillée au chapitre 24 du livre du livret 2.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">AFGSU de niveau 2 exigée</td><td style="padding:9px;border:1px solid #EFC4CC;">Elle est exigée pour obtenir la certification. Vérifiez sa validité maintenant, et gardez l'attestation à portée de main si la convocation la demande.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Ce que l'oral ne rattrape pas.</strong> Les 3 éliminatoires (acte hors champ décrit comme réalisé, non-respect d'une règle d'hygiène, mise en danger de la personne) se jugent d'abord sur l'écrit : un bon oral ne fait pas disparaître une phrase du livret. Et un mauvais oral peut faire apparaître un acte hors champ absent du livret : le candidat qui, sous la pression, affirme « oui, j'augmente l'oxygène quand il désature » vient d'en décrire un. L'aide-soignant ne touche jamais au débitmètre, même sur protocole ou sur consigne.</p>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;margin:24px 0 8px 0;">✍️ Exercice 1 (4&nbsp;min) · Quel pilier le jury questionne-t-il ?</p>
+<p>Pour chaque question, dites si elle porte sur la pertinence, le pourquoi ou les résultats, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">a) « Vous écrivez l'avoir installée en décubitus latéral à 30°. Pourquoi 30°, et pas sur le côté ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le pourquoi.</strong> Le jury attend la bonne pratique : l'inclinaison à 30° répartit l'appui et évite de reporter la pression sur le trochanter. Une réponse du type « c'est ce qu'on nous a appris » ne suffit pas.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">b) « Vous avez proposé la toilette le soir. Vous l'auriez fait avec n'importe quel résident ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La pertinence.</strong> Le jury veut entendre ce qui, chez <em>cette</em> personne, justifiait ce choix : son histoire de vie, ses habitudes, son refus du matin, ses troubles cognitifs.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">c) « Quinze jours après, est-ce que ça tenait toujours ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Les résultats.</strong> Le jury vérifie que vous avez suivi l'effet de votre action à distance, et que vous pouvez le chiffrer.</p></details>
+
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">d) « Il pèse 52 kg pour 1,75 m, vous l'écrivez. Qu'est-ce que cela a changé à votre façon de l'installer ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La pertinence.</strong> Un IMC d'environ 17 signale une maigreur, donc des reliefs osseux exposés et un risque d'escarre accru. Le jury vérifie que la donnée du recueil a <em>servi</em> à ajuster le soin, et ne figure pas là pour faire joli.</p></details>
+
+
+<div style="background:#F9E8EB;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> Le jury questionne votre livret page par page ; les connaissances servent à expliquer votre raisonnement. Trois piliers : pertinence, pourquoi, résultats. Objectif : aucune activité « à vérifier ». Un bloc se valide en entier, sans compensation ; l'AFGSU de niveau 2 est exigée ; la durée et les documents sont ceux de votre convocation.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitres 22 et 24 · Livres Bloc 1 à 5 · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Se préparer : relire son livret comme le jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 20&nbsp;min</span></div>
+
+<p>Le jury a lu votre livret un crayon à la main. Faites-le avant lui : repérez ce qu'il va questionner et préparez une réponse vécue, précise et dans votre champ.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:18px 0 8px 0;">2.1 · La grille de lecture en 4 états</p>
+
+<p>Pour chaque phrase importante de votre livret, demandez-vous dans quel état elle se trouve.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:20%;">État</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:38%;">Exemple dans un livret</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce que vous préparez pour l'oral</th></tr>
+<tr><td style="padding:10px;border:1px solid #C8E6C9;background:#E8F5E9;font-weight:bold;color:#2E7D32;">Bien démontré</td><td style="padding:10px;border:1px solid #C8E6C9;font-style:italic;">« J'ai mesuré une fréquence respiratoire à 26/min, alors qu'il est habituellement à 18/min, et j'ai appelé immédiatement l'infirmière. »</td><td style="padding:10px;border:1px solid #C8E6C9;">Peu de questions, sauf une vérification d'authenticité : « Comment l'avez-vous comptée ? ». Préparez le détail vécu (sur une minute entière, sans le lui dire).</td></tr>
+<tr><td style="padding:10px;border:1px solid #FFE082;background:#FFF8E1;font-weight:bold;color:#E65100;">Seulement affirmé</td><td style="padding:10px;border:1px solid #FFE082;font-style:italic;">« J'ai adapté ma communication à ses troubles cognitifs. »</td><td style="padding:10px;border:1px solid #FFE082;">La cible prioritaire : « Concrètement, qu'avez-vous fait ? ». Préparez les gestes et les mots exacts (face à elle, phrases courtes, une consigne à la fois) et leur effet.</td></tr>
+<tr><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;color:#6D1B2B;">Manquant</td><td style="padding:10px;border:1px solid #EFC4CC;font-style:italic;">Un traitement anticoagulant cité dans le recueil, sans aucune surveillance plus loin dans le récit.</td><td style="padding:10px;border:1px solid #EFC4CC;">Le jury posera la question que votre texte ne traite pas : « Qu'est-ce que ce traitement vous faisait surveiller ? ». Préparez la réponse : saignements, hématomes, toute chute transmise.</td></tr>
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;color:#C62828;">Fragilisant</td><td style="padding:10px;border:1px solid #FFCDD2;font-style:italic;">« Il a fallu insister pour qu'elle accepte la douche. »<br>« C'est comme ça qu'on fait ici. »</td><td style="padding:10px;border:1px solid #FFCDD2;">Une preuve à charge. À l'écrit, elle se corrige par suppression ou réécriture, jamais par ajout. Si le livret est déposé, préparez une réponse honnête qui montre la prise de conscience : ce que vous feriez autrement aujourd'hui, et pourquoi.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Ne défendez jamais un passage fragilisant.</strong> Se justifier (« elle refusait toujours, on n'avait pas le choix »), c'est faire entendre deux fois la preuve à charge. La réponse attendue ressemble plutôt à : « Avec le recul, je ne l'écrirais plus ainsi. Son refus devait être respecté. Aujourd'hui, je chercherais d'abord ce qui la gênait, je lui proposerais un autre moment, et je transmettrais son refus. »</p>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">2.2 · La relecture en trois passages</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:22%;">Passage</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce que vous cherchez, crayon en main</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">1 · Le champ</td><td style="padding:9px;border:1px solid #EFC4CC;">Chaque geste proche de la limite (glycémie, oxygène, médicaments, collyre, crème, suppositoire, stomie, contention, pansement) : qui a décidé, qui a réalisé, dans quel cadre ? Relisez aussi vos rubriques A : un soin listé en A se questionne comme un récit.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">2 · Les preuves</td><td style="padding:9px;border:1px solid #EFC4CC;">Classez chaque passage dans la grille en 4 états. Marquez en orange les « seulement affirmé », en bleu les « manquant », en rouge les « fragilisant ». Ce sont vos zones de préparation.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">3 · Les savoirs</td><td style="padding:9px;border:1px solid #EFC4CC;">Entourez chaque traitement, pathologie, échelle, valeur et texte cité : « Qu'est-ce que c'est, et qu'est-ce que cela vous a fait faire ? ».</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">2.3 · Une fiche de préparation par situation</p>
+
+<p>Préparez <strong>une fiche par situation</strong>, sur une seule page, en cinq rubriques. Elle sert à retrouver en quelques secondes ce que vous devez dire sans hésiter, pas à apprendre un texte.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:22%;">Rubrique</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce que vous y notez</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">1 · La personne</td><td style="padding:9px;border:1px solid #EFC4CC;">Initiales, âge, contexte d'entrée, pathologies avec une définition courte, traitements avec leur classe, GIR, poids, taille, IMC interprété, échelles, histoire de vie, autonomie. Pour les activités 8, 9 et 11 : le contexte (service, matériel, équipe).</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">2 · Le recueil</td><td style="padding:9px;border:1px solid #EFC4CC;">Ce que vous avez observé, mesuré et comparé à l'état habituel, avant d'agir. Les valeurs exactes et leurs normes.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">3 · Le raisonnement</td><td style="padding:9px;border:1px solid #EFC4CC;">Pourquoi ce soin, pour cette personne, à ce moment-là ; les risques que vous aviez en tête ; les alternatives possibles et pourquoi vous ne les avez pas retenues.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">4 · Le résultat</td><td style="padding:9px;border:1px solid #EFC4CC;">L'effet mesuré, daté, vérifié à distance ; la transmission (à qui, par quel outil) ; la traçabilité.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">5 · La limite</td><td style="padding:9px;border:1px solid #EFC4CC;">Ce que vous ne faisiez pas, et ce que vous avez fait à la place. Et, si c'est le cas, ce que vous feriez autrement aujourd'hui.</td></tr>
+</table>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">La fiche ci-dessous est <strong>construite pour l'exemple</strong> et ne décrit aucune personne réelle. Elle reprend la situation questionnée dans l'extrait d'entretien réussi de la partie 5.</p>
+
+<div style="background:#FDF6F7;border:1px solid #EFC4CC;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#6D1B2B;">Fiche de préparation · Activité 3 (BC2) · M. T.</p>
+<p style="margin:0 0 6px 0;"><strong>1 · La personne.</strong> M. T., 81 ans, en EHPAD depuis un an et demi après plusieurs hospitalisations. BPCO (bronchopneumopathie chronique obstructive : maladie respiratoire chronique qui rétrécit les bronches de façon progressive et peu réversible) sous oxygène au long cours, 2 L/min prescrits, par lunettes. Traitements : un bronchodilatateur inhalé (surveillance : tremblements, palpitations) et un corticoïde inhalé (surveillance : rinçage de la bouche après la prise, mycose buccale). 70 kg pour 1,72 m, IMC 23,7, poids stable. GIR 3. Ancien cheminot, il lit le journal chaque matin et tient à se raser seul.</p>
+<p style="margin:0 0 6px 0;"><strong>2 · Le recueil.</strong> État habituel : saturation à 93 % sous 2 L/min, fréquence respiratoire à 18/min. Ce matin-là, à 7 h 15 : assis au bord du lit, penché en avant, parle par mots isolés, lèvres bleutées. Fréquence respiratoire 26/min (norme 12 à 20), saturation 88 %, température 38,4 °C (fièvre à partir de 38 °C).</p>
+<p style="margin:0 0 6px 0;"><strong>3 · Le raisonnement.</strong> Trois paramètres modifiés par rapport à l'état habituel, chez une personne fragile sur le plan respiratoire : la situation ne peut pas attendre. Je suspends le rasage, j'alerte l'infirmière par l'appel malade sans le quitter, et je sécurise dans mon champ : position assise, lunettes vérifiées, tubulure non coudée. Je n'interviens pas sur le débit, qui relève de l'infirmier et du médecin ; chez une personne atteinte de BPCO, un débit mal adapté peut être dangereux.</p>
+<p style="margin:0 0 6px 0;"><strong>4 · Le résultat.</strong> L'infirmière arrive en deux minutes, appelle le médecin, qui adapte la prise en charge. Une heure plus tard, à la demande de l'infirmière : saturation 92 %, fréquence respiratoire 20/min. Transmission ciblée dans le dossier de soins. Le lendemain matin : 93 %, 18/min, il a repris son journal.</p>
+<p style="margin:0;"><strong>5 · La limite.</strong> Je ne touche jamais au débitmètre, même sur protocole ou sur consigne. Je mesure, j'installe, je vérifie les lunettes, j'alerte et je reste auprès de lui.</p>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">2.4 · Réviser les connaissances qui sous-tendent chaque situation</p>
+
+<p>Partez de votre livret, pas d'un manuel : révisez <strong>ce que vous avez cité</strong>, et ce que votre situation suppose de savoir.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:30%;">Si votre livret cite…</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Révisez…</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Un traitement</td><td style="padding:9px;border:1px solid #EFC4CC;">Sa classe, son orthographe exacte, et ce qu'il vous fait surveiller. Diurétique : déshydratation, hypotension, chutes. Anticoagulant : saignements, hématomes, toute chute transmise. Antalgique de palier 3 : fréquence respiratoire, constipation. Antidiabétique : hypo et hyperglycémie. Hypnotique : somnolence, chutes.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Une pathologie</td><td style="padding:9px;border:1px solid #EFC4CC;">Une définition courte, en une phrase, et les signes qu'elle vous fait guetter au quotidien. Le vocabulaire à jour : troubles neurocognitifs, thrombose veineuse profonde.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Une échelle</td><td style="padding:9px;border:1px solid #EFC4CC;">Ce qu'elle mesure, comment vous la remplissez, ce que signifie le score obtenu et ce que vous en avez fait. EVA, Algoplus, Braden, Morse, GIR : si vous l'avez écrite, vous devez pouvoir l'expliquer.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Une valeur chiffrée</td><td style="padding:9px;border:1px solid #EFC4CC;">La norme, et l'état habituel de la personne. « 88 % » n'a de sens que rapporté à « habituellement 93 % ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Un texte</td><td style="padding:9px;border:1px solid #EFC4CC;">Ce qu'il dit, en une phrase, et pourquoi il éclaire votre situation (par exemple la loi du 4 mars 2002 pour le consentement et le refus de soin).</td></tr>
+</table>
+
+<p>Revoyez aussi les valeurs de référence avec les fiches de révision B2 : elles doivent sortir sans hésitation, rapportées à l'état habituel de la personne.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">2.5 · Savoir dire, à l'oral, les actes que vous ne faites pas</p>
+
+<p>Le jury teste souvent la limite : « Vous auriez pu le faire vous-même, non ? ». Préparez une réponse <strong>en deux temps</strong> : ce que je ne fais pas, ce que je fais à la place.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:38%;">Question du jury</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Réponse en deux temps</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« Le pansement de son talon était décollé. Vous l'avez recollé ? »</td><td style="padding:9px;border:1px solid #FFCDD2;">« Non, aucun soin de pansement ne relève de mon rôle, même sur consigne. J'ai protégé la zone pendant la toilette, j'ai supprimé l'appui du talon et j'ai prévenu l'infirmière, qui est venue le refaire. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« Il désaturait. Vous n'avez pas monté l'oxygène ? »</td><td style="padding:9px;border:1px solid #FFCDD2;">« Non, je ne touche jamais au débitmètre. J'ai vérifié les lunettes et la tubulure, je l'ai installé assis, j'ai appelé l'infirmière immédiatement et je suis resté avec lui. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« Il risquait de tomber du lit la nuit. Vous avez relevé les barrières ? »</td><td style="padding:9px;border:1px solid #FFCDD2;">« Les barrières sont une contention : ce n'est pas à moi de la décider. J'ai signalé le risque à l'infirmière, j'ai mis le lit en position basse et la sonnette à portée de main, et je suis passé plus souvent. »</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;margin:24px 0 8px 0;">✍️ Exercice 2 (5&nbsp;min) · Dans le champ, hors champ, ou sous conditions ?</p>
+<p>Voici des réponses entendues en oral blanc. Classez chacune, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">a) « Le matin, je fais la glycémie de tous les diabétiques avant le petit-déjeuner. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Recevable si c'est sur protocole ou à la demande de l'infirmier, et si vous transmettez la valeur. Dites-le spontanément : « sur le protocole du service, et je transmets chaque valeur à l'infirmière ». Adapter le traitement à partir du résultat reste à l'infirmier.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">b) « Quand l'infirmière est débordée, je retire les pansements souillés pour lui faire gagner du temps. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ, et éliminatoire si c'est présenté comme votre pratique.</strong> Aucun soin de pansement ne relève de l'aide-soignant, même sur consigne. Vous observez, vous protégez la zone et vous alertez.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">c) « Je change les lunettes à oxygène quand elles sont souillées, sans toucher au débit. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Dans le champ.</strong> Changement de lunettes sans intervention sur le débitmètre.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">d) « Je renouvelle la poche de colostomie de M. V. ; sa stomie date de plusieurs années. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Dans le champ sur une colostomie cicatrisée, et à condition d'avoir été formé. Le jury vous demandera où et quand : préparez la réponse.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">e) « Je mets la crème prescrite sur son escarre du sacrum. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> L'application de crème se fait sur consigne de l'infirmier, avec le produit qu'il a désigné, <strong>jamais sur une plaie</strong>. Une escarre constituée est une plaie : le soin revient à l'infirmier.</p></details>
+
+
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">2.6 · Préparer le jour J : la tenue, les documents, le stress</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:22%;">Domaine</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce que vous préparez</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">La tenue</td><td style="padding:9px;border:1px solid #EFC4CC;">Une tenue de ville sobre, propre et confortable. Rien qui détourne l'attention de ce que vous dites.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Les documents</td><td style="padding:9px;border:1px solid #EFC4CC;">Ceux que demande <strong>votre convocation</strong> : pièce d'identité, convocation, et toute pièce qu'elle mentionne. Vérifiez-y si vous pouvez apporter votre livret ou des notes. Préparez-les la veille, et repérez le lieu avec une marge large.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">La respiration</td><td style="padding:9px;border:1px solid #EFC4CC;">Avant d'entrer et pendant l'entretien : inspirez lentement par le nez, expirez plus longuement par la bouche. Cela aide à retrouver une voix posée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">L'entraînement à voix haute</td><td style="padding:9px;border:1px solid #EFC4CC;">Une réponse pensée n'est pas une réponse dite. Racontez chaque situation à voix haute, sans notes. Enregistrez-vous : vous entendrez les « on » et les phrases qui ne finissent pas.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Les oraux blancs</td><td style="padding:9px;border:1px solid #EFC4CC;">Au moins deux, avec une personne qui a lu votre livret et vous questionne à partir de vos phrases. Évaluez-vous avec la grille de la partie 6.</td></tr>
+</table>
+
+<div style="background:#F9E8EB;border-left:6px solid #8B2336;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Le stress n'est pas votre ennemi.</strong> Le jury sait que vous êtes tendu. Écoutez la question, faites-la répéter si besoin, respirez : quelques secondes de silence valent mieux qu'une réponse précipitée à côté.</p>
+</div>
+
+<div style="background:#F9E8EB;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Relisez votre livret comme le jury, en trois passages : le champ, les preuves, les savoirs. Tout passage seulement affirmé, manquant ou fragilisant appelle une réponse préparée. Une fiche par situation, les connaissances citées révisées, au moins deux oraux blancs.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 22 · Livres Bloc 1 à 5 · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Le pitch PMAA en deux minutes <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:40 · 15&nbsp;min</span></div>
+
+<p>L'entretien s'ouvre très souvent par une invitation à vous présenter. Ces deux minutes installent la confiance, ou le doute. ORACLE les structure en quatre temps : le <strong>pitch PMAA</strong>.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:18px 0 8px 0;">3.1 · Les quatre temps, deux minutes au plus</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:22%;">Temps</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:40%;">Ce que vous dites</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Le piège à éviter</th></tr>
+<tr><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;"><span style="color:#8B2336;">P</span> · Présentation<br><span style="font-weight:normal;">15 secondes</span></td><td style="padding:10px;border:1px solid #EFC4CC;">Qui vous êtes, le métier que vous exercez, depuis combien de temps, auprès de quels publics et dans quels types de structures.</td><td style="padding:10px;border:1px solid #EFC4CC;">Dérouler tout le CV, poste par poste. Le jury a votre parcours sous les yeux.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;"><span style="color:#E65100;">M</span> · Motivation<br><span style="font-weight:normal;">30 secondes</span></td><td style="padding:10px;border:1px solid #EFC4CC;">Pourquoi ce diplôme, et pourquoi maintenant. Une raison professionnelle et sincère, reliée à votre pratique.</td><td style="padding:10px;border:1px solid #EFC4CC;">La motivation subie (« on me l'a demandé ») ou la formule creuse (« j'ai toujours aimé aider les gens »).</td></tr>
+<tr><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;"><span style="color:#2E7D32;">A</span> · Apport<br><span style="font-weight:normal;">45 secondes</span></td><td style="padding:10px;border:1px solid #EFC4CC;">Ce que votre expérience vous a appris : deux ou trois compétences fortes, chacune illustrée par un fait précis, de préférence tiré de votre livret.</td><td style="padding:10px;border:1px solid #EFC4CC;">Des qualités sans preuve (« je suis patiente, rigoureuse, à l'écoute »).</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:10px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;"><span style="color:#6A1B9A;">A</span> · Aujourd'hui<br><span style="font-weight:normal;">30 secondes</span></td><td style="padding:10px;border:1px solid #EFC4CC;">Où vous en êtes : ce que la démarche de VAE a changé dans votre pratique, et ce que vous voulez en faire. Une phrase finale qui ouvre l'échange.</td><td style="padding:10px;border:1px solid #EFC4CC;">Finir sur « voilà » ou « tout est dans mon livret ». Le jury attend une ouverture, pas une porte fermée.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">3.2 · Préparé par écrit, raconté et non récité</p>
+
+<ol style="padding-left:22px;">
+<li><strong>Écrivez-le en entier</strong>, temps par temps, avec des phrases simples.</li>
+<li><strong>Chronométrez-vous</strong> à voix haute. Au-delà de deux minutes, coupez : c'est souvent la présentation qui déborde.</li>
+<li><strong>Réduisez-le à quelques mots-clés</strong> par temps, sur une petite carte. Rangez le texte complet.</li>
+<li><strong>Racontez-le</strong> à partir des mots-clés seulement : un texte récité s'effondre au premier trou de mémoire, un pitch raconté supporte un oubli.</li>
+<li><strong>Dites-le devant quelqu'un</strong> et demandez-lui ce qu'il a retenu : s'il ne retient pas vos apports, ils ne sont pas assez concrets.</li>
+</ol>
+
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">3.3 · Un pitch modèle, décortiqué</p>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Ce pitch est <strong>construit pour l'exemple</strong> et ne décrit aucune personne réelle ; la candidate est désignée par des initiales. Il montre une structure, pas un texte à reprendre : votre pitch raconte <em>votre</em> parcours, avec <em>vos</em> mots.</p>
+
+<div style="background:#FDF6F7;border:1px solid #EFC4CC;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;"><strong style="color:#8B2336;">P · 15 s.</strong> « Bonjour. Je m'appelle S. B. Je travaille depuis douze ans auprès de personnes âgées en EHPAD : quatre ans comme agent de service, puis huit ans sur un poste d'aide-soignante, dont deux en unité protégée pour des résidents atteints de troubles neurocognitifs. »</p>
+<p style="margin:0 0 8px 0;"><strong style="color:#E65100;">M · 30 s.</strong> « J'ai engagé cette VAE parce que je fais ce métier chaque jour et que je souhaite que mes compétences soient reconnues par le diplôme. Mais il y a une raison plus précise : en unité protégée, j'ai compris que mes observations comptaient pour l'infirmière et le médecin. Je veux pouvoir les transmettre avec la légitimité d'une professionnelle diplômée, et savoir exactement ce qui relève de mon rôle. »</p>
+<p style="margin:0 0 8px 0;"><strong style="color:#2E7D32;">A · 45 s.</strong> « Mon expérience m'a appris trois choses. Observer, d'abord : je connais l'état habituel de chaque résident, et c'est ce qui m'a permis, un matin, de repérer chez un résident une respiration inhabituelle et d'alerter l'infirmière à temps. Adapter, ensuite : avec les personnes qui ont des troubles neurocognitifs, j'ai appris que l'heure, la voix et la façon de proposer comptent autant que le soin lui-même ; une résidente qui refusait la douche le matin l'accepte aujourd'hui le soir, comme chez elle. Transmettre, enfin : j'accueille les élèves aides-soignants, et j'ai appris à leur expliquer le pourquoi de chaque geste, pas seulement le comment. »</p>
+<p style="margin:0;"><strong style="color:#6A1B9A;">A · 30 s.</strong> « Aujourd'hui, la rédaction du livret a déjà changé ma pratique. Mes transmissions contiennent des valeurs chiffrées et l'état habituel de la personne. Je dis plus clairement ce que je fais et ce que je laisse à l'infirmière. Et j'ai proposé à mon équipe de noter chaque refus de soin avec ce qui a été essayé, pour que nous cherchions ensemble des solutions. Je suis prête à revenir avec vous sur chacune de mes situations. »</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;width:30%;">Ce qui fonctionne</td><td style="padding:9px;border:1px solid #EFC4CC;">Une présentation chiffrée, une motivation personnelle. Chaque apport est une compétence <strong>prouvée par un fait</strong> du livret (activités 3, 6 et 7) : la candidate oriente les questions vers ce qu'elle maîtrise. « Aujourd'hui » montre une prise de conscience ; la dernière phrase ouvre l'échange.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #EFC4CC;">« Alerter l'infirmière », « ce que je laisse à l'infirmière » : dès la présentation, la candidate se situe en collaboration avec l'infirmier.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#FFEBEE;font-weight:bold;">Ce qui le ferait tomber</td><td style="padding:9px;border:1px solid #EFC4CC;">Un apport absent du livret : le jury demandera la situation, et elle n'y sera pas. Un chiffre gonflé. Un texte récité sans regarder le jury.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">3.4 · Un pitch raté, commenté</p>
+
+<div style="background:#FFEBEE;border:1px solid #FFCDD2;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0;font-style:italic;">« Alors… bonjour. Donc moi, ça fait vingt ans que je suis dans le soin, j'ai fait un peu de tout, la cuisine, le ménage, puis aide-soignant, d'abord dans une clinique, après dans un foyer, après à domicile, et maintenant en EHPAD depuis 2019. Dans mon service, on fait tout, même ce qui n'est pas à nous quand l'infirmière est débordée. Je fais la VAE parce que ma cadre m'a dit que ce serait bientôt obligatoire pour garder mon poste. Sinon j'aime les personnes âgées, j'ai toujours aimé aider les gens, c'est une vocation. Je suis quelqu'un de patient et de rigoureux. Mon livret, vous l'avez lu, tout est dedans. Voilà. »</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:38%;">Ce que le jury entend</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Pourquoi cela dessert le candidat</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« d'abord dans une clinique, après dans un foyer, après à domicile… »</td><td style="padding:9px;border:1px solid #FFCDD2;">Le CV, que le jury a déjà, sans rien de ce que le candidat sait faire.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« on fait tout, même ce qui n'est pas à nous »</td><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Grave.</strong> Le candidat annonce lui-même un glissement de tâches : le jury va chercher, page par page, les gestes hors champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« ma cadre m'a dit que ce serait bientôt obligatoire »</td><td style="padding:9px;border:1px solid #FFCDD2;">Une motivation subie, et une information non vérifiée présentée comme certaine.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« c'est une vocation », « patient et rigoureux »</td><td style="padding:9px;border:1px solid #FFCDD2;">Des qualités affirmées, jamais démontrées, sans lien avec le livret. Le départ hésitant trahit un pitch non préparé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« tout est dedans. Voilà. »</td><td style="padding:9px;border:1px solid #FFCDD2;">Pas de temps « Aujourd'hui », aucune prise de recul, et une fin qui ferme l'échange au lieu de l'ouvrir.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;margin:24px 0 8px 0;">✍️ Exercice 3 (6&nbsp;min) · Rédigez votre pitch PMAA</p>
+<p>Rédigez votre pitch sur une feuille, temps par temps, en suivant chaque consigne. Ouvrez ensuite le critère de réussite et corrigez-vous.</p>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">1. P · Écrivez votre présentation en une ou deux phrases : qui, quel métier, depuis combien de temps, auprès de qui, où.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Critère :</strong> 15 secondes, au moins un chiffre (années d'exercice), les publics et les types de structures, sans liste de postes.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">2. M · Écrivez pourquoi ce diplôme, et pourquoi maintenant, en partant d'un moment de votre pratique.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Critère :</strong> une raison qui vous appartient, reliée au métier (reconnaissance, légitimité, évolution). Rayez « vocation ». Si votre employeur vous a suggéré la démarche, dites-le simplement, puis ce qu'elle est devenue pour vous.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">3. A · Choisissez deux ou trois compétences et associez à chacune un fait précis tiré de votre livret.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Critère :</strong> chaque compétence est un verbe (observer, adapter, transmettre, prévenir) et chaque fait se retrouve dans une situation que vous maîtrisez parfaitement : le jury y reviendra.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">4. A · Écrivez ce que la démarche de VAE a changé dans votre pratique, et terminez par une phrase d'ouverture.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Critère :</strong> au moins un changement concret et vérifiable (transmissions, façon de dire la limite, proposition à l'équipe), et une dernière phrase qui invite les questions.</p></details>
+
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">5. Relisez-le avec la grille de détection, lisez-le à voix haute avec un chronomètre, puis réduisez-le à quelques mots-clés par temps.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Critère :</strong> deux minutes au plus, zéro « on », aucun geste hors champ évoqué, aucune qualité sans le fait qui la prouve. Racontez-le ensuite trois fois à partir des seuls mots-clés : si les phrases changent mais que les idées restent, votre pitch est prêt.</p></details>
+
+<div style="background:#F9E8EB;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> PMAA, deux minutes au plus : Présentation 15 s, Motivation 30 s, Apport 45 s, Aujourd'hui 30 s. Préparé par écrit, raconté, chaque apport prouvé par un fait du livret, une dernière phrase qui ouvre l'échange.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 22 · Livres Bloc 1 à 5 · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · Les 3 familles de questions <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:55 · 15&nbsp;min</span></div>
+
+<p>ORACLE regroupe les questions du jury en trois familles. Reconnaître la famille, c'est savoir ce que votre réponse doit contenir.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:18px 0 8px 0;">4.1 · Vue d'ensemble</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:26%;">Famille</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:18%;">Repère ORACLE</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce que le jury cherche</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">1 · Le parcours</td><td style="padding:9px;border:1px solid #EFC4CC;">5 à 10&nbsp;min</td><td style="padding:9px;border:1px solid #EFC4CC;">La cohérence entre votre expérience et votre livret, la réalité de votre exercice, votre motivation, votre recul.</td></tr>
+<tr style="background:#F9E8EB;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">2 · Les situations du livret</td><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">15 à 30&nbsp;min</td><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Le cœur de l'entretien.</strong> L'authenticité, votre part exacte, votre raisonnement, la limite de votre champ, les résultats.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">3 · Les connaissances métier</td><td style="padding:9px;border:1px solid #EFC4CC;">5 à 10&nbsp;min</td><td style="padding:9px;border:1px solid #EFC4CC;">Les savoirs qui fondent vos choix : traitements cités, échelles, valeurs, hygiène, textes, toujours rattachés à votre pratique.</td></tr>
+</table>
+
+<p style="font-size:13px;color:#546E7A;">Ces durées sont des <strong>repères de préparation ORACLE</strong>, pas un minutage officiel : la durée de l'entretien est celle qu'indique votre convocation. Retenez la proportion : l'essentiel du temps porte sur vos situations.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">4.2 · Famille 1 · Le parcours</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#8B2336;color:#FFFFFF;"><th style="padding:9px;border:1px solid #8B2336;text-align:left;width:46%;">Exemple de question</th><th style="padding:9px;border:1px solid #8B2336;text-align:left;">Ce que le jury cherche</th></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Décrivez-nous une journée type dans votre service actuel. »</td><td style="padding:9px;border:1px solid #EFC4CC;">La réalité de votre poste et votre place dans l'équipe, parmi les autres professionnels. Une porte vers l'activité 11.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Qu'est-ce qui a été le plus difficile dans la rédaction du livret ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">Votre capacité d'analyse. « Écrire le pourquoi de gestes que je faisais sans y penser » vaut mieux que « rien de particulier ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Qu'est-ce qui a changé dans votre pratique depuis que vous avez commencé la VAE ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">La prise de conscience, et sa traduction concrète dans vos gestes ou vos transmissions.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">4.3 · Famille 2 · Les situations du livret, le cœur de l'entretien</p>
+
+<p>Ici, chaque question part d'une phrase de votre livret. Le jury la cite, parfois mot pour mot, puis il creuse. Les questions de cette famille prennent sept formes, qu'il faut toutes avoir préparées :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#8B2336;color:#FFFFFF;"><th style="padding:9px;border:1px solid #8B2336;text-align:left;width:22%;">Forme</th><th style="padding:9px;border:1px solid #8B2336;text-align:left;width:42%;">Exemple</th><th style="padding:9px;border:1px solid #8B2336;text-align:left;">Ce que le jury cherche</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Authenticité</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Décrivez-nous la chambre, ce matin-là. Où était le fauteuil ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">Le détail vécu qu'aucun manuel ne donne.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Précision</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Vous écrivez "elle mangeait peu". Combien ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">La donnée chiffrée derrière l'impression.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Part propre</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Vous écrivez "nous l'avons installé". Qui a fait quoi ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">Ce que <em>vous</em> avez fait, séparé de ce qu'ont fait les autres.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Limite</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Et si l'infirmière n'avait pas été joignable ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">La procédure d'urgence du service (15, médecin d'astreinte, cadre), sans laisser la personne seule et sans sortir du champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Alternatives</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Pourquoi le verticalisateur et pas le lève-personne ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">Un choix raisonné entre plusieurs possibilités, fondé sur les capacités de la personne (appui partiel ou absence d'appui).</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Résultat</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Et le lendemain ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">La boucle fermée : l'effet mesuré, vérifié à distance.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Recul</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Avec le recul, feriez-vous la même chose ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">L'évaluation de votre propre pratique, et la capacité à dire ce que vous feriez autrement.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">4.4 · Famille 3 · Les connaissances métier</p>
+
+<p>Ce ne sont pas des questions de cours : elles partent d'un élément de votre texte, et demandent le savoir qui le justifie.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#8B2336;color:#FFFFFF;"><th style="padding:9px;border:1px solid #8B2336;text-align:left;width:46%;">Exemple de question</th><th style="padding:9px;border:1px solid #8B2336;text-align:left;">Le savoir attendu, relié à votre pratique</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Vous citez un bêtabloquant. Qu'est-ce qu'il vous fait surveiller ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">Bradycardie, hypotension, donc un pouls et une pression artérielle à rapporter à l'état habituel, un lever prudent.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Vous avez mesuré un score de Braden. Qu'évalue-t-il ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">Le risque d'escarre, et ce que le score vous a fait mettre en place : alternance des positions, décharge des talons, support adapté, apports.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Où avez-vous jeté les gants de la toilette ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">Le juste tri : DAOM, sauf contact avec un foyer infectieux avéré ou suspecté, imprégnation avec risque d'écoulement, ou objet piquant ou coupant.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Elle refusait le soin. Qu'est-ce qui encadre ce refus ? »</td><td style="padding:9px;border:1px solid #EFC4CC;">La loi du 4 mars 2002 : le consentement et le droit de refuser un soin. Puis ce que vous avez fait : respecter, chercher la cause, proposer autrement, transmettre.</td></tr>
+</table>
+
+<div style="background:#F9E8EB;border-left:6px solid #8B2336;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Et les questions qui déstabilisent ?</strong> « Vous êtes sûr ? », un long silence, une reformulation inexacte : restez calme, corrigez poliment (« Ce n'est pas tout à fait ce qui s'est passé… ») et répondez une question à la fois. La masterclass 16 y est consacrée.</p>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;margin:24px 0 8px 0;">✍️ Exercice 4 (4&nbsp;min) · De quelle famille, et que cherche le jury ?</p>
+
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">a) « Vous écrivez que M. D. "semblait douloureux". Sur quoi vous êtes-vous fondé ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Famille 2, forme « précision ».</strong> Signes observés, échelle utilisée (EVA si la personne peut s'exprimer, Algoplus sinon), score, destinataire de la transmission.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">b) « Pourquoi avoir choisi de devenir aide-soignant après toutes ces années en cuisine ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Famille 1, parcours.</strong> Une motivation sincère et un cheminement cohérent, illustrés par un fait précis.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">c) « Vous écrivez "nous avons décidé avec l'équipe". Qui a décidé quoi, exactement ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Famille 2, forme « part propre ».</strong> Ce que vous avez observé et proposé, distingué de ce que l'infirmier ou le médecin a décidé.</p></details>
+
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">d) « Avec le recul, qu'auriez-vous pu faire pour éviter ce refus ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Famille 2, forme « recul ».</strong> Une piste concrète (recueillir plus tôt ses habitudes, proposer un autre horaire) montre la prise de conscience.</p></details>
+
+<div style="background:#F9E8EB;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Trois familles : le parcours, les situations du livret (le cœur, la plus grande part du temps) et les connaissances métier, toujours rattachées à votre texte. Dans la famille 2, préparez les sept formes : authenticité, précision, part propre, limite, alternatives, résultat, recul.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 22 · Livres Bloc 1 à 5 · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · La méthode RAPIDE et deux extraits d'entretien décortiqués <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:10 · 25&nbsp;min</span></div>
+
+<p>Construire une réponse en quelques secondes, sous le regard de trois personnes, s'apprend : RAPIDE vous donne un ordre simple qui garantit l'essentiel.</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:18px 0 8px 0;">5.1 · Les six temps de la réponse</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:26%;">Temps</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:38%;">À quoi il sert</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Pour commencer votre phrase</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">R · Reformuler</td><td style="padding:9px;border:1px solid #EFC4CC;">Montrer que vous avez écouté, vérifier que vous avez compris, gagner quelques secondes.</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Vous me demandez ce qui m'a fait… »</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">A · Ancrer dans une expérience</td><td style="padding:9px;border:1px solid #EFC4CC;">Revenir à la situation vécue : la personne, le moment, ce que vous avez vu.</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Ce matin-là, avec M. T.… »</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">P · Préciser protocoles, échelles, savoirs</td><td style="padding:9px;border:1px solid #EFC4CC;">Nommer ce qui fonde votre geste : norme, échelle, protocole, classe du traitement, bonne pratique.</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« J'ai compté sur une minute : 26, pour une norme de 12 à 20… »</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">I · Illustrer par un chiffre ou un avant/après</td><td style="padding:9px;border:1px solid #EFC4CC;">Rendre le résultat visible et vérifiable.</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Une heure après, il était à 92 %. Le lendemain… »</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">D · Discuter les alternatives</td><td style="padding:9px;border:1px solid #EFC4CC;">Montrer un choix raisonné : ce que vous auriez pu faire, pourquoi vous ne l'avez pas fait, où passait la limite de votre champ.</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« J'aurais pu…, mais… »</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">É · Évaluer rétrospectivement</td><td style="padding:9px;border:1px solid #EFC4CC;">Ce que vous referiez, ce que vous feriez autrement aujourd'hui.</td><td style="padding:9px;border:1px solid #EFC4CC;font-style:italic;">« Avec le recul, je… »</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ RAPIDE n'est pas un formulaire à remplir.</strong> Une question courte appelle une réponse courte : « Où avez-vous jeté les gants ? » ne demande pas six temps. Reformuler et ancrer sont presque toujours utiles ; les autres temps viennent selon la question, et le jury vous y relancera souvent de lui-même (« et après ? »).</p>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">5.2 · La posture attendue</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:28%;">Principe</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce que cela donne concrètement</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Écouter la question entière</td><td style="padding:9px;border:1px solid #EFC4CC;">Laissez finir, respirez, reformulez ; demandez une précision si besoin.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Dire « je ne sais pas » utilement</td><td style="padding:9px;border:1px solid #EFC4CC;">« Je ne sais pas, mais voilà ce que je ferais » ou « … voilà qui je solliciterais » (l'infirmière, le dossier, le protocole). Le jury attend que vous sachiez où chercher, pas que vous sachiez tout.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Reconnaître ce que vous feriez autrement</td><td style="padding:9px;border:1px solid #EFC4CC;">« Avec le recul, je ne le ferais plus ainsi, parce que… » Le jury valorise la prise de conscience plutôt que la défense de l'habitude du service.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Ne jamais inventer</td><td style="padding:9px;border:1px solid #EFC4CC;">Score, valeur, date : si vous n'êtes pas sûr, dites-le. Une donnée inventée contredit souvent votre livret.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Ne jamais travestir une situation</td><td style="padding:9px;border:1px solid #EFC4CC;">Vous ne modifiez pas à l'oral ce qui s'est passé pour le faire entrer dans le champ. Dites la limite et ce que vous feriez aujourd'hui, sans réécrire l'histoire.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">Vouvoiement et langage professionnel</td><td style="padding:9px;border:1px solid #EFC4CC;">Vous vouvoyez chaque membre du jury et parlez des personnes avec respect (« Mme R. »), jamais par leur numéro de chambre ou leur pathologie. Regardez aussi les membres qui n'ont pas posé la question.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">5.3 · Situations modèles décortiquées : deux extraits d'entretien</p>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux extraits ci-dessous sont <strong>construits pour l'exemple</strong> et ne décrivent aucune personne réelle ; candidats et résidents sont désignés par des initiales. Ils montrent une manière de répondre, pas un texte à apprendre : vous raconterez <em>vos</em> situations, avec <em>vos</em> mots.</p>
+
+<!-- Extrait A -->
+<div style="background:#8B2336;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:20px 0 10px 0;font-weight:bold;">Extrait A · réussi · Activité 3 (BC2) · Un changement d'état clinique repéré, objectivé et signalé</div>
+
+<div style="background:#FDF6F7;border:1px solid #EFC4CC;border-radius:10px;padding:16px 20px;">
+<p style="margin:0;"><strong>La personne et la situation</strong> sont celles de la fiche de préparation de la partie 2 (2.3) : M. T., 81 ans, BPCO sous oxygène au long cours, 2 L/min prescrits. Un matin à 7 h 15, la candidate, Mme S. B., mesure une fréquence respiratoire à 26/min, une saturation à 88 % et une température à 38,4 °C, alors qu'il est habituellement à 18/min et 93 %. Elle alerte, sécurise dans son champ et ferme la boucle le lendemain.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:58%;">L'échange</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce que le jury entend</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Formatrice :</strong> « Vous écrivez : "Je l'ai trouvé plus essoufflé que d'habitude." Qu'entendez-vous par là ? »</td><td style="padding:9px;border:1px solid #EFC4CC;color:#546E7A;">Question de précision, famille 2 : le jury vérifie l'état habituel.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Mme S. B. :</strong> « Vous me demandez ce qui me permettait de dire que sa respiration avait changé. D'habitude, le matin, M. T. est assis dans son fauteuil avec son journal et il me parle en phrases entières. Ce matin-là, il était assis au bord du lit, penché en avant, et il me répondait par mots isolés. J'ai compté sa fréquence respiratoire sur une minute entière : 26, alors qu'il est habituellement à 18, pour une norme de 12 à 20. Sa saturation était à 88 %, contre 93 % d'habitude sous ses 2 litres. Et il avait 38,4 °C. »</td><td style="padding:9px;border:1px solid #EFC4CC;"><strong>R</strong>, puis <strong>A</strong> : un détail vécu (le journal, le bord du lit). <strong>P</strong> : trois valeurs rapportées à l'état habituel et à la norme. L'authenticité ne fait plus de doute.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Directeur :</strong> « Vous aviez le débitmètre sous la main. Pourquoi ne pas avoir augmenté l'oxygène en attendant l'infirmière ? »</td><td style="padding:9px;border:1px solid #EFC4CC;color:#546E7A;">Question de limite, formulée pour inviter à dire « oui, j'aurais pu ».</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Mme S. B. :</strong> « Parce que cela ne relève pas de mon rôle : je ne touche jamais au débitmètre, même sur protocole ou sur consigne. Le débit est prescrit, et c'est l'infirmière et le médecin qui décident de le modifier. Chez une personne atteinte de BPCO, un débit mal adapté peut d'ailleurs être dangereux. Mon rôle, c'était de mesurer, de l'installer assis, position où il respirait le mieux, de vérifier les lunettes et la tubulure, d'alerter et de rester avec lui. »</td><td style="padding:9px;border:1px solid #EFC4CC;"><strong>D</strong> : l'alternative est écartée avec sa raison. <strong>La limite est dite en deux temps</strong>, calmement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Aide-soignant :</strong> « Et ensuite ? »</td><td style="padding:9px;border:1px solid #EFC4CC;color:#546E7A;">Question de résultat.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Mme S. B. :</strong> « L'infirmière est arrivée en deux minutes et a appelé le médecin, qui a adapté sa prise en charge. Une heure plus tard, à la demande de l'infirmière, j'ai recontrôlé : 92 % et 20 par minute. J'ai fait une transmission ciblée dans le dossier de soins. Le lendemain matin, il était revenu à 93 % et à 18, et il avait repris son journal. »</td><td style="padding:9px;border:1px solid #EFC4CC;"><strong>I</strong> : un avant/après chiffré, vérifié à distance. Les rôles sont nets : le médecin adapte, la candidate recontrôle à la demande de l'infirmière.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Formatrice :</strong> « À quels moments prend-il ses traitements inhalés ? »</td><td style="padding:9px;border:1px solid #EFC4CC;color:#546E7A;">Question sur un traitement cité, à la frontière des familles 2 et 3.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Mme S. B. :</strong> « Je ne suis plus sûre des horaires exacts, et je préfère ne pas vous répondre au hasard : ils figurent dans le plan d'administration, et c'est l'infirmière qui les gère. Ce que je sais, c'est ce que ses traitements me font surveiller : pour le bronchodilatateur, les tremblements et les palpitations ; pour le corticoïde inhalé, je lui rappelle de se rincer la bouche après la prise, à cause du risque de mycose. En cas de doute, je vérifie dans le dossier ou je demande à l'infirmière. »</td><td style="padding:9px;border:1px solid #EFC4CC;"><strong>« Je ne sais pas » utile</strong> : rien d'inventé, la surveillance est sue, la ressource est nommée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Directeur :</strong> « Avec le recul, referiez-vous la même chose ? »</td><td style="padding:9px;border:1px solid #EFC4CC;color:#546E7A;">Question de recul.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;"><strong>Mme S. B. :</strong> « Oui pour l'alerte immédiate. Mais j'ai ajouté quelque chose depuis : je note dans les transmissions sa fréquence respiratoire et sa saturation habituelles, pour que toute l'équipe puisse repérer un changement aussi vite. Ce matin-là, c'est parce que je le connaissais bien que j'ai vu la différence ; un collègue qui le connaissait moins aurait pu passer à côté. »</td><td style="padding:9px;border:1px solid #EFC4CC;"><strong>É</strong> : une évaluation lucide et une amélioration concrète, pensée pour l'équipe.</td></tr>
+</table>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #EFC4CC;">L'état habituel est connu et chiffré, l'alerte passe avant le soin, le résultat est vérifié le lendemain. Les six temps de RAPIDE apparaissent au fil des questions, sans être récités.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #EFC4CC;">« Je ne touche jamais au débitmètre », « le médecin a adapté », « à la demande de l'infirmière ». À chaque étape, le jury sait qui décide.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #EFC4CC;">Céder à la question du directeur (« oui, j'ai monté un peu, à 3 litres ») : acte hors champ décrit comme réalisé. Inventer un horaire ou une posologie. Dire « j'ai fini le rasage, puis j'ai appelé » : mise en danger.</td></tr>
+</table>
+
+<!-- Extrait B -->
+<div style="background:#8B2336;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Extrait B · raté · Activité 2 (BC1) · La prévention des chutes nocturnes</div>
+
+<div style="background:#FDF6F7;border:1px solid #EFC4CC;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne, telle que présentée dans le livret.</strong> Mme R., 88 ans, en EHPAD depuis trois mois. Insuffisance cardiaque traitée par furosémide, diurétique de l'anse ; troubles du sommeil traités par un hypnotique le soir. Marche avec un déambulateur. Se lève deux à trois fois par nuit pour aller aux toilettes. Aucune chute depuis son entrée.</p>
+<p style="margin:0;"><strong>La phrase questionnée.</strong> Le candidat, M. K., a écrit : « J'ai mis en place des mesures pour prévenir ses chutes la nuit. » Le livret ne dit pas lesquelles.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:58%;">L'échange</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Ce que le jury entend</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Formatrice :</strong> « Vous écrivez avoir mis en place des mesures pour prévenir ses chutes la nuit. Lesquelles ? »</td><td style="padding:9px;border:1px solid #FFCDD2;color:#546E7A;">Le jury vise un passage « seulement affirmé ».</td></tr>
+<tr style="background:#FFF5F5;"><td style="padding:9px;border:1px solid #FFCDD2;"><strong>M. K. :</strong> « Ben… on fait comme d'habitude, on met les barrières, le lit en bas, la sonnette. Comme pour tout le monde. »</td><td style="padding:9px;border:1px solid #FFCDD2;">Pas de reformulation, un « on » qui efface sa part, et « comme pour tout le monde » : l'inverse d'une prévention ajustée à <em>cette</em> personne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Formatrice :</strong> « Les barrières, qui les a décidées ? »</td><td style="padding:9px;border:1px solid #FFCDD2;color:#546E7A;">Question de limite.</td></tr>
+<tr style="background:#FFF5F5;"><td style="padding:9px;border:1px solid #FFCDD2;"><strong>M. K. :</strong> « Chez nous, c'est systématique la nuit pour les personnes qui risquent de tomber. C'est comme ça qu'on fait ici, ça a toujours marché. »</td><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Grave.</strong> Les barrières sont une <strong>contention</strong>, qui relève d'une décision médicale. Le candidat applique une contention que personne n'a prescrite, ce qui revient à la décider : c'est un acte hors champ, et l'usage du service n'y change rien. Il le défend au lieu de le questionner.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Aide-soignant :</strong> « Qu'est-ce qui vous faisait dire qu'elle risquait de tomber ? »</td><td style="padding:9px;border:1px solid #FFCDD2;color:#546E7A;">Question de pertinence.</td></tr>
+<tr style="background:#FFF5F5;"><td style="padding:9px;border:1px solid #FFCDD2;"><strong>M. K. :</strong> « Elle est âgée, elle est fragile. Et elle se lève la nuit. »</td><td style="padding:9px;border:1px solid #FFCDD2;">Des généralités. Aucun lien avec ses traitements ni sa marche, aucune échelle.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Formatrice :</strong> « Vous citez un diurétique et un hypnotique dans votre recueil de données. Ont-ils joué un rôle ? »</td><td style="padding:9px;border:1px solid #FFCDD2;color:#546E7A;">Le jury tend la perche : le chaînage traitement-surveillance.</td></tr>
+<tr style="background:#FFF5F5;"><td style="padding:9px;border:1px solid #FFCDD2;"><strong>M. K. :</strong> « Euh… le diurétique, c'est pour la tension, je crois. Je ne sais plus trop. »</td><td style="padding:9px;border:1px solid #FFCDD2;">Deux traitements cités mais incompris, alors qu'ils expliquent le risque : le diurétique fait uriner, donc lever la nuit, et expose à l'hypotension ; l'hypnotique rend somnolent au lever.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Directeur :</strong> « Aviez-vous évalué le risque avec une échelle ? »</td><td style="padding:9px;border:1px solid #FFCDD2;color:#546E7A;">Question de précision.</td></tr>
+<tr style="background:#FFF5F5;"><td style="padding:9px;border:1px solid #FFCDD2;"><strong>M. K. :</strong> « Oui, oui, l'échelle… elle avait 18, je crois. Enfin, quelque chose comme ça. »</td><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Une donnée inventée.</strong> Aucune échelle ne figure dans le livret. Le jury le voit, et tout l'entretien en est fragilisé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Aide-soignant :</strong> « Et depuis, est-elle tombée ? »</td><td style="padding:9px;border:1px solid #FFCDD2;color:#546E7A;">Question de résultat.</td></tr>
+<tr style="background:#FFF5F5;"><td style="padding:9px;border:1px solid #FFCDD2;"><strong>M. K. :</strong> « Non. Enfin, je ne crois pas, je travaille de jour maintenant. »</td><td style="padding:9px;border:1px solid #FFCDD2;">Aucune évaluation de la mesure, attendu central de l'activité 2 : l'activité reste au mieux « à vérifier ».</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#2E7D32;margin:16px 0 8px 0;">Ce qu'une réponse RAPIDE et honnête aurait donné, à la première question</p>
+<p style="margin:0 0 8px 0;font-size:14px;color:#546E7A;">La réponse s'en tient à ce qui s'est réellement passé : à l'oral, vous précisez, vous n'ajoutez rien et vous ne réécrivez pas l'histoire.</p>
+<div style="background:#E8F5E9;border:1px solid #C8E6C9;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0;">« Vous me demandez ce que j'ai mis en place concrètement pour Mme R. <strong>(R)</strong> Elle se levait deux à trois fois par nuit pour aller aux toilettes, avec son déambulateur, et son diurétique la fait uriner et l'expose à une baisse de tension au lever ; son hypnotique la rend somnolente. <strong>(A)</strong> Je n'avais pas coté d'échelle, et je vous le dis ; j'ai transmis ces éléments à l'infirmière. <strong>(P)</strong> J'ai proposé qu'elle aille aux toilettes avant le coucher, laissé une veilleuse, dégagé le passage, placé son déambulateur et ses chaussures fermées au bord du lit, la sonnette à portée de main, le lit en position basse, et je lui ai expliqué de s'asseoir un moment avant de se lever. D'après les transmissions de nuit, elle n'est pas tombée sur les trois semaines suivantes. <strong>(I)</strong> Les barrières, en revanche, étaient relevées chaque nuit par habitude du service. Je sais aujourd'hui que c'est une contention, qui relève d'une décision médicale, et que chez une personne qui se lève seule elle peut augmenter le risque si elle tente de les enjamber. <strong>(D)</strong> Avec le recul, je ne les relèverais plus sans décision médicale : je signalerais la situation à l'infirmière et je proposerais une évaluation avec l'échelle de Morse. <strong>(É)</strong> »</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;width:30%;">Ce qui aurait prouvé la compétence</td><td style="padding:9px;border:1px solid #EFC4CC;">Un risque <strong>non survenu</strong>, relié à la personne et à ses traitements, des mesures individualisées, un résultat vérifié, une absence d'échelle dite honnêtement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#F9E8EB;font-weight:bold;">Où la limite aurait été dite</td><td style="padding:9px;border:1px solid #EFC4CC;">La contention ne se décide pas par l'aide-soignant ; la pratique du service est reconnue et questionnée, pas défendue.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;background:#FFEBEE;font-weight:bold;">Ce qui l'a fait tomber</td><td style="padding:9px;border:1px solid #EFC4CC;">Une contention décrite comme une habitude et défendue, un chiffre inventé, deux traitements incompris, aucune évaluation. À l'origine : une phrase seulement affirmée, que la préparation n'avait pas repérée.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#6D1B2B;margin:24px 0 8px 0;">✍️ Exercice 5 (7&nbsp;min) · Appliquez RAPIDE à une question donnée</p>
+<p><strong>Le contexte</strong>, tel qu'il figure dans un livret construit pour l'exemple : Mme F., 84 ans, entrée en EHPAD il y a deux mois, six mois après le décès de son mari. Ancienne commerçante, elle aimait « avoir du monde autour d'elle ». Elle prend ses repas seule en chambre. Elle est passée de 58 kg à 55 kg en un mois, pour 1,60 m. Troubles cognitifs absents, marche avec une canne.</p>
+<p><strong>La question du jury :</strong> <em>« Vous écrivez : "J'ai proposé à Mme F. de prendre ses repas en salle à manger plutôt qu'en chambre." Pourquoi ? »</em></p>
+<p>Construisez votre réponse temps par temps sur votre feuille, puis ouvrez chaque proposition.</p>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">R · Reformulez la question en une phrase.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Vous me demandez ce qui m'a amenée à lui proposer la salle à manger. » Courte, sans répéter la question mot pour mot.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">A · Ancrez votre réponse dans ce que vous avez observé.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« En débarrassant ses plateaux, je voyais qu'elle en laissait plus de la moitié. Elle me disait qu'elle n'avait pas faim, "toute seule". »</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">P · Précisez les données et les savoirs qui fondent votre proposition.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Je l'ai pesée : 55 kg, contre 58 kg un mois plus tôt, pour 1,60 m. Perdre plus de 5 % de son poids en un mois est un signe d'alerte de dénutrition : je l'ai transmis le jour même à l'infirmière. Et le repas est aussi un moment de vie sociale. »</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">I · Illustrez le résultat par un chiffre ou un avant/après.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Elle a accepté d'essayer le déjeuner, à la table de deux résidentes qu'elle croisait à l'animation. Trois semaines plus tard, elle finissait presque son plat le midi, et son poids était stabilisé à 55,5 kg. »</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">D · Discutez les alternatives, et la place de chacun.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« J'aurais pu l'encourager à finir son plateau en chambre, mais cela ne répondait pas à sa solitude. Je ne lui ai rien imposé : elle pouvait revenir en chambre quand elle le voulait. Un éventuel complément alimentaire n'était pas de mon ressort : j'ai transmis la perte de poids à l'infirmière. »</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">É · Évaluez rétrospectivement votre action.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Avec le recul, j'aurais pu le proposer dès son arrivée : son histoire de vie l'annonçait. Depuis, je recueille auprès de chaque nouveau résident s'il préfère manger seul ou accompagné. »</p></details>
+
+<div style="background:#F9E8EB;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> RAPIDE : Reformuler · Ancrer dans une expérience · Préciser protocoles, échelles, savoirs · Illustrer par un chiffre ou un avant/après · Discuter les alternatives · Évaluer rétrospectivement. La longueur suit la question. N'inventez rien, ne travestissez jamais une situation.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 22 · Livres Bloc 1 à 5 · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Auto-évaluation, questions du jury et après l'entretien <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:35 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:18px 0 8px 0;">6.1 · La grille de détection : évaluer votre prestation</p>
+
+<p>Réécoutez vos oraux blancs enregistrés avec cette grille, qui porte sur ce que vous <em>dites</em>.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous vous entendez dire…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« dans ce cas, je monte un peu l'oxygène »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Vous venez de décrire un acte hors champ. L'aide-soignant ne touche jamais au débitmètre, même sur protocole ou sur consigne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« quand il se décolle, je le recolle moi-même, le pansement »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Aucun soin de pansement ne relève de votre rôle, même sur consigne. Vous observez, vous protégez la zone et vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai terminé la toilette, puis je suis allé prévenir »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire</strong> devant un signe d'alerte. Mise en danger : l'alerte passe avant la poursuite du soin.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je garde les mêmes gants pour faire les deux chambres »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Non-respect d'une règle d'hygiène. Gants changés entre deux personnes, friction hydro-alcoolique, et gants seulement quand un contact avec un liquide biologique ou une muqueuse est possible.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« je fais la glycémie », « je mets la crème », « je donne ses médicaments »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Dites spontanément le cadre : sur protocole ou à la demande de l'infirmier ; sur consigne, avec le produit désigné, jamais sur une plaie ; « j'aide à la prise » d'un traitement non injectable, non stupéfiant, préparé par l'infirmier ou la pharmacie, emballé individuellement, identifiable et daté, identité vérifiée, prise observée et tracée.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« elle avait 18, je crois, enfin quelque chose comme ça »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Un chiffre incertain affaiblit tout le reste. Soit vous le savez, soit vous dites que vous n'en êtes plus sûr et vous donnez ce dont vous êtes sûr.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on », « nous », « l'équipe a fait »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire</strong> sur votre fiche. Le jury évalue ce que <em>vous</em> avez fait. Préparez votre part exacte, au « je ».</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« c'est comme ça qu'on fait ici », « il a fallu insister »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Une preuve à charge : l'habitude du service à la place de la bonne pratique, un refus surmonté par l'insistance.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« je ne vois pas ce que j'aurais pu faire autrement »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Aucune prise de recul. Il y a toujours quelque chose à améliorer.</td></tr>
+</table>
+
+<div style="background:#F9E8EB;border-left:6px solid #8B2336;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0 0 6px 0;"><strong>🛡️ Les six contrôles après chaque oral blanc</strong></p>
+<ul style="margin:0;padding-left:20px;">
+<li>Mon pitch a-t-il tenu en deux minutes, sans être récité ?</li>
+<li>Ai-je reformulé avant de répondre aux questions importantes ?</li>
+<li>Chaque réponse sur une situation contenait-elle au moins un chiffre ou un avant/après ?</li>
+<li>Ai-je dit la limite en deux temps chaque fois qu'elle était en jeu ?</li>
+<li>Ai-je dit au moins une fois ce que je ferais autrement aujourd'hui ?</li>
+<li>Ai-je vouvoyé chaque interlocuteur et parlé des personnes avec respect, sans un seul « on » ?</li>
+</ul>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">6.2 · Six questions du jury, telles qu'elles tombent</p>
+<p>Chaque question part d'une phrase <em>citée</em> d'un livret. Traitez-en deux en séance, à voix haute avec RAPIDE, avant d'ouvrir l'attendu ; les autres en travail personnel.</p>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">« Vous écrivez : "J'ai réalisé sa glycémie capillaire avant le déjeuner." Dans quel cadre, et qu'avez-vous fait du résultat ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> sur protocole du service ou à la demande de l'infirmier ; la valeur, rapportée à la norme (0,70 à 1,10 g/L à jeun, hypoglycémie en dessous de 0,70 g/L) ; la transmission immédiate ; l'infirmier qui en tire les conséquences sur le traitement. <strong>À éviter :</strong> « Je la fais tous les jours, c'est l'habitude », sans cadre ni destinataire.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">« Vous écrivez : "Il a fallu insister pour qu'elle accepte la douche." Avec le recul, qu'en pensez-vous ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la prise de conscience. Le refus de soin se respecte (loi du 4 mars 2002) ; aujourd'hui, vous chercheriez la cause, proposeriez un autre moment ou une autre façon de faire, et transmettriez le refus et la solution trouvée. <strong>À éviter :</strong> « Elle refuse toujours, on n'a pas le choix », qui répète la preuve à charge.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">« Vous écrivez : "Nous avons installé M. L. au fauteuil avec le verticalisateur." Qu'avez-vous fait, vous, précisément ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> votre part au « je » : l'évaluation de son appui partiel, qui justifiait le verticalisateur, la guidance verbale, votre posture (dos droit, jambes fléchies, sans torsion), ce que vous avez vérifié une fois installé. <strong>À éviter :</strong> « On fait tout à deux, de toute façon. »</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">« Vous écrivez : "Je l'ai trouvée confuse et j'ai prévenu l'infirmière." Et si l'infirmière n'avait pas été joignable ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la procédure d'urgence du service (15, médecin d'astreinte, cadre), sans laisser la personne seule, en mesurant les paramètres utiles pour les transmettre, puis la traçabilité. Vous ne sortez pas de votre champ pour autant. <strong>À éviter :</strong> « Je me serais débrouillé », qui laisse entendre que vous auriez agi à la place de l'infirmier.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">« Vous écrivez : "Mme P. est traitée par apixaban, anticoagulant." Qu'est-ce que cela a changé à votre surveillance ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le chaînage traitement-surveillance, appliqué à elle : saignements (gencives, nez, urines, selles), hématomes repérés à la toilette, et toute chute transmise même si elle paraît bénigne. Puis un exemple tiré de votre situation. <strong>À éviter :</strong> une définition de cours des anticoagulants, sans lien avec Mme P.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">« Vous écrivez : "La sangle du lève-personne était usée, je l'ai signalé." Et ensuite ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la séquence de l'activité 9 : mise en sécurité (sangle retirée de l'usage et identifiée), information des collègues, demande d'intervention tracée, puis vérification datée de la réparation. <strong>À éviter :</strong> « Ensuite, c'était à la maintenance de s'en occuper. »</p></details>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:22px 0 8px 0;">6.3 · Après l'entretien</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#6D1B2B;color:#FFFFFF;"><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;width:26%;">Étape</th><th style="padding:9px;border:1px solid #6D1B2B;text-align:left;">Ce qui se passe, et ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">En sortant</td><td style="padding:9px;border:1px solid #EFC4CC;">Notez à chaud les questions posées, vos réponses et vos hésitations. Quelle que soit la décision, ces notes serviront.</td></tr>
+<tr style="background:#FDF6F7;"><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">La délibération</td><td style="padding:9px;border:1px solid #EFC4CC;">Le jury délibère à partir de votre livret et de l'entretien, hors de votre présence.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;font-weight:bold;">La notification</td><td style="padding:9px;border:1px solid #EFC4CC;">La décision vous est communiquée officiellement, selon les modalités de l'organisme qui gère votre dossier. Un entretien vécu comme difficile n'est pas forcément raté.</td></tr>
+<tr style="background:#E8F5E9;"><td style="padding:9px;border:1px solid #C8E6C9;font-weight:bold;color:#2E7D32;">Validation totale</td><td style="padding:9px;border:1px solid #C8E6C9;">Les 5 blocs sont validés. Le diplôme est délivré, sous réserve de l'AFGSU de niveau 2 exigée pour la certification.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-weight:bold;color:#E65100;">Validation partielle</td><td style="padding:9px;border:1px solid #FFE082;">Les blocs validés sont capitalisés. Pour les autres, lisez attentivement ce qui vous est communiqué ; la suite du parcours est au chapitre 24 du livre du livret 2.</td></tr>
+</table>
+
+<div style="background:#F9E8EB;border-left:6px solid #8B2336;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0 0 6px 0;"><strong>💡 Rebondir après une validation partielle</strong></p>
+<ul style="margin:0;padding-left:20px;">
+<li><strong>Relisez à froid</strong> la décision et vos notes de sortie, puis reprenez la grille en 4 états sur les activités concernées.</li>
+<li><strong>Regardez votre pratique actuelle</strong> : une situation plus récente, plus riche ou plus sûre sur le plan du champ pourrait-elle mieux prouver la compétence ?</li>
+<li><strong>Appuyez-vous sur le chapitre 24</strong> du livre du livret 2 et sur votre accompagnement ORACLE.</li>
+</ul>
+<p style="margin:6px 0 0 0;">Une validation partielle n'est pas un échec : c'est une compétence reconnue, et un chemin tracé pour le reste.</p>
+</div>
+
+<div style="background:#F9E8EB;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Ce qui est éliminatoire à l'écrit l'est aussi à l'oral : évaluez vos oraux blancs avec la grille. Après l'entretien, notez à chaud, attendez la notification officielle ; en cas de validation partielle, repartez des blocs capitalisés.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitres 22 et 24 · Livres Bloc 1 à 5 · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC15 · Clôture</p>
+      <div class="content-scroll"><div style="background:#6D1B2B;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#6D1B2B;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">1. Quelle est la composition habituelle du jury d'entretien ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Trois personnes</strong> en général : un aide-soignant, un formateur ou un infirmier, et un directeur de structure.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">2. Quand le jury lit-il votre livret, et à quoi sert donc l'entretien ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Plusieurs semaines avant.</strong> L'entretien sert à questionner le livret, page par page, et à vérifier que c'est bien vous qui avez fait ce que vous avez écrit.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">3. L'entretien est-il un examen de connaissances ? Pourquoi ORACLE vous fait-il quand même réviser ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non</strong>, il n'y a pas de questions de cours : les questions partent de votre texte. Mais il faut maîtriser les connaissances (traitements, échelles, valeurs, pathologies) pour <strong>expliquer votre raisonnement</strong>.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">4. Quels sont les 3 piliers questionnés par le jury ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La pertinence</strong> (ajusté à cette personne ?), <strong>le pourquoi</strong> (risque, bonne pratique, besoin) et <strong>les résultats</strong> (effet mesuré, vérifié à distance).</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">5. Quels sont les trois niveaux de cotation, et quel est l'objectif ORACLE ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Acquis, à vérifier, non acquis.</strong> L'objectif est de ne laisser aucune activité « à vérifier ».</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">6. Un bloc très réussi peut-il compenser un bloc fragile ? A. Oui, si la moyenne est suffisante · B. Oui, à l'intérieur d'un même bloc · C. Non, aucune compensation</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>C.</strong> Chaque bloc se valide en entier ou pas du tout, sans compensation entre blocs ni entre activités d'un bloc.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">7. Que signifie PMAA, et combien de temps dure chaque temps ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Présentation 15 s · Motivation 30 s · Apport 45 s · Aujourd'hui 30 s</strong>, soit deux minutes au plus.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">8. Pourquoi le pitch se raconte-t-il au lieu d'être récité ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Un texte récité casse le contact et s'effondre au premier trou de mémoire ; <strong>raconté à partir de mots-clés</strong>, il supporte un oubli.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">9. Quelles sont les 3 familles de questions, et laquelle est le cœur de l'entretien ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le parcours, les situations du livret, les connaissances métier.</strong> Le cœur : les situations du livret, qui occupent la plus grande part du temps (repère ORACLE : 15 à 30 min).</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">10. Que signifient les six lettres de RAPIDE ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Reformuler · Ancrer dans une expérience · Préciser protocoles, échelles, savoirs · Illustrer par un chiffre ou un avant/après · Discuter les alternatives · Évaluer rétrospectivement.</strong></p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">11. Le jury vous pose une question dont vous ne connaissez pas la réponse. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Vous le dites, sans inventer : <strong>« Je ne sais pas, mais voilà ce que je ferais »</strong>, ou « voilà qui je solliciterais » (l'infirmière, le dossier, le protocole du service).</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">12. « Il désaturait : pourquoi ne pas avoir augmenté l'oxygène ? » Quelle est la réponse attendue ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">La limite en deux temps : <strong>je ne touche jamais au débitmètre</strong>, même sur protocole ou sur consigne ; je mesure, j'installe, je vérifie les lunettes et la tubulure, j'alerte immédiatement et je reste auprès de la personne.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">13. Le jury cite un passage fragilisant de votre livret. Comment répondez-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Sans le défendre : vous dites <strong>ce que vous feriez autrement aujourd'hui, et pourquoi</strong>. Le jury valorise la prise de conscience.</p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">14. Quelles sont les cinq rubriques de la fiche de préparation par situation ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La personne, le recueil, le raisonnement, le résultat, la limite.</strong></p></details>
+
+<details style="border:1px solid #EFC4CC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#6D1B2B;">15. En cas de validation partielle, que deviennent les blocs validés, et où trouver la suite du parcours ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Ils sont <strong>capitalisés</strong> et restent acquis. La suite du parcours est détaillée au <strong>chapitre 24</strong> du livre du livret 2. Rappel : l'AFGSU de niveau 2 est exigée pour obtenir la certification.</p></details>
+
+<div style="background:linear-gradient(135deg,#6D1B2B 0%,#A82D42 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 15</p>
+<ol style="margin:0;padding-left:22px;">
+<li>« Le jury ne me fait pas passer un examen : il vérifie que c'est bien moi qui ai fait ce que j'ai écrit. »</li>
+<li>Le jury a lu votre livret plusieurs semaines avant ; il le questionne page par page, sur trois piliers : pertinence, pourquoi, résultats.</li>
+<li>Relisez votre livret comme lui : chaque passage seulement affirmé, manquant ou fragilisant appelle une réponse préparée.</li>
+<li>Une fiche par situation : la personne, le recueil, le raisonnement, le résultat, la limite, avec les connaissances qui la sous-tendent.</li>
+<li>Le pitch PMAA tient en deux minutes au plus ; il se prépare par écrit et se raconte.</li>
+<li>Répondez avec RAPIDE, et dites la limite en deux temps : ce que je ne fais pas, ce que je fais à la place.</li>
+<li>N'inventez jamais, ne travestissez jamais une situation, et dites ce que vous feriez autrement aujourd'hui.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#6D1B2B;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 16</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #EFC4CC;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Relire ma convocation en entier : date, lieu, documents demandés, ce que je peux apporter. Vérifier la validité de mon AFGSU de niveau 2.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Relire mon livret en trois passages (le champ, les preuves, les savoirs), rubriques A comprises, et surligner les passages seulement affirmés, manquants et fragilisants.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Rédiger mes 12 fiches de préparation, une par situation, et une fiche pour l'inventaire de l'activité 10.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Réviser chaque traitement, pathologie, échelle, valeur et texte cités dans mon livret, avec ce qu'ils m'ont fait faire.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Préparer ma réponse en deux temps pour chaque geste proche de la limite du champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Rédiger mon pitch PMAA, le réduire à des mots-clés et le raconter jusqu'à tenir en deux minutes sans le réciter.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">M'entraîner à voix haute avec RAPIDE sur au moins une question par situation, en m'enregistrant.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Passer au moins deux oraux blancs et les évaluer avec la grille de détection et les six contrôles de la partie 6.</td></tr>
+<tr><td style="padding:9px;border:1px solid #EFC4CC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #EFC4CC;">Réviser avec les ressources ORACLE : le livre du livret 2 (chapitres 22 et 24), les livres Bloc 1 à 5 et les fiches de révision B1 à B5.</td></tr>
+</table></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">Lors de la présentation orale au jury, la première minute doit :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="true">Présenter brièvement votre parcours et le choix de vos situations</button>
+        <button class="quiz-opt" data-correct="false">Lire intégralement le résumé du Livret 2</button>
+        <button class="quiz-opt" data-correct="false">Attendre que le jury pose la première question</button>
+        <button class="quiz-opt" data-correct="false">Présenter en détail votre employeur actuel</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. 1ère minute = ancrage : qui vous êtes, pourquoi ces situations, ce que vous allez montrer." data-ko="Non. La 1ère minute = présentation brève + annonce de ce que vous allez démontrer."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

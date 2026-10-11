@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC04 — Activité 2 — Repérer les fragilités & prévenir · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC04</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC04 · Bloc 1</p>
+      <h1 class="hero">Activité 2 — Repérer les fragilités & prévenir</h1>
+      <p class="subtitle">Observation, repérage, prévention des risques</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#EDE7F6;border-left:6px solid #311B92;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#311B92;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>énoncer ce que recouvre l'activité 2 et son attendu officiel, en particulier la règle du risque non survenu ;</li>
+<li>distinguer une situation d'activité 2 d'une situation d'activité 1 ou d'activité 3 ;</li>
+<li>dérouler la séquence de prévention complète, du signe repéré jusqu'au réajustement ;</li>
+<li>pour chacun des grands risques, citer les signes d'alerte, l'outil de repérage, les mesures qui relèvent de votre champ et la manière de les évaluer ;</li>
+<li>reconnaître les formes de maltraitance et décrire votre rôle : repérer, protéger, alerter, tracer ;</li>
+<li>identifier les risques pour les intervenants et les mesures qui les préviennent ;</li>
+<li>rédiger une prévention datée, chiffrée, outillée et évaluée à distance, sans sortir de votre champ ;</li>
+<li>répondre aux questions du jury sur le risque, la décision et l'évaluation.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#311B92;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #311B92;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;">0:00</td><td style="padding:9px;border:1px solid #D1C4E9;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #D1C4E9;">5&nbsp;min</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;">0:05</td><td style="padding:9px;border:1px solid #D1C4E9;">Partie 1 · L'activité 2 décodée</td><td style="padding:9px;border:1px solid #D1C4E9;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;">0:20</td><td style="padding:9px;border:1px solid #D1C4E9;">Partie 2 · La séquence de prévention, en sept temps</td><td style="padding:9px;border:1px solid #D1C4E9;">10&nbsp;min</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;">0:30</td><td style="padding:9px;border:1px solid #D1C4E9;">Partie 3 · Les grands risques, un par un</td><td style="padding:9px;border:1px solid #D1C4E9;">25&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;">0:55</td><td style="padding:9px;border:1px solid #D1C4E9;">Partie 4 · Maltraitance, bientraitance et risques pour les intervenants</td><td style="padding:9px;border:1px solid #D1C4E9;">15&nbsp;min</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;">1:10</td><td style="padding:9px;border:1px solid #D1C4E9;">Partie 5 · Écrire la prévention : atelier et grille de détection</td><td style="padding:9px;border:1px solid #D1C4E9;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;">1:25</td><td style="padding:9px;border:1px solid #D1C4E9;">Partie 6 · Deux situations modèles décortiquées et les questions du jury</td><td style="padding:9px;border:1px solid #D1C4E9;">25&nbsp;min</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;">1:50</td><td style="padding:9px;border:1px solid #D1C4E9;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #D1C4E9;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">1. Pour l'activité 2, je peux raconter ce que j'ai mis en place après la chute d'une résidente.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'attendu officiel est clair : <strong>le risque ne doit pas être survenu</strong>. Une chute déjà arrivée fait basculer le récit vers le constat et l'alerte, qui relèvent plutôt de l'activité 3.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">2. Une rougeur qui blanchit quand on appuie dessus est une escarre de stade 1.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> C'est l'inverse. Au test de vitropression, une rougeur qui <strong>blanchit</strong> est une réaction transitoire à l'appui : c'est un signe d'alerte, pas encore une escarre. Une rougeur qui <strong>ne blanchit pas</strong> signe une escarre de stade 1 : la lésion est constituée.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">3. Masser une zone rouge au sacrum active la circulation et prévient l'escarre.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, et dangereux.</strong> Le massage et la friction d'une zone d'appui abîment les tissus déjà fragilisés. Devant une rougeur : <strong>vous supprimez l'appui, vous ne massez jamais, vous transmettez</strong>.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">4. Sur l'échelle de Braden, plus le score est bas, plus le risque d'escarre est élevé.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> L'échelle de Braden additionne six critères. Un score bas signale un risque élevé. Le seuil à partir duquel on déclenche des mesures est fixé par le protocole de votre établissement : citez-le tel qu'il figure chez vous.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">5. Pour éviter qu'un résident agité tombe de son lit, l'aide-soignant peut relever les barrières.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Les barrières de lit sont une <strong>contention</strong>. Elle relève d'une décision médicale, encadrée par le protocole de l'établissement. L'aide-soignant ne la décide jamais : il propose d'autres mesures, il transmet, et lorsqu'une contention a été décidée, il l'applique et la surveille.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">6. L'activité 2 porte aussi sur les risques pour les intervenants.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> La compétence 2 parle de situations à risque pour la personne et pour les intervenants. Les troubles musculosquelettiques et l'agressivité en font partie.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">7. Laisser régulièrement une sonnette hors de portée peut constituer une maltraitance, même sans intention de nuire.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> C'est une forme de <strong>négligence</strong>. La maltraitance ne suppose pas l'intention : un défaut d'action qui prive la personne de ce dont elle a besoin suffit.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">8. Devant des hématomes inexpliqués, l'aide-soignant interroge d'abord la famille pour savoir ce qui s'est passé, avant d'alerter.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Vous ne menez pas d'enquête. Vous protégez la personne, vous alertez immédiatement l'infirmier et votre encadrement (cadre de santé) et vous tracez les faits observés, sans interprétation. L'établissement dispose d'un circuit de signalement.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">9. L'aide-soignant pèse, surveille les apports et transmet ; le diagnostic de dénutrition est posé par le médecin.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Vous recueillez des données fiables (poids, quantités consommées, observations au repas) et vous les transmettez. Les critères diagnostiques et la conduite à tenir relèvent du médecin.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">10. Si le risque ne s'est pas réalisé, inutile de décrire l'évaluation : c'est la preuve que la prévention a marché.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'absence d'événement ne prouve rien à elle seule. Le jury attend une <strong>évaluation à distance, datée et chiffrée</strong> : un score réévalué, un état cutané contrôlé, un poids, des quantités bues, un nombre de levers nocturnes.</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent : la prévention fait partie de votre quotidien, mais sans que vous nommiez le risque, l'outil ou l'évaluation, ce que le jury doit précisément lire.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 2 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p>L'activité 2 appartient au <strong>bloc 1</strong>, avec l'activité 1 : <em>identifier les situations à risque, mettre en œuvre les actions de prévention adéquates et les évaluer</em>. Elle traduit la troisième mission de l'aide-soignant : <strong>contribuer à la prévention des risques et au raisonnement clinique interprofessionnel</strong>.</p>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:18px 0 8px 0;">1.1 · La compétence 2, reformulée</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:30%;">Ce que dit la fiche RNCP 40692</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Ce que le jury cherche dans votre texte</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Identifier les signes de fragilité et les transmettre</td><td style="padding:9px;border:1px solid #D1C4E9;">Un signe <strong>précis et daté</strong>, comparé à l'habitude de la personne, et transmis à l'infirmier.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Repérer les situations à risque, en particulier de maltraitance, pour la personne et pour les intervenants, et alerter</td><td style="padding:9px;border:1px solid #D1C4E9;">Un risque <strong>nommé</strong>, objectivé si possible par un <strong>outil</strong>, et une <strong>alerte</strong> donnée à la bonne personne, au bon moment.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Proposer des mesures de prévention en coopération</td><td style="padding:9px;border:1px solid #D1C4E9;">Ce que vous avez <strong>proposé</strong>, ce qui a été <strong>décidé</strong> et par qui, ce que vous avez <strong>mis en œuvre</strong>.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Évaluer les mesures et les réajuster</td><td style="padding:9px;border:1px solid #D1C4E9;">Un <strong>résultat chiffré et daté</strong>, et au moins un <strong>réajustement</strong> justifié.</td></tr>
+</table>
+
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel et la phrase-clé</p>
+
+<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 L'attendu officiel : une situation d'identification de risques et d'actions de prévention. Le risque ne doit pas être survenu.</p>
+<p style="margin:0;">Un seul élément est demandé pour cette activité. Il doit contenir un risque identifié <strong>avant</strong> qu'il ne se réalise, et les actions de prévention que vous avez menées. Si la personne tombe, fait une escarre, s'étouffe ou se déshydrate dans votre récit, l'attendu n'est plus honoré, quelle que soit la qualité de votre texte.</p>
+</div>
+
+<p style="margin:14px 0 10px 0;background:#EDE7F6;border-radius:6px;padding:10px 14px;font-style:italic;font-size:16px;">🔑 « Voilà un risque qui n'est pas encore survenu, et ce que je fais pour qu'il ne survienne pas. »</p>
+
+<p>Chaque segment de la phrase-clé correspond à une exigence du jury :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:32%;">« un risque »</td><td style="padding:10px;border:1px solid #D1C4E9;">Un risque <strong>principal, nommé</strong> dès le titre. D'autres risques peuvent apparaître en arrière-plan, mais un seul porte le récit.</td></tr>
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">« qui n'est pas encore survenu »</td><td style="padding:10px;border:1px solid #D1C4E9;">Le risque est <strong>anticipé</strong>. Vous partez de signes d'alerte, pas d'un événement.</td></tr>
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">« ce que je fais »</td><td style="padding:10px;border:1px solid #D1C4E9;">Votre part, au « je », <strong>dans votre champ</strong>.</td></tr>
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">« pour qu'il ne survienne pas »</td><td style="padding:10px;border:1px solid #D1C4E9;">Des mesures <strong>justifiées</strong> par le risque, et une <strong>évaluation</strong> qui montre qu'elles ont agi. Sans évaluation, la phrase-clé reste une intention.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">1.3 · Ne pas confondre avec les activités 1 et 3</p>
+
+<p>Les couples <strong>1/2</strong> et <strong>2/3</strong> font partie des confusions les plus fréquentes. Prenons une même résidente, Mme V., 85 ans, qui marche avec un déambulateur, et voyons comment chaque activité la raconterait.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:20%;"></th><th style="padding:9px;border:1px solid #311B92;text-align:left;width:27%;">Activité 1 · Accompagner</th><th style="padding:9px;border:1px solid #5E35B1;background:#5E35B1;text-align:left;width:27%;">Activité 2 · Prévenir</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Activité 3 · Évaluer l'état clinique</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">La question</td><td style="padding:9px;border:1px solid #D1C4E9;">Comment je l'accompagne au quotidien, en préservant son autonomie ?</td><td style="padding:9px;border:1px solid #D1C4E9;background:#F8F5FC;">Quel risque je vois venir, et comment je l'empêche d'arriver ?</td><td style="padding:9px;border:1px solid #D1C4E9;">Qu'est-ce qui a changé dans son état, et comment je l'objective et le signale ?</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Mme V. en exemple</td><td style="padding:9px;border:1px solid #D1C4E9;">Je l'accompagne à la salle à manger avec son déambulateur, je la laisse faire à son rythme et je la stimule à marcher, dans le respect de ses habitudes.</td><td style="padding:9px;border:1px solid #D1C4E9;background:#F8F5FC;">Je repère qu'elle se lève seule la nuit depuis l'introduction d'un hypnotique ; nous évaluons le risque de chute avec l'échelle de Morse, nous aménageons la chambre et je compare à trois semaines le nombre de levers sans aide et d'appels à la sonnette.</td><td style="padding:9px;border:1px solid #D1C4E9;">Je la trouve assise au sol ; j'observe, je mesure ses paramètres, j'évalue sa douleur, j'alerte l'infirmière et je ne la relève pas avant son évaluation.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0 0 6px 0;"><strong>⚠️ La zone grise : signe d'alerte ou événement déjà survenu ?</strong></p>
+<ul style="margin:0;padding-left:20px;">
+<li><strong>Escarre :</strong> rougeur qui blanchit à la vitropression = signe d'alerte (activité 2) ; rougeur qui ne blanchit pas = escarre de stade 1, déjà constituée.</li>
+<li><strong>Fausse route :</strong> une toux au repas est un signe d'alerte ; un étouffement dans le récit fait basculer la situation dans l'urgence.</li>
+<li><strong>Dénutrition :</strong> une perte de poids transmise est un signal ; un diagnostic déjà posé par le médecin fait de votre récit une prise en soins.</li>
+<li><strong>Chute :</strong> une chute ancienne peut figurer dans le recueil comme facteur de risque, jamais comme sujet du récit ; si le risque que vous portez est la chute, préférez une personne qui n'a jamais chuté, sinon le jury lira une prévention de récidive.</li>
+</ul>
+</div>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">1.4 · La rubrique A de l'activité 2</p>
+
+<p>La rubrique A recense ce que vous avez <strong>réellement</strong> fait en matière de repérage et de prévention, et qui relève de votre champ : participation aux échelles du service (Braden, Norton, Morse), observation de la peau et test de vitropression, alternance des positions et décharge des talons, pesée et fiches de surveillance alimentaire et hydrique, installation au repas en prévention des fausses routes, sécurisation de l'environnement et lever en deux temps, repérage du repli, repérage et signalement d'une maltraitance, utilisation des aides techniques pour prévenir les troubles musculosquelettiques.</p>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>⛔ À ne jamais lister en rubrique A</strong>, même si vous l'avez fait : « pose de barrières de lit » ou « mise en place d'une contention » présentées comme votre décision, « pose de pansements préventifs » (aucun soin de pansement ne relève de l'aide-soignant, même en prévention), « massages de prévention d'escarre », « adaptation des textures » décidée seul, « modification des horaires de traitement ». Chacune de ces lignes est un acte hors champ décrit comme réalisé.</p>
+</div>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">1.5 · Choisir la bonne situation</p>
+
+<p>Avant d'écrire, passez votre situation candidate au filtre de ces cinq questions. Une seule réponse négative, et il faut en chercher une autre.</p>
+<ol style="padding-left:22px;">
+<li>Le risque ne s'est-il jamais réalisé, du début à la fin du récit ?</li>
+<li>Puis-je nommer un signe d'alerte précis, que j'ai moi-même repéré ?</li>
+<li>Existe-t-il un outil ou une donnée chiffrée pour objectiver le risque ?</li>
+<li>Les mesures que j'ai réalisées relèvent-elles toutes de mon champ ?</li>
+<li>Ai-je revu la personne à distance pour évaluer, et puis-je le dater ?</li>
+</ol>
+
+<p style="font-weight:bold;color:#311B92;margin:24px 0 8px 0;">✍️ Exercice 1 (5&nbsp;min) · Risque survenu ou non survenu ?</p>
+<p>Pour chaque situation, décidez si elle peut porter l'activité 2, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">a) Un résident alité a un score de Braden bas. Sa peau est intacte ; une rougeur au talon blanchit à la vitropression. Nous mettons en place une décharge des talons et un plan de positionnement.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Non survenu : activité 2.</strong> La rougeur qui blanchit est un signe d'alerte, la peau est intacte, le risque est objectivé par un outil, la prévention est construite. Reste à écrire l'évaluation à distance.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">b) Au change du matin, je découvre au sacrum une rougeur qui ne blanchit pas à la vitropression. Je supprime l'appui et je préviens l'infirmière.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Survenu.</strong> Une rougeur qui ne blanchit pas est une escarre de stade 1 : la lésion existe. Votre réaction est la bonne, mais la situation relève de l'activité 3 (un changement repéré, objectivé et signalé), pas de l'activité 2.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">c) Une résidente est tombée hier soir dans sa salle de bain. Je raconte toutes les mesures que nous avons prises ensuite pour éviter une récidive.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Survenu.</strong> La situation démarre sur une chute. Même si la suite est de la prévention, le jury lira un risque réalisé. Cherchez une autre personne, ou une autre période de la vie de cette résidente, avant cette chute.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">d) Depuis trois jours, un résident tousse à chaque repas et sa voix devient « mouillée » après avoir bu. Je le signale et nous adaptons son installation.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Recevable si le risque que vous nommez est la <strong>fausse route grave et ses complications</strong> (étouffement, infection pulmonaire), qui ne surviennent pas dans le récit. La toux est alors un signe d'alerte. Si le résident s'étouffe pendant la situation, vous êtes dans l'urgence, donc en activité 3. L'adaptation de la texture, elle, se décide avec l'infirmier et le médecin ou l'orthophoniste, pas seul.</p></details>
+
+<div style="background:#EDE7F6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> L'activité 2 demande un seul élément : un risque identifié et des actions de prévention, avec un risque qui <strong>n'est pas survenu</strong>. Un risque principal, nommé dès le titre ; des signes repérés par vous ; un outil ou une donnée chiffrée ; des mesures dans votre champ ; une évaluation datée. Si l'événement se produit dans le récit, vous êtes en activité 3.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · La séquence de prévention, en sept temps <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 10&nbsp;min</span></div>
+
+<p>Le jury lit une <strong>démarche</strong> : un maillon manquant se voit immédiatement, et c'est souvent sur lui que porte la première question de l'entretien.</p>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:18px 0 8px 0;">2.1 · Les sept temps</p>
+
+<div style="border:1px solid #D1C4E9;background:#F8F5FC;border-radius:10px;padding:16px 20px;margin:10px 0;text-align:center;font-weight:bold;color:#311B92;">
+① Signe repéré → ② Risque nommé → ③ Alerte → ④ Mesure proposée en équipe → ⑤ Mise en œuvre → ⑥ Évaluation → ⑦ Réajustement
+</div>
+<p>Ces sept temps ne remplacent pas la séquence de rédaction en 8 temps de la MC02 : ils détaillent son passage évaluatif (temps ① et ②), son déroulé (③ à ⑤) et son résultat (⑥ et ⑦).</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:20%;">Temps</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Ce que le jury doit pouvoir lire</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">① Signe repéré</td><td style="padding:9px;border:1px solid #D1C4E9;">Le signe exact, la date, le moment, et la comparaison avec l'habitude : « depuis le 3 mars, elle laisse la moitié de son plateau, alors qu'elle le terminait ».</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">② Risque nommé</td><td style="padding:9px;border:1px solid #D1C4E9;">Le nom du risque, les facteurs qui le rendent probable pour <em>cette</em> personne, et l'outil ou la donnée chiffrée qui l'objective : « score de Braden à 12 », « perte de 2 kg en un mois ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">③ Alerte</td><td style="padding:9px;border:1px solid #D1C4E9;">Qui a été alerté, quand, par quel moyen, avec quelles données.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">④ Mesure proposée en équipe</td><td style="padding:9px;border:1px solid #D1C4E9;">Ce que vous avez <strong>proposé</strong>, ce qui a été <strong>décidé</strong>, et <strong>par qui</strong>. C'est le « en coopération » de la compétence.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">⑤ Mise en œuvre</td><td style="padding:9px;border:1px solid #D1C4E9;">Le quoi, le comment, le pourquoi de chaque mesure. Le consentement. La transmission à l'équipe pour que tous appliquent la même chose.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">⑥ Évaluation</td><td style="padding:9px;border:1px solid #D1C4E9;">Une date, un chiffre comparé au chiffre de départ : « à quinze jours, peau intacte, Braden à 14 ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">⑦ Réajustement</td><td style="padding:9px;border:1px solid #D1C4E9;">Ce qui a été modifié, pourquoi, et avec qui ; la mise à jour du plan de soins ou du projet personnalisé.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Les deux maillons qui manquent le plus souvent.</strong> Le <strong>temps ②</strong> : le candidat décrit des mesures sans jamais nommer le risque ni l'outil qui l'objective. Le <strong>temps ⑥</strong> : il s'arrête à la mise en œuvre, comme si l'intention suffisait. Sans évaluation, le jury ne peut pas coter l'activité « acquis » : il la laisse « à vérifier » et vous interroge dessus.</p>
+</div>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">2.2 · Qui décide quoi : les mesures de prévention et votre champ</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#2E7D32;color:#FFFFFF;border:1px solid #2E7D32;text-align:left;width:50%;">Vous réalisez (rôle propre de l'infirmier, dans votre champ)</th><th style="padding:10px;background:#C62828;color:#FFFFFF;border:1px solid #C62828;text-align:left;">Vous proposez et transmettez ; un autre décide</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #C8E6C9;background:#F1F8E9;vertical-align:top;">Observer la peau, faire le test de vitropression, alterner les positions, installer en décubitus latéral à 30°, décharger les talons, protéger les points d'appui au fauteuil<br><br>Peser, mesurer, calculer l'IMC avec un outil paramétré, remplir les fiches de surveillance alimentaire et hydrique<br><br>Installer pour le repas, proposer à boire régulièrement, respecter les goûts, stimuler<br><br>Sécuriser l'environnement, accompagner le lever en deux temps, vérifier le chaussage, placer la sonnette à portée<br><br>Participer aux échelles d'évaluation utilisées dans le service<br><br>Surveiller les effets attendus et indésirables des traitements dans votre champ d'observation, et transmettre</td>
+<td style="padding:12px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;">Mettre en place une <strong>contention</strong>, y compris les barrières de lit : décision médicale<br><br>Choisir un support d'aide à la prévention des escarres spécifique, lorsqu'il nécessite une prescription : selon les règles de l'établissement, infirmier ou médecin<br><br>Modifier une <strong>texture</strong> ou un régime : infirmier, médecin, diététicien ou orthophoniste<br><br>Prescrire un complément nutritionnel, un bilan, une rééducation : médecin<br><br>Modifier un <strong>traitement</strong>, son horaire ou sa forme : médecin<br><br>Poser un <strong>diagnostic</strong> (dénutrition, trouble de la déglutition) : médecin</td>
+</tr>
+</table>
+
+
+<div style="background:#EDE7F6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Sept temps : signe, risque, alerte, mesure proposée en équipe, mise en œuvre, évaluation, réajustement. Le risque se nomme et s'objective. Vous proposez, l'équipe décide de ce qui dépasse votre champ, vous réalisez ce qui vous revient. L'évaluation est datée, chiffrée et compare deux valeurs du même outil.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Les grands risques, un par un <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:30 · 25&nbsp;min</span></div>
+
+<p>Pour chaque risque : <strong>signes d'alerte</strong>, <strong>outils de repérage</strong>, <strong>mesures</strong> de votre champ, <strong>évaluation</strong>. Les seuils de décision des échelles sont fixés par les protocoles de votre établissement : dans votre livret, citez le score obtenu et le seuil utilisé chez vous, sans inventer de norme. <strong>3.5 et 3.6 : lecture personnelle après la masterclass.</strong></p>
+
+<!-- 3.1 CHUTE -->
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:20px 0 8px 0;">3.1 · Le risque de chute</p>
+
+<div style="border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:24%;">Signes d'alerte</td><td style="padding:9px;border:1px solid #D1C4E9;">Marche ralentie ou hésitante, appui aux meubles ; lever seul, surtout la nuit ; vertiges au lever ; somnolence ; pieds nus ou chaussures inadaptées ; confusion ; levers nocturnes pour uriner ; peur de tomber.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Facteurs à relier</td><td style="padding:9px;border:1px solid #D1C4E9;">Chute ancienne dans le recueil, troubles neurocognitifs, dénutrition, et surtout les <strong>traitements</strong> : hypnotiques et anxiolytiques, antihypertenseurs et diurétiques, antipsychotiques. Un anticoagulant rend la chute plus grave : toute chute se transmet.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Outils de repérage</td><td style="padding:9px;border:1px solid #D1C4E9;">L'<strong>échelle de Morse</strong>, si elle est utilisée dans votre service ; les tests d'équilibre du kinésithérapeute, dont vous citez le résultat ; un <strong>relevé chiffré</strong> que vous tenez vous-même : levers nocturnes, horaires, circonstances.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#E8F5E9;font-weight:bold;">Mesures dans votre champ</td><td style="padding:9px;border:1px solid #D1C4E9;">Lit en position basse, freins serrés ; sonnette et objets usuels à portée ; veilleuse ; chemin dégagé vers les toilettes ; chaussage fermé ; lever en deux temps ; aide technique à portée ; accompagnement aux toilettes avant le coucher ; stimulation de la marche dans la journée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#FFEBEE;font-weight:bold;">Ce que vous ne faites pas</td><td style="padding:9px;border:1px solid #D1C4E9;">Relever les barrières ou poser une ceinture de votre propre initiative : c'est une <strong>contention</strong>, qui relève d'une décision médicale. Suspendre ou décaler un traitement. Vous transmettez le lien possible entre un traitement et les levers, et l'infirmier en parle au médecin.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Évaluer</td><td style="padding:9px;border:1px solid #D1C4E9;">Nombre de levers nocturnes sans aide avant et après ; utilisation de la sonnette ; absence de chute sur une période précisée ; score réévalué à la date prévue ; la personne continue-t-elle à marcher dans la journée ?</td></tr>
+</table>
+</div>
+
+<!-- 3.2 ESCARRE -->
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">3.2 · Le risque d'escarre</p>
+
+<div style="border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;"><strong>Ce qu'est une escarre :</strong> une lésion de la peau et des tissus sous-jacents, provoquée par une pression prolongée, souvent associée à des forces de cisaillement et de frottement, entre un plan dur (lit, fauteuil) et un relief osseux. Zones les plus exposées : sacrum, talons, ischions, trochanters, coudes, omoplates, occiput, oreilles.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:10px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:18%;">Stade</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Ce que l'on observe</th></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-weight:bold;">Signe d'alerte</td><td style="padding:9px;border:1px solid #FFE082;">Rougeur qui <strong>blanchit</strong> à la vitropression : réaction à l'appui, réversible si l'appui est supprimé. <strong>Terrain de l'activité 2.</strong></td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Stade 1</td><td style="padding:9px;border:1px solid #D1C4E9;">Rougeur qui <strong>ne blanchit pas</strong> à la vitropression, sur une peau intacte. La lésion est constituée.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Stade 2</td><td style="padding:9px;border:1px solid #D1C4E9;">Perte d'une partie de l'épaisseur de la peau : phlyctène (bulle) ou abrasion superficielle.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Stade 3</td><td style="padding:9px;border:1px solid #D1C4E9;">Perte de toute l'épaisseur de la peau, atteinte du tissu sous-cutané.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Stade 4</td><td style="padding:9px;border:1px solid #D1C4E9;">Atteinte profonde, jusqu'au muscle, au tendon ou à l'os.</td></tr>
+</table>
+
+<div style="background:#F8F5FC;border:1px solid #D1C4E9;border-radius:8px;padding:12px 16px;margin:10px 0;">
+<p style="margin:0;"><strong>🔬 Le test de vitropression.</strong> Vous appuyez quelques secondes sur la rougeur avec un doigt ou un objet transparent, puis vous relâchez. Si la zone blanchit, c'est un signe d'alerte ; si elle reste rouge, c'est un stade 1. Dans votre livret, <strong>nommez ce test</strong> : c'est lui qui prouve que le risque n'est pas encore survenu.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:24%;">Signes et facteurs</td><td style="padding:9px;border:1px solid #D1C4E9;">Immobilité (alitement, fauteuil prolongé), incontinence et macération, dénutrition et déshydratation, peau fine et sèche, fièvre, troubles de la sensibilité, troubles neurocognitifs, glissement dans le lit ou le fauteuil (cisaillement).</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Outils de repérage</td><td style="padding:9px;border:1px solid #D1C4E9;">L'<strong>échelle de Braden</strong> : six critères (perception sensorielle, humidité, activité, mobilité, nutrition, friction et cisaillement). <strong>Plus le score est bas, plus le risque est élevé.</strong> L'échelle de Norton est parfois utilisée. Le test de vitropression à chaque soin d'hygiène.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#E8F5E9;font-weight:bold;">Mesures dans votre champ</td><td style="padding:9px;border:1px solid #D1C4E9;">Observer la peau à chaque soin ; <strong>alterner les positions</strong> selon le plan de soins ; <strong>décubitus latéral à 30°</strong> (pas d'appui direct sur trochanter et sacrum) ; <strong>décharge des talons</strong> (talons dans le vide) ; tête de lit à 30° au maximum hors repas, contre le glissement ; drap de glisse contre les frottements ; limiter la durée au fauteuil ; change rapide, peau sèche ; hydratation et apports protéiques ; vérifier le support en place.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#FFEBEE;font-weight:bold;">Ce que vous ne faites jamais</td><td style="padding:9px;border:1px solid #D1C4E9;"><strong>Masser ou frictionner une zone d'appui ou une rougeur</strong> : ancienne pratique, abandonnée, qui abîme les tissus. <strong>Poser un pansement</strong>, même dit « préventif » : aucun soin de pansement ne relève de l'aide-soignant. Appliquer une crème ou une pommade de votre propre initiative : uniquement sur consigne de l'infirmier, avec le produit qu'il a désigné, jamais sur une plaie. Décider seul d'un matériel qui nécessite une prescription.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Évaluer</td><td style="padding:9px;border:1px solid #D1C4E9;">État cutané à chaque soin, tracé ; rougeur qui disparaît après suppression de l'appui ; score de Braden réévalué à la date fixée ; peau toujours intacte à distance ; plan de positionnement effectivement suivi (feuille de retournement remplie).</td></tr>
+</table>
+</div>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>🚨 Devant une rougeur :</strong> supprimer l'appui, <strong>ne jamais masser</strong>, faire le test de vitropression, transmettre à l'infirmier. Si la rougeur ne blanchit pas, vous n'êtes plus en prévention : l'escarre est constituée, et la situation relève de l'activité 3.</p>
+</div>
+
+<!-- 3.3 DÉNUTRITION DÉSHYDRATATION -->
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">3.3 · Les risques de dénutrition et de déshydratation</p>
+
+<div style="border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;"><strong>Pourquoi ensemble :</strong> mêmes causes (appétit et soif diminués, difficultés à manger ou boire seul, troubles cognitifs) et mêmes conséquences (fatigue, chutes, escarres, confusion).</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:24%;">Signes d'alerte : dénutrition</td><td style="padding:9px;border:1px solid #D1C4E9;">Plateaux moins terminés, perte de poids à la pesée, vêtements trop larges, prothèse dentaire qui ne tient plus, fatigue, difficultés à couper ou à porter à la bouche.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Signes d'alerte : déshydratation</td><td style="padding:9px;border:1px solid #D1C4E9;">Verres pleins à la fin du service, langue et lèvres sèches, urines foncées et peu abondantes, somnolence ou confusion inhabituelle, constipation. Chez la personne âgée, la <strong>sensation de soif diminue</strong> : elle ne réclame pas à boire. Circonstances à risque : chaleur, fièvre, diarrhée, diurétique, refus de boire pour limiter les levers nocturnes.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Outils de repérage</td><td style="padding:9px;border:1px solid #D1C4E9;"><strong>La pesée</strong>, dans les mêmes conditions (même balance, même moment, même tenue), au rythme prévu par le protocole ; l'<strong>IMC</strong> calculé avec un outil paramétré ; la <strong>fiche de surveillance alimentaire</strong> (quantités consommées, en proportion du plat) et la <strong>fiche de surveillance hydrique</strong> (volumes bus, en millilitres) ; les outils de dépistage utilisés dans le service. Diurèse de référence : 1 à 1,5 L par 24 h ; en dessous de 500 mL par 24 h, on parle d'oligurie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#E8F5E9;font-weight:bold;">Mesures dans votre champ</td><td style="padding:9px;border:1px solid #D1C4E9;">Installation assise, à table si possible ; aide sans faire à la place ; goûts et habitudes respectés ; temps suffisant ; boissons proposées régulièrement, variées, dans des contenants adaptés ; collation ; traçabilité fiable ; transmission de toute perte de poids ou baisse des apports.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#FFEBEE;font-weight:bold;">Ce qui ne relève pas de vous</td><td style="padding:9px;border:1px solid #D1C4E9;">Poser le diagnostic de dénutrition ou de déshydratation, et en fixer les critères : c'est le médecin. Prescrire un complément nutritionnel oral, un enrichissement, une perfusion. Modifier un régime. Vous nommez un <strong>risque</strong>, vous transmettez des <strong>données</strong>, vous appliquez ce qui a été décidé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Évaluer</td><td style="padding:9px;border:1px solid #D1C4E9;">Poids à la pesée suivante, comparé au précédent ; moyenne des quantités bues sur plusieurs jours ; proportion des plateaux consommés ; aspect des urines ; reprise de l'appétit, retour au repas collectif.</td></tr>
+</table>
+</div>
+
+<!-- 3.4 FAUSSE ROUTE -->
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">3.4 · Le risque de fausse route</p>
+
+<div style="border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;"><strong>Ce qu'est une fausse route :</strong> le passage d'aliments, de liquide ou de salive dans les voies respiratoires au lieu de l'œsophage. Elle peut provoquer un étouffement, et à distance une infection pulmonaire. Personnes exposées : après un accident vasculaire cérébral, maladie de Parkinson, troubles neurocognitifs, grand âge.</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:24%;">Signes d'alerte</td><td style="padding:9px;border:1px solid #D1C4E9;">Toux pendant ou juste après le repas ; voix « mouillée » après avoir avalé ; raclements de gorge ; aliments gardés en bouche ; repas qui s'allongent ; fièvre inexpliquée à répétition, que vous transmettez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Outils de repérage</td><td style="padding:9px;border:1px solid #D1C4E9;">Votre <strong>observation structurée au repas</strong> (quand la toux survient, avec quels aliments ou liquides, combien de fois) ; l'évaluation de la déglutition par l'orthophoniste ou le médecin, dont vous citez les conclusions ; les consignes de texture inscrites au plan de soins.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#E8F5E9;font-weight:bold;">Mesures dans votre champ</td><td style="padding:9px;border:1px solid #D1C4E9;">Installation assise, bien droite, <strong>tête légèrement fléchie vers l'avant</strong> ; vous vous placez <strong>à sa hauteur</strong>, jamais debout au-dessus d'elle ; petites bouchées, bouche vide avant la suivante ; calme ; personne bien réveillée ; position assise maintenue après le repas ; respect strict de la texture prescrite.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#FFEBEE;font-weight:bold;">Ce qui ne relève pas de vous</td><td style="padding:9px;border:1px solid #D1C4E9;">Décider seul de mixer un plat ou d'épaissir une boisson : la texture se décide avec l'infirmier, le médecin, l'orthophoniste ou le diététicien. Donner à manger à une personne somnolente ou allongée : c'est une mise en danger.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Évaluer</td><td style="padding:9px;border:1px solid #D1C4E9;">Épisodes de toux par repas, avant et après ; quantités consommées ; absence de fièvre ; plaisir du repas préservé.</td></tr>
+</table>
+<p style="margin:8px 0 0 0;font-size:14px;background:#FFF8E1;border-radius:6px;padding:8px 12px;"><strong>Dans votre livret</strong>, décrivez les toux au repas comme des signes de troubles de la déglutition, et nommez comme risque la fausse route grave (étouffement, infection pulmonaire), qui ne survient pas dans le récit. <strong>Si un étouffement survient</strong> : gestes d'urgence de l'AFGSU, alerte immédiate. Cette situation ne peut plus porter l'activité 2.</p>
+</div>
+
+<!-- 3.5 CONFINEMENT AU LIT -->
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">3.5 · Le confinement au lit et la perte d'autonomie</p>
+
+<div style="border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;"><strong>Le mécanisme :</strong> quelques jours d'alitement ou de « fauteuil toute la journée » suffisent, chez une personne âgée, à faire perdre de la force et de l'équilibre. La personne marche moins, donc elle perd encore de la force : c'est un cercle. Conséquences : escarres, constipation, thrombose veineuse profonde, raideurs, repli.</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:24%;">Signes d'alerte</td><td style="padding:9px;border:1px solid #D1C4E9;">Demande de rester au lit qui se répète ; retour d'hospitalisation ; aide croissante au transfert ; marche remplacée par le fauteuil roulant « pour aller plus vite ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Outils de repérage</td><td style="padding:9px;border:1px solid #D1C4E9;">L'évolution du <strong>GIR</strong> ; un <strong>relevé factuel</strong> : distance parcourue, transferts réalisés seul ou avec aide, temps passé au lit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#E8F5E9;font-weight:bold;">Mesures dans votre champ</td><td style="padding:9px;border:1px solid #D1C4E9;">Laisser faire chaque étape que la personne peut réaliser ; lever quotidien selon le plan de soins ; repas à table ; marche intégrée aux soins ; valoriser chaque progrès ; transmettre toute baisse de capacité pour qu'une rééducation soit discutée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Évaluer</td><td style="padding:9px;border:1px solid #D1C4E9;">Distance de marche, nombre de levers, autonomie aux transferts, à quinze jours ou un mois ; reprise d'une occupation ; comparaison avec le relevé de départ.</td></tr>
+</table>
+</div>
+
+<!-- 3.6 ISOLEMENT -->
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">3.6 · L'isolement et le repli</p>
+
+<div style="border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:0;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:24%;">Signes d'alerte</td><td style="padding:9px;border:1px solid #D1C4E9;">Refus répétés des animations et des repas collectifs ; moins de paroles, moins d'intérêt pour l'apparence ; propos de dévalorisation (« je ne sers plus à rien ») ; événement récent (deuil, entrée en établissement, changement de chambre).</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Outils de repérage</td><td style="padding:9px;border:1px solid #D1C4E9;">Votre observation datée ; le nombre de participations aux animations et aux repas collectifs ; l'histoire de vie et le projet personnalisé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#E8F5E9;font-weight:bold;">Mesures dans votre champ</td><td style="padding:9px;border:1px solid #D1C4E9;">Temps d'écoute dédié ; proposition d'une animation ou d'une occupation en lien avec l'histoire de vie (jardinage, lecture du journal, chant) ; accompagnement au repas collectif avec un voisin de table choisi ; lien avec l'animateur ; soutien du lien avec la famille, avec l'accord de la personne ; transmission à l'infirmier, qui peut solliciter le psychologue ou le médecin.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#FFEBEE;font-weight:bold;">Vigilance</td><td style="padding:9px;border:1px solid #D1C4E9;">Vous ne posez aucun diagnostic d'état dépressif. Des propos exprimant une envie de mourir imposent de rester auprès de la personne et d'alerter immédiatement l'infirmier. Une solitude choisie se respecte.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Évaluer</td><td style="padding:9px;border:1px solid #D1C4E9;">Nombre de participations sur une période, avant et après ; reprise du repas collectif ; paroles rapportées de la personne ; appétit.</td></tr>
+</table>
+</div>
+
+<!-- 3.7 IATROGÉNIE -->
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">3.7 · L'iatrogénie médicamenteuse, vue par le chaînage traitement-surveillance</p>
+
+<p>L'<strong>iatrogénie médicamenteuse</strong> désigne les effets indésirables liés aux médicaments. Les personnes âgées, souvent polymédiquées, y sont particulièrement exposées. Votre rôle : <strong>savoir ce que chaque classe fait surveiller</strong>, l'observer et le transmettre. C'est le <strong>chaînage traitement-surveillance</strong> : chaque traitement cité dans le recueil appelle une phrase de surveillance plus loin.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:26%;">Classe</th><th style="padding:9px;border:1px solid #311B92;text-align:left;width:34%;">Ce que vous surveillez</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Risque que vous prévenez, dans votre champ</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Hypnotiques, anxiolytiques</td><td style="padding:9px;border:1px solid #D1C4E9;">Somnolence, levers nocturnes, confusion, marche instable</td><td style="padding:9px;border:1px solid #D1C4E9;">Chute : environnement sécurisé la nuit, relevé des levers, transmission</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Antihypertenseurs, bêtabloquants</td><td style="padding:9px;border:1px solid #D1C4E9;">Vertiges au lever, hypotension (en dessous de 90/60 mmHg), pouls lent</td><td style="padding:9px;border:1px solid #D1C4E9;">Chute : lever en deux temps, mesure de la pression artérielle selon consigne</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Diurétiques</td><td style="padding:9px;border:1px solid #D1C4E9;">Apports hydriques, urines, soif, vertiges</td><td style="padding:9px;border:1px solid #D1C4E9;">Déshydratation et chute : fiche hydrique, accès facilité aux toilettes</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Anticoagulants, antiagrégants</td><td style="padding:9px;border:1px solid #D1C4E9;">Saignements (gencives, nez, urines, selles), hématomes</td><td style="padding:9px;border:1px solid #D1C4E9;">Gravité d'une chute : prévention renforcée, et toute chute se transmet</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Antalgiques de palier 3</td><td style="padding:9px;border:1px solid #D1C4E9;">Fréquence respiratoire (norme 12 à 20 par minute), somnolence, transit</td><td style="padding:9px;border:1px solid #D1C4E9;">Constipation : hydratation, relevé des selles ; une dépression respiratoire est une alerte immédiate</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Antipsychotiques</td><td style="padding:9px;border:1px solid #D1C4E9;">Raideur, marche à petits pas, somnolence, troubles de la déglutition</td><td style="padding:9px;border:1px solid #D1C4E9;">Chute et fausse route : observation au repas et à la marche</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>⛔ La limite, en deux temps.</strong> Je ne suspends pas, je ne décale pas, je n'écrase pas et je ne « saute » pas un médicament, même si je pense qu'il est responsable d'un effet indésirable. Je transmets à l'infirmier ce que j'ai observé, chiffré et daté, en faisant le lien avec le traitement ; l'infirmier en parle au médecin, qui décide.</p>
+</div>
+
+<p style="font-weight:bold;color:#311B92;margin:24px 0 8px 0;">✍️ Exercice 2 (8&nbsp;min) · Associez risque, outil et mesure</p>
+<p>Pour chaque risque, citez l'outil de repérage ou la donnée à recueillir, puis une mesure de prévention qui relève de votre champ. Ouvrez ensuite la correction.</p>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">a) Risque d'escarre chez un résident alité, incontinent, qui mange peu.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Outil :</strong> échelle de Braden, test de vitropression à chaque soin. <strong>Mesures :</strong> alternance des positions selon le plan de soins, décubitus latéral à 30°, décharge des talons, change rapide et peau sèche, surveillance des apports. <strong>Jamais :</strong> masser.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">b) Risque de chute chez une résidente traitée par diurétique, qui se lève trois fois par nuit pour uriner.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Outil :</strong> échelle de Morse si elle est utilisée, relevé chiffré des levers nocturnes. <strong>Mesures :</strong> accompagnement aux toilettes avant le coucher, chemin éclairé et dégagé, sonnette à portée, chaussage adapté, lever en deux temps. <strong>Transmission :</strong> le lien avec le diurétique, pour que l'infirmier en parle au médecin (l'horaire de prise ne se modifie pas sans lui).</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">c) Risque de fausse route chez une résidente qui tousse à chaque verre d'eau depuis son retour d'hospitalisation.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Outil :</strong> observation structurée au repas (moment, aliment, fréquence de la toux), puis évaluation par l'orthophoniste ou le médecin. <strong>Mesures :</strong> installation assise, tête légèrement fléchie, vous à sa hauteur, petites gorgées, calme. <strong>Limite :</strong> l'épaississement des liquides se décide avec l'infirmier, le médecin ou l'orthophoniste.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">d) Risque de chute chez un résident agité la nuit. Une collègue propose de « remonter les barrières, ce sera plus simple ».</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Les barrières sont une contention : elles ne se posent que sur <strong>décision médicale</strong>, selon le protocole de l'établissement, avec une surveillance tracée. Vous ne les montez pas de votre initiative. Vous proposez d'abord des mesures alternatives (lit en position basse, tapis au sol si le protocole le prévoit, veilleuse, passages plus fréquents, recherche d'une cause à l'agitation), et vous transmettez à l'infirmier. Rappelez-vous aussi qu'une barrière peut aggraver la chute d'une personne agitée qui l'enjambe.</p></details>
+
+<div style="background:#EDE7F6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Pour chaque risque : des signes d'alerte observés et datés, un outil nommé (Braden, Morse, pesée, IMC, fiches de surveillance), des mesures de votre champ justifiées, une évaluation chiffrée. Devant une rougeur : supprimer l'appui, ne jamais masser. La contention, la texture, le traitement et le diagnostic se décident par d'autres : vous proposez et vous transmettez.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · Maltraitance, bientraitance et risques pour les intervenants <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:55 · 15&nbsp;min</span></div>
+
+<p>La compétence 2 cite la maltraitance <strong>en toutes lettres</strong>. Le jury peut vous interroger sur ce thème même si votre situation porte sur une chute ou une escarre.</p>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:18px 0 8px 0;">4.1 · Les formes de maltraitance</p>
+
+<p>La maltraitance est un geste, une parole, une action ou un défaut d'action qui porte atteinte aux droits, aux besoins ou à la santé d'une personne vulnérable, avec ou sans intention de nuire. Elle peut venir d'un proche, d'un professionnel ou de l'organisation elle-même.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:22%;">Forme</th><th style="padding:9px;border:1px solid #311B92;text-align:left;width:38%;">Exemples</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Signes que vous pouvez observer</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Physique</td><td style="padding:9px;border:1px solid #D1C4E9;">Coups, bousculades, gestes brusques pendant les soins, transferts réalisés sans ménagement.</td><td style="padding:9px;border:1px solid #D1C4E9;">Hématomes inexpliqués ou d'âges différents, marques aux poignets ou aux bras, fractures inexpliquées, peur au moment d'un soin ou à l'approche d'une personne.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Psychologique</td><td style="padding:9px;border:1px solid #D1C4E9;">Humiliations, menaces, infantilisation, tutoiement imposé, moqueries, chantage, cris.</td><td style="padding:9px;border:1px solid #D1C4E9;">Repli, silence en présence d'une personne donnée, anxiété, perte d'estime (« je suis une charge »), changement brutal de comportement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Sexuelle</td><td style="padding:9px;border:1px solid #D1C4E9;">Gestes, propos, exhibition ou contacts à caractère sexuel imposés.</td><td style="padding:9px;border:1px solid #D1C4E9;">Lésions ou saignements génitaux inexpliqués, peur ou refus soudain de la toilette intime, changement brutal de comportement.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Financière</td><td style="padding:9px;border:1px solid #D1C4E9;">Argent ou objets pris, pressions pour signer, dépenses imposées, privation d'argent de poche.</td><td style="padding:9px;border:1px solid #D1C4E9;">Disparition d'objets ou d'argent, absence de vêtements ou de produits d'hygiène alors que la personne en a les moyens, inquiétude au sujet de l'argent, visites liées aux dates de versement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Négligence (active ou passive)</td><td style="padding:9px;border:1px solid #D1C4E9;">Change différé, repas servi froid ou hors de portée, sonnette inaccessible, lunettes ou prothèse auditive non mises, personne laissée longtemps au fauteuil.</td><td style="padding:9px;border:1px solid #D1C4E9;">Macération, rougeurs, dénutrition, déshydratation, hygiène insuffisante, isolement, appels répétés restés sans réponse.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Institutionnelle</td><td style="padding:9px;border:1px solid #D1C4E9;">Horaires imposés par l'organisation au détriment des besoins (couchers très précoces, toilettes à la chaîne), absence d'intimité, effectifs insuffisants chroniques, règles rigides.</td><td style="padding:9px;border:1px solid #D1C4E9;">Des pratiques présentées comme « normales » : « c'est comme ça ici », « on n'a pas le temps ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Médicamenteuse</td><td style="padding:9px;border:1px solid #D1C4E9;">Excès de sédatifs pour « calmer », médicaments donnés à l'insu de la personne, privation d'un traitement, notamment antalgique.</td><td style="padding:9px;border:1px solid #D1C4E9;">Somnolence inhabituelle, douleur non soulagée, chutes répétées, confusion.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Privation ou violation des droits</td><td style="padding:9px;border:1px solid #D1C4E9;">Courrier ouvert, visites interdites sans raison, choix ignorés, consentement non recherché, contention sans décision médicale, intimité non respectée.</td><td style="padding:9px;border:1px solid #D1C4E9;">Une personne qui n'est plus consultée sur ce qui la concerne, des portes laissées ouvertes pendant les soins.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Une contention non décidée est une maltraitance.</strong> Remonter les barrières d'un résident sans décision médicale, attacher une personne au fauteuil « pour la journée », fermer une porte à clé : ce sont des privations de liberté. C'est pourquoi la contention ne se décide jamais par l'aide-soignant, et pourquoi elle doit figurer dans votre livret uniquement comme une mesure décidée par un autre, que vous appliquez et surveillez.</p>
+</div>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">4.2 · Votre rôle : repérer, protéger, alerter, tracer</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:24%;">1 · Repérer</td><td style="padding:10px;border:1px solid #D1C4E9;">Vous êtes le professionnel le plus présent et le plus proche du corps de la personne. Vous voyez les marques à la toilette, vous entendez les confidences, vous remarquez les changements d'attitude. Observez sans conclure.</td></tr>
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">2 · Protéger</td><td style="padding:10px;border:1px solid #D1C4E9;">Si la personne est en danger immédiat, vous la mettez en sécurité et vous ne la laissez pas seule. Vous écoutez ce qu'elle dit, sans l'interroger comme un enquêteur ni lui promettre le secret : vous lui expliquez que vous devez en parler pour la protéger.</td></tr>
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">3 · Alerter</td><td style="padding:10px;border:1px solid #D1C4E9;">Vous alertez <strong>immédiatement</strong> l'infirmier et votre encadrement (cadre de santé), selon la procédure de l'établissement. Vous n'avez pas à avoir de certitude pour alerter. Vous ne confrontez pas la personne suspectée, vous ne menez pas d'enquête : c'est à l'établissement de suivre le circuit de signalement.</td></tr>
+<tr><td style="padding:10px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">4 · Tracer</td><td style="padding:10px;border:1px solid #D1C4E9;">Vous écrivez des <strong>faits</strong> : ce que vous avez vu (localisation, taille, couleur d'un hématome), ce que la personne a dit (entre guillemets, avec ses mots), la date et l'heure, à qui vous avez transmis. Jamais d'interprétation (« sa fille la maltraite »), jamais d'accusation nominative non étayée.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">4.3 · La bientraitance : la prévention au quotidien</p>
+
+<p>La bientraitance est une <strong>manière d'agir</strong> qui place la personne, ses droits et ses choix au centre, dans l'esprit de la loi du 2 janvier 2002 (droits des usagers, projet personnalisé) et de la loi du 4 mars 2002 (consentement, refus de soin). Elle se traduit par des gestes que vous pouvez écrire :</p>
+<ul style="padding-left:20px;">
+<li>frapper, se présenter, expliquer le soin et <strong>rechercher le consentement</strong> ;</li>
+<li>respecter l'intimité, le rythme, les habitudes et les refus, en cherchant une autre solution plutôt qu'en insistant ;</li>
+<li>laisser faire ce que la personne peut faire, et mettre ses aides à portée (lunettes, prothèses, sonnette, verre) ;</li>
+<li>interroger et signaler les pratiques d'équipe qui ne respectent plus la personne.</li>
+</ul>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">4.4 · Les risques pour les intervenants</p>
+
+<p>La compétence 2 parle aussi des risques « pour les intervenants ». Deux dominent : les <strong>troubles musculosquelettiques</strong> et l'<strong>agressivité</strong>.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:22%;">Risque</th><th style="padding:9px;border:1px solid #311B92;text-align:left;width:36%;">Signes d'alerte et facteurs</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Prévention dans votre champ</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Troubles musculosquelettiques (dos, épaules, poignets)</td><td style="padding:9px;border:1px solid #D1C4E9;">Transferts répétés, lit non réglé en hauteur, gestes en torsion, soignant seul là où deux sont prévus, matériel absent ou en panne.</td><td style="padding:9px;border:1px solid #D1C4E9;">Évaluer les capacités de la personne avant chaque mobilisation ; utiliser l'aide adaptée : <strong>drap de glisse</strong>, <strong>lève-personne</strong> (aucun appui), <strong>verticalisateur</strong> (appui partiel), disque de transfert ; régler le lit à hauteur de travail ; dos droit, jambes fléchies, charge rapprochée, <strong>jamais de torsion du tronc</strong> ; respecter la consigne de mobilisation à deux ; signaler le matériel défectueux ; proposer une formation à la manutention.</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">Agressivité, violence</td><td style="padding:9px;border:1px solid #D1C4E9;">Agitation croissante, voix qui monte, refus répétés, douleur non soulagée, soin vécu comme une intrusion, troubles neurocognitifs.</td><td style="padding:9px;border:1px solid #D1C4E9;">Repérer les signes avant-coureurs et les moments à risque ; se présenter, expliquer, ne pas surprendre ; garder une distance de sécurité et une issue ; ne pas insister, différer le soin et revenir plus tard ou à deux ; rechercher une cause (douleur, besoin non satisfait) ; transmettre ; déclarer tout acte de violence selon la procédure de l'établissement.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#311B92;margin:24px 0 8px 0;">✍️ Exercice 3 (5&nbsp;min) · Maltraitance ou risque pour l'intervenant ?</p>
+<p>Pour chaque situation, identifiez la forme de maltraitance éventuelle et ce que vous faites. Ouvrez ensuite la correction.</p>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">a) Au moment de la toilette, vous découvrez des hématomes aux deux avant-bras d'une résidente qui n'a pas chuté. Elle détourne le regard quand vous lui en parlez.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Suspicion de maltraitance physique.</strong> Vous ne concluez pas, vous n'enquêtez pas. Vous rassurez la résidente, vous notez précisément ce que vous voyez (localisation, taille, couleur) et ce qu'elle dit, vous alertez sans attendre l'infirmière et le cadre, qui suivront la procédure de signalement. Vous tracez les faits.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">b) Pour « gagner du temps », l'équipe du soir couche tous les résidents d'une aile avant 19 heures, repas compris.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Maltraitance institutionnelle.</strong> L'organisation passe avant les besoins et les habitudes des personnes. Vous signalez cette pratique au cadre et vous proposez, par exemple, de recueillir l'heure de coucher souhaitée par chaque résident pour l'inscrire au projet personnalisé.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">c) Une résidente avec des troubles neurocognitifs vous repousse chaque matin à la toilette, de plus en plus fort. Vous avez reçu un coup la veille.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Risque pour l'intervenant et pour la personne.</strong> Vous ne forcez pas le soin : vous différez, vous revenez plus tard ou à deux, vous cherchez une cause (douleur, horaire, froid, pudeur). Vous transmettez, vous déclarez le coup selon la procédure, et vous proposez à l'équipe de modifier l'horaire ou l'organisation de la toilette.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">d) Un résident très anxieux le soir réclame « un cachet pour dormir ». Une collègue propose de lui donner celui d'un autre résident « qui en a en réserve ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Maltraitance médicamenteuse et acte hors champ.</strong> Aucun médicament ne se donne sans prescription et hors du circuit prévu, et jamais celui d'une autre personne. Vous refusez, vous restez auprès du résident pour apaiser son anxiété et vous alertez l'infirmier.</p></details>
+
+<div style="background:#EDE7F6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Huit formes de maltraitance : physique, psychologique, sexuelle, financière, négligence, institutionnelle, médicamenteuse, privation de droits. Votre rôle : repérer, protéger, alerter immédiatement l'infirmier et l'encadrement, tracer des faits. La bientraitance est la prévention quotidienne. Pour vous-même : aides à la mobilisation, ergonomie, et repérage des signes avant-coureurs d'agressivité.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Écrire la prévention : atelier et grille de détection <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:10 · 15&nbsp;min</span></div>
+
+
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:18px 0 8px 0;">5.1 · Les quatre règles de l'écrit de prévention</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#311B92;color:#FFFFFF;"><th style="padding:9px;border:1px solid #311B92;text-align:left;width:18%;">Règle</th><th style="padding:9px;border:1px solid #311B92;text-align:left;width:38%;">Au lieu de…</th><th style="padding:9px;border:1px solid #311B92;text-align:left;">Écrivez…</th></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">1 · Dater</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« Depuis quelque temps, il mangeait moins. »</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« Depuis le lundi 4 mars, soit dix jours après son retour d'hospitalisation, il laisse plus de la moitié de ses plateaux. »</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">2 · Chiffrer</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« Elle ne buvait pas assez et avait maigri. »</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« Sur trois jours de fiche hydrique, elle a bu en moyenne 700 mL par jour ; à la pesée mensuelle, elle pesait 51 kg contre 53 kg le mois précédent. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">3 · Nommer le risque et l'outil</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« J'ai vu qu'il y avait un risque et j'ai fait attention. »</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« J'ai identifié un risque d'escarre, objectivé avec l'infirmière par un score de Braden à 12, en dessous du seuil de risque fixé par notre protocole. »</td></tr>
+<tr style="background:#F8F5FC;"><td style="padding:9px;border:1px solid #D1C4E9;font-weight:bold;">4 · Montrer l'évaluation à distance</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« Les mesures ont été efficaces. »</td><td style="padding:9px;border:1px solid #D1C4E9;font-style:italic;">« Quinze jours plus tard, le 18 mars, sa peau était intacte, aucune rougeur ne persistait après suppression de l'appui, et le score de Braden réévalué était de 14, toujours dans la zone de risque de notre protocole : les mesures sont maintenues. »</td></tr>
+</table>
+
+<div style="border:1px solid #D1C4E9;background:#F8F5FC;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;"><strong>La phrase professionnelle appliquée à la prévention</strong> : QUOI (la mesure) · COMMENT (la technique, le matériel) · POURQUOI (le risque évité, pour cette personne).</p>
+<p style="margin:0;font-style:italic;">« J'ai installé M. G. en décubitus latéral à 30° en calant son dos et ses jambes avec deux coussins de positionnement, afin d'éviter l'appui direct sur le sacrum et le trochanter, ses deux zones les plus exposées compte tenu de sa perte de 5 kg (IMC calculé à 18,3) et de son immobilité. »</p>
+</div>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:22px 0 8px 0;">5.2 · La grille de détection de l'activité 2</p>
+<p>Relisez votre brouillon avec cette grille. Chaque formulation repérée appelle une correction.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai massé la rougeur », « j'ai frictionné les points d'appui »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Pratique abandonnée qui abîme les tissus : mise en danger. Écrivez : « j'ai supprimé l'appui, j'ai fait le test de vitropression et j'ai transmis ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai remonté les barrières pour éviter qu'il tombe », « je l'ai attaché au fauteuil »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Contention décidée seul : acte hors champ et privation de liberté. Si une contention a été décidée par le médecin, écrivez-le, avec la surveillance que vous en faites.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai mis un pansement protecteur sur le talon »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Aucun soin de pansement ne relève de l'aide-soignant, même en prévention. Écrivez la décharge du talon et la transmission.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je ne lui ai pas donné son somnifère ce soir-là », « j'ai décalé son diurétique au matin »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Modifier une administration est hors champ. Écrivez : « j'ai transmis le lien entre le traitement et les levers à l'infirmière, qui en a parlé au médecin ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« elle est tombée dans la nuit », « l'escarre est apparue », « il a fait une fausse route avec étouffement », « il a fait une pneumopathie d'inhalation »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire pour l'activité 2.</strong> Le risque est survenu : l'attendu officiel n'est pas honoré. Changez de situation.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai mixé son repas », « j'ai épaissi son eau »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Recevable seulement si la texture a été décidée par l'infirmier, le médecin ou l'orthophoniste, et que vous l'appliquez. Dites-le.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« il était dénutri », « elle était déshydratée »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier ; Éliminatoire si c'est le risque porté par le récit.</strong> C'est un diagnostic, et il signale un risque déjà réalisé. Écrivez le risque et vos données : « une perte de 2 kg en un mois, que j'ai transmise ».</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« risque de chute », sans autre précision</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Quels signes, depuis quand, quel outil, quel score, quels facteurs chez cette personne ?</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« les mesures ont été efficaces », « tout s'est bien passé »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Évaluation absente : donnez une date et un chiffre comparé au départ.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on a mis en place », « l'équipe a décidé »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Distinguez ce que vous avez repéré, proposé et réalisé, et ce que d'autres ont décidé.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on l'a obligée à boire », « il a fallu insister pour qu'elle marche »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> La prévention ne justifie pas de passer outre le consentement. Racontez comment vous avez obtenu son adhésion, ou ce que vous avez proposé à la place.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#311B92;margin:24px 0 8px 0;">✍️ Exercice 4 (6&nbsp;min · deux phrases au choix) · Réécrivez la prévention</p>
+<p>Réécrivez deux phrases au choix en datant, en chiffrant, en nommant le risque et l'outil, et en disant la limite si besoin. Comparez ensuite avec la proposition.</p>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">1. « Elle avait les fesses rouges, j'ai massé avec de la crème pour éviter l'escarre. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Au change du 12 mai à 7 heures, j'ai observé une rougeur de 3 cm environ au sacrum. J'ai réalisé le test de vitropression : la rougeur blanchissait, la peau était intacte. Je l'ai installée en décubitus latéral à 30° pour supprimer l'appui et je n'ai pas massé la zone, ce qui abîmerait les tissus. J'ai transmis à l'infirmière, qui a évalué le risque avec moi à l'aide de l'échelle de Braden. Sur sa consigne, j'ai appliqué sur la peau intacte, en fine couche, par simple effleurement, sans masser ni frictionner, la crème protectrice qu'elle avait désignée, et je l'ai tracé. »</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">2. « Il se levait la nuit, alors on a mis les barrières. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Sur quatre nuits, du 3 au 6 février, j'ai relevé qu'il se levait seul deux à trois fois par nuit, pieds nus, en se tenant au mobilier. J'ai identifié un risque de chute, que j'ai transmis à l'infirmière avec ce relevé. Je n'ai pas relevé les barrières, qui constituent une contention et relèvent d'une décision médicale ; j'ai proposé d'autres mesures : lit en position basse, veilleuse, chaussons fermés au pied du lit, passage aux toilettes avant le coucher. »</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">3. « Mme R. était déshydratée, je l'ai fait boire toute la journée. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Le 2 juillet, au début d'un épisode de forte chaleur, j'ai relevé sur sa fiche hydrique que Mme R., traitée par un diurétique, avait bu 600 mL la veille. Ses lèvres étaient encore humides et ses urines claires. J'ai identifié un risque de déshydratation, que j'ai transmis à l'infirmière. Je lui ai proposé un verre toutes les heures, en choisissant ses boissons préférées (thé froid, eau pétillante), et j'ai tracé chaque prise. »</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">4. « Grâce à nos mesures, il n'a pas fait de fausse route. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Trois semaines plus tard, le 24 octobre, j'ai de nouveau observé trois repas : il toussait une fois par repas en moyenne, contre cinq ou six auparavant, terminait ses plateaux aux trois quarts et n'avait pas eu de fièvre. J'ai transmis ces résultats à l'infirmière, qui a demandé une réévaluation par l'orthophoniste ; les consignes d'installation sont maintenues en attendant. »</p></details>
+
+<div style="background:#EDE7F6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Datez, chiffrez, nommez le risque et l'outil, montrez l'évaluation à distance. Le passage évaluatif (signes, risque, outil) est le cœur de l'activité 2. Chassez les formulations de la grille : massage, barrières, pansement, traitement modifié, risque survenu, diagnostic, « on », « efficace ».</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Deux situations modèles décortiquées et les questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:25 · 25&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:18px 0 8px 0;">6.1 · Deux situations modèles</p>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; les initiales sont fictives. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots.</p>
+
+<!-- Situation A -->
+<div style="background:#4527A0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:20px 0 10px 0;font-weight:bold;">Situation A · Activité 2 (BC1) · Prévenir le risque d'escarre d'un résident évalué à l'échelle de Braden</div>
+
+<div style="background:#F8F5FC;border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. G., 88 ans, vit en EHPAD depuis quatre ans. Il est revenu il y a dix jours d'une hospitalisation de trois semaines pour une pneumopathie (infection du poumon). Il présente des troubles neurocognitifs à un stade modéré et une insuffisance cardiaque (le cœur pompe moins efficacement), traitée par furosémide, diurétique de l'anse (surveillance : déshydratation, hypotension, chutes). Il pèse 54 kg pour 1,72 m, soit un IMC calculé à 18,3 avec l'outil du service, en dessous de la zone habituelle ; il pesait 59 kg avant son hospitalisation. GIR 2. Ancien cheminot, il aimait les mots croisés et la radio. Depuis son retour, il passe l'essentiel de la journée au lit, se tourne peu seul, porte des protections pour une incontinence urinaire et mange environ la moitié de ses plateaux. Sa perte de poids a été transmise à son retour ; le médecin a posé le diagnostic et prescrit des compléments nutritionnels oraux, qu'il prend une fois sur deux. Son projet personnalisé mentionne le risque de chute ; aucun risque cutané n'y figurait avant l'hospitalisation.</p>
+<p style="margin:0;"><strong>La situation.</strong> Le lundi 4 mars, à 7 h 30, je réalise sa toilette au lit. Après une friction hydro-alcoolique, j'observe sa peau aux points d'appui et je repère une rougeur au sacrum et au talon droit. Je réalise le test de vitropression : les deux zones blanchissent puis recolorent, et la peau est intacte. Il n'y a donc pas d'escarre, mais ce signe d'alerte, chez un homme qui a perdu 5 kg, bouge peu, est incontinent et mange la moitié de ses repas, me fait identifier un <strong>risque d'escarre</strong>. Je supprime aussitôt l'appui en l'installant en décubitus latéral à 30°, et je ne masse pas les rougeurs, car la friction abîmerait des tissus déjà fragilisés. À 8 heures, je transmets mes observations à l'infirmière et nous évaluons le risque avec l'échelle de Braden : 12, en dessous du seuil de risque fixé par notre protocole. Je lui propose un plan de positionnement toutes les trois heures, la décharge des talons et une surveillance des apports. Elle valide ces mesures, inscrit le risque au plan de soins et sollicite le médecin, qui prescrit un matelas à air, installé le lendemain. J'explique chaque changement de position à M. G. avec des phrases courtes et j'attends son accord. J'alterne le décubitus dorsal et les décubitus latéraux à 30°, calés par des coussins, pour éviter l'appui direct sur le sacrum et les trochanters ; un coussin sous ses mollets laisse ses talons dans le vide. En dehors des repas, je limite la tête de lit à 30° pour éviter le glissement, et je le remonte avec un drap de glisse et une collègue, sans frottement. Je change sa protection dès qu'elle est souillée et je sèche soigneusement la peau. Son diurétique l'exposant à la déshydratation, qui fragilise aussi la peau, je lui propose à boire à chaque passage (jus de pomme, café au lait, qu'il apprécie) et je remplis sa fiche hydrique ; à la demande de l'infirmière, j'ouvre une fiche de surveillance alimentaire. Je trace chaque changement de position et je transmets le plan aux équipes de l'après-midi et de nuit. Le 7 mars, la rougeur du sacrum et celle du talon droit ont disparu. Le 18 mars, quinze jours plus tard, sa peau est intacte à tous les points d'appui et le score de Braden, réévalué avec l'infirmière, est de 14, toujours dans la zone de risque de notre protocole : les mesures de prévention sont maintenues. Il boit en moyenne 1,2 L par jour. En revanche, il ne mange toujours que la moitié de ses plateaux : je le transmets et je propose de l'installer au fauteuil pour le déjeuner, près de la radio, ce qu'il accepte ; l'infirmière transmet ces données au médecin pour qu'il réévalue sa prise en charge nutritionnelle. Je trace l'évaluation en transmission ciblée.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #D1C4E9;">Le recueil précède le soin et contient tous les facteurs de risque (perte de poids chiffrée, IMC interprété, immobilité, incontinence, apports). Le signe est daté et objectivé par le <strong>test de vitropression</strong>, qui prouve que le risque n'est pas survenu. Le risque est nommé et mesuré avec l'<strong>échelle de Braden</strong>. Les mesures sont précises et justifiées (30°, talons dans le vide, tête de lit, drap de glisse). Le <strong>chaînage traitement-surveillance</strong> apparaît : diurétique, donc surveillance de l'hydratation. L'évaluation est datée et chiffrée à quinze jours, et un <strong>réajustement</strong> est proposé sur ce qui reste insuffisant.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #D1C4E9;">« Je ne masse pas les rougeurs. » L'infirmière valide les mesures ; le médecin prescrit le matelas et est sollicité pour l'alimentation ; la fiche alimentaire est ouverte « à la demande de l'infirmière ». On sait à chaque étape qui propose et qui décide.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #D1C4E9;">« La rougeur ne blanchissait pas » : l'escarre de stade 1 est constituée, le risque est survenu. « J'ai massé les zones rouges pour relancer la circulation » : mise en danger. « J'ai posé un pansement protecteur sur le talon » : acte hors champ. « J'ai choisi et installé un matelas à air » sans décision : décision qui ne vous revient pas. L'absence de réévaluation le 18 mars : activité laissée « à vérifier ».</td></tr>
+</table>
+
+<!-- Situation B -->
+<div style="background:#4527A0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Activité 2 (BC1) · Prévenir le risque de chute nocturne d'un résident sous hypnotique et antihypertenseur</div>
+
+<div style="background:#F8F5FC;border:1px solid #D1C4E9;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. B., 83 ans, vit en EHPAD depuis un an, à la suite du décès de son épouse. Il présente une hypertension artérielle traitée par amlodipine, inhibiteur calcique (antihypertenseur ; surveillance : hypotension au lever, vertiges, chutes), et une hypertrophie bénigne de la prostate (augmentation de volume de la prostate qui gêne la vidange de la vessie), qui le fait se lever la nuit pour uriner. Depuis dix jours, le médecin lui a prescrit du zolpidem, hypnotique, pour des difficultés d'endormissement (surveillance : somnolence, confusion nocturne, chutes). Il pèse 76 kg pour 1,74 m, IMC calculé à 25,1, dans la zone habituelle. GIR 4. Ancien artisan électricien, il tient à son indépendance. Il marche seul avec une canne dans le service, fait sa toilette au lavabo avec une aide pour le dos et les pieds, et participe à l'atelier mémoire. Il n'a jamais chuté depuis son entrée. Son projet personnalisé mentionne son souhait de garder sa porte fermée la nuit.</p>
+<p style="margin:0;"><strong>La situation.</strong> Je travaille de nuit. Le 12 novembre, lors de mon tour de 1 heure, je trouve M. B. debout près de son lit, pieds nus, sans sa canne, se tenant à la table de chevet. Il me dit aller aux toilettes ; il est encore ensommeillé, mais il me reconnaît, répond clairement et se repère dès que j'allume la veilleuse. Je l'accompagne, puis je le recouche. Au vu de l'hypnotique introduit dix jours plus tôt et de son antihypertenseur, j'identifie un <strong>risque de chute nocturne</strong>. Je trace ce lever dans les transmissions de la nuit et, à 7 heures, je le signale à l'infirmière de jour en faisant le lien avec ses deux traitements ; nous convenons que je relève ses levers les trois nuits suivantes. Ce relevé l'objective : deux à trois levers par nuit, jamais en sonnant, deux fois sur trois pieds nus. Le 16 novembre, je remets ce relevé à l'infirmière de jour. Elle évalue le risque avec moi à l'aide de l'échelle de Morse : risque élevé selon notre protocole. Elle informe le médecin, qui réévalue le traitement hypnotique, ce qui relève de sa seule décision. Je ne relève pas les barrières, qui constitueraient une contention non décidée, et contraire à son souhait d'indépendance. Je propose des mesures d'environnement, que l'infirmière valide et inscrit au plan de soins ; je les explique à M. B., qui les accepte. Au coucher, je l'accompagne aux toilettes, je règle le lit en position basse, freins serrés, et je place la sonnette sur la couverture, du côté où il se lève ; je lui montre comment l'utiliser et je lui demande de me le refaire. Je laisse la veilleuse de la salle de bain allumée, porte de la salle de bain entrouverte avec son accord, je dégage le chemin jusqu'aux toilettes et je place ses chaussons fermés et sa canne au pied du lit. Je lui rappelle de s'asseoir un moment au bord du lit avant de se lever, en raison de son antihypertenseur. Je transmets ces mesures à mes collègues de nuit. Trois semaines plus tard, le 7 décembre, le relevé de l'équipe de nuit sur les sept dernières nuits montre un à deux levers par nuit, quatre appels sur dix levers, des chaussons à chaque lever, et aucune chute. Comme il ne sonne pas encore systématiquement, je propose un passage supplémentaire à 2 heures, heure de ses levers les plus fréquents : l'infirmière l'ajoute au plan de soins. Je signale aussi à l'infirmière une somnolence certains matins, et je trace l'évaluation en transmission ciblée.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #D1C4E9;">Le signe est repéré par le candidat, daté et comparé à l'habitude. Le <strong>chaînage traitement-surveillance</strong> est double : hypnotique et antihypertenseur, donc somnolence, hypotension au lever et chute. Le risque est objectivé deux fois : par un <strong>relevé chiffré</strong> tenu par le candidat, puis par l'<strong>échelle de Morse</strong>. Les mesures sont nombreuses, justifiées et respectent son autonomie et son projet personnalisé. L'évaluation compare le même indicateur avant et après (levers, sonnette, chaussons), trois semaines plus tard. Un réajustement est proposé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#EDE7F6;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #D1C4E9;">« Le médecin réévalue le traitement hypnotique, ce qui relève de sa seule décision. » « Je ne relève pas les barrières, qui constitueraient une contention non décidée. » L'infirmière valide les mesures et les inscrit au plan de soins.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #D1C4E9;">« Je l'ai retrouvé au sol dans la nuit » : risque survenu. « J'ai remonté les barrières pour la nuit » : contention décidée seul, acte hors champ et privation de liberté. « Je ne lui ai pas donné son somnifère ce soir-là » : modification d'une administration, hors champ. Des mesures sans relevé chiffré ni réévaluation : activité « à vérifier ».</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:24px 0 8px 0;">6.2 · Six questions du jury, telles qu'elles tombent</p>
+<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Entraînez-vous à y répondre à voix haute avec la méthode RAPIDE, avant d'ouvrir l'attendu.</p>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">« Vous écrivez : "la rougeur blanchissait à la vitropression". Qu'est-ce que cela vous a appris ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> une rougeur qui blanchit est une réaction transitoire à l'appui, sans lésion constituée ; c'est un signe d'alerte qui impose de supprimer l'appui, de ne pas masser et de transmettre. Si elle ne blanchit pas, c'est une escarre de stade 1. <strong>À éviter :</strong> « ça voulait dire que ce n'était pas grave ».</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">« Vous écrivez : "score de Braden à 12". Que mesure cette échelle, et que signifie ce score ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le risque d'escarre, sur six critères (perception sensorielle, humidité, activité, mobilité, nutrition, friction et cisaillement). Plus le score est bas, plus le risque est élevé ; le seuil de décision est celui du protocole du service, que vous citez. Puis le lien avec les mesures : chaque critère faible appelle une mesure. <strong>À éviter :</strong> réciter l'échelle sans la relier à la personne.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">« Vous écrivez : "il se levait seul la nuit". Pourquoi ne pas avoir relevé les barrières ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> les barrières sont une contention ; elle relève d'une décision médicale, encadrée par le protocole, et restreint une liberté. Chez une personne qui se lève, elles peuvent aussi aggraver la chute si elle les enjambe. Vous avez privilégié des mesures moins restrictives et transmis. <strong>À éviter :</strong> « parce que ce n'était pas mon jour » ou « on le fait parfois quand il y a du monde ».</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">« Vous écrivez : "traité par zolpidem, hypnotique, et par amlodipine". Qu'avez-vous surveillé à cause de ces traitements ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le chaînage traitement-surveillance : somnolence et confusion nocturne pour l'hypnotique, hypotension au lever et vertiges pour l'antihypertenseur, donc le risque de chute ; le lever en deux temps ; la transmission du lien à l'infirmière. <strong>À éviter :</strong> « j'ai demandé qu'on arrête son somnifère », qui laisse croire que vous décidez d'un traitement.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">« Vous concluez : "il n'a pas chuté". Comment savez-vous que c'est grâce à vos mesures ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> l'absence de chute ne suffit pas ; vous montrez l'évolution des indicateurs : nombre de levers, sonnette utilisée, chaussons portés, comparés au relevé de départ, à une date précise. Vous pouvez reconnaître honnêtement que le médecin a aussi réévalué le traitement, et que l'effet est collectif. <strong>À éviter :</strong> « puisqu'il n'est pas tombé, c'est que ça a marché ».</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">« Vous écrivez : "j'ai observé deux hématomes à l'avant-bras gauche lors de la toilette". Si vous aviez soupçonné une maltraitance, qu'auriez-vous fait ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> protéger la personne, l'écouter sans l'interroger, alerter sans attendre l'infirmière et le cadre, tracer les faits observés et les paroles rapportées, sans interprétation ; l'établissement suit son circuit de signalement. <strong>À éviter :</strong> « j'aurais demandé à la famille ce qui s'était passé », ou « j'aurais attendu d'être sûr ».</p></details>
+
+
+<div style="background:#EDE7F6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Une bonne situation d'activité 2 présente la personne avec tous ses facteurs de risque, prouve que le risque n'est pas survenu, l'objective par un outil, dit qui décide, détaille des mesures justifiées dans votre champ, et se referme sur une évaluation datée, chiffrée et un réajustement. À l'oral, chaque phrase citée appelle son pourquoi.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC04 · Clôture</p>
+      <div class="content-scroll"><div style="background:#311B92;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#311B92;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">1. Quelle est la condition imposée par l'attendu officiel de l'activité 2 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le risque ne doit pas être survenu.</strong> La situation montre un risque identifié et des actions de prévention.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">2. Citez la phrase-clé ORACLE de l'activité 2.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà un risque qui n'est pas encore survenu, et ce que je fais pour qu'il ne survienne pas. »</strong></p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">3. Une résidente a chuté hier ; vous racontez les mesures prises pour éviter une récidive. Quelle activité ? A. Activité 1 · B. Activité 2 · C. Aucune des deux ne convient à ce récit tel quel</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>C.</strong> Le risque est survenu : ce n'est plus l'activité 2. Le constat de la chute et son évaluation relèvent plutôt de l'activité 3. Pour l'activité 2, choisissez une situation où la chute n'a pas eu lieu.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">4. Donnez les sept temps de la séquence de prévention.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Signe repéré, risque nommé, alerte, mesure proposée en équipe, mise en œuvre, évaluation, réajustement.</strong></p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">5. Au test de vitropression, une rougeur ne blanchit pas. De quoi s'agit-il ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>D'une escarre de stade 1.</strong> La lésion est constituée ; vous supprimez l'appui, vous ne massez pas et vous transmettez.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">6. Combien de stades comporte la classification des escarres présentée ici ? A. 2 · B. 3 · C. 4 · D. 5</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>C. 4 stades</strong>, de la rougeur qui ne blanchit pas (stade 1) à l'atteinte du muscle, du tendon ou de l'os (stade 4).</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">7. Quelle installation évite l'appui direct sur le sacrum et le trochanter ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le décubitus latéral à 30°</strong>, associé à la décharge des talons (talons dans le vide, coussin sous les mollets).</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">8. Associez l'outil au risque : échelle de Braden, échelle de Morse.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Braden : risque d'escarre. Morse : risque de chute.</strong> Pour la dénutrition et la déshydratation : pesée, IMC, fiches de surveillance alimentaire et hydrique.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">9. Pour prévenir une fausse route, où vous placez-vous pour aider une personne à manger ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Assis à sa hauteur</strong>, jamais debout au-dessus d'elle, pour qu'elle garde la tête légèrement fléchie vers l'avant.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">10. Un résident traité par diurétique boit peu. Quels risques surveillez-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La déshydratation, l'hypotension et la chute.</strong> C'est le chaînage traitement-surveillance.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">11. Qui pose le diagnostic de dénutrition ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le médecin.</strong> Vous pesez, vous surveillez les apports, vous repérez les signes et vous transmettez.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">12. Relever les barrières de lit d'un résident agité : qui décide ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le médecin.</strong> C'est une contention, encadrée par le protocole de l'établissement. L'aide-soignant ne la décide jamais ; il applique ce qui a été décidé et surveille.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">13. Citez au moins cinq formes de maltraitance.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Physique, psychologique, sexuelle, financière, négligence, institutionnelle, médicamenteuse, privation ou violation des droits.</strong></p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">14. Devant une suspicion de maltraitance, quelles sont les quatre actions de l'aide-soignant ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Repérer, protéger la personne, alerter immédiatement l'infirmier et l'encadrement, tracer des faits.</strong> Il ne mène pas d'enquête et ne confronte pas la personne suspectée.</p></details>
+
+<details style="border:1px solid #D1C4E9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#311B92;">15. Réécrivez « les mesures ont été efficaces » selon les règles de l'écrit de prévention.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Une date et un chiffre comparé au départ.</strong> Par exemple : « Quinze jours plus tard, le 18 mars, sa peau était intacte et le score de Braden réévalué était de 14, contre 12 au départ, toujours dans la zone de risque de notre protocole : les mesures sont maintenues. »</p></details>
+
+<div style="background:linear-gradient(135deg,#311B92 0%,#5E35B1 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 04</p>
+<ol style="margin:0;padding-left:22px;">
+<li>L'activité 2 demande un risque identifié et des actions de prévention : <strong>le risque ne doit pas être survenu</strong>.</li>
+<li>La séquence en sept temps : signe, risque nommé, alerte, mesure proposée en équipe, mise en œuvre, évaluation, réajustement.</li>
+<li>Un risque principal, objectivé par un outil (Braden, Morse, pesée, IMC, fiches de surveillance) ou un relevé que vous tenez.</li>
+<li>Devant une rougeur : supprimer l'appui, test de vitropression, jamais de massage, transmission. Aucun pansement, même préventif.</li>
+<li>Vous proposez ; la contention, la texture, le traitement et le diagnostic se décident par d'autres. Chaque traitement cité appelle sa surveillance.</li>
+<li>Maltraitance : repérer, protéger, alerter sans attendre, tracer des faits. Les risques pour les intervenants font aussi partie de la compétence.</li>
+<li>Écrivez daté, chiffré, outillé, et refermez la boucle par une évaluation à distance.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#311B92;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 05</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #D1C4E9;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Choisir ma situation d'activité 2 et la passer au filtre des cinq questions de la partie 1 : en particulier, vérifier que le risque ne survient jamais.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Nommer le risque principal dans le titre, et retrouver l'outil ou la donnée chiffrée qui l'a objectivé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Compléter le recueil de données en 4 temps avec tous les facteurs de risque, et vérifier que chaque traitement cité appelle une surveillance dans le récit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Vérifier que les sept temps de la séquence sont présents, et surtout l'évaluation datée et chiffrée et le réajustement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Distinguer dans le texte ce que j'ai repéré, proposé et réalisé, et ce que l'infirmier ou le médecin a décidé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Relire le brouillon avec la grille de détection de la partie 5 : massage, barrières, pansement, traitement modifié, diagnostic, « on », « efficace ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Filtrer ma rubrique A : ne garder que les actions de prévention réellement réalisées et qui relèvent de mon champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Préparer à voix haute les six questions du jury de la partie 6, dont celle sur la maltraitance.</td></tr>
+<tr><td style="padding:9px;border:1px solid #D1C4E9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #D1C4E9;">Réviser avec les ressources ORACLE ci-dessous.</td></tr>
+</table>
+
+<p style="margin:14px 0 0 0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 10 · Livre Bloc 1 · Fiches de révision B1</p></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">Repérer un signe d'escarre naissante relève principalement de :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="true">Activité 2 — Repérer fragilités et prévenir</button>
+        <button class="quiz-opt" data-correct="false">Activité 4 — Soins d'hygiène</button>
+        <button class="quiz-opt" data-correct="false">Activité 6 — Communication</button>
+        <button class="quiz-opt" data-correct="false">Activité 9 — Anomalies matériel</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Repérer précocement une fragilité ou un risque fait partie de l'activité 2 du Bloc 1." data-ko="Non. C'est l'activité 2 : repérer les fragilités et prévenir."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC01 — Référentiel décodé & champ de compétence · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC01</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC01 · Fondamentaux</p>
+      <h1 class="hero">Référentiel décodé & champ de compétence</h1>
+      <p class="subtitle">Les 5 blocs, les 11 activités, rôle propre vs prescription</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#E3F2FD;border-left:6px solid #0D47A1;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#0D47A1;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>citer les textes qui encadrent le métier d'aide-soignant et expliquer ce qu'ils vous autorisent ;</li>
+<li>distinguer un soin de la vie quotidienne d'un soin aigu, et dire pour chacun qui décide et qui contrôle ;</li>
+<li>situer chacune des 11 activités dans son bloc et énoncer ce qu'elle recouvre ;</li>
+<li>dire ce que le jury cherche dans chaque activité ;</li>
+<li>classer un geste dans votre champ, hors de votre champ ou « sous conditions » ;</li>
+<li>reconnaître les 3 éliminatoires et les formulations qui y conduisent ;</li>
+<li>réécrire une phrase de votre livret pour qu'elle prouve la compétence sans sortir du champ.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#0D47A1;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0D47A1;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #0D47A1;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #0D47A1;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">0:00</td><td style="padding:9px;border:1px solid #BBDEFB;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #BBDEFB;">5&nbsp;min</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">0:05</td><td style="padding:9px;border:1px solid #BBDEFB;">Partie 1 · Le cadre légal du métier</td><td style="padding:9px;border:1px solid #BBDEFB;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">0:20</td><td style="padding:9px;border:1px solid #BBDEFB;">Partie 2 · Les 5 blocs et les 11 activités, une par une</td><td style="padding:9px;border:1px solid #BBDEFB;">30&nbsp;min</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">0:50</td><td style="padding:9px;border:1px solid #BBDEFB;">Partie 3 · Le champ de compétence : autorisé, interdit, sous conditions</td><td style="padding:9px;border:1px solid #BBDEFB;">20&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">1:10</td><td style="padding:9px;border:1px solid #BBDEFB;">Partie 4 · Écrire dans le champ : atelier de réécriture</td><td style="padding:9px;border:1px solid #BBDEFB;">15&nbsp;min</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">1:25</td><td style="padding:9px;border:1px solid #BBDEFB;">Partie 5 · Trois situations modèles décortiquées</td><td style="padding:9px;border:1px solid #BBDEFB;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">1:40</td><td style="padding:9px;border:1px solid #BBDEFB;">Partie 6 · Le livret, le jury et les questions sur le champ</td><td style="padding:9px;border:1px solid #BBDEFB;">10&nbsp;min</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">1:50</td><td style="padding:9px;border:1px solid #BBDEFB;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #BBDEFB;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">1. L'aide-soignant travaille sur prescription médicale.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Il intervient dans le cadre du <strong>rôle propre de l'infirmier</strong>, sous sa responsabilité et en collaboration avec lui. Le médecin prescrit à l'infirmier, pas à l'aide-soignant.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">2. Le DEAS comporte 27 activités.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Il comporte <strong>11 activités</strong>, réparties en <strong>5 blocs</strong>.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">3. Un bon bloc peut compenser un bloc faible.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Chaque bloc se valide en entier ou pas du tout, et aucun bloc ne compense un autre. À l'intérieur d'un bloc non plus, il n'y a pas de compensation entre activités.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">4. Depuis 2021, l'aide-soignant peut mesurer une glycémie capillaire.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai, sur protocole ou à la demande de l'infirmier.</strong> Le recueil de la glycémie, par captation capillaire ou par lecture transdermique, fait partie des actes introduits en 2021. <em>Interpréter</em> ce résultat pour adapter un traitement reste en revanche à l'infirmier.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">5. L'aide-soignant peut régler le débit d'oxygène quand la saturation baisse.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Il peut changer les lunettes à oxygène, <strong>sans intervenir sur le débitmètre</strong>. Le débit reste à l'infirmier.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">6. Si je l'ai vraiment fait au travail, je peux l'écrire dans mon livret.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, et c'est l'erreur la plus coûteuse.</strong> Un geste hors champ, même réellement effectué sur demande de l'équipe, reste un acte hors champ aux yeux du jury. C'est une éliminatoire. On choisit une autre situation.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">7. L'activité 5 (installation et déplacements) fait partie du BC1.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Elle appartient au <strong>BC2</strong>, le bloc clinique, avec les activités 3 et 4.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">8. Une même situation peut servir pour deux activités.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Une situation n'appartient qu'à une seule activité. En revanche, un même savoir (l'hygiène des mains, par exemple) peut nourrir plusieurs activités.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">9. L'aide-soignant peut retirer un pansement, ou poser un pansement sec, sur consigne de l'infirmier.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Aucun soin de pansement ne figure dans le référentiel de l'aide-soignant : ni retrait, ni pose d'un pansement sec, ni réfection. Même sur consigne, c'est un acte hors champ. Vous observez, vous signalez ce que vous voyez (pansement souillé, décollé, saignement) et l'infirmier intervient.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">10. Le jury vérifie surtout que vous connaissez bien les gestes techniques.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Il vérifie que vous <strong>raisonnez</strong> : pourquoi ce geste, pour cette personne, à ce moment-là, dans quelles limites, et avec quel résultat. Le geste seul ne prouve pas la compétence.</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est normal, et c'est précisément pour cela que cette masterclass existe. La plupart des candidats expérimentés ont appris le métier « sur le tas », avant la réforme de 2021. Ils connaissent les gestes, mais pas le cadre dans lequel le jury les lit.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · Le cadre légal du métier <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:18px 0 8px 0;">1.1 · Les textes de référence</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#0D47A1;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0D47A1;text-align:left;width:34%;">Texte</th><th style="padding:9px;border:1px solid #0D47A1;text-align:left;">Ce qu'il fixe pour vous</th></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;font-weight:bold;">Arrêté du 10 juin 2021 modifié</td><td style="padding:9px;border:1px solid #BBDEFB;">Le métier, ses missions, les activités, les compétences et les soins de l'aide-soignant. C'est <strong>le</strong> texte de la réforme, et celui sur lequel repose votre livret.</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;font-weight:bold;">Code de la santé publique, art. R.4311-3 à R.4311-5</td><td style="padding:9px;border:1px solid #BBDEFB;">Le <strong>rôle propre de l'infirmier</strong>. L'aide-soignant exerce sous la responsabilité de l'infirmier dans le cadre de l'article R.4311-4, qui permet à l'infirmier de confier certains soins à un aide-soignant.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;font-weight:bold;">Fiche RNCP 40692</td><td style="padding:9px;border:1px solid #BBDEFB;">L'enregistrement officiel du diplôme : niveau 4, 5 blocs, 11 compétences. Elle précise aussi que <strong>l'AFGSU de niveau 2</strong> est exigée pour obtenir la certification.</td></tr>
+</table>
+
+<div style="background:#E3F2FD;border-left:6px solid #1565C0;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Point pratique.</strong> Vérifiez dès maintenant que votre AFGSU 2 est valide, ou planifiez-la. Sans elle, le diplôme ne peut pas être délivré, même avec les 5 blocs validés.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">1.2 · La définition du métier, mot à mot</p>
+
+<p>Le référentiel définit l'aide-soignant comme un professionnel de santé habilité à dispenser des <strong>soins de la vie quotidienne</strong> ou des <strong>soins aigus</strong>, afin de préserver et de restaurer la continuité de la vie, le bien-être et l'autonomie de la personne. Il le fait :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:10px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;width:34%;">« dans le cadre du rôle propre de l'infirmier »</td><td style="padding:10px;border:1px solid #BBDEFB;">Votre champ n'existe pas de manière autonome : il s'inscrit à l'intérieur de celui de l'infirmier. Ce qui relève du rôle prescrit de l'infirmier (sur prescription médicale) ne peut pas vous être confié, à une exception près : l'aide à la prise des médicaments, y compris l'instillation d'un collyre ou l'application d'une pommade désignés par l'infirmier, dans les conditions strictes détaillées en partie 3.</td></tr>
+<tr><td style="padding:10px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;">« en collaboration avec lui »</td><td style="padding:10px;border:1px solid #BBDEFB;">Vous n'êtes pas un simple exécutant. Vous observez, vous signalez, vous proposez, et l'infirmier décide.</td></tr>
+<tr><td style="padding:10px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;">« dans le cadre d'une responsabilité partagée »</td><td style="padding:10px;border:1px solid #BBDEFB;">L'infirmier répond de ce qu'il vous confie. Vous répondez de la façon dont vous le réalisez, et de ce que vous signalez ou omettez de signaler.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">1.3 · Les 3 missions de l'aide-soignant</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#0D47A1;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0D47A1;text-align:left;width:40%;">Mission</th><th style="padding:9px;border:1px solid #0D47A1;text-align:left;">Ce que cela change dans votre écrit</th></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;"><strong>1.</strong> Accompagner la personne dans sa vie quotidienne et sociale, <strong>dans le respect de son projet de vie</strong></td><td style="padding:9px;border:1px solid #BBDEFB;">Vos situations doivent montrer la personne, ses habitudes et ses choix, pas seulement le soin.</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;"><strong>2.</strong> Collaborer au projet de soins personnalisé <strong>dans son champ de compétences</strong></td><td style="padding:9px;border:1px solid #BBDEFB;">L'infirmier doit apparaître dans vos récits : il consigne, il décide, vous lui transmettez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;"><strong>3.</strong> Contribuer à la prévention des risques et au <strong>raisonnement clinique interprofessionnel</strong></td><td style="padding:9px;border:1px solid #BBDEFB;">C'est l'apport majeur de 2021. Vous devez montrer que vous repérez, que vous analysez et que vous alertez, et plus seulement que vous exécutez.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">1.4 · Soins de la vie quotidienne et soins aigus : la distinction clé</p>
+
+<p>Le référentiel distingue deux types de soins, chacun défini par des critères <strong>cumulatifs</strong>. Pour qu'un soin entre dans une catégorie, il doit remplir tous ses critères.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#1565C0;color:#FFFFFF;border:1px solid #1565C0;text-align:left;width:50%;">Soins de la vie quotidienne</th><th style="padding:10px;background:#6A1B9A;color:#FFFFFF;border:1px solid #6A1B9A;text-align:left;">Soins aigus</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #BBDEFB;background:#F5FAFF;vertical-align:top;"><strong>Deux critères cumulatifs :</strong><br>① le soin est, au départ, réalisable par la personne elle-même ou par un aidant ;<br>② il est lié à un état de santé stabilisé ou à une pathologie chronique stabilisée.<br><br><strong>Votre position :</strong> vous réalisez le soin <strong>sous le contrôle de l'infirmier</strong>.</td>
+<td style="padding:12px;border:1px solid #E1BEE7;background:#F8F0FB;vertical-align:top;"><strong>Trois critères cumulatifs :</strong><br>① le soin n'est réalisable que par un professionnel de santé ;<br>② il est dispensé dans une unité à caractère sanitaire, par une équipe pluridisciplinaire ;<br>③ il est dispensé pendant la phase aiguë d'un état de santé.<br><br><strong>Votre position :</strong> vous <strong>collaborez avec l'infirmier</strong> pour sa réalisation.</td>
+</tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>⚠️ Pourquoi c'est décisif pour votre livret.</strong> Un même geste ne se raconte pas de la même façon selon le contexte. Chez un résident stable en EHPAD, vous réalisez un soin de la vie quotidienne sous contrôle. Chez un patient en phase aiguë dans un service de médecine, vous le réalisez en collaboration directe, et l'infirmier doit apparaître dans le récit au moment où il intervient.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;margin:18px 0 8px 0;">✍️ Exercice 1 (4&nbsp;min) · Vie quotidienne ou soin aigu ?</p>
+<p>Classez chaque soin avec les critères ci-dessus, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">a) Aide au repas d'une résidente d'EHPAD, stable : installation adaptée, stimulation, surveillance des quantités.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vie quotidienne.</strong> Le soin est réalisable par un aidant et l'état est stable. Vous le réalisez sous le contrôle de l'infirmier.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">b) Renouvellement de la poche d'une colostomie cicatrisée, à domicile, chez une personne stable qui la change habituellement elle-même.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vie quotidienne.</strong> La personne réalise elle-même le soin et son état est stabilisé. Rappel : ce renouvellement n'entre dans votre champ que sur une colostomie cicatrisée, et si vous avez été formé.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">c) Surveillance de la saturation d'un patient en chirurgie, au premier jour après l'opération.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Soin aigu.</strong> Unité sanitaire, équipe pluridisciplinaire, phase aiguë : les trois critères sont réunis. Vous collaborez avec l'infirmier et vous lui transmettez chaque valeur anormale.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">d) Recueil de glycémie capillaire chez un patient hospitalisé pour un diabète déséquilibré.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Soin aigu.</strong> L'état n'est pas stabilisé, la prise en soins est sanitaire et assurée par une équipe pluridisciplinaire. Vous recueillez la valeur et la transmettez, et l'infirmier en tire les conséquences sur le traitement.</p></details>
+
+<div style="background:#E3F2FD;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> Vous agissez dans le rôle propre de l'infirmier, en collaboration avec lui et sous sa responsabilité. Vos trois missions sont d'accompagner, de collaborer et de prévenir. Soin de la vie quotidienne : vous agissez sous contrôle. Soin aigu : vous agissez en collaboration.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Les 5 blocs et les 11 activités, une par une <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 30&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:18px 0 8px 0;">2.1 · La carte d'ensemble : 11 activités, 18 éléments, 12 situations</p>
+
+<p>Le livret 2 ne demande pas « une situation par activité ». Il demande des <strong>éléments précis</strong>, dont le nombre varie selon l'activité, pour un total de <strong>18 éléments</strong>. Chez ORACLE, ils se rédigent en <strong>12 situations</strong>. Certaines activités imposent deux ou trois volets, et l'activité 8 impose même un contexte.</p>
+
+<table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;">
+<tr style="background:#0D47A1;color:#FFFFFF;"><th style="padding:9px;text-align:left;border:1px solid #0D47A1;width:10%;">Bloc</th><th style="padding:9px;text-align:left;border:1px solid #0D47A1;width:8%;">Act.</th><th style="padding:9px;text-align:left;border:1px solid #0D47A1;">Attendu officiel</th><th style="padding:9px;text-align:center;border:1px solid #0D47A1;width:11%;">Éléments</th></tr>
+<tr><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#0D47A1;" rowspan="2">BC1</td><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;">1</td><td style="padding:8px;border:1px solid #BBDEFB;">Au moins un type de soins ou d'activité de la vie quotidienne. Le volet <strong>vie sociale</strong> de l'intitulé doit aussi être traité.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;">1</td></tr>
+<tr><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;">2</td><td style="padding:8px;border:1px solid #BBDEFB;">Une situation d'identification de risques et d'actions de prévention. <strong>Le risque ne doit pas être survenu.</strong></td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;">1</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#0D47A1;" rowspan="3">BC2</td><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;">3</td><td style="padding:8px;border:1px solid #BBDEFB;">Au moins un type de soins en collaboration.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;">1</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;">4</td><td style="padding:8px;border:1px solid #BBDEFB;">Au moins un type de soins en collaboration. Ne pas oublier les <strong>critères de qualité</strong> du soin.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;">1</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#C62828;">5</td><td style="padding:8px;border:1px solid #BBDEFB;">Un contexte d'<strong>installation</strong> ET un type de <strong>déplacements</strong>.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;font-weight:bold;color:#C62828;">2</td></tr>
+<tr><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#0D47A1;" rowspan="2">BC3</td><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;">6</td><td style="padding:8px;border:1px solid #BBDEFB;">Au moins un contexte relationnel. Couvrir <strong>la personne et son entourage</strong>.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;">1</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#C62828;">7</td><td style="padding:8px;border:1px solid #BBDEFB;">Un contexte d'<strong>accompagnement</strong> ET un contexte de <strong>formation</strong>, différents.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;font-weight:bold;color:#C62828;">2</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#0D47A1;" rowspan="2">BC4</td><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#C62828;">8</td><td style="padding:8px;border:1px solid #BBDEFB;">Un volet <strong>locaux</strong> ET un volet <strong>matériel</strong>. <strong style="color:#C62828;">Contexte imposé : sortie de patient.</strong></td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;font-weight:bold;color:#C62828;">2</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#C62828;">9</td><td style="padding:8px;border:1px solid #BBDEFB;">Un matériel <strong>vérifié</strong> hors incident ET un matériel <strong>traité</strong>. <strong style="color:#C62828;">Il s'agit du matériel et des locaux, jamais du corps.</strong></td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;font-weight:bold;color:#C62828;">2</td></tr>
+<tr><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#0D47A1;" rowspan="2">BC5</td><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;">10</td><td style="padding:8px;border:1px solid #BBDEFB;">Les <strong>outils</strong> utilisés ET les <strong>personnes ressources</strong> sollicitées. Ce n'est pas un récit : c'est un inventaire raisonné.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;">2 volets</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #BBDEFB;font-weight:bold;color:#C62828;">11</td><td style="padding:8px;border:1px solid #BBDEFB;">Une journée <strong>habituelle</strong> ET une journée <strong>avec imprévus</strong> ET une <strong>action d'amélioration</strong>.</td><td style="padding:8px;border:1px solid #BBDEFB;text-align:center;font-weight:bold;color:#C62828;">3</td></tr>
+<tr style="background:#0D47A1;color:#FFFFFF;"><td style="padding:9px;border:1px solid #0D47A1;font-weight:bold;" colspan="3">Total : 18 éléments, rédigés chez ORACLE en 12 situations (activités 9 et 11 : 2 situations chacune ; activité 10 : inventaire sans récit)</td><td style="padding:9px;border:1px solid #0D47A1;text-align:center;font-weight:bold;">18</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Le contrôle le plus rentable du livret.</strong> Une consigne non honorée se voit en trois secondes : il manque le volet déplacement de l'activité 5, la sortie de patient de l'activité 8, la journée avec imprévus de l'activité 11… Vérifiez aussi que <strong>chaque sous-question du formulaire a reçu une réponse explicite</strong>. Un renvoi du type « voir ci-dessus » ne compte pas.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">2.2 · Les deux rubriques de chaque activité</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#0D47A1;color:#FFFFFF;border:1px solid #0D47A1;text-align:left;width:50%;">RUBRIQUE A · l'inventaire honnête</th><th style="padding:10px;background:#1565C0;color:#FFFFFF;border:1px solid #1565C0;text-align:left;">RUBRIQUE B · la démonstration</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #BBDEFB;vertical-align:top;">Le recensement des soins et actions que vous avez <strong>réellement</strong> réalisés : auprès des personnes pour les activités 1 à 6, dans vos missions transversales pour les activités 7 à 11.<br><br><strong>Règle :</strong> ne noter que ce que vous avez vraiment fait. Tout sera testé à l'oral.<br><br><strong>Interdits :</strong> recopier le référentiel, lister des soins jamais pratiqués, recopier un protocole.<br><br><strong style="color:#C62828;">Attention :</strong> un geste hors champ inscrit en rubrique A est aussi un acte hors champ décrit comme réalisé. Ne l'y listez pas, même si vous l'avez réellement fait.</td>
+<td style="padding:12px;border:1px solid #BBDEFB;vertical-align:top;">Une situation précise, vécue, située dans le temps, et <strong>analysée</strong>.<br><br><strong>Règle :</strong> pour les activités 1 à 6, on présente la personne avant de décrire le soin. Sans cela, le jury ne peut pas juger la pertinence.<br><br><strong>Interdits :</strong> raconter une journée type, décrire le service à la place de la personne, faire un inventaire.</td>
+</tr>
+</table>
+
+<p>Le jury lit les deux rubriques ensemble. Une connaissance annoncée en A et mobilisée à bon escient en B supprime une question à l'oral. Mais un soin listé en A que vous n'avez jamais pratiqué vous expose à une question à laquelle vous ne saurez pas répondre, et il fragilise tout le bloc.</p>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">2.3 · Les 11 activités décodées</p>
+<p>Pour chaque activité, vous trouverez :</p>
+<ul style="padding-left:20px;">
+<li>sa <strong>phrase-clé ORACLE</strong>, qui évite de confondre deux activités ;</li>
+<li>ce qu'elle recouvre, en reformulant les éléments de la fiche RNCP 40692 ;</li>
+<li>ce que le jury cherche ;</li>
+<li>la preuve qui manque le plus souvent ;</li>
+<li>les ressources ORACLE à ouvrir.</li>
+</ul></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Bloc 1</p>
+      <div class="content-scroll"><div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:22px 0 10px 0;font-weight:bold;">BLOC 1 · Accompagnement et soins de la personne dans sa vie quotidienne et sociale</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 1 · Accompagner la personne dans les actes essentiels de la vie quotidienne et sociale, personnaliser et réajuster</p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment j'accompagne au quotidien, dans le respect de l'autonomie et de la dignité. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>connaître les habitudes, la culture et les choix de la personne ;</li>
+<li>évaluer son autonomie, ses fragilités et ses ressources ;</li>
+<li>accompagner les actes essentiels <strong>et la vie sociale</strong> ;</li>
+<li>mobiliser ses capacités plutôt que faire à sa place ;</li>
+<li>soutenir les aidants ;</li>
+<li>réajuster en continu.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> une personne singulière, présentée avant le soin, et un accompagnement qui <em>change</em> parce que vous avez observé quelque chose. Un récit de toilette qui vaudrait pour n'importe quel résident ne prouve rien.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> le volet vie sociale, et le réajustement (ce que vous avez modifié, pourquoi, avec quel résultat).</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 9 · Livre Bloc 1 · Fiches de révision B1</p>
+</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 2 · Identifier les situations à risque, mettre en œuvre la prévention et l'évaluer</p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà un risque qui n'est pas encore survenu, et ce que je fais pour qu'il ne survienne pas. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>repérer les signes de fragilité ;</li>
+<li>repérer les situations à risque, <strong>en particulier de maltraitance</strong>, pour la personne comme pour les intervenants, et alerter ;</li>
+<li>proposer des mesures de prévention en équipe ;</li>
+<li>les évaluer et les réajuster.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> la séquence <em>signe repéré → risque nommé (chute, dénutrition, escarre, fausse route, isolement…) → alerte → prévention → évaluation</em>. Le risque est <strong>anticipé</strong>, pas subi.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Piège n° 1 :</strong> raconter une chute ou une escarre déjà survenue. C'est hors sujet, et cela relève plutôt de l'activité 3. <strong>Preuve qui manque souvent :</strong> l'évaluation de la mesure mise en place.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 10 · Livre Bloc 1 · Fiches de révision B1</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Bloc 2</p>
+      <div class="content-scroll"><div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:22px 0 10px 0;font-weight:bold;">BLOC 2 · Évaluation de l'état clinique et mise en œuvre de soins adaptés en collaboration</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 3 · Évaluer l'état clinique d'une personne à tout âge de la vie</p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà un changement d'état clinique que j'ai repéré, objectivé et signalé. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>rechercher les informations utiles ;</li>
+<li>repérer les changements ;</li>
+<li>évaluer la douleur et mesurer les paramètres avec les bons outils ;</li>
+<li>mettre en œuvre un <strong>raisonnement clinique</strong> ;</li>
+<li>transmettre à l'oral et à l'écrit ;</li>
+<li><strong>discerner l'urgence et alerter</strong>.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> la comparaison avec <em>l'état habituel</em>, des valeurs chiffrées rapportées à la norme, une échelle nommée (EVA, Algoplus…), une alerte immédiate et justifiée.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> la valeur de référence. « La tension était basse » ne suffit pas : il faut « 95/55 mmHg, alors qu'elle est habituellement à 130/80 ».</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 11 · Livre Bloc 2 · Fiches de révision B2</p>
+</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 4 · Mettre en œuvre des soins adaptés à l'état clinique de la personne</p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment je travaille <strong>avec</strong> l'infirmier, pas à sa place. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>rechercher les précautions particulières ;</li>
+<li>prioriser <strong>dans son champ</strong> ;</li>
+<li>appliquer les bonnes pratiques ;</li>
+<li>adapter le soin à l'état clinique ;</li>
+<li>collaborer avec l'infirmier ;</li>
+<li>expliquer le soin à la personne ;</li>
+<li>évaluer la qualité du soin et réajuster.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> un soin <em>adapté</em> à cet état clinique précis, une collaboration visible avec l'infirmier et des <strong>critères de qualité</strong> du soin énoncés. C'est l'activité la plus exposée à l'acte hors champ.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> les critères de qualité, et le <strong>chaînage traitement-surveillance</strong> : chaque traitement cité dans la présentation de la personne doit appeler une surveillance plus loin dans le récit.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p>
+</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 5 · Accompagner l'installation et les déplacements <span style="background:#FFF8E1;color:#E65100;font-size:12px;padding:2px 8px;border-radius:10px;">2 volets</span></p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment je protège son corps et le mien pendant la mobilisation. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>évaluer ce que la personne peut faire de chaque étape d'un déplacement ;</li>
+<li>la guider par la parole et par le geste ;</li>
+<li>sécuriser l'espace ;</li>
+<li>utiliser les aides à la mobilisation selon les règles de sécurité et d'ergonomie ;</li>
+<li>repérer les risques pour la personne <strong>et pour soi-même</strong> ;</li>
+<li>installer en tenant compte de la singularité de la personne.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> les <strong>deux volets</strong> (un contexte d'installation et un type de déplacement), une décision fondée sur les ressources réelles de la personne, et le choix raisonné d'une aide technique. Rappelez-vous que cette activité appartient au bloc clinique : une mobilisation n'est pas un simple geste de confort.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> le volet déplacement, oublié au profit de l'installation seule, et l'évaluation préalable des capacités.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 13 · Livre Bloc 2 · Fiches de révision B2</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Bloc 3</p>
+      <div class="content-scroll"><div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:22px 0 10px 0;font-weight:bold;">BLOC 3 · Information et accompagnement des personnes, de leur entourage, des professionnels et des apprenants</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 6 · Établir une communication adaptée pour informer et accompagner la personne et son entourage</p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment ma communication a changé le cours de la situation. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>écouter, en tenant compte du verbal et du non-verbal ;</li>
+<li>adapter les soins relationnels aux publics, dans le respect de la confidentialité ;</li>
+<li>choisir les informations à donner, en lien avec l'infirmier ;</li>
+<li>conseiller en hygiène de vie et en sécurité domestique ;</li>
+<li>permettre à la personne d'exprimer ses attentes ;</li>
+<li>accueillir.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> une difficulté de communication réelle, les techniques employées (reformulation, questions ouvertes, validation…) et leur effet. La situation doit couvrir <strong>la personne et son entourage</strong>.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> la limite. « Je lui ai expliqué son diagnostic » est hors champ. Il faut écrire : « j'ai entendu sa question et je l'ai orientée vers l'infirmière, que j'ai prévenue ».</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 14 · Livre Bloc 3 · Fiches de révision B3</p>
+</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 7 · Informer et former les pairs, les personnes en formation et les autres professionnels <span style="background:#FFF8E1;color:#E65100;font-size:12px;padding:2px 8px;border-radius:10px;">2 volets</span></p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment j'ai transmis mon savoir-faire, tout en restant garant du soin. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>accueillir un stagiaire ou un nouveau professionnel ;</li>
+<li>identifier ses besoins ;</li>
+<li>accompagner sa pratique ;</li>
+<li>repérer ses acquis et ses écarts ;</li>
+<li>l'évaluer avec les outils de suivi ;</li>
+<li>le faire réfléchir sur ses apprentissages.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> les <strong>deux volets</strong>, soit un contexte d'<em>accompagnement</em> et un contexte de <em>formation</em>, différents. Pour chacun, une démarche pédagogique complète : besoin identifié, démonstration, mise en pratique, correction, évaluation.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> l'écart repéré chez l'apprenant et la façon dont vous l'avez fait progresser, tout en gardant la sécurité de la personne soignée.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 15 · Livre Bloc 3 · Fiches de révision B3</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Bloc 4</p>
+      <div class="content-scroll"><div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:22px 0 10px 0;font-weight:bold;">BLOC 4 · Entretien de l'environnement immédiat de la personne et des matériels</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 8 · Utiliser les techniques d'entretien des locaux et du matériel en prévenant les risques <span style="background:#FFF8E1;color:#E65100;font-size:12px;padding:2px 8px;border-radius:10px;">2 volets · sortie de patient</span></p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment j'entretiens l'environnement de soin selon un protocole raisonné. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>choisir matériel et produits ;</li>
+<li>nettoyer et désinfecter selon les bonnes pratiques ;</li>
+<li>appliquer l'hygiène en collectivité et à domicile ;</li>
+<li>respecter les circuits du linge, des matériels, des dispositifs médicaux, des déchets et de l'alimentation ;</li>
+<li>adapter sa façon de faire au lieu d'intervention.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> un volet <strong>locaux</strong> et un volet <strong>matériel</strong>, dans le <strong>contexte imposé d'une sortie de patient</strong>, avec la justification de chaque choix :</p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>nettoyer avant de désinfecter, ou employer un détergent-désinfectant selon le protocole du service ;</li>
+<li>pulvériser le produit sur la lavette, jamais sur la surface ;</li>
+<li>aller du propre vers le sale et du haut vers le bas ;</li>
+<li>respecter le temps de contact ;</li>
+<li>pratiquer le juste tri des déchets.</li>
+</ul>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> le contexte de sortie, remplacé par un entretien quotidien, et la justification du tri entre DAOM et DASRI. C'est ici que l'éliminatoire « hygiène » se joue le plus.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 16 · Livre Bloc 4 · Fiches de révision B4</p>
+</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 9 · Repérer et traiter les anomalies et dysfonctionnements des locaux et des matériels <span style="background:#FFF8E1;color:#E65100;font-size:12px;padding:2px 8px;border-radius:10px;">2 situations</span></p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà une anomalie de matériel ou de local que j'ai repérée, évaluée, traitée et suivie. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>évaluer l'efficacité de l'entretien ;</li>
+<li>repérer une anomalie de l'environnement ou d'un matériel et alerter ;</li>
+<li>vérifier le bon fonctionnement des matériels de soins ;</li>
+<li>réajuster dans son champ.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> deux situations, un matériel <strong>vérifié hors incident</strong> (contrôle de routine) et un matériel <strong>traité</strong> après un dysfonctionnement. Pour ce dernier, la séquence complète : anomalie → mise en sécurité → signalement → traçabilité → suivi, jusqu'à la réparation vérifiée.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Piège majeur :</strong> « dysfonctionnement » désigne le <strong>matériel et les locaux, jamais le corps de la personne</strong>. Certains supports du marché traitent cette activité comme un trouble de la mobilité. Le candidat qui les suit rédige une activité entière hors sujet et perd le bloc 4. Pensez plutôt à un lit électrique en panne, une sangle de lève-personne usée, un matelas à air défectueux ou un chariot de soins au roulement bloqué.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 17 · Livre Bloc 4 · Fiches de révision B4</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Bloc 5</p>
+      <div class="content-scroll"><div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:22px 0 10px 0;font-weight:bold;">BLOC 5 · Travail en équipe pluriprofessionnelle, traitement des informations, qualité et gestion des risques</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 10 · Rechercher, traiter et transmettre les données pour la continuité et la traçabilité des soins <span style="background:#FFF8E1;color:#E65100;font-size:12px;padding:2px 8px;border-radius:10px;">inventaire raisonné</span></p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment je fais circuler l'information, avec quels outils et auprès de qui. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>rechercher, organiser et hiérarchiser les informations ;</li>
+<li>les transcrire et les transmettre par le moyen le plus approprié ;</li>
+<li>relayer ce qui compte pour le projet de soins ou de vie.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> deux volets, les <strong>outils</strong> (dossier de soins informatisé, transmissions ciblées, relève orale, feuilles de surveillance…) et les <strong>personnes ressources</strong> sollicitées. Pour chaque élément, précisez à quoi il sert, quand vous l'utilisez, ce que vous y inscrivez et pourquoi.</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> le « raisonné ». Une liste d'outils sans justification ne prouve pas la compétence, et un récit est hors format.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 18 · Livre Bloc 5 · Fiches de révision B5</p>
+</div>
+
+<div style="border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;margin:12px 0;background:#FFFFFF;">
+<p style="margin:0 0 6px 0;font-size:16px;font-weight:bold;color:#0D47A1;">Activité 11 · Organiser son activité, coopérer en équipe et améliorer sa pratique <span style="background:#FFF8E1;color:#E65100;font-size:12px;padding:2px 8px;border-radius:10px;">3 éléments · 2 situations</span></p>
+<p style="margin:0 0 10px 0;background:#E3F2FD;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment je m'organise, je priorise et je m'adapte dans une équipe. »</p>
+<p style="margin:0 0 6px 0;"><strong>Ce qu'elle recouvre :</strong></p>
+<ul style="margin:0 0 8px 0;padding-left:20px;">
+<li>situer son champ par rapport aux autres professionnels ;</li>
+<li>organiser et prioriser dans un contexte qui change ;</li>
+<li>contribuer aux projets ;</li>
+<li><strong>repérer, signaler et déclarer les événements indésirables</strong> ;</li>
+<li>évaluer sa pratique ;</li>
+<li>proposer des améliorations.</li>
+</ul>
+<p style="margin:0 0 6px 0;"><strong>🔎 Ce que le jury cherche :</strong> trois éléments, une <strong>journée habituelle</strong> (votre organisation et vos priorités), une <strong>journée avec imprévus</strong> (votre réorganisation avec l'équipe) et une <strong>action d'amélioration</strong> (événement indésirable déclaré, proposition, évaluation de pratique).</p>
+<p style="margin:0 0 6px 0;background:#FFEBEE;border-radius:6px;padding:8px 12px;"><strong>Preuve qui manque souvent :</strong> la journée habituelle, jugée « trop banale » et donc omise, et ce que l'action d'amélioration a réellement changé.</p>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 19 · Livre Bloc 5 · Fiches de révision B5</p>
+</div>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Les couples d'activités à ne pas confondre :</strong></p>
+<ul style="margin:6px 0 0 0;padding-left:20px;">
+<li><strong>1 et 2</strong> : accompagner ou prévenir ?</li>
+<li><strong>2 et 3</strong> : risque non survenu, ou changement d'état constaté ?</li>
+<li><strong>3 et 4</strong> : évaluer, ou soigner ?</li>
+<li><strong>5 et 1</strong> : mobiliser, ou accompagner ?</li>
+<li><strong>8 et 9</strong> : entretenir, ou traiter une anomalie ?</li>
+<li><strong>L'activité 10</strong>, trop souvent rédigée comme un récit.</li>
+</ul>
+<p style="margin:6px 0 0 0;">La phrase-clé tranche : relisez votre situation et demandez-vous laquelle des 11 elle illustre vraiment.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;margin:24px 0 8px 0;">✍️ Exercice 2 (6&nbsp;min) · À quelle activité rattacher cette situation ?</p>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">a) Je découvre que la sangle du lève-personne est effilochée. Je mets l'appareil hors service, je préviens mes collègues, je fais une demande d'intervention que je trace, et je vérifie le lendemain que la sangle a été remplacée.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 9</strong>, volet « matériel traité ». Anomalie, mise en sécurité, signalement, traçabilité, puis suivi jusqu'à la réparation vérifiée.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">b) Un résident a un score de Braden à 12. Aucune rougeur n'est présente. Je propose avec l'équipe un matelas adapté et des changements de position, que nous réévaluons huit jours plus tard.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 2.</strong> Le risque d'escarre est identifié <em>avant</em> qu'il ne survienne, la prévention est mise en place puis évaluée.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">c) J'accueille une élève aide-soignante. Je repère qu'elle oublie l'hygiène des mains entre deux résidents, je le lui montre, je la fais pratiquer, puis je remplis avec elle son outil de suivi.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 7</strong>, volet formation. Le contenu porte sur l'hygiène, mais ce que la situation prouve, c'est l'encadrement.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">d) Deux collègues sont absentes. Je réorganise mes soins avec l'infirmière selon les priorités cliniques et je décale les soins de confort non urgents.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 11</strong>, élément « journée avec imprévus ».</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">e) Après le départ d'un patient, j'entretiens le fauteuil garde-robe au local de désinfection, puis je réalise le bionettoyage de la chambre, en terminant par le sol.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 8.</strong> Les deux volets, locaux (la chambre) et matériel (le fauteuil), y figurent, dans le contexte imposé de la sortie de patient.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">f) Une résidente marche de moins en moins bien depuis quinze jours. Je pense à un « dysfonctionnement de la mobilité » et je le rédige en activité 9.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Erreur de rattachement.</strong> L'activité 9 porte sur le matériel et les locaux, jamais sur le corps. Cette situation relève de l'activité 3 (changement d'état clinique repéré et signalé), ou de l'activité 2 si vous rédigez la prévention d'une chute qui n'a pas eu lieu.</p></details>
+
+<div style="background:#E3F2FD;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> 11 activités, 18 éléments, 12 situations. Comptez vos volets avant tout le reste. Chaque activité a sa phrase-clé : c'est elle que la situation doit prouver. La rubrique A ne contient que ce que vous avez réellement fait et qui relève de votre champ.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Le champ de compétence : autorisé, interdit, sous conditions <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:50 · 20&nbsp;min</span></div>
+
+<p>Le champ de compétence est la ligne que le jury vérifie dans l'ensemble de votre livret, rubriques A comprises. Un seul geste hors champ décrit comme réalisé par vous fait tomber le bloc entier, quelle que soit la qualité du reste.</p>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">3.1 · Le cœur du métier : ce qui vous revient pleinement</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#2E7D32;color:#FFFFFF;"><th style="padding:9px;border:1px solid #2E7D32;text-align:left;width:30%;">Domaine</th><th style="padding:9px;border:1px solid #2E7D32;text-align:left;">Exemples</th></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Hygiène et confort</td><td style="padding:9px;border:1px solid #C8E6C9;">Toilette, soins de bouche non médicamenteux, habillage, rasage, soins des ongles (hors situations à risque signalées), réfection du lit, prévention d'escarre par changements de position</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Alimentation et hydratation</td><td style="padding:9px;border:1px solid #C8E6C9;">Aide au repas, installation, textures adaptées selon consigne, surveillance des prises alimentaires et hydriques, repérage des fausses routes</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Élimination</td><td style="padding:9px;border:1px solid #C8E6C9;">Aide aux toilettes, change, protections, vidange d'une poche à urine, surveillance des selles et des urines</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Mobilité</td><td style="padding:9px;border:1px solid #C8E6C9;">Installation, transferts, aide à la marche, utilisation des aides techniques</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Observation et mesures</td><td style="padding:9px;border:1px solid #C8E6C9;">Pouls, pression artérielle, température, fréquence respiratoire, poids, taille, diurèse, observation de la peau, du comportement et de la douleur (avec les échelles du service)</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">Relation et vie sociale</td><td style="padding:9px;border:1px solid #C8E6C9;">Écoute, soins relationnels, accompagnement des animations, accueil, soutien de l'entourage</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">3.2 · Les actes introduits en 2021, avec leurs conditions</p>
+
+<p>La colonne « condition » est la plus importante. Hors de cette condition, l'acte redevient hors champ.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#0D47A1;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0D47A1;text-align:left;width:42%;">Acte</th><th style="padding:9px;border:1px solid #0D47A1;text-align:left;">Condition, ou limite à ne pas franchir</th></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">Mesure de la saturation en oxygène</td><td style="padding:9px;border:1px solid #BBDEFB;">Vous mesurez et vous transmettez. Une valeur anormale se signale immédiatement.</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">Glycémie par captation capillaire ou lecture transdermique</td><td style="padding:9px;border:1px solid #BBDEFB;">Vous la réalisez <strong>sur protocole ou à la demande de l'infirmier</strong>, puis vous transmettez la valeur. <strong>Adapter un traitement à partir du résultat revient à l'infirmier.</strong> Hypoglycémie en dessous de 0,70 g/L.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">Calcul de l'IMC ; mesure du périmètre crânien</td><td style="padding:9px;border:1px solid #BBDEFB;">L'IMC se calcule avec un outil paramétré.</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">Lecture instantanée d'une bandelette urinaire</td><td style="padding:9px;border:1px solid #BBDEFB;">Lecture et transmission, sans interprétation diagnostique.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">Recueil aseptique d'urines</td><td style="padding:9px;border:1px solid #BBDEFB;"><strong>Hors sonde urinaire</strong> uniquement.</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">Oxygénothérapie</td><td style="padding:9px;border:1px solid #BBDEFB;">Changer les lunettes à oxygène <strong>sans intervenir sur le débitmètre</strong>. Poser et changer un masque <strong>en situation stable et chronique</strong>. Monter et entretenir le matériel, surveiller la personne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">Aspiration endotrachéale</td><td style="padding:9px;border:1px solid #BBDEFB;">Sur un orifice trachéal <strong>cicatrisé et non inflammatoire</strong> uniquement.</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">Renouvellement de la poche et du support de colostomie</td><td style="padding:9px;border:1px solid #BBDEFB;">Sur une colostomie <strong>cicatrisée</strong> uniquement, et <strong>à condition d'avoir été formé</strong>. Mentionnez cette formation dans votre livret. Une stomie normale est rosée à rouge, humide et indolore ; une pâleur ou une coloration violacée justifie une alerte.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">Pose de suppositoire</td><td style="padding:9px;border:1px solid #BBDEFB;">Seul le suppositoire <strong>à la glycérine</strong>, d'aide à l'élimination, relève de votre rôle. Tout autre suppositoire relève de l'infirmier.</td></tr>
+<tr style="background:#F5FAFF;"><td style="padding:9px;border:1px solid #BBDEFB;">Lavage oculaire et instillation de collyre</td><td style="padding:9px;border:1px solid #BBDEFB;"><strong>Sur consigne de l'infirmier</strong>, avec le produit qu'il a désigné et identifié. Vous vérifiez l'identité de la personne et vous tracez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;">Application de crème et de pommade</td><td style="padding:9px;border:1px solid #BBDEFB;"><strong>Sur consigne de l'infirmier</strong>, avec le produit qu'il a désigné et identifié, jamais sur une plaie. Vous tracez l'application.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">3.3 · Ce qui reste à l'infirmier</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:42%;">Hors champ de l'aide-soignant</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Ce que vous faites à la place</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;">Toute injection (sous-cutanée, intramusculaire, intraveineuse)</td><td style="padding:9px;border:1px solid #FFCDD2;">Vous préparez la personne et son installation, puis vous surveillez après le soin.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;">Régler ou modifier le débit d'oxygène</td><td style="padding:9px;border:1px solid #FFCDD2;">Vous mesurez, vous installez, vous vérifiez les lunettes et vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;">Poser une sonde urinaire, recueillir des urines sur sonde</td><td style="padding:9px;border:1px solid #FFCDD2;">Vous surveillez la diurèse, vous videz la poche et vous signalez toute anomalie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Tout soin de pansement</strong> : retrait, pose d'un pansement sec, réfection, pansement complexe. Aucun n'est prévu au référentiel de l'aide-soignant, même sur consigne.</td><td style="padding:9px;border:1px solid #FFCDD2;">Vous observez le pansement (souillé, décollé, saignement, odeur), vous protégez la zone pendant les soins d'hygiène et les mobilisations, et vous alertez l'infirmier, qui intervient.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;">Préparer un traitement, couper ou écraser un comprimé, modifier une posologie, décider d'une administration ; tout stupéfiant</td><td style="padding:9px;border:1px solid #FFCDD2;">Vous aidez à la prise d'un traitement lorsque <strong>toutes</strong> les conditions suivantes sont réunies :<ul style="margin:6px 0;padding-left:18px;"><li>il n'est ni injectable ni stupéfiant ;</li><li>il a été préparé par l'infirmier ou la pharmacie ;</li><li>il est emballé individuellement, identifiable et daté.</li></ul>Vous vérifiez l'identité et la concordance, vous observez la prise et vous tracez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;">Interpréter un résultat pour adapter un traitement</td><td style="padding:9px;border:1px solid #FFCDD2;">Vous mesurez, vous comparez à l'état habituel et vous transmettez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;">Annoncer un diagnostic, un résultat d'examen, un pronostic</td><td style="padding:9px;border:1px solid #FFCDD2;">Vous écoutez la question et vous orientez vers l'infirmier ou le médecin, que vous prévenez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;">Décider d'une contention (barrière, ceinture)</td><td style="padding:9px;border:1px solid #FFCDD2;">La contention relève d'une décision médicale encadrée par le protocole de l'établissement. Vous appliquez ce qui a été décidé et vous surveillez.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">3.4 · Le piège du glissement de tâches</p>
+
+<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 « Mais dans mon service, on le fait tous. »</p>
+<p style="margin:0 0 8px 0;">Dans beaucoup de structures, des aides-soignants réalisent des gestes qui ne relèvent pas de leur champ, souvent à la demande de l'équipe, parfois depuis des années. C'est ce qu'on appelle un <strong>glissement de tâches</strong>.</p>
+<p style="margin:0 0 8px 0;">Pour le jury, peu importe que ce soit l'usage du service : un acte hors champ décrit comme réalisé par vous est une <strong>éliminatoire</strong>. Et le raconter honnêtement ne vous protège pas.</p>
+<p style="margin:0;"><strong>La règle ORACLE :</strong> on ne travestit jamais une situation. Si le cœur d'une situation repose sur un geste hors champ, <strong>on choisit une autre situation</strong>. Votre expérience en contient toujours une qui prouve la même compétence dans les règles.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">3.5 · Les 3 éliminatoires, en détail</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:22%;">Éliminatoire</th><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Exemples de phrases qui y conduisent</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Comment l'éviter</th></tr>
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">① Acte hors champ décrit comme réalisé</td><td style="padding:10px;border:1px solid #FFCDD2;">« J'ai fait l'injection d'insuline. »<br>« J'ai augmenté l'oxygène à 3 litres. »<br>« J'ai préparé les piluliers du soir. »</td><td style="padding:10px;border:1px solid #FFCDD2;">Pour chaque geste proche de la limite, écrivez qui a décidé et qui a réalisé. Si le geste est hors champ, changez de situation.</td></tr>
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">② Non-respect d'une règle d'hygiène</td><td style="padding:10px;border:1px solid #FFCDD2;">Un récit où vous passez d'un résident à l'autre sans hygiène des mains.<br>Le port de gants « pour tout ».<br>Un circuit propre et sale qui se croisent.</td><td style="padding:10px;border:1px solid #FFCDD2;">Nommez l'hygiène des mains aux moments clés et les équipements justifiés par le soin. Suivez la marche en avant.</td></tr>
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">③ Mise en danger de la personne</td><td style="padding:10px;border:1px solid #FFCDD2;">« J'ai terminé ma toilette, puis j'ai prévenu l'infirmière du malaise. »<br>« Je l'ai laissée seule au fauteuil sans sonnette. »<br>« J'ai fait le transfert seule malgré la consigne d'être à deux. »</td><td style="padding:10px;border:1px solid #FFCDD2;">L'alerte passe <strong>avant</strong> la poursuite du soin. La sécurité passe avant la rapidité, et la consigne avant l'habitude.</td></tr>
+</table>
+
+<div style="background:#E3F2FD;border-left:6px solid #1565C0;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0 0 6px 0;"><strong>🛡️ Deux vigilances ORACLE en plus des 3 éliminatoires officielles</strong></p>
+<ul style="margin:0;padding-left:20px;">
+<li><strong>Une situation manifestement non vécue</strong> ou recomposée se détecte à l'oral dès la première question précise.</li>
+<li><strong>Une anonymisation défaillante</strong>, y compris dans les annexes et les métadonnées des fichiers.</li>
+</ul>
+<p style="margin:6px 0 0 0;">Aucune des deux ne figure dans la liste officielle, mais chacune suffit à fragiliser un dossier.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:22px 0 8px 0;">3.6 · Secret professionnel et anonymisation</p>
+
+<p>Vous êtes tenu au secret professionnel. Au sein de l'équipe de soins, vous partagez les informations nécessaires à la prise en charge, et seulement celles-là. Dans votre livret, cela se traduit par trois règles :</p>
+<ul style="padding-left:20px;">
+<li><strong>Aucun nom</strong> : des initiales seules, et aucune date de naissance ni numéro de chambre identifiant.</li>
+<li><strong>Aucun nom d'établissement</strong> dans les récits, si ce n'est dans la partie consacrée à votre parcours, là où il est demandé.</li>
+<li><strong>Dans vos récits, l'âge, la pathologie et le contexte</strong> suffisent à comprendre la situation.</li>
+</ul>
+
+<p style="font-weight:bold;color:#0D47A1;margin:24px 0 8px 0;">✍️ Exercice 3 (5&nbsp;min) · Dans le champ, hors champ, ou sous conditions ?</p>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">a) Aspirer un patient trachéotomisé depuis quatre jours, dont l'orifice est rouge.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> L'orifice n'est ni cicatrisé ni non inflammatoire. Vous alertez l'infirmier.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">b) Changer les lunettes à oxygène souillées d'un résident sous oxygène au long cours, sans toucher au débit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Dans le champ.</strong> Changement de lunettes sans intervention sur le débitmètre.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">c) Réaliser une glycémie capillaire, constater 0,55 g/L et donner un sucre « parce que c'est ce qu'on fait toujours ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ tel que rédigé.</strong> La glycémie n'est dans le champ que sur protocole ou à la demande de l'infirmier. Le resucrage n'est recevable que s'il est fait sur protocole du service ou sur consigne de l'infirmier, prévenu immédiatement. « Parce qu'on fait toujours comme ça » n'est pas une justification recevable.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">d) Recueillir des urines pour un examen, en prélevant sur la sonde à demeure.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Le recueil aseptique n'est autorisé que <em>hors sonde</em>.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">e) Aider une résidente à prendre les comprimés que l'infirmière a préparés, emballés individuellement et datés. Elle a du mal à avaler, alors vous les écrasez dans sa compote.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ, à cause de l'écrasement.</strong> L'aide à la prise était possible, mais écraser un comprimé revient à modifier la forme du traitement. Vous signalez la difficulté à avaler à l'infirmière, qui décidera.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">f) Renouveler la poche d'une colostomie créée il y a six jours.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Une stomie récente n'est pas cicatrisée. Le soin revient à l'infirmier.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">g) Retirer, à la demande de l'infirmière, un pansement souillé avant son passage.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ, même sur consigne.</strong> Le référentiel de l'aide-soignant ne prévoit aucun soin de pansement. Vous signalez le pansement souillé à l'infirmière, vous installez la personne pour son passage, et c'est elle qui le retire et le refait.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">h) Répondre à la famille qui demande « si les résultats de la prise de sang sont bons ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Vous accueillez la question et vous orientez vers l'infirmier ou le médecin, que vous prévenez.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">i) Renouveler la poche d'une colostomie cicatrisée chez une personne stable.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Dans le champ si vous avez été formé à ce soin, et à condition de le mentionner dans votre livret. Sans formation, le soin revient à l'infirmier.</p></details>
+
+<div style="background:#E3F2FD;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Un acte autorisé en 2021 l'est toujours <em>sous conditions</em>. Mesurer est dans votre champ ; interpréter pour traiter ne l'est pas. Le glissement de tâches ne s'écrit pas : on choisit une autre situation.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · Écrire dans le champ : atelier de réécriture <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:10 · 15&nbsp;min</span></div>
+
+<p>Dans la plupart des cas, le candidat qui tombe sur le champ de compétence n'a rien fait d'interdit : il a <strong>mal écrit</strong> ce qu'il a fait. Deux outils suffisent à l'éviter.</p>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">4.1 · La phrase professionnelle : quoi, comment, pourquoi</p>
+
+<div style="border:1px solid #BBDEFB;background:#F5FAFF;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;"><strong style="color:#1565C0;">QUOI</strong> : le fait, le geste, l'observation, avec un verbe d'action et une donnée précise.</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#E65100;">COMMENT</strong> : la manière, la technique, le matériel. Cela prouve le savoir-faire.</p>
+<p style="margin:0 0 10px 0;"><strong style="color:#2E7D32;">POURQUOI</strong> : la bonne pratique respectée, le risque évité, l'adaptation à <em>cette</em> personne. Cela prouve le raisonnement.</p>
+<p style="margin:0;padding-top:10px;border-top:1px solid #BBDEFB;font-style:italic;">« J'ai [quoi] en [comment], afin de [pourquoi]. »</p>
+</div>
+<p>Sans le pourquoi, vous décrivez une tâche. Avec le pourquoi, vous prouvez une compétence. <strong>Cible : le pourquoi doit représenter au moins un quart de votre texte.</strong></p>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">4.2 · Dire la limite en deux temps</p>
+
+<div style="border:1px solid #BBDEFB;background:#F5FAFF;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0;">Dès qu'un soin approche de la limite de votre champ, écrivez <strong>ce que vous ne faites pas</strong> et <strong>ce que vous faites à la place</strong>. Le jury n'attend pas que vous sachiez tout faire : il attend que vous sachiez observer, agir dans votre rôle et transmettre. <strong>Savoir dire ce qu'on ne fait pas est une preuve de professionnalisme.</strong> Une seule mention explicite de la limite, au bon endroit, suffit souvent.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">4.3 · La grille de détection : les formulations à repérer dans votre livret</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai retiré le pansement », « j'ai mis un pansement sec », « j'ai refait le pansement »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Aucun soin de pansement ne relève de l'aide-soignant, même sur consigne. Écrivez plutôt : « j'ai constaté que le pansement était souillé et j'ai prévenu l'infirmière, qui l'a refait ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai coupé » ou « j'ai écrasé le comprimé »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> On ne prépare ni ne modifie jamais un traitement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai augmenté l'oxygène »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> L'aide-soignant ne touche jamais au débitmètre, même sur protocole ou sur consigne. Vous mesurez, vous vérifiez les lunettes et vous alertez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai posé la perfusion », « j'ai administré un stupéfiant »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire</strong>, sans ambiguïté.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai diagnostiqué », « j'ai décidé que »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> L'aide-soignant ne pose pas de diagnostic.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai donné le suppositoire »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Seul le suppositoire à la glycérine relève de votre rôle ; tout autre relève de l'infirmier.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai changé la poche de stomie »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Recevable uniquement sur une colostomie cicatrisée, et si votre formation est mentionnée.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai fait la glycémie »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Précisez « sur protocole » ou « à la demande de l'infirmière ».</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on », « nous avons fait »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Le jury évalue ce que <em>vous</em> avez fait. Précisez votre part exacte.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« il a fallu insister », « c'est comme ça qu'on fait ici »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Vous apportez une preuve à charge : un refus de soin surmonté par l'insistance, ou l'usage du service invoqué à la place des bonnes pratiques.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#0D47A1;margin:22px 0 8px 0;">✍️ Exercice 4 (8&nbsp;min) · Réécrivez dans le champ</p>
+<p>Réécrivez chaque phrase sur votre feuille avec les deux outils (quoi-comment-pourquoi, et la limite en deux temps), puis comparez avec la proposition.</p>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">1. « Il désaturait, j'ai monté l'oxygène. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« J'ai mesuré une saturation à 88 %, alors qu'il est habituellement à 94 % sous 2 L/min. J'ai appelé immédiatement l'infirmière. En l'attendant, je suis resté auprès de lui, j'ai vérifié que ses lunettes étaient bien en place et je l'ai installé en position demi-assise pour faciliter sa respiration. Je ne touche pas au débit. »</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">2. « Je lui ai donné son traitement du soir. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Je l'ai aidé à prendre le traitement du soir, préparé par l'infirmière, emballé individuellement à son nom et daté. J'ai vérifié son identité et la concordance avec le plan de soins. Je suis resté jusqu'à ce qu'il ait tout avalé, puis j'ai tracé la prise. »</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">3. « On l'a levée au fauteuil. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Comme le prévoit son plan de soins, je l'ai aidée à passer au fauteuil avec ma collègue. J'ai d'abord laissé Mme B. assise au bord du lit une minute, car elle est traitée par antihypertenseur et risque une hypotension au lever. Le fauteuil était placé contre le lit, freins serrés. J'ai guidé ses appuis par la parole pendant que ma collègue la sécurisait côté fauteuil. »</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">4. « Elle refusait la toilette, il a fallu insister. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Elle a refusé la toilette. J'ai respecté son refus et je lui ai demandé ce qui la gênait. Elle m'a dit avoir froid le matin. Je lui ai proposé de revenir après le petit-déjeuner, dans une salle de bain préchauffée, ce qu'elle a accepté. J'ai transmis son refus et la solution trouvée pour que l'équipe puisse l'adopter. »</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">5. « La famille m'a demandé ses résultats, je les ai rassurés, tout était normal. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Sa fille m'a demandé les résultats de la prise de sang. Je ne communique pas ces informations, qui relèvent de l'infirmière et du médecin. J'ai entendu son inquiétude, je lui ai proposé un temps d'échange avec l'infirmière, que j'ai informée de cette demande. »</p></details>
+
+<div style="background:#E3F2FD;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Chaque geste s'écrit avec son quoi, son comment et son pourquoi. Chaque limite se dit en deux temps : ce que je ne fais pas, ce que je fais à la place. Dans votre livret, cherchez les formulations de la grille et les « on ».</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Trois situations modèles décortiquées <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:25 · 15&nbsp;min</span></div>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les trois situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots.</p>
+
+<!-- Situation A -->
+<div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:20px 0 10px 0;font-weight:bold;">Situation A · Activité 3 (BC2) · Un changement d'état clinique repéré, objectivé et signalé</div>
+
+<div style="background:#F5FAFF;border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme L., 86 ans, vit en EHPAD depuis deux ans à la suite d'une chute à domicile. Elle a un diabète de type 2 traité par insuline (surveillance : risque d'hypoglycémie) et une hypertension traitée par un antihypertenseur (surveillance : vertiges au lever, chutes). GIR 3. Elle est habituellement orientée, se lève avec une aide et fait sa toilette au lavabo avec une aide partielle.</p>
+<p style="margin:0;"><strong>La situation.</strong> Un matin à 7 h 30, en entrant pour la toilette, je la trouve pâle, en sueur, tremblante et confuse : elle ne me reconnaît pas, alors qu'elle m'appelle d'habitude par mon prénom. Je suspends la toilette. Ces signes me font penser à une hypoglycémie. Après une friction hydro-alcoolique et le port de gants, je réalise une glycémie capillaire, comme le prévoit le protocole du service, et j'élimine la lancette dans le collecteur à objets piquants : 0,58 g/L, soit une hypoglycémie, puisque la valeur basse est à 0,70 g/L. J'appelle immédiatement l'infirmière et je lui transmets la valeur et mes observations. Je ne laisse pas Mme L. seule. Je l'installe en sécurité, lit en position basse, et je lui parle calmement pour la rassurer. Sur consigne de l'infirmière et conformément au protocole hypoglycémie, je la redresse en position assise, je vérifie qu'elle est capable de déglutir, puis je lui donne un verre de jus sucré. Quinze minutes plus tard, à la demande de l'infirmière, je recontrôle la glycémie : 1,02 g/L. Mme L. a retrouvé ses repères. Je reprends la toilette en adaptant le rythme à sa fatigue, puis je trace l'épisode dans le dossier de soins en transmission ciblée.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #BBDEFB;">La présentation de la personne vient avant le soin. La comparaison avec l'état habituel (« elle m'appelle d'habitude par mon prénom ») montre le changement. La valeur est chiffrée et rapportée à la norme, et l'hygiène du geste est nommée. L'alerte est immédiate. La boucle est fermée par le recontrôle chiffré. Le <strong>chaînage traitement-surveillance</strong> est présent : insuline, donc risque d'hypoglycémie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #BBDEFB;">La glycémie est réalisée « comme le prévoit le protocole ». Le resucrage est donné « sur consigne de l'infirmière ». Le recontrôle est fait « à sa demande ». À chaque fois, on sait qui décide.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #BBDEFB;">« J'ai décidé de la resucrer » : c'est un acte hors champ. « J'ai terminé la toilette puis j'ai prévenu », ou faire boire une personne confuse restée allongée : c'est une mise en danger. « J'ai relevé les barrières pour qu'elle ne tombe pas » : c'est une contention, qui ne se décide pas seul.</td></tr>
+</table>
+
+<!-- Situation B -->
+<div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Activité 5 (BC2) · Installation ET déplacement</div>
+
+<div style="background:#F5FAFF;border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. R., 78 ans, est hospitalisé en soins de suite depuis trois semaines après un accident vasculaire cérébral. Il a une hémiplégie droite, pèse 72 kg pour 1,68 m et est traité par un antihypertenseur (surveillance : hypotension au lever). Il tient debout avec un appui et marche avec une canne tripode sur de courtes distances. Ancien menuisier, il tient à « se débrouiller seul ».</p>
+<p style="margin:0;"><strong>La situation.</strong> <em>Installation.</em> Avant le repas, je l'aide à passer du lit au fauteuil. J'évalue d'abord ce qu'il peut faire ce jour-là : il est bien réveillé et tient assis sans aide. Je le fais asseoir au bord du lit et j'attends une minute avant de le lever, en raison de son traitement. Je place le fauteuil de son côté valide, freins serrés, et je le guide par la parole pour qu'il pousse sur sa jambe gauche. Je garde le dos droit et les jambes fléchies, sans torsion du tronc. Une fois assis, j'installe son bras droit sur une tablette avec un coussin, pour éviter que l'épaule ne soit tirée vers le bas, et je vérifie que ses pieds reposent à plat. <em>Déplacement.</em> Après le repas, il souhaite aller seul au salon, à douze mètres. Je l'accompagne en me plaçant de son côté atteint, prête à le soutenir. Je lui rappelle d'avancer d'abord la canne, puis la jambe droite. À mi-parcours, il se dit fatigué : je lui propose de s'asseoir sur une chaise du couloir, puis nous repartons. Il atteint le salon en marchant. Je transmets la distance parcourue, la pause nécessaire et sa satisfaction d'y être arrivé seul.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #BBDEFB;">Les <strong>deux volets</strong> sont traités. Les capacités sont évaluées avant d'agir. La personne est guidée plutôt que portée, ce qui mobilise ses ressources. Le chaînage apparaît (antihypertenseur, donc lever en deux temps). L'ergonomie du soignant est mentionnée. La fatigue est adaptée en cours de route. Le résultat est chiffré (12 mètres) et transmis.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #BBDEFB;">« Je l'ai porté au fauteuil » : c'est une substitution, et un risque pour les deux. « J'ai fait le transfert seule malgré la consigne d'être deux » : c'est une mise en danger. Rédiger seulement l'installation : l'attendu n'est pas honoré.</td></tr>
+</table>
+
+<!-- Situation C -->
+<div style="background:#1565C0;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation C · Activité 6 (BC3) · La personne ET son entourage</div>
+
+<div style="background:#F5FAFF;border:1px solid #BBDEFB;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme P., 82 ans, vit en EHPAD depuis six mois. Elle a des troubles neurocognitifs à un stade modéré. Ancienne institutrice, elle a gardé l'habitude de se laver le soir. Sa fille lui rend visite deux fois par semaine.</p>
+<p style="margin:0;"><strong>La situation.</strong> Depuis une semaine, Mme P. refuse la douche du matin et devient agitée quand on insiste. Sa fille m'interpelle dans le couloir, inquiète et en colère : « Ma mère n'est pas lavée ! » Je lui propose de poursuivre à l'écart, dans un petit salon, pour respecter la confidentialité. Je l'écoute sans l'interrompre, puis je reformule : « Vous avez peur que votre mère soit négligée. » Elle acquiesce et se calme. Je lui demande comment sa mère se lavait à la maison : « Toujours le soir, avant de se coucher. » Avec Mme P., je me place face à elle, à sa hauteur, et j'emploie des phrases courtes. Quand elle s'agite à l'évocation de la douche, je n'insiste pas : je reconnais son émotion (« Vous n'avez pas envie maintenant, je comprends ») et je lui laisse le temps de répondre. Je lui propose alors de se laver le soir, comme chez elle, et elle accepte en souriant. Je transmets cette habitude à l'équipe et à l'infirmière, pour qu'elle soit inscrite dans son projet personnalisé. Quand sa fille me demande si ce refus « est un signe que la maladie s'aggrave », je ne réponds pas sur ce point, qui ne relève pas de mon rôle, et je lui propose un rendez-vous avec l'infirmière coordinatrice, que je préviens. Quinze jours plus tard, Mme P. accepte sa douche quatre soirs sur cinq, et sa fille m'a remerciée.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #BBDEFB;">La personne <strong>et</strong> l'entourage sont couverts. Les techniques sont nommées : écoute, reformulation avec la fille ; validation de l'émotion, non-insistance et adaptation aux troubles cognitifs avec Mme P. La confidentialité est respectée. L'histoire de vie explique la solution trouvée. La limite est dite en deux temps. Le résultat est chiffré à distance (4 soirs sur 5, à quinze jours).</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #BBDEFB;">« On a insisté et elle a fini par accepter » : c'est fragilisant, car le refus de soin doit être respecté. « J'ai expliqué à sa fille que la maladie progressait » : c'est hors champ. Une discussion avec la fille dans le couloir, devant d'autres résidents, manque à la confidentialité.</td></tr>
+</table></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Le livret, le jury et les questions sur le champ <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:40 · 10&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:18px 0 8px 0;">6.1 · Qui vous évalue, et comment</p>
+<ul style="padding-left:20px;">
+<li>Le jury d'entretien réunit généralement <strong>trois personnes</strong> : un aide-soignant, un formateur ou un infirmier, un directeur de structure.</li>
+<li>Il lit votre livret <strong>plusieurs semaines avant</strong> l'entretien. L'entretien ne sert pas à découvrir le dossier, mais à le <strong>questionner</strong>, page par page.</li>
+<li>Le diplôme est attribué par un jury nommé par le préfet de région.</li>
+</ul>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">
+<tr><td style="padding:12px;border:1px solid #C8E6C9;background:#E8F5E9;width:33%;vertical-align:top;"><strong style="color:#2E7D32;">ACQUIS</strong><br>Démontré avec des preuves solides et confirmé à l'entretien.</td><td style="padding:12px;border:1px solid #FFE082;background:#FFF8E1;width:33%;vertical-align:top;"><strong style="color:#E65100;">À VÉRIFIER</strong><br>Partiellement démontré, ou affirmé sans preuve. C'est la zone prioritaire de votre préparation.</td><td style="padding:12px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;"><strong style="color:#C62828;">NON ACQUIS</strong><br>Absence de preuve, ou incapacité à expliquer.</td></tr>
+</table>
+<p><strong>Votre objectif de rédaction n'est pas d'être exhaustif : c'est de ne laisser aucune activité en « à vérifier ».</strong></p>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">6.2 · Les trois piliers que le jury questionne</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 14px 0;">
+<tr><td style="padding:10px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;width:24%;">1 · La pertinence</td><td style="padding:10px;border:1px solid #BBDEFB;">Votre manière de faire était-elle ajustée à <em>cette</em> personne ? <em>« Pourquoi avez-vous procédé ainsi avec elle précisément ? »</em></td></tr>
+<tr><td style="padding:10px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;">2 · Le pourquoi</td><td style="padding:10px;border:1px solid #BBDEFB;">Le risque prévenu, la bonne pratique, le besoin auquel vous répondez. <em>« Qu'est-ce qui a motivé cette décision ? »</em></td></tr>
+<tr><td style="padding:10px;border:1px solid #BBDEFB;background:#E3F2FD;font-weight:bold;">3 · Les résultats</td><td style="padding:10px;border:1px solid #BBDEFB;">La situation s'est-elle améliorée, et qu'auriez-vous fait sinon ? <em>« Comment avez-vous su que votre action avait été efficace ? »</em></td></tr>
+</table>
+
+<div style="background:#E3F2FD;border-left:6px solid #1565C0;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Ce n'est pas un examen de connaissances.</strong> Le jury part de <em>votre</em> texte, sans questions de cours. Chez ORACLE, nous travaillons pourtant les connaissances (valeurs de référence, classes médicamenteuses, échelles), parce qu'il faut les maîtriser pour <strong>expliquer votre raisonnement</strong>. Le jury valorise aussi la prise de conscience : reconnaître qu'on ferait autrement aujourd'hui vaut mieux que défendre une pratique au nom de l'habitude du service.</p>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">6.3 · Six questions sur le champ, telles qu'elles tombent</p>
+<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Entraînez-vous à y répondre à voix haute avant d'ouvrir l'attendu.</p>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">« Vous écrivez avoir réalisé une glycémie. Dans quel cadre ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> sur protocole ou à la demande de l'infirmier. Le résultat est transmis immédiatement, et c'est l'infirmier qui en tire les conséquences sur le traitement.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">« Dans cette situation, qu'est-ce qui relevait de vous, et de l'infirmière ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> une séparation nette entre ce que vous avez observé, mesuré et fait, et ce que l'infirmière a décidé. Vous pouvez citer le cadre : vous agissez dans le rôle propre de l'infirmier, en collaboration avec lui. À éviter : « on fait un peu tout ensemble ».</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">« Et si l'infirmière n'avait pas été joignable ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la procédure d'urgence du service (15, médecin d'astreinte, cadre), sans laisser la personne seule, puis la traçabilité. Vous ne sortez pas de votre champ pour autant. À éviter : « je l'aurais fait moi-même ».</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">« Vous citez un traitement anticoagulant dans votre présentation. Qu'est-ce qu'il vous fait surveiller ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> saignements (gencives, nez, urines, selles), hématomes, et vigilance renforcée sur les chutes : toute chute se transmet, même si elle paraît bénigne. C'est le chaînage traitement-surveillance.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">« Dans votre service, les aides-soignants font-ils des gestes qui ne relèvent pas de leur rôle ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> une réponse honnête et professionnelle. Vous connaissez les limites de votre rôle, vous vous y tenez, et quand on vous demande un geste hors champ, vous le signalez. Le jury évalue votre positionnement au regard des bonnes pratiques, pas des usages du service.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">« Pourquoi avez-vous rangé cette situation dans cette activité ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la phrase-clé de l'activité, et l'endroit précis de votre récit où vous l'avez prouvée. À éviter : « parce qu'elle allait bien là ».</p></details></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC01 · Clôture</p>
+      <div class="content-scroll"><div style="background:#0D47A1;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0D47A1;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">1. Combien d'éléments le livret 2 demande-t-il au total ? A. 11 · B. 12 · C. 18 · D. 27</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>C. 18 éléments</strong>, pour 11 activités, rédigés chez ORACLE en 12 situations.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">2. Quel contexte l'activité 8 impose-t-elle ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La sortie de patient</strong>, avec un volet locaux et un volet matériel.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">3. L'activité 9 peut-elle porter sur un « dysfonctionnement de la mobilité » d'une personne ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> Elle porte sur le matériel et les locaux, jamais sur le corps. Elle demande un matériel vérifié hors incident et un matériel traité.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">4. Quels sont les trois éléments de l'activité 11 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Une journée habituelle, une journée avec imprévus et une action d'amélioration.</strong></p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">5. Pour l'activité 2, le risque peut-il être déjà survenu ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> L'activité 2 porte sur un risque anticipé. Une chute déjà survenue relève d'une autre logique.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">6. Soin de la vie quotidienne : sous contrôle ou en collaboration ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Sous le contrôle de l'infirmier.</strong> Le soin aigu se réalise en collaboration.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">7. Quelles sont les 3 missions de l'aide-soignant ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Accompagner</strong> la personne dans sa vie quotidienne et sociale, <strong>collaborer</strong> au projet de soins dans son champ, <strong>contribuer</strong> à la prévention des risques et au raisonnement clinique interprofessionnel.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">8. Un aide-soignant peut-il changer les lunettes à oxygène d'un patient ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Oui</strong>, sans intervenir sur le débitmètre.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">9. À quelles conditions l'aspiration endotrachéale entre-t-elle dans le champ ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Sur un orifice trachéal cicatrisé et non inflammatoire.</strong></p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">10. Quel suppositoire l'aide-soignant peut-il poser ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le suppositoire à la glycérine, d'aide à l'élimination.</strong> Tout autre suppositoire relève de l'infirmier.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">11. Écraser un comprimé préparé par l'infirmière pour une personne qui avale mal : dans le champ ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> C'est modifier la forme du traitement. Vous signalez la difficulté à l'infirmière.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">12. Quelles sont les 3 éliminatoires du livret 2 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Un acte hors champ décrit comme réalisé, le non-respect d'une règle d'hygiène et une mise en danger de la personne.</strong></p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">13. Votre service pratique un geste hors champ et votre plus belle situation repose dessus. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous choisissez une autre situation.</strong> On ne travestit jamais un récit, et le glissement de tâches ne s'écrit pas.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">14. Quelle est la différence entre la rubrique A et la rubrique B ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>A</strong> est l'inventaire honnête de ce que vous avez réellement fait et qui relève de votre champ. <strong>B</strong> est une situation précise, vécue et analysée, qui présente la personne avant le soin pour les activités 1 à 6.</p></details>
+
+<details style="border:1px solid #BBDEFB;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0D47A1;">15. Quels sont les trois niveaux de la cotation d'une compétence ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Acquis, à vérifier, non acquis.</strong> Votre objectif est de ne laisser aucune activité en « à vérifier ».</p></details>
+
+<div style="background:linear-gradient(135deg,#0D47A1 0%,#1E88E5 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 01</p>
+<ol style="margin:0;padding-left:22px;">
+<li>Vous agissez dans le rôle propre de l'infirmier, en collaboration avec lui et sous sa responsabilité.</li>
+<li>Il y a 5 blocs, 11 activités et 18 éléments. Chaque bloc se valide en entier.</li>
+<li>Comptez vos volets : les activités 5, 7 et 8 en demandent deux, la 9 deux situations, la 10 un inventaire, la 11 trois éléments.</li>
+<li>Chaque activité a sa phrase-clé, et votre situation doit la prouver.</li>
+<li>Les actes de 2021 sont autorisés sous conditions. Mesurer est dans votre champ ; interpréter pour traiter ne l'est pas.</li>
+<li>Écrivez le quoi, le comment et le pourquoi, et dites la limite en deux temps.</li>
+<li>Le glissement de tâches ne s'écrit pas : choisissez une autre situation.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#0D47A1;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 02</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #BBDEFB;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Vérifier la validité de mon AFGSU de niveau 2.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Pour chacune des 11 activités, noter une situation vécue candidate et la relire avec sa phrase-clé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Compter mes volets : installation et déplacement (5), accompagnement et formation (7), locaux et matériel en sortie de patient (8), matériel vérifié et matériel traité (9), outils et personnes ressources (10), les trois éléments de l'activité 11.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Écarter toute situation qui repose sur un geste hors champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Relire mes brouillons avec la grille de détection de la partie 4 et chasser les « on ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Passer ma rubrique A au filtre : ne garder que ce que j'ai réellement fait et qui relève de mon champ.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Anonymiser : initiales seules, établissement non identifiable.</td></tr>
+<tr><td style="padding:9px;border:1px solid #BBDEFB;text-align:center;">☐</td><td style="padding:9px;border:1px solid #BBDEFB;">Réviser avec les ressources ORACLE : le livre du livret 2 (chapitres 9 à 19), le livre de chaque bloc et les fiches de révision B1 à B5.</td></tr>
+</table></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">Lequel de ces soins relève du <strong>rôle sur prescription</strong> et non du rôle propre AS ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Aide à la toilette</button>
+        <button class="quiz-opt" data-correct="true">Mesure de la glycémie capillaire</button>
+        <button class="quiz-opt" data-correct="false">Mobilisation au fauteuil</button>
+        <button class="quiz-opt" data-correct="false">Prise des constantes</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. La glycémie capillaire est un geste du rôle sur prescription depuis le décret 2021-626." data-ko="Non. La glycémie capillaire relève du rôle sur prescription (décret 2021-626)."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

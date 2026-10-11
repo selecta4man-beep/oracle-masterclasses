@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC12 — Activité 9 — Repérer les anomalies locaux & matériels · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC12</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC12 · Bloc 4</p>
+      <h1 class="hero">Activité 9 — Repérer les anomalies locaux & matériels</h1>
+      <p class="subtitle">Vigilance environnementale, remontée des dysfonctionnements</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#FBEDE6;border-left:6px solid #7B341E;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#7B341E;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>énoncer l'attendu officiel de l'activité 9 (un matériel vérifié hors incident ET un matériel traité après une anomalie) et le distinguer des activités 8, 2 et 3 ;</li>
+<li>appliquer la règle absolue de l'activité 9 : du matériel et des locaux, jamais le corps de la personne ;</li>
+<li>dérouler et justifier la boucle complète : repérer, évaluer, sécuriser, signaler, tracer, suivre jusqu'à la réparation vérifiée ;</li>
+<li>séparer ce qui relève de l'aide-soignant (repérer, sécuriser, signaler, vérifier) de ce qui n'en relève pas (réparer, régler, intervenir sur l'électricité ou les fluides) ;</li>
+<li>décrire les vérifications des matériels et des locaux de votre quotidien, en renvoyant au protocole du service pour les fréquences et les seuils ;</li>
+<li>expliquer la matériovigilance et le signalement d'un événement indésirable, et y situer votre rôle ;</li>
+<li>repérer dans votre livret les formulations qui font tomber l'activité 9 et les réécrire ;</li>
+<li>répondre aux questions du jury sur votre évaluation du risque, votre signalement et votre suivi.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#7B341E;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;">0:00</td><td style="padding:9px;border:1px solid #F2CDB9;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #F2CDB9;">5&nbsp;min</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;">0:05</td><td style="padding:9px;border:1px solid #F2CDB9;">Partie 1 · L'activité 9 décodée</td><td style="padding:9px;border:1px solid #F2CDB9;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;">0:20</td><td style="padding:9px;border:1px solid #F2CDB9;">Partie 2 · Le raisonnement en boucle : de l'anomalie à la réparation vérifiée</td><td style="padding:9px;border:1px solid #F2CDB9;">20&nbsp;min</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;">0:40</td><td style="padding:9px;border:1px solid #F2CDB9;">Partie 3 · Les matériels et les locaux du quotidien : quoi vérifier, et jusqu'où</td><td style="padding:9px;border:1px solid #F2CDB9;">20&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;">1:00</td><td style="padding:9px;border:1px solid #F2CDB9;">Partie 4 · Matériovigilance, événements indésirables et culture de la sécurité</td><td style="padding:9px;border:1px solid #F2CDB9;">15&nbsp;min</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;">1:15</td><td style="padding:9px;border:1px solid #F2CDB9;">Partie 5 · Deux situations modèles décortiquées</td><td style="padding:9px;border:1px solid #F2CDB9;">20&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;">1:35</td><td style="padding:9px;border:1px solid #F2CDB9;">Partie 6 · Grille de détection, questions du jury et réécriture</td><td style="padding:9px;border:1px solid #F2CDB9;">15&nbsp;min</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;">1:50</td><td style="padding:9px;border:1px solid #F2CDB9;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #F2CDB9;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">1. Pour l'activité 9, une seule situation de panne bien racontée suffit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'activité 9 demande <strong>deux situations</strong> : un matériel <strong>vérifié hors incident</strong> (une vérification préventive, sans panne) ET un matériel <strong>traité</strong> après une anomalie.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">2. Une résidente dont la marche se dégrade présente un « dysfonctionnement de la mobilité » : c'est une bonne situation d'activité 9.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, et c'est le piège qui fait perdre le bloc 4.</strong> L'activité 9 porte sur le <strong>matériel et les locaux, jamais sur le corps</strong>. Un changement d'état relève de l'activité 3 ; un risque de chute non survenu, de l'activité 2.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">3. Si l'alarme d'un matelas à air sonne, je peux augmenter la pression pour la faire cesser.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Les réglages sont définis par l'infirmier selon la prescription ou le protocole. Vous vérifiez ce qui se vérifie sans rien régler, vous sécurisez la personne et vous alertez l'infirmier.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">4. Une sangle de lève-personne légèrement effilochée peut encore servir une fois, si l'on est deux.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Une sangle abîmée ne sert plus, même une fois, même à deux. L'utiliser serait une mise en danger. Elle est retirée du circuit, signalée, et remplacée par une sangle conforme de la bonne taille.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">5. Quand j'ai prévenu oralement le service technique, mon travail est terminé.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Un signalement oral ne laisse aucune trace. Il faut une demande écrite par le canal du service, une trace dans les transmissions, puis un <strong>suivi</strong> jusqu'à la réparation vérifiée : c'est fermer la boucle.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">6. Un aide-soignant habile de ses mains peut resserrer la vis d'une barrière de lit pour dépanner.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Réparer un équipement de soin n'est pas dans votre rôle, et une réparation « maison » peut rendre le matériel non conforme. Vous sécurisez, vous mettez hors service, vous signalez.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">7. La matériovigilance ne concerne que les pharmaciens et les ingénieurs biomédicaux.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le correspondant de matériovigilance déclare, mais le signalement part presque toujours d'un soignant. Votre rôle : alerter, et conserver le dispositif, son emballage et son numéro de lot ou de série, selon la procédure.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">8. Remplir une fiche de signalement d'événement indésirable, c'est dénoncer un collègue.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> La fiche est un outil <strong>non punitif</strong> : elle décrit des faits pour comprendre ce qui a permis l'incident et éviter qu'il se reproduise. On cherche des causes, pas des coupables.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">9. L'entretien d'un lève-personne après une sortie de patient est une bonne situation d'activité 9.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Entretenir, c'est l'activité 8. L'activité 9 commence quand vous <strong>vérifiez le fonctionnement</strong> d'un matériel ou que vous <strong>traitez une anomalie</strong>.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">10. Dans mon livret, je dois écrire la fréquence exacte de vérification du chariot d'urgence.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux : ce n'est pas une obligation, et si vous l'écrivez, ce doit être celle de votre service.</strong> Fréquences, seuils et check-lists varient d'un établissement à l'autre. Si vous n'êtes pas certain, écrivez « selon la check-list et la fréquence prévues par le service ». Un chiffre inventé se démonte en une question.</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent. L'activité 9 paraît simple, parce qu'une panne se raconte facilement. Elle est pourtant souvent mal rédigée : situation unique, corps confondu avec le matériel, réparation « maison », boucle jamais fermée. Chacune de ces erreurs se corrige.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 9 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:18px 0 8px 0;">1.1 · La compétence 9, reformulée</p>
+
+<p>L'activité 9 appartient au <strong>bloc 4</strong>, avec l'activité 8. Elle consiste à repérer et traiter les anomalies et dysfonctionnements en lien avec l'entretien des locaux et des matériels liés aux soins. La fiche RNCP 40692 décrit la compétence en trois gestes :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:36%;">La compétence</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Sur le terrain</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Évaluer l'efficacité des opérations d'entretien, identifier les anomalies, réajuster</td><td style="padding:9px;border:1px solid #F2CDB9;">Contrôler le résultat, pas seulement le geste : le matériel est-il propre, sec, complet, en état de marche ?</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Repérer les anomalies de l'environnement et des matériels, et alerter</td><td style="padding:9px;border:1px solid #F2CDB9;">Voir ce qui ne va pas avant que cela blesse (fuite, prise arrachée, frein qui ne tient plus, sangle usée), puis prévenir la bonne personne par le bon canal.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Vérifier le bon fonctionnement des matériels de soins</td><td style="padding:9px;border:1px solid #F2CDB9;">Contrôler un matériel <strong>avant de s'en servir</strong>, ou selon la fréquence prévue par le service, même quand rien ne laisse penser qu'il est défaillant.</td></tr>
+</table>
+
+<p>Deux verbes structurent tout : <strong>vérifier</strong> (en prévention) et <strong>traiter</strong> (après une anomalie). Ce sont les deux situations que le livret vous demande.</p>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel : deux situations</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#7B341E;color:#FFFFFF;border:1px solid #7B341E;text-align:left;width:50%;">Situation 1 · Un matériel VÉRIFIÉ hors incident</th><th style="padding:10px;background:#9C4221;color:#FFFFFF;border:1px solid #9C4221;text-align:left;">Situation 2 · Un matériel TRAITÉ après une anomalie</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #F2CDB9;vertical-align:top;"><strong>Déclencheur :</strong> une vérification prévue, avant utilisation ou selon la fréquence du service.<br><br><strong>Cœur du récit :</strong> un contrôle point par point, chaque point justifié par le risque qu'il écarte.<br><br><strong>Résultat :</strong> un matériel déclaré conforme et utilisé en sécurité, vérification tracée si le service le prévoit.<br><br><strong>Exemples :</strong> lève-personne et sangles avant un transfert, chariot d'urgence selon sa check-list, lit médicalisé à l'installation d'une personne.</td>
+<td style="padding:12px;border:1px solid #F2CDB9;vertical-align:top;"><strong>Déclencheur :</strong> une anomalie constatée : panne, alarme, casse, fuite.<br><br><strong>Cœur du récit :</strong> la séquence complète : repérer, évaluer, sécuriser, signaler, tracer, suivre.<br><br><strong>Résultat :</strong> un matériel réparé ou remplacé, dont vous avez <strong>vérifié</strong> le retour, et une personne protégée entre-temps.<br><br><strong>Exemples :</strong> matelas à air en alarme, barrière de lit qui ne se verrouille plus, commande de lit en panne, fuite d'eau.</td>
+</tr>
+</table>
+
+<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 La règle absolue : matériel et locaux, JAMAIS le corps</p>
+<p style="margin:0 0 8px 0;">Le « dysfonctionnement » de l'intitulé désigne le <strong>matériel et les locaux</strong>. Une anomalie de la personne elle-même (rougeur, marche qui se dégrade, saturation basse, confusion) est une anomalie <strong>clinique</strong> : activité 3 si elle est survenue, activité 2 s'il s'agit d'un risque non encore survenu.</p>
+<p style="margin:0;">Certains supports du marché présentent cette activité comme un trouble de la mobilité. Le candidat qui les suit rédige deux situations hors sujet, et le bloc 4, qui se valide en entier, tombe avec elles.</p>
+</div>
+
+<p>La personne n'est pas absente de vos récits : c'est elle qui donne sa <strong>gravité</strong> à l'anomalie. Un matelas à air qui se dégonfle sous une personne alitée, très maigre, à haut risque d'escarre, n'a pas la même urgence qu'un matelas en réserve. Vous présentez donc la personne et vous évaluez le risque pour elle, mais <strong>l'objet de la situation reste le matériel</strong>.</p>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">1.3 · La phrase-clé, mot à mot</p>
+
+<p style="margin:0 0 10px 0;background:#FBEDE6;border-radius:6px;padding:10px 14px;font-style:italic;">🔑 « Voilà une anomalie de matériel ou de local que j'ai repérée, évaluée, traitée et suivie. »</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:22%;">Mot</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Ce que votre récit doit montrer</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">de matériel ou de local</td><td style="padding:9px;border:1px solid #F2CDB9;">Un objet nommé précisément (« le lève-personne électrique de l'étage et sa sangle en taille L ») ou un lieu précis. Pas « le matériel ».</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">repérée</td><td style="padding:9px;border:1px solid #F2CDB9;">Lors de quelle vérification, par quel signe : alarme, bruit, voyant, usure, fuite, odeur.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">évaluée</td><td style="padding:9px;border:1px solid #F2CDB9;">Le passage évaluatif, le plus oublié : quel risque, pour qui, avec quelle urgence ?</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">traitée</td><td style="padding:9px;border:1px solid #F2CDB9;">Ce que vous faites <strong>dans votre rôle</strong> : sécuriser, mettre hors service, étiqueter, retirer, baliser, remplacer, signaler, tracer. Traiter ne veut pas dire réparer.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">suivie</td><td style="padding:9px;border:1px solid #F2CDB9;">La boucle fermée : réparation vérifiée au retour du matériel, avec une date.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">1.4 · Les confusions à éviter : activités 8, 2 et 3</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:16%;">Couple</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:42%;">L'autre activité</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">L'activité 9</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">8 et 9</td><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Entretenir.</strong> Déclencheur prévu (la sortie de patient), cœur du récit = une méthode d'hygiène.</td><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Vérifier et traiter.</strong> Cœur du récit = le fonctionnement et la sécurité du matériel. Une anomalie découverte pendant un entretien de sortie tient en une phrase dans l'activité 8 ; développée, elle devient une activité 9.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">2 et 9</td><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Prévenir un risque pour la personne</strong>, repéré à partir de ses fragilités. L'objet du récit est la personne.</td><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Traiter un défaut de l'environnement.</strong> Le risque pour la personne sert à évaluer l'urgence, pas à constituer la situation.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">3 et 9</td><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Un changement d'état clinique</strong> repéré, mesuré et signalé.</td><td style="padding:9px;border:1px solid #F2CDB9;">Si la valeur anormale vient d'un appareil défaillant, l'activité 9 porte sur l'appareil ; la valeur de la personne est recontrôlée avec un autre appareil et transmise.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Le test du sol mouillé.</strong> « J'ai vu une flaque dans le couloir, j'ai balisé, j'ai signalé la fuite au plafond et j'ai suivi la réparation » : activité 9, le cœur est un défaut du local. « M. B., qui a déjà chuté deux fois, se lève seul la nuit ; j'ai proposé avec l'équipe une veilleuse et un chemin dégagé, réévalués une semaine plus tard » : activité 2, le cœur est le risque de chute de cette personne.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">1.5 · Ce que vous inscrivez en rubrique A</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:10px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;width:30%;">Recevable, si réellement pratiqué</td><td style="padding:10px;border:1px solid #C8E6C9;">Vérification du lit médicalisé, du lève-personne, du verticalisateur et des sangles avant utilisation ; surveillance du matelas à air ; vérification des appareils de mesure ; participation à la vérification du chariot d'urgence selon la check-list ; relevé de température du réfrigérateur ; test de la sonnette d'appel ; mise hors service et étiquetage d'un matériel défectueux ; demande d'intervention ; participation à un signalement d'événement indésirable ; suivi d'une réparation.</td></tr>
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">À ne jamais inscrire</td><td style="padding:10px;border:1px solid #FFCDD2;">« Réparation du matériel », « réglage des matelas à air », « réglage du débit d'oxygène », « réarmement du tableau électrique ». Les lister, c'est les déclarer réalisés.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;margin:24px 0 8px 0;">✍️ Exercice 1 (5&nbsp;min) · Activité 9, ou pas ?</p>
+<p>Pour chaque situation candidate, décidez si elle relève de l'activité 9 (vérifiée ou traitée) ; sinon, dites à quelle activité la rattacher.</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">a) Avant de lever Mme F. au lève-personne, je contrôle l'étiquette de contrôle périodique, la charge maximale inscrite, l'état de la sangle et la batterie. Tout est conforme, je réalise le transfert.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 9, matériel vérifié hors incident.</strong> Reste à justifier chaque point de contrôle par le risque qu'il écarte.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">b) Depuis trois jours, M. L. a une rougeur au talon qui ne disparaît pas à la vitropression. Je supprime l'appui et je le transmets à l'infirmière.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Pas l'activité 9 : c'est le corps.</strong> Un changement d'état cutané repéré, objectivé et signalé : activité 3.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">c) La nuit, le matelas à air de Mme R. sonne. Je constate une fuite, je sécurise la personne avec l'infirmière, je mets le matelas hors service, je fais la demande d'intervention et je vérifie la réparation deux jours plus tard.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 9, matériel traité.</strong> La boucle est complète, jusqu'à la réparation vérifiée.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">d) Le tensiomètre électronique affiche 210/40 mmHg chez une résidente qui va bien. Je recontrôle avec un appareil manuel : 132/78 mmHg. Je transmets cette valeur, je retire l'appareil électronique, je l'étiquette et je demande sa vérification.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 9, matériel traité</strong>, à condition de développer le suivi jusqu'au retour de l'appareil vérifié. L'objet de la situation est l'appareil, pas la tension de la résidente.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">e) Mme G. a une saturation à 86 % alors qu'elle est habituellement à 94 % sous oxygène. Je découvre que sa tubulure est coudée sous le matelas. Je la dégage et j'appelle l'infirmière.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Telle quelle, c'est une activité 3 : une désaturation repérée et signalée. Elle ne devient une activité 9 que si le récit porte sur le matériel (installation durable de la tubulure, information de l'équipe, suivi). Dans les deux cas, vous ne touchez jamais au débitmètre.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">f) Après la sortie de M. V., je nettoie et je désinfecte le lit, le matelas et l'adaptable, puis la chambre.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Pas l'activité 9 : c'est l'activité 8.</strong> Aucun fonctionnement vérifié, aucune anomalie traitée.</p></details>
+
+<div style="background:#FBEDE6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> Deux situations : un matériel vérifié hors incident et un matériel traité. Matériel et locaux, jamais le corps : la personne donne sa gravité à l'anomalie, elle n'en est pas l'objet. L'activité 8 entretient, l'activité 9 vérifie et traite. Traiter ne veut pas dire réparer.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Le raisonnement en boucle : de l'anomalie à la réparation vérifiée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 20&nbsp;min</span></div>
+
+<p>Le jury ne juge pas la panne : il juge votre <strong>raisonnement</strong> face à la panne. Il cherche une séquence ordonnée, où chaque étape a une raison d'être et où la dernière referme la première.</p>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:18px 0 8px 0;">2.1 · La boucle en six temps</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:18%;">Temps</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:42%;">Ce que vous faites</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Ce que votre récit doit en dire</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;color:#7B341E;">① Repérer</td><td style="padding:9px;border:1px solid #F2CDB9;">Constater l'anomalie : vérification prévue, alarme, bruit, usure, fuite, signalement de la personne ou d'un collègue.</td><td style="padding:9px;border:1px solid #F2CDB9;">Le moment, le matériel nommé, le signe exact : « le voyant "basse pression" clignotait ».</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;color:#7B341E;">② Évaluer</td><td style="padding:9px;border:1px solid #F2CDB9;">Mesurer la gravité : quel risque, pour qui, avec quelle urgence, et quelle solution de remplacement ?</td><td style="padding:9px;border:1px solid #F2CDB9;">Le raisonnement : « Mme R. étant alitée et à haut risque d'escarre, un matelas dégonflé l'exposait à une lésion du sacrum. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;color:#7B341E;">③ Sécuriser</td><td style="padding:9px;border:1px solid #F2CDB9;">Protéger d'abord la personne, puis neutraliser le matériel ou la zone.</td><td style="padding:9px;border:1px solid #F2CDB9;">L'ordre des priorités, et ce que vous avez fait pour que personne ne réutilise l'appareil.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;color:#7B341E;">④ Signaler</td><td style="padding:9px;border:1px solid #F2CDB9;">Prévenir le bon interlocuteur, par le bon canal : oralement s'il y a urgence, et toujours par écrit.</td><td style="padding:9px;border:1px solid #F2CDB9;">Qui, comment, et ce que contenait la demande.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;color:#7B341E;">⑤ Tracer</td><td style="padding:9px;border:1px solid #F2CDB9;">Inscrire l'anomalie et les mesures prises dans les outils du service.</td><td style="padding:9px;border:1px solid #F2CDB9;">Où vous l'avez écrit, et pourquoi : pour que l'équipe suivante sache.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;color:#7B341E;">⑥ Suivre et vérifier</td><td style="padding:9px;border:1px solid #F2CDB9;">Vérifier la prise en compte, relancer si besoin, contrôler le matériel à son retour, informer l'équipe.</td><td style="padding:9px;border:1px solid #F2CDB9;">Une date et un résultat vérifié : « le surlendemain, gonflage complet, alarme silencieuse ».</td></tr>
+</table>
+
+<div style="background:#FBEDE6;border-left:6px solid #9C4221;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Et pour la vérification hors incident ?</strong> Les temps ④ à ⑥ s'y réduisent souvent à la traçabilité de la vérification. Mais le jury vous demandera presque toujours : « Et si vous aviez trouvé une anomalie ? » Votre réponse doit dérouler les six temps.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">2.2 · Évaluer : le temps le plus oublié</p>
+
+<p>Le jury veut savoir <strong>pourquoi</strong> vous avez agi avec cette urgence-là. Quatre questions structurent votre évaluation :</p>
+
+<ol style="padding-left:22px;">
+<li><strong>Le matériel est-il en cours d'utilisation, ou va-t-il l'être ?</strong></li>
+<li><strong>Qui est exposé, et à quoi ?</strong> La personne (chute, escarre, brûlure, électrisation, retard d'alerte), l'équipe (blessure, troubles musculo-squelettiques), les autres personnes.</li>
+<li><strong>Le risque est-il immédiat ou différé ?</strong></li>
+<li><strong>Existe-t-il une solution de remplacement ?</strong></li>
+</ol>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:20%;">Niveau (repère ORACLE)</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:38%;">Exemples</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Votre réaction</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;color:#C62828;">Danger immédiat</td><td style="padding:9px;border:1px solid #FFCDD2;">Matelas à air dégonflé sous une personne alitée ; sonnette muette chez une personne dépendante ; fils électriques apparents ; eau brûlante au robinet.</td><td style="padding:9px;border:1px solid #FFCDD2;">Protection de la personne sur-le-champ, alerte orale de l'infirmier (et du service technique ou de la procédure de sécurité selon la nature), puis demande écrite et traçabilité.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFE082;background:#FFF8E1;font-weight:bold;color:#E65100;">Risque à court terme</td><td style="padding:9px;border:1px solid #FFE082;">Frein de fauteuil qui glisse ; barrière qui ne se verrouille plus ; sangle usée ; tensiomètre imprécis.</td><td style="padding:9px;border:1px solid #FFE082;">Mise hors service, étiquetage, remplacement, information de l'infirmier si la personne est concernée, demande d'intervention, traçabilité.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#E8F5E9;font-weight:bold;color:#2E7D32;">Gêne sans risque</td><td style="padding:9px;border:1px solid #C8E6C9;">Roulette qui grince ; placard qui ferme mal.</td><td style="padding:9px;border:1px solid #C8E6C9;">Demande d'intervention ordinaire, tracée, puis vérification qu'elle a été traitée.</td></tr>
+</table>
+
+<p style="font-size:13px;color:#546E7A;">Ces trois niveaux sont un repère de raisonnement ORACLE, pas une classification réglementaire. Si votre établissement a sa propre échelle de priorité, citez-la.</p>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">2.3 · Sécuriser : la personne d'abord, le matériel ensuite</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:24%;">Geste</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Comment, et pourquoi</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Protéger la personne</td><td style="padding:9px;border:1px solid #F2CDB9;">Arrêter l'utilisation, installer la personne en sécurité (lit en position basse, appui supprimé), rester auprès d'elle si le risque l'exige, alerter l'infirmier.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Mettre hors service et étiqueter</td><td style="padding:9px;border:1px solid #F2CDB9;">Ne plus s'en servir, débrancher un appareil qui n'est plus utilisé, apposer l'étiquette prévue (« hors service, ne pas utiliser ») avec la date, le défaut et votre nom. Sans étiquette, l'équipe suivante le réutilise.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Retirer</td><td style="padding:9px;border:1px solid #F2CDB9;">Déposer le matériel à l'emplacement prévu, à l'écart du matériel propre. Son entretien avant envoi, selon la procédure, relève de l'activité 8 et tient ici en une phrase.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Baliser</td><td style="padding:9px;border:1px solid #F2CDB9;">Pour un local : panneau « sol glissant », pièce condamnée, collègues et personnes informés.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Remplacer</td><td style="padding:9px;border:1px solid #F2CDB9;">Prendre le matériel de remplacement et le <strong>vérifier</strong> avant usage. Si le remplacement modifie la prise en soins (autre support, autre technique de transfert), l'infirmier décide.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">2.4 · Signaler : le bon interlocuteur, par le bon canal</p>
+
+<p>Chaque établissement a son organisation : dans votre livret, nommez les interlocuteurs de <em>votre</em> service.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:26%;">Interlocuteur</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Quand le prévenir</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">L'infirmier</td><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Toujours</strong> quand la personne est exposée, qu'un dispositif médical de soin est en cause, ou que le remplacement change la prise en soins.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Le cadre de santé</td><td style="padding:9px;border:1px solid #F2CDB9;">Anomalie récurrente, demande restée sans suite, manque de matériel, événement indésirable, risque pour l'équipe.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Le service technique</td><td style="padding:9px;border:1px solid #F2CDB9;">Bâtiment, plomberie, électricité, chauffage, éclairage, portes, et selon l'organisation, lits et mobilier.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Le service biomédical</td><td style="padding:9px;border:1px solid #F2CDB9;">Dispositifs médicaux (matelas thérapeutiques, lève-personnes, appareils de mesure…), selon ce que l'établissement lui confie, ou un prestataire extérieur.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">L'hôtellerie ou la logistique</td><td style="padding:9px;border:1px solid #F2CDB9;">Mobilier non médical, linge, chariots, approvisionnement.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">À domicile</td><td style="padding:9px;border:1px solid #F2CDB9;">Le responsable de votre service, qui contacte le prestataire de matériel ou la famille ; vous informez aussi la personne et, avec son accord, ses proches.</td></tr>
+</table>
+
+<p><strong>Les canaux :</strong> l'<strong>alerte orale</strong> pour le danger immédiat, qui précède l'écrit sans le remplacer ; le <strong>bon de demande d'intervention</strong>, papier ou informatique, qui déclenche la réparation et crée une trace datée ; le <strong>logiciel de gestion de la maintenance</strong>, qui attribue un numéro et affiche l'état d'avancement de la demande (précieux pour le suivi) ; la <strong>fiche de signalement d'événement indésirable</strong>, quand l'anomalie a causé ou aurait pu causer un dommage (partie 4) ; les <strong>transmissions</strong>, pour que l'équipe suivante connaisse l'anomalie et la conduite à tenir.</p>
+
+<div style="border:1px solid #F2CDB9;background:#FDF7F3;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;"><strong>📋 Une demande d'intervention utile contient :</strong> le <strong>matériel</strong>, avec son numéro d'inventaire ou de série ; le <strong>lieu</strong> ; le <strong>défaut</strong> décrit par des faits (« la barrière gauche ne se verrouille plus en position haute, le loquet ne s'enclenche pas », et non « barrière cassée ») ; le <strong>risque</strong>, donc l'urgence ; les <strong>mesures déjà prises</strong> ; la <strong>date, l'heure et votre nom</strong>.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">2.5 · Tracer et suivre : fermer la boucle</p>
+
+<p>Tracer, c'est rendre l'anomalie visible pour ceux qui ne l'ont pas vue. Suivre, c'est s'assurer qu'elle a disparu : c'est ce qui distingue une activité 9 « acquise » d'une activité 9 « à vérifier ».</p>
+
+<ul style="padding-left:20px;">
+<li><strong>Vérifier la prise en compte</strong> : numéro de demande, statut dans le logiciel, appel du technicien.</li>
+<li><strong>Relancer</strong>, et informer le cadre si la demande reste sans suite alors que le risque persiste.</li>
+<li><strong>Contrôler le retour</strong> : faire fonctionner le matériel réparé avant de le remettre en service.</li>
+<li><strong>Informer l'équipe</strong> et tracer la remise en service. Si le matériel était destiné à une personne, l'infirmier décide de sa réinstallation.</li>
+</ul>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">2.6 · Ce qui relève de vous, ce qui n'en relève pas</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#2E7D32;color:#FFFFFF;border:1px solid #2E7D32;text-align:left;width:50%;">✅ Votre rôle</th><th style="padding:10px;background:#C62828;color:#FFFFFF;border:1px solid #C62828;text-align:left;">⛔ Hors de votre rôle</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #C8E6C9;background:#F1F8E9;vertical-align:top;">Vérifier le fonctionnement d'un matériel avant et pendant son usage, selon la notice et le protocole.<br><br>Repérer, évaluer, sécuriser, étiqueter, retirer, baliser, remplacer par un matériel vérifié.<br><br>Signaler, tracer, suivre, vérifier au retour.<br><br>Les gestes d'usage prévus par la notice et le service : mettre un appareil en charge, changer les piles d'un appareil de mesure, remplacer une sangle usée par une sangle conforme de la bonne taille.</td>
+<td style="padding:12px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;">Réparer soi-même un dispositif : ruban adhésif, vis resserrée, pièce changée, loquet forcé.<br><br>Régler un appareil biomédical ou modifier un réglage prescrit (pression ou mode d'un matelas thérapeutique).<br><br><strong>Toucher au débitmètre d'oxygène</strong>, même pour « vérifier ».<br><br>Intervenir sur l'électricité (disjoncteur, prise, luminaire) ou sur les fluides (plomberie, gaz médicaux).<br><br>Décider d'une contention de remplacement.<br><br>Court-circuiter le circuit de l'établissement (renvoyer vous-même le dispositif au fournisseur, déclarer sans passer par le correspondant de matériovigilance, à qui revient la déclaration).</td>
+</tr>
+</table>
+
+<div style="border:1px solid #F2CDB9;background:#FDF7F3;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;"><strong>Dire la limite en deux temps, appliqué à l'activité 9 :</strong></p>
+<p style="margin:0 0 6px 0;font-style:italic;">« Je n'ai pas modifié les réglages du matelas, définis par l'infirmière selon la prescription ; j'ai vérifié le branchement et les tuyaux, puis je l'ai appelée. »</p>
+<p style="margin:0;font-style:italic;">« Je n'ai pas tenté de revisser la barrière ; j'ai placé le lit en position basse, j'ai prévenu l'infirmière et j'ai fait la demande d'intervention. »</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;margin:24px 0 8px 0;">✍️ Exercice 2 (6&nbsp;min) · Remettez la boucle dans l'ordre</p>
+<p>Remettez les étapes dans l'ordre de la boucle, repérez les temps manquants, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">1. Fuite d'eau. (A) J'essuie le sol et je pose un panneau « sol glissant ». (B) Trois jours plus tard, je vérifie que le siphon ne fuit plus. (C) J'appelle le service technique, puis je saisis la demande. (D) En accompagnant Mme S. à sa toilette, je vois une flaque qui s'étend sous le lavabo. (E) J'installe Mme S. au fauteuil et je réalise sa toilette dans une autre salle de bain proche, avec son accord. (F) J'estime que le sol mouillé expose Mme S., qui marche avec un déambulateur, à une chute.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Ordre :</strong> D → F → E → A → C → traçabilité (manquante : transmissions, équipe informée que la salle de bain est condamnée) → B. La personne est protégée avant le local, et le local avant le signalement.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">2. Sonnette muette. (A) Je teste la sonnette en arrivant : aucun voyant ne s'allume au tableau. (B) Je remets à M. P. une sonnette portative et je vérifie qu'il sait l'utiliser. (C) Je note la panne et la sonnette provisoire dans les transmissions. (D) M. P. ne peut pas se lever seul : sans sonnette, il ne peut appeler personne. (E) Le lendemain, je teste la sonnette réparée avec lui. (F) Je fais la demande au service technique et je préviens l'infirmière.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Ordre :</strong> A → D → B → F → C → E. Boucle complète : la sécurisation passe par une solution de remplacement <strong>vérifiée</strong> avec la personne, et le suivi se fait avec elle.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">3. Frein de fauteuil. (A) Je signale le défaut par le logiciel. (B) Je prends un autre fauteuil, dont je vérifie les freins. (C) Pendant le transfert de Mme J., je sens le fauteuil reculer malgré le frein serré. (D) J'arrête le transfert et je réinstalle Mme J. assise au bord du lit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Ordre :</strong> C → évaluation (manquante : risque de chute pendant le transfert) → D → B → mise hors service et étiquetage (manquants) → A → traçabilité (manquante) → suivi (manquant). Quatre temps manquent : la situation serait jugée « à vérifier ».</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">4. À domicile. (A) J'appelle l'infirmière coordinatrice, qui contacte le prestataire. (B) Je demande à Mme A. de ne plus utiliser son déambulateur et je l'accompagne à son fauteuil. (C) J'écris dans le cahier de liaison ce que j'ai constaté et fait. (D) En l'aidant à se lever, je sens la poignée du déambulateur pivoter sous sa main. (E) À mon passage suivant, je vérifie que le déambulateur a été remplacé et je la regarde marcher avec. (F) J'informe sa fille, avec l'accord de Mme A.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Ordre :</strong> D → évaluation (manquante : sans appui fiable, risque de chute) → B → F → A → C → E. À domicile, la sécurisation passe par la personne et ses proches ; le suivi se fait au passage suivant.</p></details>
+
+<div style="background:#FBEDE6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Repérer, évaluer, sécuriser, signaler, tracer, suivre : six temps, dans cet ordre. L'évaluation dit pourquoi vous avez agi avec cette urgence. La personne est protégée avant le matériel. L'alerte orale précède l'écrit sans le remplacer. Le suivi daté et vérifié ferme la boucle. Traiter, c'est sécuriser et signaler, jamais réparer ni régler.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Les matériels et les locaux du quotidien : quoi vérifier, et jusqu'où <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:40 · 20&nbsp;min</span></div>
+
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ La règle des chiffres.</strong> Un chiffre de fréquence ou de seuil n'est recevable que s'il vient de <em>votre</em> protocole et que vous pouvez dire d'où il vient. Sinon : « selon la check-list du service », « dans la fourchette indiquée sur la fiche de relevé », « à la date portée sur l'étiquette de contrôle ». C'est une réponse professionnelle.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:18px 0 8px 0;">3.1 · Le lit médicalisé</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:34%;">Vous vérifiez</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:33%;">Pourquoi</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Vous ne faites jamais</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Les freins</strong> : le lit ne bouge pas quand on s'y appuie.</td><td style="padding:9px;border:1px solid #F2CDB9;">Un lit qui roule pendant un transfert fait chuter la personne.</td><td style="padding:9px;border:1px solid #F2CDB9;" rowspan="4">Démonter une commande, forcer un loquet, resserrer une barrière. Décider seul de relever les barrières : c'est une contention, décision médicale inscrite au plan de soins ; vous l'appliquez et vous surveillez.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;"><strong>Les barrières</strong> : verrouillage, absence de jeu, pas d'espace dangereux avec le matelas.</td><td style="padding:9px;border:1px solid #F2CDB9;">Chute, coincement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;"><strong>La télécommande</strong> : chaque fonction répond, câble intact.</td><td style="padding:9px;border:1px solid #F2CDB9;">Lit bloqué dans une position inadaptée, risque électrique.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;"><strong>La hauteur</strong> : montée, descente, position basse.</td><td style="padding:9px;border:1px solid #F2CDB9;">Position de soin pour votre dos, position basse pour limiter la gravité d'une chute.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">3.2 · Les aides à la mobilisation</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:20%;">Matériel</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Vous vérifiez, avant chaque utilisation</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Lève-personne</td><td style="padding:9px;border:1px solid #F2CDB9;">L'étiquette de <strong>contrôle périodique</strong>, échéance non dépassée ; la <strong>charge maximale inscrite</strong>, comparée au poids de la personne ; la batterie ; la montée et la descente ; l'arrêt d'urgence et la descente d'urgence ; les roulettes et leurs freins ; le fléau et ses crochets.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Sangles</td><td style="padding:9px;border:1px solid #F2CDB9;">La <strong>taille</strong> prévue par le guide du fabricant ou la fiche de transfert ; la <strong>compatibilité</strong> avec l'appareil ; l'<strong>état</strong> : coutures, effilochage, usure, boucles, étiquette lisible. Une sangle douteuse ne sert plus.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Verticalisateur</td><td style="padding:9px;border:1px solid #F2CDB9;">Les mêmes points, plus l'appui-genoux, le repose-pieds et la sangle de maintien. Il suppose un <strong>appui partiel</strong> de la personne ; le lève-personne, aucun appui.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Fauteuil roulant</td><td style="padding:9px;border:1px solid #F2CDB9;">Les freins des deux côtés ; les pneus ; les repose-pieds et accoudoirs bien fixés ; l'assise et le dossier ; le coussin prescrit, en place et dans le bon sens.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">3.3 · Le matelas à air</p>
+
+<p>Le matériel le plus souvent cité en activité 9, et le plus exposé au hors champ.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><th style="padding:10px;background:#2E7D32;color:#FFFFFF;border:1px solid #2E7D32;text-align:left;width:50%;">✅ Vous vérifiez, sans rien régler</th><th style="padding:10px;background:#C62828;color:#FFFFFF;border:1px solid #C62828;text-align:left;">⛔ Vous ne touchez pas</th></tr>
+<tr>
+<td style="padding:12px;border:1px solid #C8E6C9;background:#F1F8E9;vertical-align:top;">Compresseur branché et allumé, câble intact et hors des roues du lit ; tuyaux raccordés, ni coudés ni écrasés ; alarme silencieuse ; gonflage homogène, sans fuite audible ; selon le protocole ou la notice, le « test de la main » (main à plat sous le matelas, sous la zone la plus lourde, pour vérifier que la personne ne repose pas sur le sommier) ; housse intacte.</td>
+<td style="padding:12px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;">Les <strong>réglages</strong> (pression, poids programmé, mode), définis par l'infirmier. Une alarme ne se fait pas taire en modifiant un réglage. Aucune réparation du compresseur ou des cellules. Si un réglage vous semble inadapté (personne qui « s'enfonce », inconfort), vous le <strong>signalez</strong>.</td>
+</tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">3.4 · Les appareils de mesure</p>
+
+<p><strong>Tensiomètre</strong> : brassard adapté au bras, tubulure sans fuite, charge ; pour un appareil manuel, aiguille au zéro au repos. <strong>Thermomètre</strong> : état de l'appareil et de la sonde, protection à usage unique si prévue, charge. <strong>Oxymètre</strong> : capteur propre et intact, charge, affichage stable sur une main chaude. <strong>Pèse-personne</strong> : sol plan, zéro à vide, ou mise à zéro prévue par la notice pour un fauteuil de pesée.</p>
+
+<div style="background:#FBEDE6;border-left:6px solid #9C4221;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Vérifier n'est pas étalonner.</strong> Vous contrôlez qu'un appareil fonctionne et donne des valeurs cohérentes. Devant une valeur incohérente avec l'état de la personne, vous recontrôlez avec un autre appareil, vous transmettez la valeur fiable à l'infirmier et vous retirez l'appareil douteux. Son <strong>étalonnage</strong> relève du service compétent, selon l'organisation.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">3.5 · Sonnette d'appel, chariot d'urgence, réfrigérateur</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:18%;">Matériel</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:50%;">Votre vérification</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Limite</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Sonnette d'appel</td><td style="padding:9px;border:1px solid #F2CDB9;">Elle déclenche l'appel ; elle est <strong>à portée de main</strong>, au lit comme au fauteuil ; la personne sait s'en servir.</td><td style="padding:9px;border:1px solid #F2CDB9;">En cas de panne : sonnette de remplacement, passages rapprochés décidés avec l'infirmier, demande d'intervention.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Chariot d'urgence</td><td style="padding:9px;border:1px solid #F2CDB9;">Selon l'organisation, vous <strong>participez</strong> à sa vérification, avec l'infirmier ou sous sa responsabilité : intégrité du <strong>scellé</strong> et son numéro, contenu selon la <strong>check-list</strong>, <strong>dates de péremption</strong>, <strong>traçabilité</strong> signée, à la fréquence du service et après chaque utilisation.</td><td style="padding:9px;border:1px solid #F2CDB9;">Les médicaments relèvent de l'infirmier et de la pharmacie : un manque se signale, il ne se comble pas de votre initiative.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Réfrigérateur</td><td style="padding:9px;border:1px solid #F2CDB9;">Le <strong>relevé de température</strong> selon le protocole, comparé à la fourchette de la fiche de relevé ; fermeture de la porte ; givre.</td><td style="padding:9px;border:1px solid #F2CDB9;">Température hors fourchette : signalement immédiat à l'infirmier (médicaments) ou au responsable prévu (alimentaire), traçabilité. Vous ne décidez pas du devenir des médicaments.</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 3.6 · Oxygène et aspiration : l'aide-soignant ne touche jamais au débitmètre, même sur protocole, même sur consigne</p>
+<p style="margin:0 0 8px 0;">Vous pouvez monter et entretenir le matériel d'oxygénothérapie, surveiller la personne, changer des lunettes à oxygène, poser ou changer un masque en situation stable et chronique. Vous vérifiez que la tubulure n'est ni coudée ni débranchée et que le matériel est complet.</p>
+<p style="margin:0;">Un débit qui vous paraît différent de la prescription, un débitmètre qui fuit, une bouteille presque vide selon son manomètre : vous <strong>ne corrigez rien</strong>, vous restez auprès de la personne, vous alertez l'infirmier et vous tracez. L'aspiration se vérifie de même : bocal, tuyaux et sondes selon la check-list ; tout réglage relève du protocole et de l'infirmier.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">3.7 · Les locaux</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:24%;">Anomalie</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Risque et conduite</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Sol mouillé, fuite d'eau</td><td style="padding:9px;border:1px solid #F2CDB9;">Chute. Panneau « sol glissant », essuyage, éloignement des personnes ; fuite signalée au service technique, pièce condamnée si besoin.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Éclairage défaillant</td><td style="padding:9px;border:1px solid #F2CDB9;">Chute, désorientation la nuit. Éclairage d'appoint existant, demande d'intervention ; vous ne changez pas de luminaire.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Prise arrachée, fils apparents, odeur de brûlé</td><td style="padding:9px;border:1px solid #F2CDB9;">Électrisation, incendie. Ne rien toucher ni brancher, condamner l'accès, alerter immédiatement le service technique ; fumée ou odeur de brûlé : procédure incendie de l'établissement.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Porte, fenêtre, barre d'appui</td><td style="padding:9px;border:1px solid #F2CDB9;">Chute, fugue, défenestration, porte coupe-feu inopérante. Information de l'infirmier et du cadre selon le risque, barre condamnée, demande d'intervention.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Eau anormalement chaude</td><td style="padding:9px;border:1px solid #F2CDB9;">Brûlure, surtout si la sensibilité est diminuée. Vous contrôlez l'eau avant toute toilette selon le protocole ; si elle est anormalement chaude, vous n'utilisez pas le point d'eau, vous le signalez et vous informez l'équipe. Aucun réglage sur le réseau.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;margin:24px 0 8px 0;">✍️ Exercice 3 (6&nbsp;min) · Dans votre rôle, hors de votre rôle, ou sous conditions ?</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">a) Débrancher le compresseur d'un matelas à air défectueux, après l'installation de la personne sur un autre support, puis l'étiqueter « hors service ».</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Dans votre rôle.</strong> La personne est d'abord en sécurité sur un support décidé par l'infirmier ; la mise hors service est un geste de sécurisation.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">b) Augmenter la pression d'un matelas à air parce que la personne « s'enfonce ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors de votre rôle.</strong> Les réglages sont définis par l'infirmier. Vous faites le test de la main si le protocole le prévoit, vous vérifiez branchement et tuyaux, et vous signalez.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">c) Remplacer une sangle effilochée par une sangle neuve, compatible avec l'appareil et de la taille prévue pour la personne.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Dans votre rôle</strong>, à condition de vérifier la nouvelle sangle avant usage et de retirer, étiqueter et signaler la sangle abîmée.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">d) Participer à la vérification du chariot d'urgence prévue par le service et signer la fiche de traçabilité.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Si l'organisation du service le prévoit, selon la check-list, avec l'infirmier ou sous sa responsabilité. Les médicaments restent sous sa responsabilité.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">e) Réarmer le disjoncteur de l'étage après une coupure, pour relancer les matelas à air.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors de votre rôle.</strong> Toute intervention électrique relève du service technique. Vous alertez l'infirmier et le service technique ou l'astreinte, vous vérifiez chaque personne installée sur un matelas à air et vous appliquez la procédure prévue en cas de coupure.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">f) Tourner le débitmètre pour vérifier qu'il « fonctionne encore », puis le remettre à la même graduation.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors de votre rôle.</strong> Vous ne touchez jamais au débitmètre, même pour vérifier. Vous vérifiez la tubulure et les lunettes, et vous alertez l'infirmier.</p></details>
+
+<div style="background:#FBEDE6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Chaque point de contrôle se justifie par un risque. Vous vérifiez, vous ne réglez pas, vous ne réparez pas. Les réglages d'un matelas à air sont prescrits ; le débitmètre ne se touche jamais. Pour le chariot d'urgence, vous participez selon l'organisation. Fréquences et seuils viennent de votre protocole, jamais de votre mémoire.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · Matériovigilance, événements indésirables et culture de la sécurité <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:00 · 15&nbsp;min</span></div>
+
+<p>Quand une anomalie touche un dispositif médical, ou qu'elle a exposé une personne, elle entre dans la <strong>gestion des risques</strong> de l'établissement. Le jury attend que vous y situiez votre rôle, sans le surestimer ni l'ignorer.</p>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:18px 0 8px 0;">4.1 · La matériovigilance</p>
+
+<p>La <strong>matériovigilance</strong> est la surveillance des incidents, et des risques d'incidents, liés à l'utilisation des <strong>dispositifs médicaux</strong> : lit médicalisé, matelas thérapeutique, lève-personne et sangles, appareils de mesure, matériel d'oxygénothérapie, sondes, poches… Son but : protéger d'autres personnes d'un défaut qui pourrait se reproduire sur le même modèle ou le même lot.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:30%;">Acteur</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Son rôle</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Vous, aide-soignant</td><td style="padding:9px;border:1px solid #F2CDB9;">Repérer, sécuriser la personne, <strong>alerter</strong> l'infirmier et le cadre, <strong>conserver</strong> selon la procédure le dispositif, son emballage et ce qui l'identifie (<strong>numéro de lot</strong> ou <strong>de série</strong>), décrire les faits.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">L'infirmier et le cadre</td><td style="padding:9px;border:1px solid #F2CDB9;">Évaluer la situation clinique, organiser le remplacement, informer le correspondant de matériovigilance selon la procédure.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;font-weight:bold;">Le correspondant local de matériovigilance</td><td style="padding:9px;border:1px solid #F2CDB9;">Analyser l'incident et, le cas échéant, le <strong>déclarer</strong> à l'autorité sanitaire nationale (l'ANSM, Agence nationale de sécurité du médicament et des produits de santé). Dans l'établissement, la déclaration passe par lui.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ Trois réflexes qui détruisent une preuve :</strong> <strong>jeter</strong> le dispositif défectueux et son emballage (le numéro de lot disparaît), le <strong>bricoler</strong> (on ne sait plus ce qui a lâché), le <strong>renvoyer</strong> soi-même au fournisseur (le circuit de l'établissement est court-circuité). Le bon réflexe : isoler, identifier, conserver selon la procédure, prévenir.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">4.2 · L'événement indésirable</p>
+
+<p>Un <strong>événement indésirable</strong> est un événement non souhaité, survenu lors des soins ou dans l'environnement de la personne, qui a causé ou <strong>aurait pu causer</strong> un dommage à une personne accompagnée, à un visiteur ou à un professionnel. Un incident rattrapé à temps se signale aussi : c'est souvent le plus instructif, car il montre une faille avant qu'elle ne blesse.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#7B341E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #7B341E;text-align:left;width:45%;">Anomalie</th><th style="padding:9px;border:1px solid #7B341E;text-align:left;">Signalement attendu</th></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;">Roulette de chariot qui grince</td><td style="padding:9px;border:1px solid #F2CDB9;">Demande d'intervention seule.</td></tr>
+<tr style="background:#FDF7F3;"><td style="padding:9px;border:1px solid #F2CDB9;">Matelas à air dégonflé sous une personne à risque d'escarre</td><td style="padding:9px;border:1px solid #F2CDB9;">Demande d'intervention <strong>et</strong> fiche de signalement selon la procédure : la personne a été exposée. Matériovigilance informée par l'infirmier ou le cadre si le dispositif est en cause.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">4.3 · La culture positive de l'erreur</p>
+
+<p>Un signalement n'est utile que si l'on ose signaler. D'où la <strong>culture positive de l'erreur</strong> : la fiche est <strong>non punitive</strong> ; l'analyse porte sur le <strong>système</strong> (organisation, matériel, procédure, communication) et non sur une personne ; les événements sont analysés en équipe, par exemple en comité de retour d'expérience selon l'organisation ; un retour est fait à ceux qui ont signalé.</p>
+
+<div style="border:1px solid #F2CDB9;background:#FDF7F3;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;"><strong>✍️ Rédiger une fiche de signalement : les faits, rien que les faits</strong></p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:8px;border:1px solid #FFCDD2;background:#FFEBEE;width:45%;font-style:italic;">« Encore une fois, personne n'a vérifié ce matelas, c'est inadmissible. »</td><td style="padding:8px;border:1px solid #C8E6C9;background:#E8F5E9;font-style:italic;">« 2 h 10 : alarme "basse pression" du matelas à air. Personne en appui sur le sommier au test de la main. Fuite audible zone bassin. Réglages inchangés. Personne sur matelas de remplacement à 2 h 45, peau intacte. Matelas défectueux hors service, conservé, demande saisie. »</td></tr>
+</table>
+<p style="margin:8px 0 0 0;">À gauche, un jugement qui n'apprend rien. À droite, des faits datés, qui permettent l'analyse.</p>
+</div>
+
+<div style="background:#FBEDE6;border-left:6px solid #9C4221;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 4.4 · Le lien avec la démarche qualité, et la frontière avec l'activité 11.</strong> Demandes d'intervention, vérifications tracées et fiches de signalement alimentent la démarche qualité et gestion des risques de l'établissement : matériels qui tombent souvent en panne, procédures à revoir, formations à organiser. Dans l'activité 9, la fiche est <strong>une étape</strong> de la boucle. Dans l'activité 11, l'action d'amélioration raconte ce qui a <strong>changé</strong> ensuite, et son évaluation. Ce sera l'objet de la <strong>masterclass 14</strong>.</p>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;margin:24px 0 8px 0;">✍️ Exercice 4 (4&nbsp;min) · À qui, par quel canal, et faut-il une fiche de signalement ?</p>
+<p>Les réponses décrivent une organisation courante : la vôtre peut différer.</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">a) En sortant une sonde d'aspiration de son emballage, vous constatez qu'elle est percée.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Infirmier, puis matériovigilance selon la procédure.</strong> Vous ne l'utilisez pas, vous la conservez avec son emballage (numéro de lot) et vous prenez une autre sonde, que vous vérifiez. L'infirmier ou le cadre vous indique si une fiche est demandée.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">b) Pendant un transfert, le lève-personne s'arrête en position haute, la personne suspendue.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Sécurisation immédiate</strong> (descente d'urgence selon la notice, personne rassurée et installée), <strong>alerte orale de l'infirmier</strong>, mise hors service, demande au service biomédical ou technique, <strong>fiche de signalement</strong>. L'infirmier ou le cadre informe la matériovigilance.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">c) Le relevé du réfrigérateur de médicaments est au-dessus de la fourchette de la fiche.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Infirmier immédiatement</strong>, qui décide du devenir des médicaments avec la pharmacie ; traçabilité sur la fiche de relevé ; demande d'intervention ; fiche de signalement selon la procédure. Vous ne jetez ni ne déplacez les médicaments de votre initiative.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">d) Un fauteuil roulant au frein défaillant, signalé il y a dix jours, attend toujours au local.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Relance</strong> avec le numéro de demande et <strong>information du cadre</strong>. Vous vérifiez que l'étiquette « hors service » est toujours en place. C'est exactement ce que le jury appelle le suivi.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">e) À domicile, la barre d'appui des toilettes de M. C. bouge dans le mur.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le responsable de votre service</strong>, qui organise la réparation avec la personne, sa famille ou le bailleur ; conseil de ne plus s'y appuyer ; information des proches avec l'accord de M. C. ; trace dans le cahier de liaison ; vérification au passage suivant.</p></details>
+
+<div style="background:#FBEDE6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Matériovigilance : vous alertez, vous conservez le dispositif, son emballage et son numéro de lot ou de série ; le correspondant déclare. Un événement indésirable se signale même sans dommage. La fiche est factuelle et non punitive. L'activité 9 cite la fiche comme une étape ; l'activité 11 raconte ce qui a changé.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Deux situations modèles décortiquées <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:15 · 20&nbsp;min</span></div>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; les initiales sont fictives. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots, et citer les check-lists et procédures de <em>votre</em> service.</p>
+
+
+<!-- Situation A -->
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">5.1 · Première situation : la vérification hors incident</p>
+<div style="background:#9C4221;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:10px 0 10px 0;font-weight:bold;">Situation A · Activité 9 (BC4) · Le lève-personne et sa sangle, vérifiés avant un transfert</div>
+
+<div style="background:#FDF7F3;border:1px solid #F2CDB9;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. D., 84 ans, vit en EHPAD depuis quatorze mois, après un accident vasculaire cérébral ischémique (interruption de la circulation sanguine dans une partie du cerveau par un caillot) qui lui a laissé une hémiplégie gauche. Il pèse 78 kg pour 1,72 m, soit un IMC de 26,4, en surpoids. Il est traité par clopidogrel, antiagrégant plaquettaire (surveillance : saignements, hématomes, toute chute se transmet) et par ramipril, antihypertenseur (surveillance : hypotension et malaise aux changements de position). Son épaule gauche est douloureuse aux mobilisations, habituellement à 3 sur 10 à l'EVA. GIR 2. Il ne tient pas debout, même avec appui : sa fiche de transfert prévoit le lève-personne électrique, une sangle hamac personnelle en taille L et deux soignants. Ancien chauffeur routier, il tient au loto du mardi après-midi. Il comprend les consignes simples.</p>
+<p style="margin:0;"><strong>La situation.</strong> Un mardi, à 13 h 45, je prépare son lever pour le loto. Avant de le mobiliser, je vérifie le matériel, comme avant chaque transfert, car un défaut découvert pendant le levage le mettrait en danger alors qu'il est suspendu. Après une friction hydro-alcoolique, je prends le lève-personne à sa borne de charge. L'étiquette de contrôle périodique porte une échéance non dépassée : l'appareil est réputé conforme. La charge maximale inscrite sur la plaque est largement supérieure à ses 78 kg. Le voyant de batterie indique une charge complète. Dans le couloir, je fais un essai à vide : montée, descente, écartement de la base. J'appuie sur l'arrêt d'urgence : le moteur s'arrête, je le réarme selon la notice. Je repère la commande de descente d'urgence, pour la trouver sans chercher si le moteur s'arrêtait en cours de levage. Les roulettes tournent librement et leurs freins tiennent ; le fléau et ses crochets ne sont ni déformés ni fissurés. J'étale ensuite à plat sur le lit sa sangle personnelle, marquée à ses initiales : l'étiquette est lisible et indique la taille L et un modèle compatible avec l'appareil ; les coutures sont continues, les bords ni effilochés ni décolorés, les boucles intactes ; elle est propre et sèche. Tout est conforme. Avec ma collègue, j'explique le transfert à M. D. ; nous le redressons assis et j'attends une minute en lui demandant s'il a la tête qui tourne, en raison de son antihypertenseur : « non, ça va ». Nous installons la sangle selon sa fiche de transfert, son bras gauche protégé à l'intérieur. Je soulève de quelques centimètres seulement et je vérifie, avant de poursuivre, que chaque boucle est engagée et que la sangle ne vrille pas : c'est le dernier contrôle, en charge. Le transfert au fauteuil, freins serrés, se déroule sans incident. Après le retrait de la sangle, je vérifie la peau sous ses zones d'appui, en raison de son antiagrégant : aucune marque. Il cote son épaule à 2 sur 10 et arrive au loto à 14 h 25. Je remets le lève-personne en charge, je range la sangle, je réalise une friction et je coche la check-list de vérification du lève-personne affichée au local, comme le prévoit le service. Je transmets : transfert sans incident, matériel vérifié conforme, épaule à 2 sur 10, peau intacte.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #F2CDB9;background:#FBEDE6;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #F2CDB9;">La vérification est <strong>hors incident</strong> et son déclencheur est dit (« avant chaque transfert »). Chaque point de contrôle est nommé et <strong>justifié par le risque</strong> qu'il écarte. La personne donne son sens à la vérification : poids chiffré comparé à la charge maximale, absence d'appui, épaule douloureuse. Le <strong>chaînage traitement-surveillance</strong> est présent deux fois (antihypertenseur, donc pause assise ; antiagrégant, donc contrôle de la peau). Le test à quelques centimètres montre une vérification qui se poursuit pendant l'usage. La boucle est fermée : check-list cochée, appareil remis en charge, résultat chiffré, transmission.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;background:#FBEDE6;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #F2CDB9;">L'appareil est « réputé conforme » grâce au contrôle périodique du service compétent : le candidat ne prétend pas contrôler sa sécurité interne. Technique, sangle et nombre de soignants viennent de la fiche de transfert. Aucune fréquence inventée : c'est « le service » qui prévoit la check-list.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #F2CDB9;">« J'ai vérifié le lève-personne », sans dire quoi ni pourquoi : seulement affirmé. « J'ai pris la sangle de la chambre voisine » : taille et attribution non respectées. « Le contrôle était dépassé de quelques jours, mais l'appareil marchait » : matériel non conforme utilisé. « J'ai fait le transfert seule » : consigne non respectée. Un récit qui détaille la technique de transfert plus que les contrôles : il glisse vers l'activité 5.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>⚠️ « Et si vous aviez trouvé une couture décousue ? »</strong> Réponse attendue, dans l'ordre de la boucle : je n'utilise pas la sangle ; je reporte le lever de quelques minutes ; je prends une autre sangle conforme, en taille L et compatible, que je vérifie ; je retire la sangle abîmée avec une étiquette « hors service » ; je préviens l'infirmière et je demande son remplacement ; je le trace ; je vérifie ensuite qu'une nouvelle sangle personnelle a été attribuée à M. D.</p>
+</div>
+
+<!-- Situation B -->
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:26px 0 8px 0;">5.2 · Seconde situation : le matériel traité</p>
+<div style="background:#9C4221;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:10px 0 10px 0;font-weight:bold;">Situation B · Activité 9 (BC4) · Un matelas à air en alarme, la nuit</div>
+
+<div style="background:#FDF7F3;border:1px solid #F2CDB9;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme R., 91 ans, est hospitalisée depuis trois ans en unité de soins de longue durée. Elle a une insuffisance cardiaque (le cœur n'assure plus un débit suffisant aux besoins de l'organisme), traitée par furosémide, diurétique de l'anse (surveillance : diurèse, déshydratation, hypotension), et une arthrose des hanches traitée par paracétamol, antalgique de palier 1 (surveillance : efficacité sur la douleur). Une dénutrition a été diagnostiquée par le médecin : 41 kg pour 1,55 m, soit un IMC de 17,1. Depuis une pneumopathie il y a deux mois, elle reste alitée la plus grande partie de la journée et ne se tourne pas seule. Son score de Braden, réévalué par l'infirmière, est à 11 : risque élevé d'escarre. Sur prescription, elle est installée sur un matelas à air à pression alternée, dont les réglages ont été définis par l'infirmière ; son plan de soins prévoit des changements de position en décubitus latéral à 30°, talons en décharge. Sa peau est intacte. Ancienne fleuriste, elle est orientée et entend mal de l'oreille droite.</p>
+<p style="margin:0;"><strong>La situation.</strong> Je suis de nuit. À mon tour de 0 h 15, son matelas était conforme : alarme silencieuse, gonflage homogène, test de la main satisfaisant. À 2 h 10, une alarme sonne dans sa chambre : le voyant « basse pression » du compresseur clignote. Mme R. me dit : « Je sens le dur. » Après une friction hydro-alcoolique, je glisse ma main à plat sous le matelas, au niveau du sacrum, comme le prévoient le protocole et la notice : je sens son sacrum contre ma main, elle repose sur le sommier. J'évalue : dénutrie, IMC à 17,1, Braden à 11, incapable de se tourner seule, elle est exposée à une lésion du sacrum en quelques heures ; c'est un danger immédiat. Sans toucher aux réglages, je vérifie ce qui se vérifie : compresseur branché et allumé, câble intact, tuyaux raccordés, ni coudés ni écrasés, réglages affichés inchangés. J'entends en revanche un sifflement continu au niveau du bassin, côté droit, où le matelas s'affaisse alors que le compresseur tourne : une fuite. Je ne modifie aucun réglage, qui relève de l'infirmière, et je ne cherche pas à colmater la fuite. Je protège d'abord Mme R. : avec ma collègue, je l'installe en décubitus latéral gauche à 30°, calée par des coussins, sacrum et talons dégagés, comme le prévoit son plan de soins. J'appelle l'infirmière à 2 h 15. Elle constate la fuite et décide d'utiliser le matelas à air de remplacement de l'unité, que je vérifie avant usage : housse intacte, compresseur, câble et tuyaux complets. Sur décision de l'infirmière, Mme R. est installée au fauteuil au lève-personne, vérifié, redressée par étapes en raison de son diurétique, qui l'expose à une hypotension, et bien couverte, le temps d'échanger les matelas. L'infirmière règle le nouveau compresseur selon la prescription ; nous attendons le gonflage complet indiqué par la notice. À 2 h 45, Mme R. est réinstallée en décubitus latéral droit : test de la main satisfaisant, alarme silencieuse, peau du sacrum, des hanches et des talons sans rougeur. Je débranche le matelas défectueux, j'y fixe l'étiquette « hors service, ne pas utiliser » avec la date, l'heure, « fuite zone bassin, alarme basse pression » et mon nom, et je le dépose au local prévu, à l'écart du matériel propre ; son entretien avant envoi, prévu par la procédure, est indiqué pour l'équipe de jour. À 3 h 05, je saisis la demande d'intervention au service biomédical dans le logiciel de maintenance, avec le numéro d'inventaire, le défaut, le risque et les mesures prises, et je note le numéro de demande. Je rédige une transmission ciblée (cible « matelas à air défectueux », données, actions, résultats). Avec l'infirmière, je remplis la fiche de signalement d'événement indésirable, car Mme R. a reposé sur le sommier pendant une durée inconnue, au plus depuis 0 h 15. Jusqu'au matin, je contrôle le nouveau matelas à chaque passage, puis je transmets l'ensemble à la relève de 6 h 45. La nuit suivante, le logiciel indique « en cours » ; à la relève du matin, la cadre m'apprend que le correspondant de matériovigilance a été informé et qu'une cellule fissurée a été identifiée avec le technicien. Deux nuits plus tard, la demande est « clôturée » et le matelas est revenu au local avec sa fiche d'intervention. Avant de le déclarer disponible, je le branche : gonflage complet dans le délai de la notice, sans alarme ni sifflement. J'enregistre sa remise en service et j'en informe l'infirmière. Mme R. reste sur le matelas de remplacement, comme l'a décidé l'infirmière ; au troisième jour, sa peau est toujours intacte, ce que je transmets.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #F2CDB9;background:#FBEDE6;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #F2CDB9;">La <strong>boucle en six temps</strong> est complète et ordonnée : repérer (alarme, test de la main, sifflement), évaluer (IMC, Braden, immobilité : danger immédiat), sécuriser (décubitus latéral, alerte, remplacement vérifié, mise hors service, étiquetage, retrait), signaler (infirmière, biomédical avec le numéro d'inventaire, fiche de signalement), tracer (transmission ciblée, relève), suivre (statut consulté, réparation vérifiée, remise en service enregistrée). La personne est protégée <strong>avant</strong> le matériel. Le tour de 0 h 15 permet d'estimer la durée d'exposition. Le résultat est vérifié à distance, sur le matériel et sur la personne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;background:#FBEDE6;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #F2CDB9;">En deux temps : « je ne modifie aucun réglage, qui relève de l'infirmière, et je ne cherche pas à colmater la fuite », puis ce que le candidat fait à la place. L'infirmière décide du remplacement et règle le compresseur ; la fiche est remplie avec elle ; le correspondant de matériovigilance analyse. Le candidat vérifie, sécurise, signale et suit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #F2CDB9;">« J'ai augmenté la pression et l'alarme s'est arrêtée » : hors champ. « Je l'ai laissée sur son matelas jusqu'au matin » : mise en danger. Un récit qui s'arrête à 3 h 05 : boucle ouverte. « J'ai frotté son sacrum pour réactiver la circulation » : geste proscrit. Un récit centré sur la peau plutôt que sur le matelas : il glisse vers l'activité 3.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">5.3 · Les six variantes qui font tomber une situation d'activité 9</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:32%;">La variante</th><th style="padding:9px;border:1px solid #C62828;text-align:left;width:28%;">Pourquoi elle fait tomber</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Ce qu'il fallait écrire</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« J'ai resserré la vis de la barrière »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Réparer soi-même.</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">« Je n'ai pas tenté de réparer ; lit en position basse, hors service, signalé. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« J'ai passé le matelas en mode statique »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Régler un matelas prescrit.</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">« Sans toucher aux réglages, définis par l'infirmière, j'ai vérifié branchement et tuyaux, puis je l'ai appelée. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« La sangle était effilochée, mais elle a tenu »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Utiliser une sangle abîmée</strong> : mise en danger.</td><td style="padding:9px;border:1px solid #FFCDD2;">« J'ai retiré la sangle et pris une sangle conforme de la même taille, que j'ai vérifiée. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« J'ai repéré un dysfonctionnement de la marche de Mme T. »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Le corps décrit comme un matériel</strong> : hors sujet.</td><td style="padding:9px;border:1px solid #FFCDD2;">Choisir un matériel ou un local ; garder cette situation pour l'activité 3 ou 2.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« J'ai prévenu le technicien en le croisant »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Signalement oral sans trace.</strong></td><td style="padding:9px;border:1px solid #FFCDD2;">« Je l'ai prévenu, puis j'ai saisi la demande et je l'ai tracée. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">Un récit qui s'arrête au bon de demande</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Pas de suivi</strong> : activité « à vérifier ».</td><td style="padding:9px;border:1px solid #FFCDD2;">« Deux jours plus tard, j'ai vérifié la réparation […] et enregistré la remise en service. »</td></tr>
+</table>
+
+<div style="background:#FBEDE6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Deux situations, deux preuves : une vérification méthodique où chaque point est justifié par un risque, et une anomalie traitée en six temps jusqu'à la réparation vérifiée. La personne donne sa gravité à l'anomalie, l'objet reste le matériel. Préparez la question « et si vous aviez trouvé une anomalie ? ».</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Grille de détection, questions du jury et réécriture <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:35 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:18px 0 8px 0;">6.1 · La grille de détection de l'activité 9</p>
+<p>Relisez vos deux situations d'activité 9, et votre rubrique A, en cherchant ces formulations. Une seule ligne rouge suffit à rendre le bloc 4 non acquis.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai réparé », « j'ai resserré », « j'ai recollé », « j'ai mis du ruban adhésif », « j'ai démonté »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire (hors champ).</strong> Réparer un équipement de soin ne relève pas de votre rôle. Écrivez ce que vous avez sécurisé et signalé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai réglé le matelas », « j'ai augmenté la pression », « j'ai changé le mode », « j'ai modifié le poids programmé »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire (hors champ).</strong> Les réglages sont définis par l'infirmier selon la prescription ou le protocole.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai tourné le débitmètre pour vérifier », « j'ai remis le débit », « j'ai ajusté l'oxygène »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire (hors champ).</strong> L'aide-soignant ne touche jamais au débitmètre, même sur protocole ou sur consigne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai réarmé le disjoncteur », « j'ai changé l'ampoule du plafonnier », « j'ai démonté la prise »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire dès qu'il y a mise en danger.</strong> Électricité et fluides relèvent du service technique, hors manœuvre prévue par une procédure de l'établissement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« la sangle était un peu usée, mais elle a tenu », « le contrôle était dépassé, mais l'appareil marchait », « j'ai continué le transfert »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire (mise en danger).</strong> Un matériel douteux ou non conforme ne sert plus, même une fois.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je l'ai laissée sur son matelas jusqu'au matin », « j'ai prévenu l'équipe suivante » face à un danger immédiat</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire (mise en danger).</strong> La personne est protégée tout de suite, l'infirmier alerté tout de suite.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« dysfonctionnement de la mobilité », « anomalie de la marche », « trouble de la déglutition » rédigés en activité 9</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire de fait (hors sujet).</strong> C'est le corps : l'activité 9 n'est pas démontrée, et le bloc 4 tombe avec elle.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai relevé les barrières pour la protéger », « j'ai remplacé la barrière cassée par une ceinture »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Une contention est une décision médicale inscrite au plan de soins. Précisez qu'elle était prescrite et que l'infirmier a décidé de la mesure de remplacement.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai vérifié le chariot d'urgence tous les… », « le réfrigérateur doit être entre… »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Recevable si ce sont la fréquence et la fourchette de votre protocole et que vous le dites ; sinon, renvoyez à la check-list et à la fiche du service.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai vérifié le matériel », « j'ai signalé la panne », « on a appelé le technicien »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Seulement affirmé, et votre part n'est pas précisée : quels points, pourquoi, qui, par quel canal, avec quel résultat ?</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">une seule situation, ou deux situations de panne, ou deux vérifications sans anomalie</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> L'attendu demande un matériel vérifié hors incident ET un matériel traité.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« de toute façon, les demandes ne sont jamais traitées », « ici, on se débrouille avec ce qu'on a », « ça fait des mois que ce lève-personne est en panne »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Preuve à charge : vous décrivez un risque connu et toléré. Supprimez, et racontez ce que vous avez fait dans les règles, relance et information du cadre comprises.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:22px 0 8px 0;">6.2 · Six questions du jury sur l'activité 9</p>
+<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Entraînez-vous à y répondre à voix haute avant d'ouvrir l'attendu.</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">« Vous écrivez : "Avant chaque transfert, je vérifie le lève-personne." Concrètement, que vérifiez-vous, et pourquoi chaque point ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> une liste ordonnée, chaque point justifié par son risque : contrôle périodique à jour, charge maximale comparée au poids de la personne, batterie, arrêt et descente d'urgence (faire redescendre une personne suspendue), roulettes, crochets, puis la sangle (taille, compatibilité, état). À éviter : « je regarde s'il marche ».</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">« Vous écrivez : "L'alarme du matelas sonnait." Pourquoi ne pas simplement avoir remonté la pression ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> les réglages sont définis par l'infirmier selon la prescription ; les modifier est hors de mon rôle. Et faire taire l'alarme sans en trouver la cause laisserait la personne sur un support défaillant. J'ai vérifié sans rien régler, protégé la personne, appelé l'infirmière. À éviter : « je n'y ai pas pensé », ou « je sais le faire, mais je n'ai pas le droit », qui laisse entendre un regret.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">« Vous écrivez : "J'ai jugé que c'était urgent." Sur quoi vous êtes-vous fondé ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> les quatre questions de l'évaluation : le matériel était en cours d'utilisation ; la personne était exposée (IMC, Braden, immobilité chiffrés) ; le risque était immédiat ; un matériel de remplacement existait. C'est le passage évaluatif, et le jury le cherche. À éviter : « c'était évident ».</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">« Vous écrivez : "J'ai fait une demande d'intervention." Et ensuite ? Comment savez-vous que le matériel a été réparé ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le suivi, daté : statut de la demande consulté, relance si besoin, contrôle du matériel à son retour (fonctionnement, absence d'alarme, fiche d'intervention), remise en service enregistrée, équipe informée. C'est le troisième pilier du jury, le résultat. À éviter : « le technicien s'en est occupé ».</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">« Vous écrivez : "Avec l'infirmière, j'ai rempli une fiche de signalement." Pourquoi, puisqu'il n'y a pas eu d'escarre ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> un événement indésirable se signale dès qu'il <em>aurait pu</em> causer un dommage ; Mme R. a été exposée. La fiche, non punitive, permet d'analyser l'incident et, par la matériovigilance, de protéger d'autres personnes utilisant le même modèle. À éviter : « c'est la cadre qui l'a demandé ».</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">« Vous écrivez : "J'ai trouvé la barrière du lit cassée." Qu'avez-vous fait de la personne, qui avait une contention prescrite ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la personne d'abord : lit en position basse, présence auprès d'elle, alerte immédiate de l'infirmier, qui décide de la mesure de remplacement (autre lit, autre dispositif prescrit, surveillance rapprochée). Je ne décide pas d'une contention, je ne bricole pas la barrière ; je mets le lit hors service une fois la personne réinstallée, je signale, je trace et je suis la réparation. À éviter : « je l'ai attachée en attendant ».</p></details>
+
+<p style="font-weight:bold;color:#7B341E;margin:24px 0 8px 0;">✍️ Exercice 5 (5&nbsp;min) · Réécrivez pour prouver l'activité 9</p>
+<p>Réécrivez chaque phrase sur votre feuille : boucle en six temps, quoi-comment-pourquoi, limite en deux temps. Comparez ensuite avec la proposition.</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">1. « Le frein du fauteuil ne marchait plus, j'ai prévenu. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Pendant le transfert de Mme J., j'ai senti son fauteuil reculer malgré le frein droit serré. Je l'ai réinstallée assise au lit, car un fauteuil qui recule l'expose à une chute, et j'ai pris un autre fauteuil, dont j'ai vérifié les freins. J'ai étiqueté le fauteuil défectueux « hors service, frein droit inefficace », daté et signé, déposé au local, puis informé l'infirmière, saisi la demande d'intervention et tracé. Trois jours plus tard, j'ai vérifié les freins du fauteuil réparé avant sa remise en service. »</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">2. « Le matelas sonnait, j'ai remis la bonne pression. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« L'alarme du matelas à air sonnait. Sans toucher aux réglages, qui sont définis par l'infirmière selon la prescription, j'ai vérifié le branchement du compresseur et les tuyaux : l'un d'eux était coudé sous la roue du lit. Je l'ai dégagé et placé hors de portée des roues ; le gonflage est redevenu homogène et l'alarme s'est tue. J'ai fait le test de la main : satisfaisant. J'en ai informé l'infirmière, je l'ai tracé, et j'ai vérifié le matelas à chacun de mes passages suivants. »</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">3. « On a vérifié le chariot d'urgence, tout était bon. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Comme le prévoit l'organisation du service, j'ai participé avec l'infirmière à la vérification du chariot d'urgence. J'ai contrôlé l'intégrité du scellé et relevé son numéro ; l'infirmière l'a ouvert, puis nous avons contrôlé le contenu selon la check-list et les dates de péremption du matériel ; les médicaments relèvent de sa responsabilité. Tout était conforme. L'infirmière a posé un nouveau scellé, dont nous avons reporté le numéro, et nous avons signé la fiche de traçabilité, afin que le chariot soit complet et utilisable sans délai en cas d'urgence. »</p></details>
+
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">4. « J'ai remarqué que Mme L. ne tenait plus bien debout, j'ai signalé ce dysfonctionnement. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>À ne pas réécrire en activité 9 : à déplacer.</strong> C'est une anomalie du corps. Cette situation relève de l'activité 3 (« j'ai observé que Mme L., qui se lève habituellement avec une aide, fléchissait des genoux à la verticalisation… j'ai transmis à l'infirmière ») ou de l'activité 2 si vous rédigez la prévention d'une chute non survenue. Pour l'activité 9, choisissez un matériel ou un local.</p></details>
+
+<div style="background:#FBEDE6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Les éliminatoires de l'activité 9 sont la réparation, le réglage, le débitmètre, l'électricité, l'usage d'un matériel douteux, l'attente face à un danger immédiat, et le corps pris pour un matériel. À l'oral, le jury questionne l'évaluation, la limite, le signalement et surtout le suivi : préparez des réponses datées et chiffrées.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC12 · Clôture</p>
+      <div class="content-scroll"><div style="background:#7B341E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#7B341E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">1. Quel est l'attendu officiel de l'activité 9 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Deux situations : un matériel vérifié hors incident ET un matériel traité après une anomalie.</strong> Matériel et locaux, jamais le corps.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">2. Quelle est la phrase-clé ORACLE de l'activité 9 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà une anomalie de matériel ou de local que j'ai repérée, évaluée, traitée et suivie. »</strong></p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">3. Citez dans l'ordre les six temps de la boucle.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Repérer, évaluer, sécuriser, signaler, tracer, suivre et vérifier.</strong></p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">4. Une résidente dont la marche se dégrade : activité 9 ? A. oui, volet traité · B. oui, volet vérifié · C. non, activité 3 ou 2</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>C.</strong> C'est le corps : activité 3 si le changement d'état est repéré et objectivé, activité 2 s'il s'agit de prévenir une chute non survenue.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">5. Quelle différence entre l'activité 8 et l'activité 9 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>L'activité 8 entretient</strong> (méthode d'hygiène, sortie de patient) ; <strong>l'activité 9 vérifie et traite une anomalie</strong> (fonctionnement, sécurité, boucle jusqu'à la réparation vérifiée).</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">6. Quelles sont les quatre questions de l'évaluation d'une anomalie ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le matériel est-il en cours d'utilisation ? Qui est exposé, et à quoi ? Le risque est-il immédiat ou différé ? Existe-t-il une solution de remplacement ?</strong></p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">7. Que vérifiez-vous sur un lève-personne avant utilisation ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Contrôle périodique à jour, charge maximale comparée au poids de la personne, batterie, arrêt et descente d'urgence, roulettes, crochets</strong> ; puis la sangle : taille, compatibilité, état.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">8. Qui définit les réglages d'un matelas à air, et que faites-vous si l'alarme sonne ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>L'infirmier, selon la prescription ou le protocole.</strong> Vous vérifiez sans rien régler (branchement, tuyaux, fuite, test de la main selon le protocole), vous protégez la personne et vous alertez l'infirmier.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">9. Pouvez-vous toucher au débitmètre d'oxygène pour vérifier qu'il fonctionne ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non, jamais</strong>, même pour vérifier, même sur protocole ou consigne. Vous vérifiez la tubulure et les lunettes, et vous alertez l'infirmier.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">10. Quel est le rôle de l'aide-soignant dans la vérification du chariot d'urgence ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Il y participe selon l'organisation du service</strong>, avec l'infirmier ou sous sa responsabilité : scellé, contenu selon la check-list, dates de péremption, traçabilité, à la fréquence prévue par le service. Les médicaments restent sous la responsabilité de l'infirmier.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">11. Qu'est-ce que la matériovigilance, et qui déclare ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>La surveillance des incidents et risques d'incidents liés aux dispositifs médicaux.</strong> Le correspondant local de matériovigilance déclare ; vous alertez et vous conservez le dispositif, son emballage et son numéro de lot ou de série selon la procédure.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">12. Un incident rattrapé à temps, sans aucun dommage, se signale-t-il ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Oui.</strong> Un événement indésirable est un événement qui a causé ou aurait pu causer un dommage. Les incidents sans conséquence sont souvent les plus instructifs.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">13. Pourquoi un signalement oral seul ne suffit-il pas ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Il ne laisse aucune trace</strong> : la demande n'existe pas pour le service qui doit intervenir, l'équipe suivante l'ignore, et personne ne peut la suivre. L'alerte orale précède l'écrit, elle ne le remplace pas.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">14. La barrière d'un lit ne se verrouille plus, la personne a une contention prescrite. Que faites-vous en premier ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous protégez la personne</strong> (lit en position basse, présence) <strong>et vous alertez immédiatement l'infirmier</strong>, qui décide de la mesure de remplacement. Ensuite : mise hors service, signalement, traçabilité, suivi. Vous ne réparez pas la barrière et vous ne décidez d'aucune contention.</p></details>
+
+<details style="border:1px solid #F2CDB9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#7B341E;">15. Qu'est-ce qui distingue une activité 9 « acquise » d'une activité 9 « à vérifier » ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le suivi</strong> : une boucle fermée, datée, avec la réparation vérifiée et la remise en service, et non un récit qui s'arrête au signalement. Avec, bien sûr, les deux situations demandées.</p></details>
+
+<div style="background:linear-gradient(135deg,#7B341E 0%,#BF5B2C 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 12</p>
+<ol style="margin:0;padding-left:22px;">
+<li>L'activité 9 demande deux situations : un matériel vérifié hors incident et un matériel traité après une anomalie.</li>
+<li>Matériel et locaux, jamais le corps : la personne donne sa gravité à l'anomalie, elle n'en est pas l'objet.</li>
+<li>L'activité 8 entretient ; l'activité 9 vérifie et traite.</li>
+<li>Repérer, évaluer, sécuriser, signaler, tracer, suivre : la personne est protégée avant le matériel, et l'évaluation dit pourquoi.</li>
+<li>Traiter n'est pas réparer : vous ne réparez pas, vous ne réglez pas, vous ne touchez ni au débitmètre, ni à l'électricité, ni aux fluides.</li>
+<li>Chaque point de vérification se justifie par un risque ; chaque fréquence et chaque seuil viennent du protocole du service.</li>
+<li>Matériovigilance : vous alertez et vous conservez ; le correspondant déclare. La fiche de signalement est factuelle et non punitive.</li>
+<li>Le suivi daté et vérifié ferme la boucle : c'est lui qui fait passer l'activité de « à vérifier » à « acquis ».</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#7B341E;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 13</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #F2CDB9;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Choisir deux situations vécues : une vérification préventive sans incident, et une anomalie de matériel ou de local traitée jusqu'à la réparation.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Vérifier qu'aucune des deux ne porte sur le corps de la personne ; sinon, la déplacer vers l'activité 3 ou 2.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Me procurer la notice ou la check-list du matériel choisi, et le protocole du service (fréquences, seuils, procédure de mise hors service).</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Pour la vérification, écrire chaque point de contrôle avec le risque qu'il écarte.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Pour l'anomalie, vérifier la présence des six temps, et surtout de l'évaluation et du suivi daté.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Identifier les interlocuteurs et les canaux de mon établissement : service technique, biomédical, logiciel de maintenance, fiche de signalement, correspondant de matériovigilance.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Chercher chaque geste proche de la limite (réglage, réparation, débitmètre, contention) et écrire la limite en deux temps.</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Passer mes deux situations et ma rubrique A à la grille de détection de la partie 6, et chasser les « on ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #F2CDB9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #F2CDB9;">Préparer à voix haute les six questions du jury, dont « et si vous aviez trouvé une anomalie ? ».</td></tr>
+</table>
+
+<p style="margin:18px 0 0 0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 17 · Livre Bloc 4 · Fiches de révision B4</p></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">Vous constatez qu'un lit médicalisé est défectueux. Vous devez :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="true">Le signaler immédiatement selon la procédure et le mettre hors service</button>
+        <button class="quiz-opt" data-correct="false">L'utiliser prudemment en attendant la réparation</button>
+        <button class="quiz-opt" data-correct="false">Attendre que le service technique passe</button>
+        <button class="quiz-opt" data-correct="false">Le réparer vous-même</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Signalement + mise hors service = sécurité et traçabilité. Jamais d'utilisation d'un matériel défaillant." data-ko="Non. Tout matériel défectueux doit être signalé et mis hors service immédiatement."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

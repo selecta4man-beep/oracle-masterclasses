@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC02 — Écrire une situation qui prouve · ORACLE VAE AS</title>
+<style>
+  :root {
+    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
+    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
+    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg); overflow: hidden; }
+  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
+  .slides { position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; overflow-y: auto; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.leaving { opacity: 0; transform: translateX(-40px); }
+  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
+
+  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); font-weight: 800;
+    display: flex; align-items: center; gap: 10px; z-index: 20; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
+
+  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; z-index: 10;
+    transition: background .15s, transform .15s; }
+  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
+  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
+  .nav-arrow svg { width: 20px; height: 20px; }
+  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
+
+  .progress-wrap { background: var(--bar); padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 0%; transition: width .4s ease; border-radius: 4px; }
+
+  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
+    letter-spacing: -.02em; font-weight: 800; }
+  h1.hero span.accent { color: var(--accent); }
+  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin: 0 0 14px; }
+
+  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
+  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
+  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
+  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
+  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
+
+  /* Contenu issu de la MC source : respecte les styles inline des sections */
+  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
+  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
+  .content-scroll table { max-width: 100%; }
+
+  /* Quiz */
+  .quiz-head { margin-bottom: 20px; }
+  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
+    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
+  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
+  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
+  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+    font-size: 15px; line-height: 1.5; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
+  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .quiz-next.show { display: inline-block; }
+
+  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
+    display: grid; place-items: center; position: relative; }
+  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
+  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC02</div>
+
+<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div class="stage">
+  <div class="slides" id="slides">
+
+    <section class="slide">
+      <div class="hero-band">
+        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
+        <div class="hero-tile"><div class="emoji">🩺</div></div>
+        <div class="hero-tile"><div class="emoji">🏥</div></div>
+        <div class="hero-tile"><div class="emoji">💙</div></div>
+        <div class="hero-tile"><div class="emoji">🤝</div></div>
+      </div>
+      <p class="eyebrow">MC02 · Méthode Livret 2</p>
+      <h1 class="hero">Écrire une situation qui prouve</h1>
+      <p class="subtitle">Méthode de rédaction du Livret 2 — récit, analyse, référentiel</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Objectifs</p>
+      <div class="content-scroll"><div style="background:#E8EAF6;border-left:6px solid #1A237E;border-radius:10px;padding:18px 22px;margin:22px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;color:#1A237E;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
+<ol style="margin:0;padding-left:22px;">
+<li>expliquer comment le jury lit votre livret, rubrique A et rubrique B ensemble, et contrôler vous-même les attendus quantitatifs des 11 activités ;</li>
+<li>choisir des situations vécues, datées, dans le champ et riches en raisonnement, et écarter celles qui vous exposent ;</li>
+<li>construire une galerie d'environ 6 personnes fil rouge complémentaires pour couvrir les 11 activités ;</li>
+<li>rédiger un recueil de données en 4 temps et dérouler une situation selon la séquence en 8 temps ;</li>
+<li>écrire des phrases professionnelles quoi-comment-pourquoi, relier chaque traitement à sa surveillance et dire la limite en deux temps ;</li>
+<li>fermer la boucle d'une situation par un résultat chiffré, daté et vérifié à distance ;</li>
+<li>relire votre texte avec la grille en 4 états et réécrire ce qui n'est qu'affirmé ou qui vous fragilise ;</li>
+<li>anonymiser votre livret, annexes et fichiers compris, et répondre avec assurance aux questions du jury sur votre écrit.</li>
+</ol>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Déroulé</p>
+      <div class="content-scroll"><p style="font-weight:bold;color:#1A237E;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:14%;">Durée</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;">0:00</td><td style="padding:9px;border:1px solid #C5CAE9;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #C5CAE9;">5&nbsp;min</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;">0:05</td><td style="padding:9px;border:1px solid #C5CAE9;">Partie 1 · Ce que le jury lit vraiment</td><td style="padding:9px;border:1px solid #C5CAE9;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;">0:20</td><td style="padding:9px;border:1px solid #C5CAE9;">Partie 2 · Choisir ses situations et ses personnes fil rouge</td><td style="padding:9px;border:1px solid #C5CAE9;">15&nbsp;min</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;">0:35</td><td style="padding:9px;border:1px solid #C5CAE9;">Partie 3 · Le recueil de données en 4 temps et la séquence en 8 temps</td><td style="padding:9px;border:1px solid #C5CAE9;">20&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;">0:55</td><td style="padding:9px;border:1px solid #C5CAE9;">Partie 4 · La phrase qui prouve : quoi-comment-pourquoi, chaînage, limite, boucle</td><td style="padding:9px;border:1px solid #C5CAE9;">20&nbsp;min</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;">1:15</td><td style="padding:9px;border:1px solid #C5CAE9;">Partie 5 · S'autocorriger, anonymiser, rester sincère</td><td style="padding:9px;border:1px solid #C5CAE9;">15&nbsp;min</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;">1:30</td><td style="padding:9px;border:1px solid #C5CAE9;">Partie 6 · Deux situations modèles décortiquées, avant et après, et les questions du jury</td><td style="padding:9px;border:1px solid #C5CAE9;">20&nbsp;min</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;">1:50</td><td style="padding:9px;border:1px solid #C5CAE9;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #C5CAE9;">10&nbsp;min</td></tr>
+</table>
+<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min). Les situations modèles se lisent avant la séance.</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Ouverture</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
+
+<p>Avant de commencer, testez vos représentations sur l'écriture du livret. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass.</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">1. Plus mon livret est long, plus j'ai de chances de convaincre le jury.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le repère ORACLE est un livret complet de 40 à 80 pages, annexes comprises, et non une règle officielle. Le jury ne pèse pas les pages : il cherche des preuves.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">2. Il me faut une personne différente pour chacune des 11 activités.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Chez ORACLE, on travaille avec <strong>environ 6 personnes fil rouge</strong>, complémentaires. Une personne riche peut alimenter 2 ou 3 activités : son recueil de données s'écrit une fois, et l'on y renvoie ensuite en précisant ce qui a évolué.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">3. Pour les activités 1 à 6, je présente la personne après avoir raconté le soin, en conclusion.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> La personne se présente <strong>avant</strong> le soin. Sans elle, le jury ne peut pas juger si votre manière de faire était ajustée à cette personne, c'est-à-dire la pertinence.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">4. Écrire « on a fait la toilette » est acceptable, puisque je travaillais en binôme.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le jury évalue ce que <strong>vous</strong> avez fait. Même en binôme, écrivez votre part exacte : « j'ai guidé ses appuis par la parole pendant que ma collègue la sécurisait côté fauteuil ».</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">5. Quand une sous-question du formulaire recoupe la précédente, « voir ci-dessus » suffit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Chaque sous-question doit recevoir une réponse explicite. Un renvoi ne compte pas : pour le jury, la case est vide.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">6. Écrire « une résidente en surpoids » suffit à décrire sa corpulence.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> On écrit des données : « 90 kg pour 1,60 m, soit un IMC de 35,2, calculé avec l'outil du service, qui correspond à une obésité ».</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">7. Si je cite un traitement dans la présentation de la personne, je dois en parler à nouveau plus loin.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> C'est le <strong>chaînage traitement-surveillance</strong> : chaque traitement cité appelle une phrase de surveillance dans le récit.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">8. Une phrase qui me dessert se corrige en ajoutant une explication juste après.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Une phrase <strong>fragilisante</strong> (« il a fallu insister », « c'est comme ça qu'on fait ici ») est une preuve à charge. Elle se corrige par suppression ou par réécriture, jamais par ajout : l'explication ajoutée n'efface pas ce que le jury a lu.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">9. Mon accompagnateur VAE peut rédiger mes situations à ma place, si je les relis ensuite.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Vous signez une déclaration sur l'honneur : le livret est le vôtre et vous en répondez. ORACLE corrige, questionne et vous fait réécrire, mais <strong>n'écrit jamais à votre place</strong>.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">10. Remplacer le nom de la résidente par ses initiales suffit à anonymiser mon livret.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Il faut aussi rendre l'établissement non identifiable dans les récits, retirer dates de naissance et numéros de chambre, et vérifier les <strong>annexes</strong> et les <strong>métadonnées</strong> des fichiers (auteur, entreprise, nom du fichier).</p></details>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? Rien d'étonnant : on apprend le métier en le faisant, pas en l'écrivant. Cette masterclass rend visible sur le papier ce que vous savez faire.</p>
+</div></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Partie 1</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · Ce que le jury lit vraiment <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
+
+<p>Vous écrivez pour <strong>trois lecteurs précis</strong> : généralement un aide-soignant, un formateur ou un infirmier, et un directeur de structure. Ils lisent votre livret plusieurs semaines avant l'entretien et préparent leurs questions à partir de vos phrases. Écrire une situation qui prouve, c'est d'abord savoir ce qu'ils cherchent, et dans quel ordre.</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:18px 0 8px 0;">1.1 · L'ordre de lecture du jury</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:8%;">N°</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:30%;">Ce que le jury vérifie</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">La question qu'il se pose</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">1</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Les attendus quantitatifs</td><td style="padding:9px;border:1px solid #C5CAE9;">Tous les volets demandés sont-ils là ? Chaque sous-question a-t-elle sa réponse ? C'est le contrôle le plus rapide, et le plus rentable pour vous.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">2</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Le champ de compétence et les éliminatoires</td><td style="padding:9px;border:1px solid #C5CAE9;">Un acte hors champ est-il décrit comme réalisé ? Une règle d'hygiène est-elle bafouée ? La personne a-t-elle été mise en danger ?</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">3</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">La personne, avant le soin</td><td style="padding:9px;border:1px solid #C5CAE9;">Pour les activités 1 à 6 : qui est-elle, que sait-on d'elle, et pourquoi ce soin, fait de cette façon, lui convenait-il ?</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">4</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Le raisonnement</td><td style="padding:9px;border:1px solid #C5CAE9;">Le candidat explique-t-il pourquoi il fait ce qu'il fait ? A-t-il évalué avant d'agir ?</td></tr>
+</table>
+
+<p>Enfin, <strong>le résultat</strong> : l'action a-t-elle marché, et comment le sait-on ? Ces quatre points et le résultat correspondent aux trois piliers que le jury questionnera à l'oral : la <strong>pertinence</strong>, le <strong>pourquoi</strong> et les <strong>résultats</strong>. Tout ce que vous écrivez doit nourrir au moins l'un des trois. Une phrase qui n'en nourrit aucun (« Le service compte 42 lits répartis sur deux étages ») prend de la place sans rien prouver.</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">1.2 · Rubrique A et rubrique B : deux textes, un seul lecteur</p>
+
+<p>Vous les connaissez depuis la masterclass 01 : la <strong>rubrique A</strong> est l'inventaire honnête de ce que vous avez réellement fait et qui relève de votre champ ; elle prouve l'<em>étendue</em> de votre expérience. La <strong>rubrique B</strong> est une situation précise, vécue, datée et analysée ; elle prouve la <em>profondeur</em> de votre raisonnement. Ni référentiel recopié ni geste jamais pratiqué en A ; ni journée type ni inventaire en B.</p>
+
+<p>La même expérience, écrite deux fois en rubrique A :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr><td style="padding:10px;border:1px solid #FFCDD2;background:#FFEBEE;width:24%;font-weight:bold;">❌ Liste nue</td><td style="padding:10px;border:1px solid #FFCDD2;font-style:italic;">« Toilettes, habillage, repas, transferts, prévention d'escarres, prise de constantes. »</td></tr>
+<tr><td style="padding:10px;border:1px solid #C8E6C9;background:#E8F5E9;font-weight:bold;">✅ Inventaire raisonné</td><td style="padding:10px;border:1px solid #C8E6C9;font-style:italic;">« Toilettes complètes au lit et au lavabo, avec aide partielle ou totale, chez des résidents d'EHPAD de GIR 1 à 4, chaque matin depuis neuf ans ; aide au repas avec textures adaptées selon la consigne de l'infirmière, dont une fois par semaine en salle à manger thérapeutique ; transferts lit-fauteuil au lève-personne et au verticalisateur, choisis selon la capacité d'appui ; évaluation du risque d'escarre avec l'échelle de Braden à l'entrée et à chaque changement d'état ; mesure du pouls, de la pression artérielle, de la température et de la saturation, avec transmission de toute valeur anormale. »</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">1.3 · La lecture en diagonale entre A et B</p>
+
+<p>Le jury ne lit pas les deux rubriques l'une après l'autre : il fait des allers-retours. Il vérifie que ce que vous annoncez en A se retrouve, mobilisé à bon escient, en B, et que ce que vous racontez en B est cohérent avec votre inventaire.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:34%;">Ce que le jury voit</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:33%;">Ce qu'il en conclut</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;">En A : « évaluation de la douleur avec l'EVA et l'Algoplus ». En B : « Algoplus à 3 sur 5, alors que son score habituel est à 0 ».</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">Cohérence : l'outil annoncé est utilisé et interprété. Une question de moins à l'oral.</td><td style="padding:9px;border:1px solid #C5CAE9;">Gardez ce lien, c'est la cible.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;">En A : « respect de l'hygiène des mains ». En B : vous passez d'un résident à l'autre sans friction.</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">Contradiction, et risque d'éliminatoire hygiène.</td><td style="padding:9px;border:1px solid #C5CAE9;">Nommez la friction hydro-alcoolique aux moments clés du récit.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">1.4 · Les 18 éléments et les 12 situations : votre liste de contrôle</p>
+
+<p>À garder sous les yeux pendant toute la rédaction : 18 éléments, rédigés chez ORACLE en 12 situations.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:10%;">Act.</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Ce qui doit figurer, sans exception</th><th style="padding:9px;border:1px solid #1A237E;text-align:center;width:16%;">Situations ORACLE</th></tr>
+<tr><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;">1</td><td style="padding:8px;border:1px solid #C5CAE9;">Un soin ou une activité de la vie quotidienne <strong>et</strong> le volet vie sociale</td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;">2</td><td style="padding:8px;border:1px solid #C5CAE9;">Un risque identifié et sa prévention, <strong>le risque n'étant pas survenu</strong></td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1</td></tr>
+<tr><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;">3</td><td style="padding:8px;border:1px solid #C5CAE9;">Un soin en collaboration : changement d'état repéré, objectivé, signalé</td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;">4</td><td style="padding:8px;border:1px solid #C5CAE9;">Un soin en collaboration <strong>avec ses critères de qualité</strong></td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;color:#C62828;">5</td><td style="padding:8px;border:1px solid #C5CAE9;">Une <strong>installation</strong> ET un <strong>déplacement</strong></td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1, deux volets</td></tr>
+<tr><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;">6</td><td style="padding:8px;border:1px solid #C5CAE9;">Un contexte relationnel couvrant <strong>la personne et son entourage</strong></td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;color:#C62828;">7</td><td style="padding:8px;border:1px solid #C5CAE9;">Un <strong>accompagnement</strong> ET une <strong>formation</strong>, dans deux contextes différents</td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1, deux volets</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;color:#C62828;">8</td><td style="padding:8px;border:1px solid #C5CAE9;">Les <strong>locaux</strong> ET le <strong>matériel</strong>, dans le contexte imposé d'une <strong>sortie de patient</strong></td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">1, deux volets</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;color:#C62828;">9</td><td style="padding:8px;border:1px solid #C5CAE9;">Un matériel <strong>vérifié hors incident</strong> ET un matériel <strong>traité</strong> ; matériel et locaux, jamais le corps</td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">2</td></tr>
+<tr><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;">10</td><td style="padding:8px;border:1px solid #C5CAE9;">Les <strong>outils</strong> ET les <strong>personnes ressources</strong>, en inventaire raisonné, sans récit</td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">inventaire</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:8px;border:1px solid #C5CAE9;font-weight:bold;color:#C62828;">11</td><td style="padding:8px;border:1px solid #C5CAE9;">Une journée <strong>habituelle</strong> ET une journée <strong>avec imprévus</strong> ET une <strong>action d'amélioration</strong></td><td style="padding:8px;border:1px solid #C5CAE9;text-align:center;">2</td></tr>
+<tr style="background:#1A237E;color:#FFFFFF;"><td style="padding:9px;border:1px solid #1A237E;font-weight:bold;" colspan="2">Total : 18 éléments, 11 activités, 12 situations et un inventaire</td><td style="padding:9px;border:1px solid #1A237E;text-align:center;font-weight:bold;">12 + 1</td></tr>
+</table>
+
+<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
+<p style="margin:0;"><strong>🚨 Le contrôle le plus rentable de tout le livret.</strong> Un volet manquant se voit en trois secondes, et il suffit à laisser une activité en « à vérifier », voire à faire tomber un bloc, puisqu'un bloc se valide en entier. Faites-le avant d'écrire, pendant, et avant l'envoi.</p>
+</div>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">1.5 · Une réponse explicite à chaque sous-question</p>
+
+<p>Le formulaire pose, pour chaque activité, plusieurs sous-questions. Le jury les lit comme une grille : une case, une réponse. Deux règles :</p>
+<ul style="padding-left:20px;">
+<li><strong>Reprenez les mots de la question</strong> au début de votre réponse. Si l'on vous demande les critères de qualité, écrivez « Les critères de qualité que j'ai retenus pour ce soin sont… ». Le jury trouve la réponse sans la chercher.</li>
+<li><strong>Jamais de renvoi.</strong> « Voir ci-dessus », « comme expliqué précédemment » : pour le jury, la case est vide. Si l'information est déjà écrite, reformulez-la en deux lignes sous l'angle de la nouvelle question.</li>
+</ul>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">1.6 · Le volume : le repère ORACLE de 40 à 80 pages</p>
+
+<p>Le repère ORACLE, issu de notre référentiel de rédaction, est un livret complet de <strong>40 à 80 pages, annexes comprises</strong>. Ce n'est pas une règle officielle. En dessous, il manque presque toujours des volets ou le raisonnement ; au-dessus, les passages utiles sont noyés. Une annexe ne sert que si elle prouve quelque chose et si elle est citée dans le texte.</p>
+
+<p style="font-weight:bold;color:#1A237E;margin:24px 0 8px 0;">✍️ Exercice 1 (4&nbsp;min) · Contrôlez les attendus quantitatifs</p>
+<p>Voici des extraits du sommaire de plusieurs candidats. Pour chacun, dites si l'attendu est honoré, puis ouvrez la correction.</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">a) Activité 5 : « Installation au fauteuil de M. K., hémiplégique, avant le repas. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Incomplet.</strong> Il manque le volet <strong>déplacement</strong>. Ajoutez un second temps clairement titré.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">b) Activité 8 : « Bionettoyage quotidien de la chambre de Mme S. et entretien de son fauteuil roulant. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Hors contexte.</strong> Les deux volets, locaux et matériel, sont là, mais le contexte imposé est la <strong>sortie de patient</strong>. Un entretien quotidien ne l'honore pas.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">c) Activité 11 : « Ma journée habituelle du matin » et « La déclaration d'un événement indésirable sur le circuit du linge ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Incomplet.</strong> La journée habituelle et l'action d'amélioration sont présentes, mais il manque la <strong>journée avec imprévus</strong>. Trois éléments sont exigés.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">d) Activité 10 : « Récit de ma relève du 3 février avec l'équipe de nuit. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Hors format.</strong> L'activité 10 est un <strong>inventaire raisonné</strong> des outils et des personnes ressources. La relève y figure comme outil, pas comme récit.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">e) Activité 6 : « L'angoisse de M. F. la veille de son intervention chirurgicale. » La situation ne mentionne ni famille ni proche.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Incomplet.</strong> L'activité 6 couvre <strong>la personne et son entourage</strong>. Choisissez une situation où un proche intervient, ou développez un second volet avec l'entourage.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">f) Activité 2 : « La chute de Mme N. dans la salle de bain, et les mesures prises ensuite. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Hors sujet.</strong> Le risque est survenu. L'activité 2 demande un risque <strong>anticipé</strong> : une personne à haut risque de chute qui n'est pas tombée, et ce que vous avez mis en place pour que la chute n'arrive pas.</p></details>
+
+<div style="background:#E8EAF6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> Le jury lit dans l'ordre : attendus, champ, personne, raisonnement, résultat. Il fait des allers-retours entre la rubrique A et la rubrique B : ce que vous annoncez doit se retrouver, et ce que vous racontez doit être cohérent. Comptez vos volets, répondez explicitement à chaque sous-question, et visez le repère ORACLE de 40 à 80 pages, annexes comprises.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, partie « apprendre à écrire » · Livre du livret 2, chapitres 9 à 19 · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Partie 2</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Choisir ses situations et ses personnes fil rouge <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 15&nbsp;min</span></div>
+
+<p>Une situation mal choisie ne se rattrape pas par l'écriture : trop simple, elle ne laisse rien à raisonner ; hors champ, elle vous élimine ; mal rattachée, elle prouve la mauvaise activité.</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:18px 0 8px 0;">2.1 · Les quatre critères d'une bonne situation</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#2E7D32;color:#FFFFFF;"><th style="padding:9px;border:1px solid #2E7D32;text-align:left;width:26%;">Critère</th><th style="padding:9px;border:1px solid #2E7D32;text-align:left;">Ce qu'il veut dire</th><th style="padding:9px;border:1px solid #2E7D32;text-align:left;width:30%;">Le test rapide</th></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">① Vécue</td><td style="padding:9px;border:1px solid #C8E6C9;">Vous l'avez réellement vécue, vous-même, et vous vous en souvenez avec précision. Ni situation entendue à la relève, ni mélange de cas.</td><td style="padding:9px;border:1px solid #C8E6C9;">Pouvez-vous répondre à dix questions de détail sans hésiter ?</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">② Datée</td><td style="padding:9px;border:1px solid #C8E6C9;">Elle est située dans le temps : un jour, un moment, une durée. Idéalement récente.</td><td style="padding:9px;border:1px solid #C8E6C9;">Pouvez-vous écrire « un mardi de mars, vers 7 h 40 » ?</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">③ Dans le champ</td><td style="padding:9px;border:1px solid #C8E6C9;">Tout ce que vous y faites relève de votre rôle. Aucun geste central ne dépend d'un glissement de tâches.</td><td style="padding:9px;border:1px solid #C8E6C9;">Chaque geste passe-t-il le filtre de la masterclass 01 ?</td></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;font-weight:bold;">④ Qui permet de raisonner</td><td style="padding:9px;border:1px solid #C8E6C9;">Il s'y passe quelque chose : un choix, une adaptation, une observation qui change votre façon de faire, une alerte, une difficulté surmontée.</td><td style="padding:9px;border:1px solid #C8E6C9;">Pouvez-vous écrire au moins trois « parce que » ?</td></tr>
+</table>
+
+<div style="background:#E8EAF6;border-left:6px solid #283593;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Le test de la phrase-clé.</strong> Une fois la situation choisie, lisez à voix haute la phrase-clé de l'activité, puis résumez votre situation en une phrase. Si les deux ne se répondent pas, la situation illustre une autre activité.</p>
+</div>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">2.2 · Les situations à écarter</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:32%;">Situation à écarter</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Pourquoi</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">Une situation qui repose sur un glissement de tâches</td><td style="padding:9px;border:1px solid #FFCDD2;">Un geste hors champ décrit comme réalisé est éliminatoire, même fait à la demande de l'équipe, même raconté honnêtement. On ne travestit pas la situation : on en choisit une autre.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">Une situation trop simple</td><td style="padding:9px;border:1px solid #FFCDD2;">Une toilette sans difficulté chez une personne autonome et coopérante ne laisse aucune place au raisonnement. Rien n'est à adapter, rien n'est à justifier.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">Pour l'activité 2, une situation où le risque est survenu</td><td style="padding:9px;border:1px solid #FFCDD2;">Une chute, une escarre ou une fausse route déjà survenues sortent de l'attendu. L'activité 2 prouve l'anticipation.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">Pour l'activité 9, une situation qui porte sur le corps</td><td style="padding:9px;border:1px solid #FFCDD2;">L'activité 9 porte sur le matériel et les locaux. Une perte de mobilité ou une « défaillance » de la personne est hors sujet.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">2.3 · Les personnes fil rouge : environ 6 pour 11 activités</p>
+
+<p>Chercher une personne différente par activité est long et dilue le raisonnement. La méthode ORACLE est inverse : <strong>environ 6 personnes complémentaires</strong>, dont les plus riches alimentent 2 ou 3 activités. Le recueil de données s'écrit une fois, en entier ; ensuite, vous y renvoyez en précisant ce qui a évolué (« Mme L., présentée en activité 1, a depuis perdu 2 kg en un mois »).</p>
+
+<p>Les activités 1 à 6 reposent sur des personnes, les activités 7 à 11 sur vos missions. Cherchez la <strong>complémentarité</strong> : polypathologie, retour de chirurgie, fin de vie, troubles cognitifs, trouble nutritionnel, refus de soin. Quelques exemples :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:32%;">Profil à rechercher</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Activités qu'il nourrit souvent</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Une personne polypathologique</td><td style="padding:9px;border:1px solid #C5CAE9;">3 et 4 : plusieurs traitements, donc plusieurs surveillances à chaîner, et des changements d'état à repérer.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Une personne en fin de vie</td><td style="padding:9px;border:1px solid #C5CAE9;">1, 4 et 6 : confort, soins de bouche, accompagnement des proches, directives anticipées et personne de confiance.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Une personne avec des troubles neurocognitifs</td><td style="padding:9px;border:1px solid #C5CAE9;">1, 2 et 6 : adaptation de la communication, respect des habitudes, prévention des chutes et de la dénutrition.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>⚠️ Une situation, une activité.</strong> Une même personne peut servir plusieurs activités, mais une même <em>situation</em> ne s'écrit qu'une fois. Mme L. peut apparaître en activité 1 (sa toilette et sa participation à l'atelier chant) et en activité 3 (le matin où vous la trouvez confuse) : ce sont deux situations différentes, deux jours différents, deux phrases-clés différentes.</p>
+</div>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">2.4 · Construire sa carte des situations</p>
+
+<p>Avant d'écrire, faites un tableau à trois colonnes : la personne (initiales), son profil en une ligne, les activités et situations qu'elle alimente. Ajoutez une ligne « missions transversales » pour les activités 7 à 11. D'un coup d'œil, vous voyez les volets couverts, les doublons et les trous.</p>
+
+<p style="font-weight:bold;color:#1A237E;margin:24px 0 8px 0;">✍️ Exercice 2 (6&nbsp;min) · Triez les situations candidates</p>
+<p>Une candidate, aide-soignante en EHPAD depuis douze ans, a noté ces idées de situations. Pour chacune, décidez : <strong>à garder</strong>, <strong>à écarter</strong> ou <strong>à garder sous conditions</strong>. Ouvrez ensuite la correction.</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">a) Pour l'activité 4 : « Le jour où l'infirmière m'a demandé de refaire le pansement du talon de M. V. parce qu'elle était débordée. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ À écarter.</strong> Aucun soin de pansement ne relève de l'aide-soignant, même sur consigne. Le cœur de la situation est un glissement de tâches : on n'essaie pas de la réécrire, on choisit une autre situation pour l'activité 4.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">b) Pour l'activité 2 : « Mme T., Braden à 11, sans rougeur : mise en place avec l'équipe d'un matelas adapté et d'un plan de changements de position, réévalué à huit jours. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ À garder.</strong> Risque identifié par une échelle, non survenu, prévention en équipe, évaluation à distance : tout l'attendu est là.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">c) Pour l'activité 9 : « M. B. ne tient plus debout depuis sa pneumopathie : son corps ne fonctionne plus comme avant. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ À écarter pour cette activité.</strong> L'activité 9 porte sur le matériel et les locaux, jamais sur le corps. Cette perte de mobilité peut en revanche nourrir l'activité 3 (changement d'état repéré et signalé).</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">d) Pour l'activité 4 : « Le renouvellement de la poche de colostomie de M. J., stomie ancienne et cicatrisée, un soin auquel j'ai été formée l'an dernier. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ À garder sous conditions.</strong> Recevable parce que la colostomie est cicatrisée <strong>et</strong> que vous avez été formée. Ces deux conditions doivent être <strong>écrites</strong> dans la situation.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">e) Pour l'activité 1 : « L'aide à l'élimination de Mme C., constipée depuis quatre jours, à qui j'ai posé un suppositoire. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ À garder sous conditions.</strong> Seul le suppositoire <strong>à la glycérine</strong>, d'aide à l'élimination, relève de votre rôle. Si c'était bien celui-là, écrivez-le en toutes lettres, avec la transmission à l'infirmière de l'absence de selles. S'il s'agissait d'un autre suppositoire, la situation est à écarter.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">f) Pour l'activité 3 : « Le matin où M. D. était essoufflé au lever : 24 respirations par minute, saturation à 91 %, alors qu'il est habituellement à 96 %. J'ai alerté l'infirmière. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ À garder.</strong> Changement d'état comparé à l'habituel, valeurs chiffrées rapportées aux normes (fréquence respiratoire de 12 à 20 par minute, saturation de 95 à 100 %), alerte. La phrase-clé de l'activité 3 est prouvée.</p></details>
+
+<div style="background:#E8EAF6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Une bonne situation est vécue, datée, dans le champ, et elle permet de raisonner. Écartez le glissement de tâches, la situation trop simple, le risque survenu pour l'activité 2 et le corps pour l'activité 9. Travaillez avec environ 6 personnes fil rouge complémentaires, et vérifiez chaque choix avec la phrase-clé de l'activité.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, partie « apprendre à écrire » · Livre du livret 2, chapitres 9 à 19</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Partie 3</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Le recueil de données en 4 temps et la séquence en 8 temps <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:35 · 20&nbsp;min</span></div>
+
+<p>Deux outils structurent chaque rubrique B : le <strong>recueil de données en 4 temps</strong>, qui présente la personne, et la <strong>séquence en 8 temps</strong>, qui déroule la situation.</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:18px 0 8px 0;">3.1 · Le recueil de données en 4 temps (activités 1 à 6)</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:22%;">Temps</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Ce qu'on y écrit</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:28%;">Pourquoi le jury en a besoin</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">1 · Le contexte</td><td style="padding:9px;border:1px solid #C5CAE9;">Âge ; date et raison de l'entrée ; pathologies, chacune avec une définition courte ; traitements <strong>correctement orthographiés, avec leur classe</strong> ; GIR ; poids, taille, IMC <strong>interprété</strong> ; échelles utiles (Braden, Morse, EVA, Algoplus).</td><td style="padding:9px;border:1px solid #C5CAE9;">Pour savoir quels risques vous deviez surveiller, et vérifier que vous les surveillez.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">2 · L'histoire de vie</td><td style="padding:9px;border:1px solid #C5CAE9;">Ancien métier, lieu de vie antérieur, entourage, habitudes, goûts, rythmes, croyances quand elles modifient le soin.</td><td style="padding:9px;border:1px solid #C5CAE9;">Pour comprendre vos adaptations : on se lave le soir parce qu'on l'a toujours fait.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">3 · L'autonomie actuelle</td><td style="padding:9px;border:1px solid #C5CAE9;">Hygiène, alimentation, élimination, mobilité, communication, vie sociale ; risques inscrits au projet personnalisé.</td><td style="padding:9px;border:1px solid #C5CAE9;">Pour vérifier que vous faites <em>avec</em> la personne et pas <em>à sa place</em>.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">4 · Le soin</td><td style="padding:9px;border:1px solid #C5CAE9;">Seulement maintenant : le soin, son contexte, ce que vous en attendez.</td><td style="padding:9px;border:1px solid #C5CAE9;">Le jury juge alors la pertinence de vos choix, parce qu'il connaît la personne.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0 0 6px 0;"><strong>⚠️ Des données, pas des impressions.</strong></p>
+<ul style="margin:0;padding-left:20px;">
+<li>« Corpulence importante » → « 90 kg pour 1,60 m, soit un IMC de 35,2, qui correspond à une obésité ».</li>
+<li>« Un peu perdue » → « troubles neurocognitifs à un stade modéré ; elle reconnaît les soignants mais pas les lieux ».</li>
+<li>« Elle a du diabète et de la tension » → « diabète de type 2, traité par un antidiabétique oral (surveillance : hypoglycémie et hyperglycémie) ; hypertension artérielle, traitée par un bêtabloquant (surveillance : pouls ralenti, hypotension) ».</li>
+</ul>
+</div>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">3.2 · Un recueil bien fait, un recueil raté</p>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Exemples <strong>construits pour l'exemple</strong>, ne décrivant aucune personne réelle.</p>
+
+<div style="background:#FFEBEE;border:1px solid #FFCDD2;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;">❌ Recueil raté</p>
+<p style="margin:0;font-style:italic;">« M. G. est un monsieur de 80 ans, très gentil, qui est dans le service depuis un moment. Il a des problèmes cardiaques et respiratoires, il est sous oxygène. Il prend beaucoup de médicaments, dont du Lazilix. Il est assez dépendant et un peu fort. Il aime bien parler. Ce matin-là, je suis allée faire sa toilette. »</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:34%;">Ce qui ne va pas</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Conséquence pour le jury</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;">« Problèmes cardiaques et respiratoires », « du Lazilix »</td><td style="padding:9px;border:1px solid #FFCDD2;">Pathologies non nommées ni définies ; traitement mal orthographié (Lasilix, nom commercial du furosémide, diurétique de l'anse), sans classe ni surveillance : le jury note une question.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;">« Assez dépendant », « un peu fort »</td><td style="padding:9px;border:1px solid #FFCDD2;">Ni GIR, ni poids, ni taille, ni autonomie détaillée.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;">Aucune histoire de vie</td><td style="padding:9px;border:1px solid #FFCDD2;">La personne n'existe pas : le récit qui suit vaudrait pour n'importe qui.</td></tr>
+</table>
+
+<div style="background:#E8F5E9;border:1px solid #C8E6C9;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#2E7D32;">✅ Recueil bien fait</p>
+<p style="margin:0 0 8px 0;"><strong>1 · Contexte.</strong> M. G., 80 ans, vit en EHPAD depuis huit mois ; il y est entré après deux hospitalisations en un an pour décompensation cardiaque. Il a une <strong>insuffisance cardiaque</strong> (le cœur ne pompe plus assez de sang pour les besoins du corps, ce qui provoque essoufflement, fatigue et œdèmes) et une <strong>bronchopneumopathie chronique obstructive</strong> (BPCO, maladie des bronches qui réduit durablement le passage de l'air), avec une oxygénothérapie au long cours à 2 L/min par lunettes, prescrite par le médecin. Il est traité par <strong>furosémide</strong>, diurétique de l'anse (surveillance : hypotension, chutes, déshydratation, diurèse, poids), par <strong>bisoprolol</strong>, un bêtabloquant (surveillance : pouls ralenti, hypotension), et par un <strong>bronchodilatateur inhalé</strong> (surveillance : tremblements, palpitations). GIR 2. Il pèse 94 kg pour 1,72 m, soit un IMC de 31,8, qui correspond à une obésité. Sa saturation habituelle est de 93 à 94 % sous oxygène, en dessous de la norme de 95 à 100 % en raison de sa BPCO ; c'est la valeur de référence fixée par le médecin et inscrite dans son dossier. Braden à 13 : risque d'escarre modéré.</p>
+<p style="margin:0 0 8px 0;"><strong>2 · Histoire de vie.</strong> Ancien chauffeur routier, il a vécu quarante ans dans le même village. Son épouse vient chaque après-midi. Il se levait tôt toute sa vie et tient à être rasé et habillé « avant le café ».</p>
+<p style="margin:0 0 8px 0;"><strong>3 · Autonomie actuelle.</strong> Hygiène : il se lave le visage et le torse seul, assis, si on lui laisse le temps ; aide totale pour le bas du corps. Alimentation : seul, après installation, régime pauvre en sel. Élimination : continent le jour, protection la nuit. Mobilité : transferts au verticalisateur, marche impossible au-delà de quelques pas. Communication : parfaitement orienté, s'exprime sans difficulté mais s'essouffle en parlant longtemps. Risques inscrits au projet personnalisé : chute, escarre, décompensation cardiaque.</p>
+<p style="margin:0;"><strong>4 · Le soin.</strong> Ce matin-là, je réalise sa toilette au lit, en tenant compte de sa dyspnée d'effort…</p>
+</div>
+
+<p>La différence tient aux <strong>données</strong> : chaque élément du recueil prépare une phrase du récit (le furosémide appellera la surveillance de la diurèse, la saturation de référence rendra lisible une baisse, le rasage avant le café expliquera l'ordre des soins).</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">3.3 · La séquence en 8 temps</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:6%;">N°</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:26%;">Temps</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Ce que vous écrivez</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">1</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Un titre explicite</td><td style="padding:9px;border:1px solid #C5CAE9;">Qui annonce l'activité et ce que la situation prouve : « Adapter une toilette à l'essoufflement d'un résident insuffisant cardiaque, en collaboration avec l'infirmière ».</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">2</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Le recueil de données</td><td style="padding:9px;border:1px solid #C5CAE9;">En 4 temps pour les activités 1 à 6, ou le renvoi à une personne fil rouge déjà présentée, avec ce qui a changé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">3</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Le cadrage</td><td style="padding:9px;border:1px solid #C5CAE9;">Où, quand, seul ou accompagné, dans quel cadre (plan de soins, consigne de l'infirmière, protocole).</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;color:#C62828;">4</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;color:#C62828;">Le passage évaluatif avant d'agir</td><td style="padding:9px;border:1px solid #C5CAE9;"><strong>Le temps le plus oublié.</strong> Ce que vous observez et mesurez avant de commencer : état du jour, douleur, vigilance, paramètres, capacités. C'est lui qui justifie tout ce qui suit.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">5</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">La préparation</td><td style="padding:9px;border:1px solid #C5CAE9;">Hygiène des mains, matériel, environnement (température, intimité, sécurité), information de la personne et recherche de son consentement.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">6</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Le déroulé, étape par étape</td><td style="padding:9px;border:1px solid #C5CAE9;">Dans l'ordre chronologique, au « je », avec ce que vous observez en cours de soin et comment vous vous adaptez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">7</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">La justification systématique</td><td style="padding:9px;border:1px solid #C5CAE9;">Elle ne vient pas à la fin : elle accompagne chaque geste. Chaque étape a son « afin de », son « parce que », son « en raison de ».</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">8</td><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Le résultat, la transmission, la traçabilité</td><td style="padding:9px;border:1px solid #C5CAE9;">Un résultat mesuré, transmis à qui, par quel moyen, tracé où, et vérifié quand.</td></tr>
+</table>
+
+<div style="background:#E8EAF6;border-left:6px solid #283593;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 La proportion cible : 40 / 40 / 20.</strong> Environ 40 % de récit (ce que vous faites), 40 % de justification (pourquoi vous le faites ainsi), 20 % de contexte et de résultat. Surlignez récit et « pourquoi » en deux couleurs : si la seconde est rare, votre situation raconte sans prouver.</p>
+</div>
+
+<p style="font-weight:bold;color:#1A237E;margin:24px 0 8px 0;">✍️ Exercice 3 (6&nbsp;min) · À quel temps de la séquence appartient cette phrase ?</p>
+<p>Pour chaque phrase extraite d'un livret, retrouvez le temps de la séquence, et dites s'il est bien rédigé.</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">a) « Avant de le mobiliser, je lui demande de coter sa douleur : EVA à 6 sur 10 au genou droit, alors qu'elle était à 2 la veille. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Temps 4, le passage évaluatif.</strong> Bien rédigé : échelle nommée, valeur chiffrée, comparaison avec la veille. Il reste à écrire ce que ce constat change : alerter l'infirmière avant de le mobiliser.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">b) « J'ai fait la toilette. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Temps 6, le déroulé, mais vide.</strong> Aucune étape, aucune adaptation, aucune justification. C'est la phrase qui ne prouve rien : il faut la déplier en étapes, chacune avec son pourquoi.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">c) « Je lui explique ce que je vais faire et j'attends son accord ; je ferme la porte et je tire le rideau ; je préchauffe la salle de bain à 24 °C, car il a froid facilement. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Temps 5, la préparation.</strong> Bien rédigé : consentement, intimité, environnement adapté et justifié. Il y manque l'hygiène des mains, à nommer.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">d) « Tout s'est bien passé. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Temps 8, le résultat, mais affirmé sans preuve.</strong> Qu'est-ce qui s'est bien passé, mesuré comment, transmis à qui, vérifié quand ? Par exemple : « Sa saturation était remontée à 93 % au repos, sa valeur habituelle ; je l'ai transmis à l'infirmière et tracé dans le dossier de soins. »</p></details>
+
+<div style="background:#E8EAF6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> La personne se présente en 4 temps : contexte, histoire de vie, autonomie, puis seulement le soin. On écrit des données, jamais des impressions. La situation se déroule en 8 temps, dont le plus oublié est le passage évaluatif avant d'agir. Visez 40 % de récit, 40 % de justification, 20 % de contexte et de résultat.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, partie « apprendre à écrire » · Fiches de révision B1 et B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Partie 4</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · La phrase qui prouve : quoi-comment-pourquoi, chaînage, limite, boucle <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:55 · 20&nbsp;min</span></div>
+
+<p>La séquence donne l'ossature ; la preuve se loge dans chaque phrase. Voici cinq outils, de la phrase à la boucle fermée.</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:18px 0 8px 0;">4.1 · La phrase professionnelle : quoi, comment, pourquoi</p>
+
+<div style="border:1px solid #C5CAE9;background:#F7F8FD;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 6px 0;"><strong style="color:#283593;">QUOI</strong> : le fait, le geste, l'observation, avec un verbe d'action et une donnée précise.</p>
+<p style="margin:0 0 6px 0;"><strong style="color:#E65100;">COMMENT</strong> : la manière, la technique, le matériel. Cela prouve le savoir-faire.</p>
+<p style="margin:0 0 10px 0;"><strong style="color:#2E7D32;">POURQUOI</strong> : la bonne pratique respectée, le risque évité, l'adaptation à <em>cette</em> personne. Cela prouve le raisonnement.</p>
+<p style="margin:0;padding-top:10px;border-top:1px solid #C5CAE9;font-style:italic;">« J'ai [quoi] en [comment], afin de [pourquoi]. »</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:34%;">Phrase de départ</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Phrase professionnelle</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-style:italic;">« J'ai pris sa tension. »</td><td style="padding:9px;border:1px solid #C5CAE9;">« J'ai mesuré sa pression artérielle <span style="color:#E65100;">au bras droit, après cinq minutes de repos en position couchée, puis debout</span> : 138/82 puis 104/64 mmHg, <span style="color:#2E7D32;">afin de rechercher une hypotension orthostatique, qu'elle risque sous son diurétique ; j'ai transmis cette chute de 34 mmHg à l'infirmière</span>. »</td></tr>
+</table>
+
+<p><strong>Cible : le pourquoi doit représenter au moins un quart de votre texte.</strong> Sans lui, vous décrivez une tâche ; avec lui, vous prouvez une compétence.</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">4.2 · Les 5 règles d'or</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:30%;">Règle</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:35%;">À éviter</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">À écrire</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">① Écrire ce que JE fais</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">« On l'a levée », « nous avons décidé »</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« Je l'ai aidée à se lever avec ma collègue, qui la sécurisait côté fauteuil. »</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">② Un vocabulaire professionnel à jour</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">« Démence », « phlébite », « elle perd la tête »</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« Troubles neurocognitifs », « thrombose veineuse profonde », « désorientation dans le temps ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">③ Montrer le raisonnement</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">« Elle n'allait pas bien, j'ai appelé. »</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« J'ai observé…, j'ai identifié…, j'ai réalisé…, le résultat a été…, j'ai transmis… »</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">④ Quantifier toujours, nommer les échelles</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">« Elle avait mal », « il mange peu »</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« Algoplus à 3 sur 5 », « il a mangé un quart de son plat, et moins de la moitié de ses repas depuis cinq jours ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">⑤ Citer les textes au bon moment, sans les réciter</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">Un paragraphe sur la loi en introduction</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« J'ai respecté son refus, conformément à son droit de consentir ou non aux soins, posé par la loi du 4 mars 2002. »</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">4.3 · Le chaînage traitement-surveillance</p>
+
+<p>Chaque traitement cité dans le recueil de données <strong>appelle une phrase de surveillance</strong> plus loin dans le récit. C'est la preuve que vous savez pourquoi vous regardez ce que vous regardez. Exemple : « traitée par furosémide, diurétique de l'anse » dans le recueil, puis dans le récit « je l'accompagne au lever en deux temps, son diurétique l'exposant à une hypotension orthostatique ».</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:30%;">Classe citée dans le recueil</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Ce qu'elle vous fait surveiller dans le récit</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Antalgique de palier 3</td><td style="padding:9px;border:1px solid #C5CAE9;">Fréquence respiratoire (dépression respiratoire : alerte immédiate), somnolence, constipation.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Antidiabétique, insuline</td><td style="padding:9px;border:1px solid #C5CAE9;">Signes d'hypoglycémie (sueurs, pâleur, tremblements, confusion ; moins de 0,70 g/L) et d'hyperglycémie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Antihypertenseur, diurétique</td><td style="padding:9px;border:1px solid #C5CAE9;">Lever en deux temps, vertiges, chutes ; pour le diurétique, déshydratation et diurèse.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Bêtabloquant</td><td style="padding:9px;border:1px solid #C5CAE9;">Pouls ralenti, hypotension, fatigue.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Anticoagulant, antiagrégant</td><td style="padding:9px;border:1px solid #C5CAE9;">Saignements (gencives, nez, urines, selles), hématomes ; toute chute se transmet.</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Bronchodilatateur ; corticoïde inhalé</td><td style="padding:9px;border:1px solid #C5CAE9;">Tremblements, palpitations ; pour le corticoïde inhalé, rinçage de la bouche après la prise et repérage d'une mycose buccale.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;margin:24px 0 8px 0;">✍️ Exercice 4 (5&nbsp;min) · Associez chaque traitement à sa surveillance, et une difficulté de prise</p>
+<p>Pour chaque traitement cité dans un recueil de données, écrivez la phrase de surveillance que vous placeriez dans le récit, puis comparez.</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">a) « Traité par morphine, antalgique de palier 3, depuis sa fracture du col du fémur. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Avant de le mobiliser, j'ai compté sa fréquence respiratoire : 16 par minute, dans les normes de 12 à 20 ; je savais qu'une respiration lente sous morphine impose une alerte immédiate. J'ai aussi noté l'absence de selles depuis trois jours et je l'ai transmise à l'infirmière, la morphine favorisant la constipation. »</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">b) « Traitée par un anticoagulant pour une fibrillation atriale (trouble du rythme cardiaque qui favorise la formation de caillots). »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Pendant la toilette, j'ai repéré un hématome de 4 cm sur l'avant-bras, absent la veille. Son anticoagulant l'exposant aux saignements, je l'ai signalé à l'infirmière et j'ai utilisé une brosse à dents à poils souples pour protéger ses gencives. »</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">c) « Traité par un hypnotique le soir. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Au coucher, j'ai laissé une veilleuse allumée, la sonnette à portée de main et ses chaussons antidérapants au pied du lit, parce que son hypnotique augmente le risque de chute s'il se lève la nuit pour uriner. »</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">d) « Il a des difficultés pour avaler ses comprimés. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Vous pouvez l'aider à prendre un traitement préparé par l'infirmière ou la pharmacie, non injectable, non stupéfiant, emballé individuellement, identifiable et daté, en vérifiant l'identité et la concordance, en observant la prise et en la traçant. Vous ne coupez ni n'écrasez jamais un comprimé : « J'ai signalé à l'infirmière sa difficulté à avaler, qui l'expose aussi à un risque de fausse route ; elle a décidé de la suite avec le médecin. »</p></details>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">4.4 · Dire la limite en deux temps</p>
+
+<div style="border:1px solid #C5CAE9;background:#F7F8FD;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;">Dès qu'un soin approche de la limite de votre champ, écrivez <strong>ce que vous ne faites pas</strong> et <strong>ce que vous faites à la place</strong>. Une seule mention explicite, au bon endroit, suffit souvent.</p>
+<ul style="margin:0;padding-left:20px;">
+<li>« Je ne suis pas intervenue sur le débitmètre ; j'ai vérifié la position des lunettes, installé M. G. en position demi-assise et appelé l'infirmière. »</li>
+<li>« Je n'ai pas touché au pansement de son talon ; j'ai constaté qu'il était décollé, j'ai protégé la zone pendant la toilette et j'ai prévenu l'infirmière, qui l'a refait. »</li>
+<li>« Je n'ai pas répondu aux questions sur son pronostic ; j'ai entendu l'inquiétude de sa fille et je lui ai proposé un rendez-vous avec l'infirmière coordinatrice, que j'ai prévenue. »</li>
+</ul>
+</div>
+
+<p><strong>Savoir dire ce qu'on ne fait pas est une preuve de professionnalisme.</strong></p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">4.5 · Fermer la boucle : chiffré, daté, vérifié à distance</p>
+
+<p>C'est ce qui distingue le plus souvent les activités validées. Une situation qui s'arrête au geste laisse sans réponse la question « comment savez-vous que cela a marché ? ». Fermer la boucle, c'est écrire trois choses :</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:22%;">Élément</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:35%;">Boucle ouverte</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Boucle fermée</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Chiffré</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">« Elle a mieux mangé. »</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« Elle a mangé les trois quarts de son plat, contre un quart les cinq jours précédents. »</td></tr>
+<tr style="background:#F7F8FD;"><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Daté</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">« Par la suite, tout est rentré dans l'ordre. »</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« Dix jours plus tard, à la pesée du lundi, elle avait repris 800 g. »</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Vérifié à distance</td><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;">« J'ai fait une demande de réparation. »</td><td style="padding:9px;border:1px solid #C5CAE9;background:#E8F5E9;">« Le lendemain, j'ai vérifié que la sangle avait été remplacée et après la validation du service technique, j'ai vérifié par un essai à vide que le lève-personne fonctionnait avant de l'utiliser. »</td></tr>
+</table>
+
+<div style="background:#E8EAF6;border-left:6px solid #283593;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Et si le résultat n'a pas été bon ?</strong> Écrivez-le, avec le réajustement qui a suivi. Le jury valorise la prise de conscience : « avec le recul, j'aurais alerté dès le premier refus de repas » rassure davantage qu'un succès affirmé.</p>
+</div>
+
+<div style="background:#E8EAF6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Chaque phrase porte son quoi, son comment et son pourquoi, et le pourquoi pèse au moins un quart du texte. Respectez les 5 règles d'or. Chaque traitement cité appelle sa surveillance. Chaque limite se dit en deux temps. Chaque situation se termine par un résultat chiffré, daté et vérifié à distance.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, partie « apprendre à écrire » · Livre Bloc 2 · Fiches de révision B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Partie 5</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · S'autocorriger, anonymiser, rester sincère <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:15 · 15&nbsp;min</span></div>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:18px 0 8px 0;">5.1 · La grille de lecture en 4 états</p>
+
+<p>Relisez chaque phrase de votre rubrique B comme le jury, et classez-la dans l'un des quatre états.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:22%;">État</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:40%;">Définition et exemple</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Ce que vous faites</th></tr>
+<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#E8F5E9;font-weight:bold;color:#2E7D32;">Bien démontré</td><td style="padding:9px;border:1px solid #C8E6C9;">Un fait, sa manière, sa raison, son résultat. « J'ai proposé à Mme P. de se laver le soir, comme chez elle ; elle a accepté quatre soirs sur cinq dans les quinze jours suivants. »</td><td style="padding:9px;border:1px solid #C8E6C9;">Vous gardez.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFE082;background:#FFF8E1;font-weight:bold;color:#E65100;">Seulement affirmé</td><td style="padding:9px;border:1px solid #FFE082;">Une qualité revendiquée sans preuve. « J'ai respecté sa dignité. » « J'ai été à l'écoute. »</td><td style="padding:9px;border:1px solid #FFE082;">Vous remplacez l'affirmation par le geste qui la prouve : « j'ai fermé la porte et couvert la partie du corps que je ne lavais pas ».</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;background:#E8EAF6;font-weight:bold;color:#1A237E;">Manquant</td><td style="padding:9px;border:1px solid #C5CAE9;">Ce qui devrait être là et n'y est pas : le passage évaluatif, la surveillance d'un traitement cité, la transmission, le résultat, un volet de l'attendu.</td><td style="padding:9px;border:1px solid #C5CAE9;">Vous ajoutez, au bon endroit de la séquence.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;color:#C62828;">Fragilisant</td><td style="padding:9px;border:1px solid #FFCDD2;">Une preuve à charge. « Il a fallu insister. » « C'est comme ça qu'on fait ici. » « J'ai fait vite parce qu'on était en retard. »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Vous supprimez ou vous réécrivez. Jamais d'ajout</strong> : une justification ajoutée ne retire pas ce que le jury a lu.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">5.2 · La grille de détection propre à l'écriture</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« l'infirmière m'a demandé de refaire le pansement, je l'ai fait »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Aucun soin de pansement ne relève de l'aide-soignant, même sur consigne. Choisissez une autre situation.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">un passage d'une chambre à l'autre sans hygiène des mains, des gants portés « pour tout le tour »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Non-respect d'une règle d'hygiène.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">le nom d'une résidente, le nom de l'établissement dans un récit, un numéro de chambre</td><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Fragilisant, à corriger en priorité.</strong> Anonymisation défaillante : elle ne figure pas parmi les trois éliminatoires, mais c'est un manquement au secret professionnel, et une vigilance ORACLE qui suffit à fragiliser tout le dossier.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai fait la glycémie », « j'ai posé un suppositoire », « j'ai appliqué la crème »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Écrivez la condition : sur protocole ou à la demande de l'infirmière ; suppositoire à la glycérine ; crème désignée et identifiée par l'infirmière, jamais sur une plaie.</td></tr>
+<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on », « nous », « l'équipe a fait »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Précisez votre part exacte.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-style:italic;">« il a fallu insister », « c'est comme ça qu'on fait ici », « par habitude »</td><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;"><strong>Fragilisant.</strong> Preuve à charge : supprimez ou réécrivez, sans rien ajouter.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;margin:24px 0 8px 0;">✍️ Exercice 5 (6&nbsp;min) · Classez, puis réécrivez</p>
+<p>Classez chaque phrase dans l'un des 4 états, puis réécrivez-la si nécessaire.</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">1. « J'ai toujours respecté la pudeur de M. G. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>Seulement affirmé.</strong> Réécriture : « Pendant la toilette au lit, j'ai fermé la porte, tiré le rideau et couvert d'une serviette la partie du corps que je ne lavais pas, afin de préserver son intimité ; je l'ai laissé laver seul son visage et son torse, comme il le souhaitait. »</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">2. « Elle ne voulait pas se lever, il a fallu insister un peu mais elle a fini par venir au repas. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Fragilisant.</strong> On ne corrige pas en ajoutant « avec bienveillance » : on réécrit. « Elle a refusé de se lever pour le déjeuner. Je lui ai demandé ce qui la retenait : elle avait mal au genou droit, EVA à 5 sur 10. Je l'ai signalé à l'infirmière et je lui ai proposé de déjeuner en chambre, ce qu'elle a accepté. »</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">3. Dans le recueil : « traité par bisoprolol, bêtabloquant ». Dans le récit : aucune mesure du pouls, aucune mention du traitement.</summary><p style="margin:10px 0 0 0;background:#E8EAF6;border-radius:6px;padding:10px;"><strong>Manquant.</strong> Ajoutez au passage évaluatif : « Avant le lever, j'ai mesuré son pouls à 58 par minute, sa valeur habituelle sous bêtabloquant, et sa pression artérielle à 118/70 mmHg, ce qui m'a permis de le lever en deux temps en toute sécurité. »</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">4. « J'ai mesuré sa saturation à 89 %, alors qu'elle est habituellement à 94 % sous 2 L/min ; j'ai appelé immédiatement l'infirmière, je suis restée auprès d'elle et je l'ai installée en position demi-assise. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Bien démontré.</strong> Valeur chiffrée comparée à l'habituel, alerte immédiate, présence, geste de confort respiratoire dans le champ. Vous gardez, et vous pouvez ajouter plus loin la valeur de recontrôle.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">5. « Comme c'est l'habitude du service, j'ai mis les deux barrières de lit pour la nuit. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Fragilisant, et hors champ si aucune prescription n'existait.</strong> Les barrières de lit sont une contention, qui relève d'une décision médicale : l'aide-soignant l'applique et la surveille. Si la prescription existait réellement, réécrivez : « Conformément à la prescription médicale de contention inscrite dans son dossier, j'ai mis en place les barrières de lit ; à chaque passage, toutes les deux heures, j'ai vérifié sa position, son confort et l'absence de point d'appui, j'ai laissé la sonnette à portée de main et je l'ai tracé. » Si elle n'existait pas, la situation ne se corrige pas : choisissez-en une autre.</p></details>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">5.3 · Anonymiser : le livret, les annexes et les fichiers</p>
+
+<p>Vous êtes tenu au secret professionnel, et votre livret sera lu hors de votre équipe de soins. Une anonymisation défaillante suffit à fragiliser un dossier.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#1A237E;color:#FFFFFF;"><th style="padding:9px;border:1px solid #1A237E;text-align:left;width:26%;">Où chercher</th><th style="padding:9px;border:1px solid #1A237E;text-align:left;">Ce que vous vérifiez</th></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Les personnes</td><td style="padding:9px;border:1px solid #C5CAE9;">Initiales seules (Mme L., M. R.) ; ni date de naissance, ni numéro de chambre, ni détail qui permettrait de reconnaître quelqu'un (un métier très rare dans une petite commune, par exemple). L'âge, la pathologie et le contexte suffisent. Les collègues sont désignés par leur fonction, jamais par leur nom.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">L'établissement</td><td style="padding:9px;border:1px solid #C5CAE9;">Non identifiable dans les récits : « un EHPAD de 80 lits », « un service de soins de suite ». Son nom n'apparaît que dans la partie consacrée à votre parcours, là où il est demandé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;font-weight:bold;">Les annexes et les fichiers</td><td style="padding:9px;border:1px solid #C5CAE9;">Dans les annexes : noms, logos, en-têtes et étiquettes masqués. Dans les fichiers : les <strong>métadonnées</strong> (champ « auteur », « société », commentaires et révisions masqués) et le nom du fichier (« Livret_Mme_Dupont_chambre12.docx » est une faute d'anonymisation).</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">5.4 · Sincérité : votre livret, votre signature, votre langue</p>
+
+<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 La déclaration sur l'honneur vous engage</p>
+<p style="margin:0 0 8px 0;">Vous signez une déclaration sur l'honneur attestant que le livret est de vous et que les situations sont vécues. Vous en répondez personnellement, devant le jury.</p>
+<p style="margin:0 0 8px 0;"><strong>ORACLE n'écrit jamais à votre place.</strong> Nous vous apprenons la méthode, nous relisons, nous questionnons, et vous réécrivez. Un texte rédigé par un tiers se trahit à l'oral dès la première question de détail.</p>
+<p style="margin:0;">Il en va de même pour un texte produit par un outil de rédaction automatique : vous devez pouvoir en répondre mot par mot, et un texte générique, sans détail vécu, ne prouve rien.</p>
+</div>
+
+<div style="background:#E8EAF6;border-left:6px solid #283593;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>💡 Conservez votre propre langue.</strong> Le jury n'attend pas un style littéraire. Il attend des phrases claires, au « je », avec le bon vocabulaire professionnel. Corrigez l'orthographe, mais gardez vos tournures. À l'entretien, le jury comparera votre écrit à votre parole.</p>
+</div>
+
+<div style="background:#E8EAF6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Relisez chaque phrase avec la grille en 4 états : gardez ce qui est bien démontré, prouvez ce qui n'est qu'affirmé, ajoutez ce qui manque, supprimez ou réécrivez ce qui fragilise. Anonymisez tout, annexes et métadonnées comprises. Votre livret est le vôtre : vous le signez, vous l'écrivez, dans votre langue.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, partie « apprendre à écrire » · Fiches de révision B1 à B5</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Partie 6</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Deux situations modèles décortiquées, avant et après, et les questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:30 · 20&nbsp;min</span></div>
+
+<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; les personnes sont désignées par leurs initiales seules. Chacune est présentée deux fois : la version « avant », telle qu'un candidat l'écrit spontanément, puis la version « après », au niveau attendu. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots.</p>
+
+<!-- Situation A -->
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:18px 0 8px 0;">6.1 · Situation A, avant et après</p>
+<div style="background:#283593;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:20px 0 10px 0;font-weight:bold;">Situation A · Activité 1 (BC1) · Accompagner la toilette et la vie sociale, dans le respect de l'autonomie</div>
+
+<div style="background:#FFEBEE;border:1px solid #FFCDD2;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;">❌ Version « avant »</p>
+<p style="margin:0;font-style:italic;">« Mme A. est une dame âgée qui a de l'arthrose et de la tension. Elle est plutôt autonome mais lente. Tous les matins, on lui fait sa toilette au lavabo. Elle a souvent mal aux mains, alors je l'aide beaucoup pour aller plus vite, car on a beaucoup de résidents. Je respecte sa dignité et son autonomie. Elle ne sort pas beaucoup de sa chambre, alors un jour je l'ai emmenée à l'animation. Elle a apprécié. Tout s'est bien passé. »</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:36%;">Passage</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic avec la grille en 4 états</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« une dame âgée qui a de l'arthrose et de la tension »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Manquant.</strong> Ni âge, ni date d'entrée, ni définition, ni traitement, ni GIR, ni histoire de vie.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« on lui fait sa toilette »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>À réécrire.</strong> Le « on » masque votre part, et « faire la toilette » d'une personne « plutôt autonome » contredit l'accompagnement.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je l'aide beaucoup pour aller plus vite, car on a beaucoup de résidents »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Fragilisant.</strong> Vous avouez faire à sa place pour gagner du temps : c'est l'inverse de ce que l'activité 1 demande de prouver. À supprimer, pas à justifier.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« un jour je l'ai emmenée à l'animation. Elle a apprécié. Tout s'est bien passé. »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Manquant et affirmé.</strong> Le volet vie sociale est effleuré : ni date, ni raison du choix, ni résultat mesuré, ni suite.</td></tr>
+</table>
+
+<div style="background:#F7F8FD;border:1px solid #C5CAE9;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#2E7D32;">✅ Version « après »</p>
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme A., 84 ans, vit en EHPAD depuis quatre mois ; elle y est entrée après le décès de son mari, ne pouvant plus rester seule dans sa maison à étage. Elle a une <strong>arthrose</strong> des mains et des genoux (usure du cartilage, qui provoque douleurs et raideur, plus marquées le matin), traitée par du <strong>paracétamol</strong>, antalgique de palier 1, que l'infirmière lui donne à 7 h 30 (surveillance : efficacité sur la douleur). Elle a aussi une <strong>hypertension artérielle</strong>, traitée par un antihypertenseur (surveillance : vertiges au lever, chutes). GIR 4. Elle pèse 58 kg pour 1,62 m, soit un IMC de 22,1, dans les valeurs normales. Ancienne couturière, elle a chanté trente ans dans une chorale. Elle se lave seule le haut du corps si on lui laisse le temps, a besoin d'aide pour le dos, les jambes et les pieds, s'habille avec aide pour les boutons et les chaussures, se déplace seule avec une canne dans sa chambre. Depuis son arrivée, elle reste dans sa chambre et décline les animations. Risques inscrits au projet personnalisé : chute, isolement.</p>
+<p style="margin:0;"><strong>La situation.</strong> Un lundi de février, vers 7 h 45, j'entre pour sa toilette. Avant de commencer, je lui demande de coter la douleur de ses mains : EVA à 5 sur 10. Elle a reçu son paracétamol à 7 h 30 et me dit que ses doigts sont « rouillés ». Je lui propose de revenir à 8 h 15, le temps que l'antalgique agisse et que ses articulations se dérouillent, ce qu'elle accepte. À 8 h 15, l'EVA est à 3. Après une friction hydro-alcoolique, je prépare le lavabo à hauteur de ses coudes, la chaise devant, un gant de toilette épais et un savon à pompe, plus faciles à saisir qu'un savon en pain pour des doigts raides. Au lever, je la laisse une minute assise au bord du lit, en raison de son antihypertenseur, avant qu'elle rejoigne le lavabo avec sa canne. Elle se lave seule le visage, les bras et le torse, à son rythme, pendant que je reste à côté sans intervenir ; c'est plus long, mais cela préserve les capacités qu'elle a encore. Elle fait seule sa toilette intime, assise, avec un gant propre que je lui tends ; je lave ensuite son dos, ses jambes et ses pieds, en vérifiant l'état de la peau et l'absence de rougeur aux talons. Pour l'habillage, je lui laisse choisir ses vêtements ; je ferme les petits boutons et je lui propose un gilet à pressions, qu'elle pourra fermer seule. Pendant le soin, elle fredonne ; je lui demande si elle chantait, et elle me parle de sa chorale avec un sourire que je ne lui avais jamais vu. Je sais qu'un atelier chant a lieu chaque jeudi. Je lui propose de l'y accompagner, sans insister quand elle hésite, et je le signale à l'animatrice, qui passe la voir le mercredi. Le jeudi, je l'accompagne à l'atelier en marchant à son côté, à son rythme ; elle reste l'heure entière. Je trace en transmission ciblée l'horaire adapté, l'EVA avant et après, le gilet et l'atelier. Avec l'accord de l'infirmière, la toilette à 8 h 15 est inscrite dans son plan de soins. Un mois plus tard, Mme A. a participé à trois ateliers sur quatre et se lave seule le haut du corps chaque matin ; son EVA au moment de la toilette ne dépasse plus 3.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #C5CAE9;background:#E8EAF6;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #C5CAE9;">Le recueil en 4 temps précède le soin. Le passage évaluatif (EVA) justifie le décalage de la toilette. Chaque adaptation a son pourquoi (savon à pompe, gilet à pressions, lever en deux temps). Le volet <strong>vie sociale</strong> est traité à partir de l'histoire de vie (la chorale). Le chaînage est présent (paracétamol, donc délai d'efficacité ; antihypertenseur, donc lever en deux temps). La boucle est fermée : chiffrée (3 ateliers sur 4, EVA à 3), datée (un mois plus tard), inscrite au plan de soins.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;background:#E8EAF6;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #C5CAE9;">Le paracétamol est donné par l'infirmière ; le changement d'horaire est inscrit au plan de soins « avec l'accord de l'infirmière ». La proposition d'atelier passe par l'animatrice.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #C5CAE9;">« Je l'aide beaucoup pour aller plus vite » : fragilisant. « J'ai mis de la crème sur ses mains douloureuses » : hors champ si la crème n'a pas été désignée et identifiée par l'infirmière, sur sa consigne. Oublier la friction hydro-alcoolique : l'hygiène n'est plus démontrée.</td></tr>
+</table>
+
+<!-- Situation B -->
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">6.2 · Situation B, avant et après</p>
+<div style="background:#283593;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Activité 4 (BC2) · Adapter un soin à l'état clinique, en collaboration, avec ses critères de qualité</div>
+
+<div style="background:#FFEBEE;border:1px solid #FFCDD2;border-radius:10px;padding:16px 20px;margin:10px 0;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;">❌ Version « avant »</p>
+<p style="margin:0;font-style:italic;">« M. G. a une insuffisance cardiaque et il est sous oxygène. Ce matin-là, je lui ai fait sa toilette au lit. Pendant la toilette, il s'est essoufflé et il a désaturé, donc j'ai monté un peu l'oxygène et il s'est calmé. J'ai fini la toilette et j'ai prévenu l'infirmière. J'ai fait une toilette de qualité, en respectant les règles d'hygiène. »</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
+<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:36%;">Passage</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai monté un peu l'oxygène »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Acte hors champ décrit comme réalisé : l'aide-soignant ne touche jamais au débitmètre, même sur protocole ou sur consigne.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« J'ai fini la toilette et j'ai prévenu l'infirmière. »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Mise en danger : l'alerte vient après la fin du soin.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« il a désaturé »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Manquant.</strong> Aucune valeur, aucune référence habituelle, aucune fréquence respiratoire.</td></tr>
+<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« une toilette de qualité, en respectant les règles d'hygiène »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Seulement affirmé.</strong> Les critères de qualité, exigés pour l'activité 4, ne sont pas énoncés.</td></tr>
+</table>
+
+<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
+<p style="margin:0;"><strong>⚠️ Si ce geste a réellement eu lieu.</strong> Si vous avez vraiment modifié le débit ce jour-là, cette situation ne peut pas être « corrigée » : on ne travestit pas un récit. Choisissez une autre situation pour l'activité 4. La version « après » ci-dessous décrit une <em>autre</em> matinée, où le candidat a agi dans son champ.</p>
+</div>
+
+<div style="background:#F7F8FD;border:1px solid #C5CAE9;border-radius:10px;padding:16px 20px;">
+<p style="margin:0 0 8px 0;font-weight:bold;color:#2E7D32;">✅ Version « après »</p>
+<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. G., 80 ans, dont le recueil complet en 4 temps figure en partie 3 de cette masterclass ; dans un livret, il serait écrit une fois puis repris ainsi, en l'essentiel : insuffisance cardiaque et BPCO, oxygénothérapie au long cours à 2 L/min par lunettes, prescrite par le médecin ; furosémide, diurétique de l'anse (surveillance : hypotension, déshydratation, diurèse, poids) ; bisoprolol, bêtabloquant (surveillance : pouls ralenti, hypotension) ; bronchodilatateur inhalé (surveillance : tremblements, palpitations). GIR 2, 94 kg pour 1,72 m (IMC 31,8, obésité), Braden à 13. Saturation habituelle de 93 à 94 % sous oxygène. Ancien chauffeur routier, il tient à être rasé « avant le café ». <strong>Ce qui a évolué depuis :</strong> depuis trois jours, il s'essouffle davantage pendant la toilette.</p>
+<p style="margin:0;"><strong>La situation.</strong> Un jeudi d'avril, à 7 h 20, avant la toilette, je demande à l'infirmière s'il y a une consigne particulière pour M. G. : elle me rappelle la consigne médicale : lui signaler toute saturation inférieure à 92 %. Au repos, en position demi-assise, il respire à 18 par minute, sa saturation est à 93 % et son pouls à 62 par minute, ses valeurs habituelles sous bêtabloquant. Ses chevilles sont plus gonflées que la veille. Son insuffisance cardiaque pouvant provoquer une rétention d'eau, et son essoufflement augmentant depuis trois jours, je le signale aussitôt à l'infirmière, avant de commencer ; elle me demande de le peser après la toilette et de débuter le soin avec des pauses. Après une friction hydro-alcoolique, je prépare tout le matériel à portée de main pour réduire la durée du soin et donc de ses efforts, je règle la chambre à 23 °C et je lui explique que nous procéderons en plusieurs temps, avec des pauses ; il accepte. Je commence par le rasage, comme il le souhaite, puis il se lave seul le visage et le torse pendant que je surveille son souffle. Pendant la toilette du bas du corps, je garde la tête de lit relevée à 30°, afin de ne pas aggraver son essoufflement. En le tournant sur le côté pour laver le dos, je le vois s'essouffler : saturation à 90 %, respiration à 26 par minute. J'interromps immédiatement la toilette, je le réinstalle en position demi-assise, je vérifie que les lunettes sont bien placées et que la tubulure n'est ni pliée ni écrasée. Je ne touche pas au débitmètre. J'appelle l'infirmière avec la sonnette, sans le quitter, et je l'aide à ralentir sa respiration en lui parlant calmement. À son arrivée, trois minutes plus tard, il est remonté à 93 % et respire à 19 par minute. Après l'avoir examiné, elle me demande de reporter la toilette du bas du corps après son repos de fin de matinée. Je termine le haut du corps, je libère ses talons avec un coussin de décharge en raison de son Braden à 13, je laisse la sonnette et un verre d'eau à portée de main, et j'observe l'aspect et j'estime le volume des urines de sa protection de nuit, en lien avec son diurétique. En fin de matinée, je le pèse au fauteuil-balance : 95,2 kg, soit 1,2 kg de plus qu'à la pesée de la semaine précédente, valeur que je transmets aussitôt à l'infirmière. Mes critères de qualité pour ce soin sont les suivants : une saturation à 92 % au moins pendant le soin, et toute baisse signalée sans délai ; une peau propre et sèche, plis compris, sans rougeur aux points d'appui, un confort exprimé par M. G., son rasage fait avant le café, et sa participation préservée. Je trace en transmission ciblée l'épisode, les valeurs avant, pendant et après, les œdèmes, le poids et la diurèse. Sur proposition de l'infirmière, la toilette en deux temps est inscrite au plan de soins. Pendant les sept jours suivants, d'après les relevés que l'équipe et moi-même avons tracés à chaque toilette, sa saturation n'est pas descendue sous 92 %.</p>
+</div>
+
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #C5CAE9;background:#E8EAF6;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #C5CAE9;">Le recueil de la personne fil rouge est repris avec « ce qui a évolué ». La collaboration est visible avant, pendant et après le soin. Le passage évaluatif chiffre l'état de base, comparé à ses valeurs habituelles. Le soin est adapté à l'état clinique (demi-assise, pauses, ordre des gestes). L'alerte est immédiate, la personne n'est pas laissée seule. Le chaînage est complet (bêtabloquant et pouls, diurétique et diurèse, insuffisance cardiaque, œdèmes et poids). Les <strong>critères de qualité</strong> sont énoncés explicitement. La boucle est fermée sur sept jours. Le repérage de la désaturation relève aussi de l'activité 3 ; ce qui ancre la situation en activité 4, c'est l'adaptation du soin en collaboration et l'énoncé des critères de qualité.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;background:#E8EAF6;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #C5CAE9;">« Je ne touche pas au débitmètre » ; ce qu'il fait à la place : position, vérification des lunettes et de la tubulure, alerte. La décision de réorganiser la toilette revient à l'infirmière.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #C5CAE9;">Toute intervention sur le débit, même « un peu » ou « sur consigne ». Terminer la toilette avant d'alerter. Garder les œdèmes pour la relève au lieu de les signaler avant le soin. Laisser M. G. seul pour aller chercher l'infirmière. Omettre les critères de qualité, qui sont un attendu de l'activité 4.</td></tr>
+</table>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">6.3 · Ce qui a changé entre « avant » et « après »</p>
+<p>Aucun talent littéraire n'a été ajouté. Les versions « après » appliquent simplement les outils de cette masterclass : une situation choisie dans le champ, le recueil en 4 temps, le passage évaluatif, le quoi-comment-pourquoi, le chaînage, la limite en deux temps, les critères de qualité et la boucle fermée. Les phrases fragilisantes ont été supprimées, les affirmations remplacées par des gestes.</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:22px 0 8px 0;">6.4 · Six questions du jury sur votre écrit, telles qu'elles tombent</p>
+<p>Le jury part de <em>votre</em> texte. Il cite une phrase et vous interroge. Entraînez-vous à répondre à voix haute avant d'ouvrir l'attendu. En séance, travaillez les questions 1, 3 et 4 ; les trois autres se préparent en travail personnel.</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">« Vous écrivez : “je lui propose de revenir à 8 h 15, le temps que l'antalgique agisse”. Pourquoi ce choix ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le raisonnement complet, avec vos propres mots : l'EVA à 5, la raideur matinale de l'arthrose, le délai d'action du paracétamol, le but (qu'elle puisse participer à sa toilette), puis le résultat (EVA à 3) et l'accord de l'infirmière pour l'inscrire au plan de soins. <strong>À éviter :</strong> « parce que c'était plus pratique pour moi ».</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">« Vous écrivez : “je lui propose un gilet à pressions, qu'elle pourra fermer seule”. Racontez-moi comment vous en avez eu l'idée. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le récit du moment, avec plus de détails que l'écrit : ses doigts raides, les boutons qu'elle ne pouvait plus fermer, ce que vous avez observé avant de proposer. Le jury vérifie ainsi que la situation est vécue et que le livret est le vôtre ; s'il vous le demande, dites simplement que vous avez été accompagné pour la méthode et relu, puis que vous avez réécrit vous-même. <strong>À éviter :</strong> une réponse vague, ou l'incapacité à expliquer un mot de votre propre texte.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">« Pour l'activité 4, vous avez choisi “une toilette chez M. G.”. Pourquoi cette situation plutôt qu'une autre ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la phrase-clé de l'activité (« voilà comment je travaille avec l'infirmier, pas à sa place »), puis les endroits précis où votre récit la prouve : la consigne demandée avant le soin, l'alerte, la décision laissée à l'infirmière, les critères de qualité. <strong>À éviter :</strong> « c'était la plus facile à raconter ».</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">« Vous écrivez : “je ne touche pas au débitmètre”. Et si l'infirmière vous avait demandé de le faire ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> vous ne le faites pas, même sur consigne, parce que le réglage du débit ne relève pas de votre rôle ; vous le lui dites avec calme, vous restez auprès de la personne et vous poursuivez ce qui vous revient (position, lunettes, surveillance). <strong>À éviter :</strong> « si elle me le demande, je le fais ».</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">« Dans votre livret, vous écrivez “saturation à 90 %”. À l'instant, vous m'avez dit 88. Lequel est juste ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la cohérence entre l'écrit et l'oral. Relisez votre livret la veille de l'entretien ; si vous hésitez, dites-le honnêtement. <strong>À éviter :</strong> inventer un chiffre pour sortir de l'embarras, ce qui installe le doute sur toute la situation.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">« Vous citez le bisoprolol dans la présentation de M. G. Qu'est-ce qu'il vous fait surveiller, et où le voit-on dans votre récit ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> c'est un bêtabloquant ; il ralentit le pouls et peut faire baisser la tension. Dans le récit, vous avez mesuré le pouls à 62 par minute avant la toilette et l'avez comparé à sa valeur habituelle. C'est le chaînage traitement-surveillance. <strong>À éviter :</strong> « c'est l'infirmière qui s'occupe des médicaments ».</p></details>
+
+<div style="background:#E8EAF6;border-radius:10px;padding:14px 20px;margin:18px 0;">
+<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Une situation « avant » décrit ; une situation « après » prouve. La différence tient à des outils précis : recueil en 4 temps, passage évaluatif, quoi-comment-pourquoi, chaînage, limite en deux temps, critères de qualité, boucle fermée. Un geste hors champ ne se corrige pas : on change de situation. Et à l'oral, votre parole doit confirmer votre écrit.</p>
+</div>
+<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitres 9 et 12 · Livre Bloc 1 · Livre Bloc 2 · Fiches de révision B1 et B2</p></div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">MC02 · Clôture</p>
+      <div class="content-scroll"><div style="background:#1A237E;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#1A237E;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
+
+<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">1. Quel est le contrôle le plus rentable de votre livret ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le contrôle des attendus quantitatifs</strong> : tous les volets de chaque activité, et une réponse explicite à chaque sous-question.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">2. Quel volume donne le repère ORACLE pour un livret complet ? A. 10 à 20 pages · B. 40 à 80 pages, annexes comprises · C. 150 pages minimum</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B. 40 à 80 pages, annexes comprises.</strong> C'est un repère ORACLE, pas une règle officielle : le jury juge les preuves, pas l'épaisseur.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">3. Que fait le jury entre la rubrique A et la rubrique B ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Une lecture en diagonale</strong> : il vérifie que ce qui est annoncé en A est mobilisé en B, et que ce qui est raconté en B est cohérent avec l'inventaire de A.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">4. Quels sont les quatre critères d'une bonne situation ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vécue, datée, dans le champ, et qui permet de raisonner.</strong></p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">5. Combien de personnes fil rouge viser pour les 11 activités ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Environ 6</strong>, complémentaires. Une personne riche alimente 2 ou 3 activités ; son recueil s'écrit une fois, puis on y renvoie en précisant ce qui a évolué.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">6. Quels sont les 4 temps du recueil de données ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le contexte, l'histoire de vie, l'autonomie actuelle, puis le soin.</strong></p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">7. Quel est le temps le plus oublié de la séquence en 8 temps ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Le passage évaluatif avant d'agir</strong> : ce que vous observez et mesurez avant de commencer, et qui justifie tout ce qui suit.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">8. Quelle est la proportion cible d'une situation ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>40 % de récit, 40 % de justification, 20 % de contexte et de résultat.</strong></p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">9. Réécrivez « corpulence importante » comme le jury l'attend.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Par exemple : <strong>« 90 kg pour 1,60 m, soit un IMC de 35,2, qui correspond à une obésité ».</strong> Des données, pas une impression.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">10. Une personne est traitée par un diurétique. Quelle surveillance attend le jury dans le récit ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Hypotension et lever en deux temps, chutes, déshydratation, diurèse</strong> (et poids en cas d'insuffisance cardiaque). C'est le chaînage traitement-surveillance.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">11. Qu'est-ce que « dire la limite en deux temps » ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Écrire ce que je ne fais pas, puis ce que je fais à la place.</strong></p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">12. Quels sont les trois caractères d'une boucle fermée ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Un résultat chiffré, daté et vérifié à distance</strong> (recontrôle, réparation vérifiée le lendemain, pesée dix jours plus tard).</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">13. « Il a fallu insister » : dans quel état de la grille, et comment le corriger ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Fragilisant.</strong> Il se corrige par suppression ou par réécriture, jamais par ajout.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">14. Citez trois endroits à vérifier pour anonymiser votre livret, en plus des récits.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Les annexes</strong> (noms, logos, en-têtes), <strong>les métadonnées des fichiers</strong> (auteur, société, révisions) et <strong>le nom des fichiers</strong>. Dans les récits : initiales seules, établissement non identifiable.</p></details>
+
+<details style="border:1px solid #C5CAE9;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#1A237E;">15. Votre accompagnateur peut-il rédiger une situation à votre place ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> Vous signez une déclaration sur l'honneur qui vous engage. ORACLE corrige, questionne et vous fait réécrire, mais n'écrit jamais à votre place.</p></details>
+
+<div style="background:linear-gradient(135deg,#1A237E 0%,#3949AB 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
+<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 02</p>
+<ol style="margin:0;padding-left:22px;">
+<li>Le jury lit dans l'ordre : attendus, champ, personne, raisonnement, résultat. Comptez vos volets avant tout.</li>
+<li>Rubrique A et rubrique B se lisent ensemble : ce que vous annoncez doit se retrouver, ce que vous racontez doit être cohérent.</li>
+<li>Une bonne situation est vécue, datée, dans le champ, et elle permet de raisonner. Environ 6 personnes fil rouge suffisent.</li>
+<li>La personne se présente en 4 temps, avant le soin, avec des données et non des impressions.</li>
+<li>La situation se déroule en 8 temps ; le passage évaluatif avant d'agir est le plus oublié.</li>
+<li>Chaque phrase porte son quoi, son comment et son pourquoi ; chaque traitement, sa surveillance ; chaque limite se dit en deux temps.</li>
+<li>Chaque situation se ferme sur un résultat chiffré, daté et vérifié à distance.</li>
+<li>Relisez avec la grille en 4 états, anonymisez tout, et écrivez vous-même, dans votre langue.</li>
+</ol>
+</div>
+
+<p style="font-weight:bold;color:#1A237E;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 03</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<tr><td style="padding:9px;border:1px solid #C5CAE9;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Remplir ma carte des situations : mes personnes fil rouge, et pour chacune les activités qu'elle alimente.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Passer chaque situation candidate aux quatre critères (vécue, datée, dans le champ, qui permet de raisonner) et au test de la phrase-clé.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Cocher la liste de contrôle des 18 éléments : volets des activités 5, 7, 8, 9, 10 et 11 compris.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Rédiger le recueil de données en 4 temps de ma personne fil rouge la plus riche, avec traitements, classes, GIR, poids, taille et IMC interprété.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Écrire une première situation complète en 8 temps, puis surligner récit et justification pour vérifier la proportion 40 / 40 / 20.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Vérifier que chaque traitement cité a sa phrase de surveillance, et que chaque situation se ferme sur un résultat chiffré, daté et vérifié.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Relire ce premier texte avec la grille en 4 états et la grille de détection de la partie 5.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Anonymiser : initiales seules, établissement non identifiable, annexes et métadonnées des fichiers vérifiées.</td></tr>
+<tr><td style="padding:9px;border:1px solid #C5CAE9;text-align:center;">☐</td><td style="padding:9px;border:1px solid #C5CAE9;">Réviser avec les ressources ORACLE : le livre du livret 2, partie « apprendre à écrire » et chapitres 9 à 19, et les fiches de révision B1 à B5.</td></tr>
+</table></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-band" style="height: 160px;">
+        <div class="hero-tile"><div class="emoji">🎯</div></div>
+        <div class="hero-tile"><div class="emoji">✍️</div></div>
+        <div class="hero-tile"><div class="emoji">💡</div></div>
+        <div class="hero-tile"><div class="emoji">✅</div></div>
+        <div class="hero-tile"><div class="emoji">🏆</div></div>
+      </div>
+      <p class="eyebrow">Validation de la masterclass</p>
+      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
+      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
+    </section>
+
+    <section class="slide quiz-slide" data-q="0">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 1 / 4</p>
+        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">3 blocs</button>
+        <button class="quiz-opt" data-correct="false">4 blocs</button>
+        <button class="quiz-opt" data-correct="true">5 blocs</button>
+        <button class="quiz-opt" data-correct="false">8 blocs</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="1">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 2 / 4</p>
+        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
+        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
+        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="2">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 3 / 4</p>
+        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
+        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
+        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
+        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
+      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
+    </section>
+
+    <section class="slide quiz-slide" data-q="3">
+      <div class="quiz-head">
+        <p class="quiz-progress">Question 4 / 4</p>
+        <p class="quiz-q">Dans l'analyse d'une situation du Livret 2, quelle question est <strong>essentielle</strong> à se poser ?</p>
+      </div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="true">Pourquoi ai-je agi ainsi et qu'ai-je mobilisé ?</button>
+        <button class="quiz-opt" data-correct="false">Ai-je bien respecté le planning ?</button>
+        <button class="quiz-opt" data-correct="false">Combien de temps cela a-t-il pris ?</button>
+        <button class="quiz-opt" data-correct="false">Qui était présent dans l'équipe ?</button>
+      </div>
+      <div class="quiz-feedback" data-ok="Exact. Le jury évalue votre capacité d'analyse réflexive : les savoirs, savoir-faire et savoir-être mobilisés." data-ko="Non. L'analyse réflexive porte sur ce qui a été mobilisé (savoirs, gestes, posture), pas sur l'organisation."></div>
+      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
+    </section>
+
+    <section class="slide" id="finalSlide">
+      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
+      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
+      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
+      </div>
+    </section>
+  </div>
+  <div class="progress-wrap">
+    <span id="progressLabel">1 / 1</span>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const pct = document.getElementById('progressPct');
+  const prevBtn = document.querySelector('.nav-arrow.prev');
+  const nextBtn = document.querySelector('.nav-arrow.next');
+  let idx = 0, score = 0;
+  const answered = new Set();
+  const QUIZ_LEN = 4;
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'leaving');
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('leaving');
+    });
+    const p = Math.round(((idx + 1) / total) * 100);
+    fill.style.width = p + '%';
+    label.textContent = (idx + 1) + ' / ' + total;
+    pct.textContent = p + '%';
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === total - 1);
+    if (idx === total - 1) renderFinal();
+  }
+  window.go = function(delta) {
+    const next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next; render();
+  };
+  window.restart = function(){
+    idx = 0; score = 0; answered.clear();
+    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
+    render();
+  };
+  function renderFinal() {
+    const txt = document.getElementById('scoreTxt');
+    const msg = document.getElementById('scoreMsg');
+    const title = document.getElementById('scoreTitle');
+    const circle = document.getElementById('resultCircle');
+    if (!txt) return;
+    txt.textContent = score + '/' + QUIZ_LEN;
+    const ratio = (score / QUIZ_LEN) * 100;
+    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
+    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
+    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
+    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
+  }
+  document.querySelectorAll('.quiz-slide').forEach(slide => {
+    const opts = slide.querySelectorAll('.quiz-opt');
+    const feedback = slide.querySelector('.quiz-feedback');
+    const nxt = slide.querySelector('.quiz-next');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered.has(slide)) return;
+        answered.add(slide);
+        const isCorrect = btn.dataset.correct === 'true';
+        opts.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
+        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
+        nxt.classList.add('show');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>
