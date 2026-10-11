@@ -2,94 +2,184 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Socle · SOCLE_L03 · Pathologies respiratoires — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">SOCLE_L03 · Pathologies respiratoires</span>
+  <span class="mod" id="modLbl">Socle</span>
+  <span class="counter" id="counter">1 / 15</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Socle</strong> › SOCLE_L03</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Socle</span><span>Leçon 3</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
-    <h1>Pathologies respiratoires</h1>
-    <div class="accroche"><p>Principales situations : <strong>BPCO</strong> (bronchopneumopathie chronique obstructive, souvent liée au tabac), <strong>asthme</strong>, <strong>pneumopathie</strong> (infection), <strong>insuffisance respiratoire</strong>, <strong>embolie pulmonaire</strong> (urgence). Toutes peuvent entraîner une <strong>hypoxie</strong> (manque d’oxygène).</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Socle">
+  <div class="wrap">
+    <span class="kicker">Socle · Leçon 3</span>
+    <h1>Pathologies respiratoires<em>Les bases du métier</em></h1>
+    <div class="sub"><p>Principales situations : <strong>BPCO</strong> (bronchopneumopathie chronique obstructive, souvent liée au tabac), <strong>asthme</strong>, <strong>pneumopathie</strong> (infection), <strong>insuffisance respiratoire</strong>, <strong>embolie pulmonaire</strong> (urgence). Toutes peuvent entraîner une <strong>hypoxie</strong> (manque d’oxygène).</p></div>
+    <div class="meta"><span>⏱ 35 min</span><span>📚 5 parties</span><span>🎯 9 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Citer les principales pathologies respiratoires rencontrées et le risque d’hypoxie qu’elles partagent.</li><li>Repérer les signes d’alerte respiratoires : dyspnée, polypnée, cyanose, SpO₂ basse, tirage, toux productive.</li><li>Installer la personne et surveiller une oxygénothérapie sans jamais toucher au débit.</li><li>Transmettre une aggravation respiratoire en DAR, avec les chiffres et le contexte.</li><li>Situer les nouveaux gestes AS issus de la réforme 2021 autour de la respiration.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>Les grandes pathologies respiratoires en gériatrie</h3>
-<p>Principales situations : <strong>BPCO</strong> (bronchopneumopathie chronique obstructive, souvent liée au tabac), <strong>asthme</strong>, <strong>pneumopathie</strong> (infection), <strong>insuffisance respiratoire</strong>, <strong>embolie pulmonaire</strong> (urgence). Toutes peuvent entraîner une <strong>hypoxie</strong> (manque d’oxygène).</p>
-<aside class="encadre"><h4>📘 Référence livre ORACLE</h4><p>La fonction respiratoire est vitale : une détresse respiratoire est toujours une urgence. L’AS, au plus près, est souvent le premier à repérer l’aggravation.</p></aside>
-</section><section class="partie"><h3>Repérer les signes d’alerte</h3>
-<div class="tableau"><table><thead><tr>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · SOCLE_L03</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Citer les principales pathologies respiratoires rencontrées et le risque d’hypoxie qu’elles partagent.</p></div><div class="card"><div class="ico">📝</div><p>Repérer les signes d’alerte respiratoires : dyspnée, polypnée, cyanose, SpO₂ basse, tirage, toux productive.</p></div><div class="card"><div class="ico">👤</div><p>Installer la personne et surveiller une oxygénothérapie sans jamais toucher au débit.</p></div><div class="card"><div class="ico">🔑</div><p>Transmettre une aggravation respiratoire en DAR, avec les chiffres et le contexte.</p></div><div class="card"><div class="ico">🧭</div><p>Situer les nouveaux gestes AS issus de la réforme 2021 autour de la respiration.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>5 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 25 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Les grandes pathologies respiratoires en gériatrie<small>Partie 1 / 5</small></h2></div>
+    <div class="prose"><p>Principales situations : <strong>BPCO</strong> (bronchopneumopathie chronique obstructive, souvent liée au tabac), <strong>asthme</strong>, <strong>pneumopathie</strong> (infection), <strong>insuffisance respiratoire</strong>, <strong>embolie pulmonaire</strong> (urgence). Toutes peuvent entraîner une <strong>hypoxie</strong> (manque d’oxygène).</p></div>
+<div class="box box-info"><h4>📘 Référence livre ORACLE</h4><p>La fonction respiratoire est vitale : une détresse respiratoire est toujours une urgence. L’AS, au plus près, est souvent le premier à repérer l’aggravation.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Repérer les signes d’alerte<small>Partie 2 / 5</small></h2></div>
+    <div class="tbl"><table><thead><tr>
 <th>Signe</th>
 <th>Ce qu’on observe</th>
 </tr></thead><tbody>
@@ -118,157 +208,153 @@ section li{margin-bottom:6px}
 <td>Productive, crachats colorés</td>
 </tr>
 </tbody></table></div>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🚨 signes d’alerte — on alerte l’IDE</strong></p>
-<p>Cyanose, SpO₂ &lt; 90 %, confusion, sueurs, impossibilité de parler en phrases : détresse respiratoire → installer assis, alerter l’IDE/le médecin <strong>sans délai</strong>.</p></aside>
-</section><section class="partie"><h3>Le rôle de surveillance de l’AS</h3>
-<p>L’AS collabore avec le kiné pour la kinésithérapie respiratoire et l’aide au désencombrement.</p>
-<aside class="encadre"><h4>🩺 le rôle concret de l’AS</h4><p><strong>Position</strong> : semi-assise (Fowler) pour libérer le diaphragme. <strong>O₂</strong> : vérifier le débit prescrit, la bonne place des lunettes, ne jamais modifier soi-même le débit. <strong>Bouche</strong> : soins fréquents (l’O₂ assèche). <strong>Effort</strong> : fractionner les soins, laisser récupérer. <strong>Mesure</strong> : FR + SpO₂.</p></aside>
-</section><section class="partie"><h3>Transmettre &amp; tracer</h3>
-<div class="exemples">
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>🚨 signes d’alerte — on alerte l’IDE</strong></p>
+<p>Cyanose, SpO₂ &lt; 90 %, confusion, sueurs, impossibilité de parler en phrases : détresse respiratoire → installer assis, alerter l’IDE/le médecin <strong>sans délai</strong>.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Le rôle de surveillance de l’AS<small>Partie 3 / 5</small></h2></div>
+    <div class="prose"><p>L’AS collabore avec le kiné pour la kinésithérapie respiratoire et l’aide au désencombrement.</p></div>
+<div class="box box-info"><h4>🩺 le rôle concret de l’AS</h4><p><strong>Position</strong> : semi-assise (Fowler) pour libérer le diaphragme. <strong>O₂</strong> : vérifier le débit prescrit, la bonne place des lunettes, ne jamais modifier soi-même le débit. <strong>Bouche</strong> : soins fréquents (l’O₂ assèche). <strong>Effort</strong> : fractionner les soins, laisser récupérer. <strong>Mesure</strong> : FR + SpO₂.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Transmettre &amp; tracer<small>Partie 4 / 5</small></h2></div>
+    <div class="exs">
 <div class="ex"><p>📖 transmission ciblée DAR — <strong>D</strong> : « FR 26/min, SpO₂ 91 %, lèvres un peu bleutées, M. P. essoufflé au moindre effort ». <strong>A</strong> : « Installé assis, alerte IDE, surveillance rapprochée ». <strong>R</strong> : « SpO₂ remontée à 95 % sous O₂, FR 20 ». On note le contexte (effort, repos) et la couleur des crachats.</p></div>
 </div>
-</section><section class="partie"><h3>Anatomie respiratoire &amp; oxygénothérapie (rôle AS)</h3>
-<p>Voies aériennes : nez → pharynx → larynx → <strong>trachée</strong> → bronches → poumons. La respiration associe la <strong>ventilation</strong> et les <strong>échanges gazeux</strong> O₂/CO₂, qui ont lieu dans les <strong>alvéoles</strong>.</p>
-<aside class="encadre"><h4>Oxygénothérapie (sur prescription)</h4><p>humidificateur si O₂ mural, <strong>jamais de corps gras/crème ni de flamme</strong> à proximité (risque de brûlure), surveiller les ailes du nez/oreilles. L’AS <strong>ne modifie jamais le débit</strong>.</p></aside>
-<aside class="encadre"><h4>Nouveaux gestes AS (réforme 2021)</h4><p><strong>recueil de la SpO₂</strong> · <strong>changement de lunette à O₂ avec tubulure</strong> · pose/changement de masque en situation stable chronique (apnée du sommeil) · aspiration endotrachéale sur orifice cicatrisé (si formé).</p></aside>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas pratique corrigé — M. B., BPCO connu</strong></p></p>
-<div class="cas-piste"><p><em>M. B., BPCO, vous appelle : il est très essoufflé, n’arrive plus à finir ses phrases. SpO₂ 88 %. Une collègue propose « d’augmenter l’oxygène ».</em></p>
+<section class="slide std" data-mod="Partie 5">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>Anatomie respiratoire &amp; oxygénothérapie (rôle AS)<small>Partie 5 / 5</small></h2></div>
+    <div class="prose"><p>Voies aériennes : nez → pharynx → larynx → <strong>trachée</strong> → bronches → poumons. La respiration associe la <strong>ventilation</strong> et les <strong>échanges gazeux</strong> O₂/CO₂, qui ont lieu dans les <strong>alvéoles</strong>.</p></div>
+<div class="box box-info"><h4>Oxygénothérapie (sur prescription)</h4><p>humidificateur si O₂ mural, <strong>jamais de corps gras/crème ni de flamme</strong> à proximité (risque de brûlure), surveiller les ailes du nez/oreilles. L’AS <strong>ne modifie jamais le débit</strong>.</p></div>
+<div class="box box-info"><h4>Nouveaux gestes AS (réforme 2021)</h4><p><strong>recueil de la SpO₂</strong> · <strong>changement de lunette à O₂ avec tubulure</strong> · pose/changement de masque en situation stable chronique (apnée du sommeil) · aspiration endotrachéale sur orifice cicatrisé (si formé).</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Cas cliniques — entraînement oral VAE<small>Appliquer ce que vous avez appris</small></h2></div>
+    
+    <div class="cas-item"><div class="cas-q"><p><strong>📂 Cas pratique corrigé — M. B., BPCO connu</strong></p></div><div class="cas-piste"><p><em>M. B., BPCO, vous appelle : il est très essoufflé, n’arrive plus à finir ses phrases. SpO₂ 88 %. Une collègue propose « d’augmenter l’oxygène ».</em></p>
 <p><strong>Conduite à tenir :</strong></p>
 <ul>
 <li>Installer immédiatement en position assise / penché en avant.</li>
 <li>Rester, rassurer, faire respirer calmement.</li>
 <li><strong>Ne pas augmenter le débit d’O₂</strong> de sa propre initiative : chez le BPCO, un excès d’O₂ peut être dangereux. C’est une décision médicale.</li>
 <li>Alerter l’IDE / le médecin en urgence et transmettre la SpO₂.</li>
-</ul></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p>Cas 2 — Mme S. désature à 91 % au repos</p></p>
-<div class="cas-piste"><p><em>Lèvres légèrement bleutées, FR 24/min.</em></p>
+</ul></div></div><div class="cas-item"><div class="cas-q"><p>Cas 2 — Mme S. désature à 91 % au repos</p></div><div class="cas-piste"><p><em>Lèvres légèrement bleutées, FR 24/min.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Installer en position semi-assise, rassurer.</li>
 <li>Vérifier les lunettes O₂ et le débit prescrit (sans le modifier).</li>
 <li>Alerter l’IDE, surveiller SpO₂/FR, tracer.</li>
-</ul></div>
-</div>
+</ul></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Détresse respiratoire : installer assis, ou penché en avant, avant tout autre geste.</div><div class="memo-item">La position semi-assise (Fowler) libère le diaphragme.</div><div class="memo-item">Ne jamais modifier le débit d’O₂ : vérifier seulement le débit prescrit et la place des lunettes.</div><div class="memo-item">Sous oxygène : aucun corps gras, aucune crème, aucune flamme à proximité.</div><div class="memo-item">L’O₂ assèche — soins de bouche fréquents, surveillance des ailes du nez et des oreilles.</div><div class="memo-item">Alerter sans délai : cyanose, SpO₂ &lt; 90 %, confusion, sueurs, phrases impossibles à finir.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">BPCO, asthme, pneumopathie, insuffisance respiratoire, embolie pulmonaire : toutes exposent à l’hypoxie.</div><div class="pts-item">Fréquence respiratoire normale chez l’adulte : 12–20/min ; au-delà, polypnée.</div><div class="pts-item">SpO₂ : 95 % est la norme, en dessous de 90 % c’est l’alerte.</div><div class="pts-item">Cyanose : lèvres et ongles bleutés — signe de mauvaise oxygénation.</div><div class="pts-item">Chez le BPCO, un excès d’O₂ peut être dangereux : le débit est une décision médicale.</div><div class="pts-item">Les échanges gazeux O₂/CO₂ ont lieu dans les alvéoles.</div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>9 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>9 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>SOCLE_L03 — Pathologies respiratoires</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="SOCLE_L02.html">← SOCLE_L02</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="SOCLE_L04.html">SOCLE_L04 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "La SpO₂ qui doit alerter en urgence est…", "opts": ["100 %", "&lt; 98 %", "&lt; 95 %", "&lt; 90 %"], "ok": 3, "x": "SpO₂ &lt; 90 % = alerte urgente (hypoxie).<strong> 🎓 À l’oral VAE :</strong> retenez 95 % normal, &lt; 90 % urgence."}, {"q": "La position recommandée pour faciliter la respiration est…", "opts": ["Allongée à plat", "Semi-assise (Fowler)", "Décubitus latéral strict", "Tête en bas"], "ok": 1, "x": "Position semi-assise (Fowler) : libère le diaphragme.<strong> 🎓 À l’oral VAE :</strong> installez avant tout geste."}, {"q": "Face à un BPCO en détresse, l’AS…", "opts": ["Augmente l’oxygène", "Donne un médicament", "N’augmente jamais le débit d’O₂ et alerte", "Attend la fin du tour"], "ok": 2, "x": "Chez le BPCO, l’AS n’augmente jamais le débit d’O₂ : décision médicale.<strong> 🎓 À l’oral VAE :</strong> un excès d’O₂ peut être dangereux chez le BPCO."}, {"q": "La « cyanose » se repère par…", "opts": ["Une pâleur", "Une transpiration", "Une coloration bleutée des lèvres et ongles", "Une rougeur du visage"], "ok": 2, "x": "Cyanose = coloration bleutée des lèvres/ongles.<strong> 🎓 À l’oral VAE :</strong> signe de mauvaise oxygénation."}, {"q": "Sous oxygénothérapie, l’AS réalise des soins de bouche fréquents car…", "opts": ["Le médecin l’a prescrit pour tous", "Cela augmente la SpO₂", "C’est obligatoire toutes les heures", "L’O₂ assèche les muqueuses"], "ok": 3, "x": "L’O₂ assèche les muqueuses → soins de bouche fréquents.<strong> 🎓 À l’oral VAE :</strong> pensez confort + prévention des lésions."}, {"q": "Une fréquence respiratoire normale chez l’adulte est…", "opts": ["30–40 /min", "60–80 /min", "12–20 /min", "4–8 /min"], "ok": 2, "x": "FR normale adulte = 12–20/min.<strong> 🎓 À l’oral VAE :</strong> &gt; 20 = polypnée à signaler."}, {"q": "Les échanges gazeux O₂/CO₂ ont lieu dans…", "opts": ["La trachée", "Le pharynx", "Les alvéoles pulmonaires", "Le larynx"], "ok": 2, "x": "Les échanges O₂/CO₂ se font au niveau des <strong>alvéoles</strong> .<strong> 🎓 À l’oral VAE :</strong> la ventilation amène l’air, l’alvéole échange les gaz."}, {"q": "Le recueil de la SpO₂ par l’AS…", "opts": ["Est un nouveau geste AS (réforme 2021)", "Est interdit", "Nécessite un acte stérile", "Relève du seul médecin"], "ok": 0, "x": "Le recueil de la saturation est un nouveau geste AS, en collaboration avec l’IDE.<strong> 🎓 À l’oral VAE :</strong> norme ≥ 95 %, alerte &lt; 90 %."}, {"q": "À proximité de l’oxygène, il faut éviter…", "opts": ["Les corps gras et toute flamme", "L’humidificateur", "Les lunettes nasales", "La surveillance"], "ok": 0, "x": "L’O₂ est comburant : <strong>pas de corps gras ni de flamme</strong> (risque de brûlure).<strong> 🎓 À l’oral VAE :</strong> jamais de crème sur le visage sous O₂."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Détresse respiratoire : installer assis, ou penché en avant, avant tout autre geste.</li><li>La position semi-assise (Fowler) libère le diaphragme.</li><li>Ne jamais modifier le débit d’O₂ : vérifier seulement le débit prescrit et la place des lunettes.</li><li>Sous oxygène : aucun corps gras, aucune crème, aucune flamme à proximité.</li><li>L’O₂ assèche — soins de bouche fréquents, surveillance des ailes du nez et des oreilles.</li><li>Alerter sans délai : cyanose, SpO₂ &lt; 90 %, confusion, sueurs, phrases impossibles à finir.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>BPCO, asthme, pneumopathie, insuffisance respiratoire, embolie pulmonaire : toutes exposent à l’hypoxie.</li><li>Fréquence respiratoire normale chez l’adulte : 12–20/min ; au-delà, polypnée.</li><li>SpO₂ : 95 % est la norme, en dessous de 90 % c’est l’alerte.</li><li>Cyanose : lèvres et ongles bleutés — signe de mauvaise oxygénation.</li><li>Chez le BPCO, un excès d’O₂ peut être dangereux : le débit est une décision médicale.</li><li>Les échanges gazeux O₂/CO₂ ont lieu dans les alvéoles.</li></ul></section>
-  
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="d" data-id="q0">
-<p class="q"><strong>Q1.</strong> La SpO₂ qui doit alerter en urgence est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">100 %</li>
-<li data-cle="b" onclick="window._pickQ(this)">&lt; 98 %</li>
-<li data-cle="c" onclick="window._pickQ(this)">&lt; 95 %</li>
-<li data-cle="d" onclick="window._pickQ(this)">&lt; 90 %</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>SpO₂ &lt; 90 % = alerte urgente (hypoxie).<strong> 🎓 À l’oral VAE :</strong> retenez 95 % normal, &lt; 90 % urgence.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q1">
-<p class="q"><strong>Q2.</strong> La position recommandée pour faciliter la respiration est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Allongée à plat</li>
-<li data-cle="b" onclick="window._pickQ(this)">Semi-assise (Fowler)</li>
-<li data-cle="c" onclick="window._pickQ(this)">Décubitus latéral strict</li>
-<li data-cle="d" onclick="window._pickQ(this)">Tête en bas</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Position semi-assise (Fowler) : libère le diaphragme.<strong> 🎓 À l’oral VAE :</strong> installez avant tout geste.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q2">
-<p class="q"><strong>Q3.</strong> Face à un BPCO en détresse, l’AS…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Augmente l’oxygène</li>
-<li data-cle="b" onclick="window._pickQ(this)">Donne un médicament</li>
-<li data-cle="c" onclick="window._pickQ(this)">N’augmente jamais le débit d’O₂ et alerte</li>
-<li data-cle="d" onclick="window._pickQ(this)">Attend la fin du tour</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Chez le BPCO, l’AS n’augmente jamais le débit d’O₂ : décision médicale.<strong> 🎓 À l’oral VAE :</strong> un excès d’O₂ peut être dangereux chez le BPCO.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q3">
-<p class="q"><strong>Q4.</strong> La « cyanose » se repère par…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Une pâleur</li>
-<li data-cle="b" onclick="window._pickQ(this)">Une transpiration</li>
-<li data-cle="c" onclick="window._pickQ(this)">Une coloration bleutée des lèvres et ongles</li>
-<li data-cle="d" onclick="window._pickQ(this)">Une rougeur du visage</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Cyanose = coloration bleutée des lèvres/ongles.<strong> 🎓 À l’oral VAE :</strong> signe de mauvaise oxygénation.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q4">
-<p class="q"><strong>Q5.</strong> Sous oxygénothérapie, l’AS réalise des soins de bouche fréquents car…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le médecin l’a prescrit pour tous</li>
-<li data-cle="b" onclick="window._pickQ(this)">Cela augmente la SpO₂</li>
-<li data-cle="c" onclick="window._pickQ(this)">C’est obligatoire toutes les heures</li>
-<li data-cle="d" onclick="window._pickQ(this)">L’O₂ assèche les muqueuses</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>L’O₂ assèche les muqueuses → soins de bouche fréquents.<strong> 🎓 À l’oral VAE :</strong> pensez confort + prévention des lésions.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q5">
-<p class="q"><strong>Q6.</strong> Une fréquence respiratoire normale chez l’adulte est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">30–40 /min</li>
-<li data-cle="b" onclick="window._pickQ(this)">60–80 /min</li>
-<li data-cle="c" onclick="window._pickQ(this)">12–20 /min</li>
-<li data-cle="d" onclick="window._pickQ(this)">4–8 /min</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>FR normale adulte = 12–20/min.<strong> 🎓 À l’oral VAE :</strong> &gt; 20 = polypnée à signaler.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q6">
-<p class="q"><strong>Q7.</strong> Les échanges gazeux O₂/CO₂ ont lieu dans…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">La trachée</li>
-<li data-cle="b" onclick="window._pickQ(this)">Le pharynx</li>
-<li data-cle="c" onclick="window._pickQ(this)">Les alvéoles pulmonaires</li>
-<li data-cle="d" onclick="window._pickQ(this)">Le larynx</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Les échanges O₂/CO₂ se font au niveau des <strong>alvéoles</strong> .<strong> 🎓 À l’oral VAE :</strong> la ventilation amène l’air, l’alvéole échange les gaz.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q7">
-<p class="q"><strong>Q8.</strong> Le recueil de la SpO₂ par l’AS…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Est un nouveau geste AS (réforme 2021)</li>
-<li data-cle="b" onclick="window._pickQ(this)">Est interdit</li>
-<li data-cle="c" onclick="window._pickQ(this)">Nécessite un acte stérile</li>
-<li data-cle="d" onclick="window._pickQ(this)">Relève du seul médecin</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Le recueil de la saturation est un nouveau geste AS, en collaboration avec l’IDE.<strong> 🎓 À l’oral VAE :</strong> norme ≥ 95 %, alerte &lt; 90 %.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q8">
-<p class="q"><strong>Q9.</strong> À proximité de l’oxygène, il faut éviter…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Les corps gras et toute flamme</li>
-<li data-cle="b" onclick="window._pickQ(this)">L’humidificateur</li>
-<li data-cle="c" onclick="window._pickQ(this)">Les lunettes nasales</li>
-<li data-cle="d" onclick="window._pickQ(this)">La surveillance</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>L’O₂ est comburant : <strong>pas de corps gras ni de flamme</strong> (risque de brûlure).<strong> 🎓 À l’oral VAE :</strong> jamais de crème sur le visage sous O₂.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="SOCLE_L02.html" class="back">← SOCLE_L02</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="SOCLE_L04.html">SOCLE_L04 →</a></div>
-</div>
 </body></html>

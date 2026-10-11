@@ -1,117 +1,207 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bloc 1 · B1_L06 · Activités & animations en EHPAD — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L06 · Activités &amp; animations en EHPAD — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B1_L06 · Activités &amp; animations en EHPAD</span>
+  <span class="mod" id="modLbl">Bloc 1</span>
+  <span class="counter" id="counter">1 / 18</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L06</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 6</span><span>⏱ 45 min</span><span>VAE DEAS</span></div>
-    <h1>Activités &amp; animations en EHPAD</h1>
-    <div class="accroche"><p>Quatre grandes familles d'activités, chacune répondant à des besoins fondamentaux précis.…</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 1">
+  <div class="wrap">
+    <span class="kicker">Bloc 1 · Leçon 6</span>
+    <h1>Activités &amp; animations en EHPAD<em>Vie quotidienne</em></h1>
+    <div class="sub"><p>Quatre grandes familles d'activités, chacune répondant à des besoins fondamentaux précis.…</p></div>
+    <div class="meta"><span>⏱ 45 min</span><span>📚 8 parties</span><span>🎯 11 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Défendre l’activité comme un soin à part entière, inscrit dans le projet de vie.</li><li>Relier les quatre familles d’activités — cognitives, motrices, créatives, sociales — aux besoins fondamentaux qu’elles ciblent.</li><li>Adapter une activité par la durée, la complexité, la taille du groupe et l’histoire de vie.</li><li>Tenir votre rôle en trois temps : avant, pendant, après l’activité.</li><li>Repérer les signaux d’ajustement et les contre-indications qui imposent de ne pas insister.</li><li>Ajuster la proposition à la pathologie et au niveau d’autonomie mesuré par le GIR.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>Les activités en EHPAD : un soin à part entière</h3>
-<p><strong>Ce qu'une activité adaptée entretient :</strong></p>
-<ul>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B1_L06</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Défendre l’activité comme un soin à part entière, inscrit dans le projet de vie.</p></div><div class="card"><div class="ico">📝</div><p>Relier les quatre familles d’activités — cognitives, motrices, créatives, sociales — aux besoins fondamentaux qu’elles ciblent.</p></div><div class="card"><div class="ico">👤</div><p>Adapter une activité par la durée, la complexité, la taille du groupe et l’histoire de vie.</p></div><div class="card"><div class="ico">🔑</div><p>Tenir votre rôle en trois temps : avant, pendant, après l’activité.</p></div><div class="card"><div class="ico">🧭</div><p>Repérer les signaux d’ajustement et les contre-indications qui imposent de ne pas insister.</p></div><div class="card"><div class="ico">⭐</div><p>Ajuster la proposition à la pathologie et au niveau d’autonomie mesuré par le GIR.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>8 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 35 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Les activités en EHPAD : un soin à part entière<small>Partie 1 / 8</small></h2></div>
+    <div class="prose"><p><strong>Ce qu'une activité adaptée entretient :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>😊 Moral</strong> — plaisir, estime de soi, sentiment d'utilité.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🧠 Cognition</strong> — mémoire, attention, repères temporels.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🦵 Mobilité</strong> — motricité, équilibre, prévention des chutes.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>😴 Sommeil</strong> — une fatigue physique saine, un meilleur rythme jour/nuit.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🍽️ Appétit</strong> — stimulé par le mouvement et le plaisir.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🤝 Lien social</strong> — appartenance, communication, identité.</li>
-</ul>
-<aside class="encadre"><h4>🔗 Repère professionnel</h4><p>Les activités ne sont pas un divertissement accessoire : elles sont une <strong>composante du projet de vie</strong>. Elles préviennent l'isolement, maintiennent les capacités et procurent du plaisir. <strong>Animer, c'est soigner.</strong></p></aside>
-<aside class="encadre"><h4></h4><p><strong>🔗 Besoins fondamentaux ciblés (Henderson)</strong></p>
-<p>Se récréer, se réaliser, appartenir à un groupe, communiquer, se mouvoir, se sentir en sécurité. L'activité n'est pas réservée à l'animatrice : <strong>toute l'équipe</strong>, AS compris, contribue à la vie sociale du résident.</p></aside>
-<aside class="vigilance"><h4>⚠ ⚠ Risque d&#x27;isolement</h4><p>Sans activités adaptées : repli sur soi, perte de repères, dépression, accélération de la perte d'autonomie. L'inactivité est un facteur aggravant majeur du syndrome de glissement.</p></aside>
-</section><section class="partie"><h3>Typologie des activités et besoins associés</h3>
-<p>Quatre grandes familles d'activités, chacune répondant à des besoins fondamentaux précis.</p>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+<div class="box box-info"><h4>🔗 Repère professionnel</h4><p>Les activités ne sont pas un divertissement accessoire : elles sont une <strong>composante du projet de vie</strong>. Elles préviennent l'isolement, maintiennent les capacités et procurent du plaisir. <strong>Animer, c'est soigner.</strong></p></div>
+<div class="box box-info"><h4></h4><p><strong>🔗 Besoins fondamentaux ciblés (Henderson)</strong></p>
+<p>Se récréer, se réaliser, appartenir à un groupe, communiquer, se mouvoir, se sentir en sécurité. L'activité n'est pas réservée à l'animatrice : <strong>toute l'équipe</strong>, AS compris, contribue à la vie sociale du résident.</p></div>
+<div class="box box-warn"><h4>⚠ ⚠ Risque d'isolement</h4><p>Sans activités adaptées : repli sur soi, perte de repères, dépression, accélération de la perte d'autonomie. L'inactivité est un facteur aggravant majeur du syndrome de glissement.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Typologie des activités et besoins associés<small>Partie 2 / 8</small></h2></div>
+    <div class="prose"><p>Quatre grandes familles d'activités, chacune répondant à des besoins fondamentaux précis.</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Type</th>
 <th>Exemples concrets</th>
 <th>Besoins ciblés</th>
@@ -137,94 +227,110 @@ section li{margin-bottom:6px}
 <td>Appartenir, communiquer, identité</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4></h4><p><strong>🔗 Lecture par la pyramide de Maslow</strong></p>
-<p>Les activités agissent à tous les étages : du <strong>besoin de sécurité</strong> (cadre rassurant, environnement familier) au <strong>besoin de réalisation de soi</strong> (créer, partager, transmettre). Un ancien musicien qui rejoue un air retrouve son <strong>identité</strong> et sa <strong>dignité</strong>.</p></aside>
-</section><section class="partie"><h3>Adapter les activités aux capacités</h3>
-<p><strong>Quatre leviers d'adaptation :</strong></p>
-<ul>
+<div class="box box-info"><h4></h4><p><strong>🔗 Lecture par la pyramide de Maslow</strong></p>
+<p>Les activités agissent à tous les étages : du <strong>besoin de sécurité</strong> (cadre rassurant, environnement familier) au <strong>besoin de réalisation de soi</strong> (créer, partager, transmettre). Un ancien musicien qui rejoue un air retrouve son <strong>identité</strong> et sa <strong>dignité</strong>.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Adapter les activités aux capacités<small>Partie 3 / 8</small></h2></div>
+    <div class="prose"><p><strong>Quatre leviers d'adaptation :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>⏱️ Durée</strong> — 15 min pour GIR 1-2, 30-45 min pour GIR 3-4, plus long pour GIR 5-6.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🧩 Complexité</strong> — simplifier les règles, réduire les étapes, matériel adapté (gros caractères, images).</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>👥 Groupe</strong> — petit groupe (3-5) pour les troubles cognitifs ; activité individuelle si besoin ; binôme avec un résident autonome.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>📖 Histoire de vie</strong> — s'appuyer sur les passions (ancien musicien → atelier musique, ancienne couturière → atelier couture).</li>
-</ul>
-<aside class="encadre"><h4>🔗 Repère professionnel</h4><p>Une activité réussie est une activité <strong>adaptée à la personne</strong>, pas l'inverse. On ne fait pas participer tout le monde à la même chose de la même manière : on personnalise.</p></aside>
-<aside class="encadre"><h4>🚫 Contre-indications à repérer</h4><p>Douleur non contrôlée, fatigue importante, confusion aiguë, refus clairement exprimé, fièvre, dyspnée. Dans ces cas, <strong>ne pas insister</strong> et proposer une alternative douce (présence, écoute musicale).</p></aside>
-<div class="exemples">
+</ul></div>
+<div class="box box-info"><h4>🔗 Repère professionnel</h4><p>Une activité réussie est une activité <strong>adaptée à la personne</strong>, pas l'inverse. On ne fait pas participer tout le monde à la même chose de la même manière : on personnalise.</p></div>
+<div class="box box-info"><h4>🚫 Contre-indications à repérer</h4><p>Douleur non contrôlée, fatigue importante, confusion aiguë, refus clairement exprimé, fièvre, dyspnée. Dans ces cas, <strong>ne pas insister</strong> et proposer une alternative douce (présence, écoute musicale).</p></div>
+<div class="exs">
 <div class="ex"><p><strong>✅ Exemple — adapter un « loto » pour GIR 1-2</strong></p>
 <p>Cartons avec images agrandies au lieu de chiffres · l'AS pointe les cases et guide la main · 15 min max, une seule partie · petit groupe (3-4) · objectif = stimulation sensorielle, lien et plaisir, <strong>pas la performance</strong>.</p></div>
 </div>
-</section><section class="partie"><h3>Le rôle de l&#x27;AS : avant, pendant, après</h3>
-<p><strong>🔜 Avant l'activité :</strong></p>
-<ul>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Le rôle de l'AS : avant, pendant, après<small>Partie 4 / 8</small></h2></div>
+    <div class="prose"><p><strong>🔜 Avant l'activité :</strong></p></div>
+<div class="prose"><ul>
 <li>proposer l'activité et expliquer ce qui est prévu ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>rassurer (« vous pouvez essayer, et si ça ne vous plaît pas, on arrête ») ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>aider à la préparation (toilette, habillage, lunettes, appareil auditif) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>accompagner jusqu'au lieu ; vérifier que le PAP prévoit des activités adaptées.</li>
-</ul>
-<p><strong>▶️ Pendant l'activité :</strong></p>
-<ul>
+</ul></div>
+<div class="prose"><p><strong>▶️ Pendant l'activité :</strong></p></div>
+<div class="prose"><ul>
 <li>installation confortable (place, coussin, table adaptée) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>soutien discret : encourager sans infantiliser, guider sans faire à la place ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>médiation entre résidents si tensions ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>observer : intérêt, fatigue, douleur, retrait, agitation, sourire ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>respecter le rythme et les refus (un résident qui veut partir peut partir).</li>
-</ul>
-<p><strong>🔚 Après l'activité :</strong></p>
-<ul>
+</ul></div>
+<div class="prose"><p><strong>🔚 Après l'activité :</strong></p></div>
+<div class="prose"><ul>
 <li>raccompagner le résident ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>recueillir le ressenti (« ça vous a plu ? aimeriez-vous refaire ? ») ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>transmettre à l'équipe (IDE, animatrice, cadre) : participation, réactions, incidents ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>tracer dans le dossier (DAR) une observation factuelle ; vérifier la cohérence avec le PAP et proposer des ajustements.</li>
-</ul>
-</section><section class="partie"><h3>Quand et comment ajuster une activité</h3>
-<p><strong>Les signaux qui doivent alerter :</strong></p>
-<ul>
+</ul></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 5">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>Quand et comment ajuster une activité<small>Partie 5 / 8</small></h2></div>
+    <div class="prose"><p><strong>Les signaux qui doivent alerter :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>😐 Ennui manifeste</strong> — regard absent, aucune participation, bâillements répétés.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>😤 Agitation / opposition</strong> — disputes, cris, refus bruyant, tentative de partir.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>😴 Endormissement</strong> — s'endort systématiquement : heure inadaptée ? activité trop longue ? douleur ?</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>😥 Douleur / inconfort</strong> — grimaces, posture figée, plaintes, agitation inhabituelle.</li>
-</ul>
-<aside class="encadre"><h4>✅ Solutions d&#x27;ajustement</h4><p>Changer de place (plus près, moins de bruit) · raccourcir ou fractionner · proposer une activité individuelle · adapter la modalité (écouter plutôt que chanter, regarder les photos plutôt que coller) · proposer une pause puis revenir · si refus persistant : <strong>respecter, ne jamais forcer</strong> et chercher le pourquoi (douleur, tristesse, fatigue, activité inadaptée).</p></aside>
-<div class="exemples">
+</ul></div>
+<div class="box box-info"><h4>✅ Solutions d'ajustement</h4><p>Changer de place (plus près, moins de bruit) · raccourcir ou fractionner · proposer une activité individuelle · adapter la modalité (écouter plutôt que chanter, regarder les photos plutôt que coller) · proposer une pause puis revenir · si refus persistant : <strong>respecter, ne jamais forcer</strong> et chercher le pourquoi (douleur, tristesse, fatigue, activité inadaptée).</p></div>
+<div class="exs">
 <div class="ex"><p><strong>📝 Transmission DAR après une activité difficile</strong></p>
 <p>« <em>D : Mme L., atelier loto 14h30, endormie après 10 min (3ᵉ fois). A : raccompagnée en chambre, installée confortablement. R : proposer un horaire le matin + activité plus courte ; signaler à l'IDE pour évaluer la fatigue.</em> »</p></div>
 </div>
-</section><section class="partie"><h3>Adapter selon la pathologie et le niveau d&#x27;autonomie</h3>
-<p>L'animation est un soin : elle s'ajuste à la pathologie pour préserver les capacités résiduelles sans mettre la personne en difficulté.</p>
-<p><strong>Selon le GIR :</strong></p>
-<div class="tableau"><table><thead><tr>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 6">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>Adapter selon la pathologie et le niveau d'autonomie<small>Partie 6 / 8</small></h2></div>
+    <div class="prose"><p>L'animation est un soin : elle s'ajuste à la pathologie pour préserver les capacités résiduelles sans mettre la personne en difficulté.</p></div>
+<div class="prose"><p><strong>Selon le GIR :</strong></p></div>
+<div class="tbl"><table><thead><tr>
 <th>Pathologie</th>
 <th>Activités adaptées</th>
 <th>Contre-indications</th>
@@ -273,27 +379,36 @@ section li{margin-bottom:6px}
 <td>Lutte contre l'isolement lié à la dyspnée</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4>🔴 GIR 1-2 (très dépendant)</h4><p>Au lit ou au fauteuil : stimulation sensorielle (musique, textures), présence et conversation, lecture à voix haute, mobilisation passive des membres.</p></aside>
-<aside class="encadre"><h4>🟡 GIR 3-4 (semi-dépendant)</h4><p>Participation partielle : ateliers assis (peinture, puzzles, tri), sortie en fauteuil, groupe restreint, jeux de mémoire simples.</p></aside>
-<aside class="encadre"><h4>🟢 GIR 5-6 (autonome)</h4><p>Large palette : marche et promenades, ateliers collectifs (cuisine, jardin), sorties culturelles, activités intergénérationnelles.</p></aside>
-</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
-<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 02 : Activités en lieu de vie).</p>
+<div class="box box-info"><h4>🔴 GIR 1-2 (très dépendant)</h4><p>Au lit ou au fauteuil : stimulation sensorielle (musique, textures), présence et conversation, lecture à voix haute, mobilisation passive des membres.</p></div>
+<div class="box box-info"><h4>🟡 GIR 3-4 (semi-dépendant)</h4><p>Participation partielle : ateliers assis (peinture, puzzles, tri), sortie en fauteuil, groupe restreint, jeux de mémoire simples.</p></div>
+<div class="box box-info"><h4>🟢 GIR 5-6 (autonome)</h4><p>Large palette : marche et promenades, ateliers collectifs (cuisine, jardin), sorties culturelles, activités intergénérationnelles.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 7">
+  <div class="inner">
+    <div class="head"><div class="num">7</div><h2>📖 Approfondissement (livre ORACLE)<small>Partie 7 / 8</small></h2></div>
+    <div class="box box-info"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 02 : Activités en lieu de vie).</p>
 <p>L’activité est un <strong>soin à part entière</strong> (loi 2002-2), <strong>pas de l’animation</strong>.</p>
 <p>Toujours reliée à un <strong>objectif de soin</strong>.</p>
 <p>Types : cognitive, physique, manuelle, sociale, <strong>sensorielle (Snoezelen)</strong>.</p>
-<p><strong>🎓 À l’oral / piège :</strong> Au jury, ne dis jamais « animation » : parle d’<strong>activité thérapeutique</strong> avec un objectif.</p></aside>
-</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p><strong>🎓 À l’oral / piège :</strong> Au jury, ne dis jamais « animation » : parle d’<strong>activité thérapeutique</strong> avec un objectif.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 8">
+  <div class="inner">
+    <div class="head"><div class="num">8</div><h2>Ce que le jury attend (référentiel)<small>Partie 8 / 8</small></h2></div>
+    <div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
 <p>Comment l’<strong>activité est choisie</strong> : respect des souhaits/préférences de la personne.</p>
 <p><strong>Objectifs</strong> clairs (apprentissage, stimulation cognitive, lien social…) et population visée.</p>
 <p><strong>Modalités</strong> précises : ressources humaines, matériel, budget si besoin.</p>
 <p>Vigilances : sécurité, intégration, régulation du groupe, <strong>adaptation au degré d’autonomie</strong>, hygiène (ex. atelier cuisine).</p>
-<p><strong>Évaluation</strong> de l’activité (satisfaction, smileys, résultats) pour réajuster · transmissions.</p></aside>
+<p><strong>Évaluation</strong> de l’activité (satisfaction, smileys, résultats) pour réajuster · transmissions.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Cas pratiques &amp; points clés</h2>
-<p><strong>📌 À retenir :</strong></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Cas pratiques &amp; points clés<small>Appliquer ce que vous avez appris</small></h2></div>
+    <p><strong>📌 À retenir :</strong></p>
 <ul>
 <li>les activités sont un <strong>soin à part entière</strong>, pas une simple occupation ;</li>
 <li>4 types (cognitives, motrices, créatives, sociales), chacun répond à des besoins fondamentaux ;</li>
@@ -301,9 +416,7 @@ section li{margin-bottom:6px}
 <li>rôle de l'AS en 3 temps : <strong>avant</strong> (préparer) → <strong>pendant</strong> (accompagner, observer) → <strong>après</strong> (transmettre) ;</li>
 <li><strong>respecter le refus</strong>, chercher le pourquoi, ajuster plutôt que forcer ; tracer en DAR même si la participation a été faible.</li>
 </ul>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Atelier musique pour M. Pierre, 82 ans, ancien musicien</strong></p></p>
-<div class="cas-piste"><p><em>M. Pierre, 82 ans, GIR 3, ancien musicien, refuse habituellement les jeux de société proposés et reste souvent inactif dans sa chambre. Un atelier musique est prévu cet après-midi ; vous devez l'y préparer et l'accompagner sans savoir s'il participera activement.</em></p>
+    <div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Atelier musique pour M. Pierre, 82 ans, ancien musicien</strong></p></div><div class="cas-piste"><p><em>M. Pierre, 82 ans, GIR 3, ancien musicien, refuse habituellement les jeux de société proposés et reste souvent inactif dans sa chambre. Un atelier musique est prévu cet après-midi ; vous devez l'y préparer et l'accompagner sans savoir s'il participera activement.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quels besoins fondamentaux cet atelier peut-il stimuler chez lui ?</li>
@@ -315,11 +428,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Besoins ciblés.</strong> En s'appuyant sur son histoire de vie, l'atelier musique vise l'estime de soi, le plaisir et la réalisation de soi ; il peut réduire le repli sur soi lié à son inactivité habituelle.</p>
 <p><strong>2. Préparation et accompagnement.</strong> Avant : proposer l'activité en expliquant ce qui est prévu, rassurer (« vous pouvez essayer, et si ça ne vous plaît pas, on arrête »), l'aider à se préparer (lunettes, appareil auditif si besoin) et l'accompagner jusqu'au lieu. Pendant : installation confortable, soutien discret sans le forcer à jouer ou chanter, observation de son intérêt, de sa fatigue et de ses réactions.</p>
 <p><strong>3. Transmission.</strong> Même en cas de participation faible, transmettre à l'équipe (animatrice, IDE) ce qui a été observé (intérêt, émotion, retrait) et le lien avec son histoire de vie ; tracer une observation factuelle en DAR pour ajuster les prochaines propositions.</p>
-<p><strong>4. Erreur à éviter.</strong> Considérer une participation passive comme un échec, ou cesser de lui proposer l'activité : toute forme de participation (écoute, sourire) doit être valorisée, sans jamais le forcer à jouer activement.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Endormissement au loto de Mme Lucienne, 90 ans</strong></p></p>
-<div class="cas-piste"><p><em>Mme Lucienne, 90 ans, GIR 2, participe chaque mercredi à 14h30 à l'atelier loto. Depuis plusieurs séances, elle s'endort systématiquement après une dizaine de minutes, sans que l'équipe en connaisse la cause.</em></p>
+<p><strong>4. Erreur à éviter.</strong> Considérer une participation passive comme un échec, ou cesser de lui proposer l'activité : toute forme de participation (écoute, sourire) doit être valorisée, sans jamais le forcer à jouer activement.</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Endormissement au loto de Mme Lucienne, 90 ans</strong></p></div><div class="cas-piste"><p><em>Mme Lucienne, 90 ans, GIR 2, participe chaque mercredi à 14h30 à l'atelier loto. Depuis plusieurs séances, elle s'endort systématiquement après une dizaine de minutes, sans que l'équipe en connaisse la cause.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quelles hypothèses envisager face à cet endormissement répété ?</li>
@@ -331,141 +440,109 @@ section li{margin-bottom:6px}
 <p><strong>1. Hypothèses.</strong> Horaire post-prandial propice à la somnolence, activité trop longue ou peu stimulante pour elle, fatigue liée à son GIR 2, douleur non exprimée, ou trouble du sommeil nocturne à rechercher.</p>
 <p><strong>2. Adaptations immédiates.</strong> Raccourcir ou fractionner l'activité, la rapprocher de l'animatrice, proposer une alternative moins passive (écoute musicale, activité sensorielle), respecter l'endormissement sans la forcer à rester éveillée, la raccompagner confortablement en chambre.</p>
 <p><strong>3. Transmission.</strong> Après plusieurs séances identiques, transmettre le caractère répétitif du phénomène à l'IDE et à l'animatrice ; proposer un horaire matinal et une activité plus courte ; signaler pour évaluation de la fatigue et recherche de cause (douleur, sommeil, traitement).</p>
-<p><strong>4. Erreur à éviter.</strong> Répéter la même activité au même horaire sans jamais questionner la cause, ou l'exclure définitivement du loto plutôt que d'adapter la proposition.</p></div>
-</div>
+<p><strong>4. Erreur à éviter.</strong> Répéter la même activité au même horaire sans jamais questionner la cause, ou l'exclure définitivement du loto plutôt que d'adapter la proposition.</p></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Avant : proposer, expliquer, rassurer, préparer la toilette, les lunettes, l’appareil auditif.</div><div class="memo-item">Pendant : installer confortablement, guider sans faire à la place, encourager sans infantiliser.</div><div class="memo-item">Observer en continu : intérêt, fatigue, douleur, retrait, agitation, sourire.</div><div class="memo-item">Ne pas insister devant douleur non contrôlée, fatigue importante, confusion aiguë, fièvre, dyspnée ou refus clair.</div><div class="memo-item">Un résident qui veut partir peut partir — respecter le refus, chercher le pourquoi, proposer une alternative douce.</div><div class="memo-item">Après : raccompagner, recueillir le ressenti, transmettre à l’équipe, tracer en DAR même si la participation a été faible.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">Animer, c’est soigner : l’activité est une composante du projet de vie, pas un divertissement accessoire.</div><div class="pts-item">Quatre familles d’activités : cognitives, motrices, créatives, sociales.</div><div class="pts-item">L’activité s’adapte à la personne, jamais l’inverse.</div><div class="pts-item">Durée indicative : 15 min en GIR 1-2, 30 à 45 min en GIR 3-4, plus longtemps en GIR 5-6.</div><div class="pts-item">Personne n’est exclu : en GIR 1-2, la stimulation sensorielle et la présence restent des activités.</div><div class="pts-item">L’inactivité nourrit le repli, la dépression et le syndrome de glissement.</div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>11 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>11 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B1_L06 — Activités &amp; animations en EHPAD</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B1_L05.html">← B1_L05</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B1_L07.html">B1_L07 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Les activités et animations en EHPAD sont principalement :", "opts": ["Des temps réservés exclusivement à l'animatrice", "Des moments de détente sans lien avec les soins", "Des outils thérapeutiques participant au projet de vie", "Une obligation administrative sans intérêt clinique"], "ok": 2, "x": "Les activités sont des outils thérapeutiques du projet de vie.<strong> 🎓 À l’oral VAE :</strong> « animer, c’est soigner »."}, {"q": "Quel bénéfice principal vise un atelier mémoire ?", "opts": ["La motricité et l'équilibre", "La stimulation cognitive (mémoire, attention)", "La prévention des escarres", "Uniquement le lien social"], "ok": 1, "x": "Atelier mémoire = stimulation cognitive (mémoire, attention).<strong> 🎓 À l’oral VAE :</strong> adaptez la difficulté."}, {"q": "Un résident refuse systématiquement une activité. L'AS doit :", "opts": ["Le signaler comme non coopérant", "Ne plus jamais lui proposer d'activité", "Insister jusqu'à ce qu'il accepte", "Respecter le refus, chercher pourquoi, proposer une alternative"], "ok": 3, "x": "Refus répété : respecter, chercher pourquoi, proposer une alternative.<strong> 🎓 À l’oral VAE :</strong> ni forcer, ni abandonner."}, {"q": "Des résidents s'agitent et se disputent pendant une activité de groupe. Meilleure première action ?", "opts": ["Recentrer l'activité, reformuler les règles, scinder le groupe si besoin", "Arrêter immédiatement l'activité", "Hausser le ton pour rétablir le calme", "Exclure les résidents agités"], "ok": 0, "x": "Groupe agité : recentrer, reformuler les règles, scinder si besoin.<strong> 🎓 À l’oral VAE :</strong> garder un cadre sécurisant."}, {"q": "Que fait l'AS APRÈS une activité ?", "opts": ["Rien de particulier", "Noter uniquement l'heure", "Seulement ranger le matériel", "Raccompagner, recueillir le ressenti, transmettre et tracer (DAR)"], "ok": 3, "x": "Après l’activité : raccompagner, recueillir le ressenti, transmettre/tracer (DAR).<strong> 🎓 À l’oral VAE :</strong> l’après compte autant que l’activité."}, {"q": "Les activités en EHPAD concernent :", "opts": ["Seulement les GIR 4 à 6 (autonomes)", "Tous les résidents, y compris GIR 1-2, en adaptant", "Seulement les résidents sans troubles cognitifs", "Uniquement en présence de l'animatrice"], "ok": 1, "x": "Les activités concernent tous, y compris GIR 1-2, en adaptant.<strong> 🎓 À l’oral VAE :</strong> personne n’est exclu."}, {"q": "Un résident GIR 2 s'endort après 10 min de loto. Quelle adaptation ?", "opts": ["Le réveiller et continuer une heure", "Augmenter la durée pour l'habituer", "Le retirer définitivement de toute activité", "Changer l'horaire (matin), réduire la durée, proposer une alternative, signaler à l'IDE"], "ok": 3, "x": "GIR 2 qui s’endort : changer l’horaire (matin), réduire la durée, signaler.<strong> 🎓 À l’oral VAE :</strong> adapter au rythme de la personne."}, {"q": "Le principe fondamental est…", "opts": ["Faire vite", "Faire à la place", "Faire avec le résident", "Ne rien proposer"], "ok": 2, "x": "« Faire avec » entretient l’autonomie.<strong> 🎓 À l’oral VAE :</strong> valorisez chaque capacité restante."}, {"q": "Avant de proposer une activité, l’AS repère une contre-indication devant…", "opts": ["Une légère fatigue passagère en fin de matinée", "Douleur non contrôlée, confusion aiguë, fièvre ou dyspnée", "Un résident qui sourit peu ce jour-là", "Un GIR élevé"], "ok": 1, "x": "Contre-indications à une activité : douleur non contrôlée, fatigue importante, confusion aiguë, fièvre, dyspnée.<strong> 🎓 À l’oral VAE :</strong> ne pas insister, proposer une alternative douce (présence, écoute musicale)."}, {"q": "L’observation de l’AS est…", "opts": ["Essentielle pour la transmission", "Inutile", "Réservée à l’IDE", "Optionnelle"], "ok": 0, "x": "Observer permet de transmettre et d’ajuster.<strong> 🎓 À l’oral VAE :</strong> reliez observation et continuité des soins."}, {"q": "Pour un résident GIR 1-2 (très dépendant), la durée indicative d’une activité proposée est…", "opts": ["Systématiquement 1 heure, comme pour tous les résidents", "Aucune limite : plus l’activité dure, plus elle est bénéfique", "Environ 15 minutes, en tenant compte de sa fatigabilité", "Aucune, un GIR 1-2 ne participe jamais à une activité"], "ok": 2, "x": "GIR 1-2 : environ 15 minutes ; GIR 3-4 : 30 à 45 minutes ; GIR 5-6 : plus longtemps.<strong> 🎓 À l’oral VAE :</strong> citez la durée adaptée au niveau de dépendance."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Avant : proposer, expliquer, rassurer, préparer la toilette, les lunettes, l’appareil auditif.</li><li>Pendant : installer confortablement, guider sans faire à la place, encourager sans infantiliser.</li><li>Observer en continu : intérêt, fatigue, douleur, retrait, agitation, sourire.</li><li>Ne pas insister devant douleur non contrôlée, fatigue importante, confusion aiguë, fièvre, dyspnée ou refus clair.</li><li>Un résident qui veut partir peut partir — respecter le refus, chercher le pourquoi, proposer une alternative douce.</li><li>Après : raccompagner, recueillir le ressenti, transmettre à l’équipe, tracer en DAR même si la participation a été faible.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Animer, c’est soigner : l’activité est une composante du projet de vie, pas un divertissement accessoire.</li><li>Quatre familles d’activités : cognitives, motrices, créatives, sociales.</li><li>L’activité s’adapte à la personne, jamais l’inverse.</li><li>Durée indicative : 15 min en GIR 1-2, 30 à 45 min en GIR 3-4, plus longtemps en GIR 5-6.</li><li>Personne n’est exclu : en GIR 1-2, la stimulation sensorielle et la présence restent des activités.</li><li>L’inactivité nourrit le repli, la dépression et le syndrome de glissement.</li></ul></section>
-  
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="c" data-id="q0">
-<p class="q"><strong>Q1.</strong> Les activités et animations en EHPAD sont principalement :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Des temps réservés exclusivement à l'animatrice</li>
-<li data-cle="b" onclick="window._pickQ(this)">Des moments de détente sans lien avec les soins</li>
-<li data-cle="c" onclick="window._pickQ(this)">Des outils thérapeutiques participant au projet de vie</li>
-<li data-cle="d" onclick="window._pickQ(this)">Une obligation administrative sans intérêt clinique</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Les activités sont des outils thérapeutiques du projet de vie.<strong> 🎓 À l’oral VAE :</strong> « animer, c’est soigner ».</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q1">
-<p class="q"><strong>Q2.</strong> Quel bénéfice principal vise un atelier mémoire ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">La motricité et l'équilibre</li>
-<li data-cle="b" onclick="window._pickQ(this)">La stimulation cognitive (mémoire, attention)</li>
-<li data-cle="c" onclick="window._pickQ(this)">La prévention des escarres</li>
-<li data-cle="d" onclick="window._pickQ(this)">Uniquement le lien social</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Atelier mémoire = stimulation cognitive (mémoire, attention).<strong> 🎓 À l’oral VAE :</strong> adaptez la difficulté.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q2">
-<p class="q"><strong>Q3.</strong> Un résident refuse systématiquement une activité. L'AS doit :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le signaler comme non coopérant</li>
-<li data-cle="b" onclick="window._pickQ(this)">Ne plus jamais lui proposer d'activité</li>
-<li data-cle="c" onclick="window._pickQ(this)">Insister jusqu'à ce qu'il accepte</li>
-<li data-cle="d" onclick="window._pickQ(this)">Respecter le refus, chercher pourquoi, proposer une alternative</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Refus répété : respecter, chercher pourquoi, proposer une alternative.<strong> 🎓 À l’oral VAE :</strong> ni forcer, ni abandonner.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q3">
-<p class="q"><strong>Q4.</strong> Des résidents s'agitent et se disputent pendant une activité de groupe. Meilleure première action ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Recentrer l'activité, reformuler les règles, scinder le groupe si besoin</li>
-<li data-cle="b" onclick="window._pickQ(this)">Arrêter immédiatement l'activité</li>
-<li data-cle="c" onclick="window._pickQ(this)">Hausser le ton pour rétablir le calme</li>
-<li data-cle="d" onclick="window._pickQ(this)">Exclure les résidents agités</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Groupe agité : recentrer, reformuler les règles, scinder si besoin.<strong> 🎓 À l’oral VAE :</strong> garder un cadre sécurisant.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q4">
-<p class="q"><strong>Q5.</strong> Que fait l'AS APRÈS une activité ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Rien de particulier</li>
-<li data-cle="b" onclick="window._pickQ(this)">Noter uniquement l'heure</li>
-<li data-cle="c" onclick="window._pickQ(this)">Seulement ranger le matériel</li>
-<li data-cle="d" onclick="window._pickQ(this)">Raccompagner, recueillir le ressenti, transmettre et tracer (DAR)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Après l’activité : raccompagner, recueillir le ressenti, transmettre/tracer (DAR).<strong> 🎓 À l’oral VAE :</strong> l’après compte autant que l’activité.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q5">
-<p class="q"><strong>Q6.</strong> Les activités en EHPAD concernent :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Seulement les GIR 4 à 6 (autonomes)</li>
-<li data-cle="b" onclick="window._pickQ(this)">Tous les résidents, y compris GIR 1-2, en adaptant</li>
-<li data-cle="c" onclick="window._pickQ(this)">Seulement les résidents sans troubles cognitifs</li>
-<li data-cle="d" onclick="window._pickQ(this)">Uniquement en présence de l'animatrice</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Les activités concernent tous, y compris GIR 1-2, en adaptant.<strong> 🎓 À l’oral VAE :</strong> personne n’est exclu.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q6">
-<p class="q"><strong>Q7.</strong> Un résident GIR 2 s'endort après 10 min de loto. Quelle adaptation ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le réveiller et continuer une heure</li>
-<li data-cle="b" onclick="window._pickQ(this)">Augmenter la durée pour l'habituer</li>
-<li data-cle="c" onclick="window._pickQ(this)">Le retirer définitivement de toute activité</li>
-<li data-cle="d" onclick="window._pickQ(this)">Changer l'horaire (matin), réduire la durée, proposer une alternative, signaler à l'IDE</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>GIR 2 qui s’endort : changer l’horaire (matin), réduire la durée, signaler.<strong> 🎓 À l’oral VAE :</strong> adapter au rythme de la personne.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q7">
-<p class="q"><strong>Q8.</strong> Le principe fondamental est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Faire vite</li>
-<li data-cle="b" onclick="window._pickQ(this)">Faire à la place</li>
-<li data-cle="c" onclick="window._pickQ(this)">Faire avec le résident</li>
-<li data-cle="d" onclick="window._pickQ(this)">Ne rien proposer</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>« Faire avec » entretient l’autonomie.<strong> 🎓 À l’oral VAE :</strong> valorisez chaque capacité restante.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q8">
-<p class="q"><strong>Q9.</strong> Avant de proposer une activité, l’AS repère une contre-indication devant…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Une légère fatigue passagère en fin de matinée</li>
-<li data-cle="b" onclick="window._pickQ(this)">Douleur non contrôlée, confusion aiguë, fièvre ou dyspnée</li>
-<li data-cle="c" onclick="window._pickQ(this)">Un résident qui sourit peu ce jour-là</li>
-<li data-cle="d" onclick="window._pickQ(this)">Un GIR élevé</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Contre-indications à une activité : douleur non contrôlée, fatigue importante, confusion aiguë, fièvre, dyspnée.<strong> 🎓 À l’oral VAE :</strong> ne pas insister, proposer une alternative douce (présence, écoute musicale).</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q9">
-<p class="q"><strong>Q10.</strong> L’observation de l’AS est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Essentielle pour la transmission</li>
-<li data-cle="b" onclick="window._pickQ(this)">Inutile</li>
-<li data-cle="c" onclick="window._pickQ(this)">Réservée à l’IDE</li>
-<li data-cle="d" onclick="window._pickQ(this)">Optionnelle</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Observer permet de transmettre et d’ajuster.<strong> 🎓 À l’oral VAE :</strong> reliez observation et continuité des soins.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q10">
-<p class="q"><strong>Q11.</strong> Pour un résident GIR 1-2 (très dépendant), la durée indicative d’une activité proposée est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Systématiquement 1 heure, comme pour tous les résidents</li>
-<li data-cle="b" onclick="window._pickQ(this)">Aucune limite : plus l’activité dure, plus elle est bénéfique</li>
-<li data-cle="c" onclick="window._pickQ(this)">Environ 15 minutes, en tenant compte de sa fatigabilité</li>
-<li data-cle="d" onclick="window._pickQ(this)">Aucune, un GIR 1-2 ne participe jamais à une activité</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>GIR 1-2 : environ 15 minutes ; GIR 3-4 : 30 à 45 minutes ; GIR 5-6 : plus longtemps.<strong> 🎓 À l’oral VAE :</strong> citez la durée adaptée au niveau de dépendance.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B1_L05.html" class="back">← B1_L05</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L07.html">B1_L07 →</a></div>
-</div>
 </body></html>

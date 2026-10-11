@@ -2,110 +2,200 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bloc 1 · B1_L07 · Aide à l'élimination : urinal, bassin, diurèse — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B1_L07 · Aide à l'élimination : urinal, bassin, diurèse</span>
+  <span class="mod" id="modLbl">Bloc 1</span>
+  <span class="counter" id="counter">1 / 20</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L07</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 7</span><span>⏱ 40 min</span><span>VAE DEAS</span></div>
-    <h1>Aide à l&#x27;élimination : urinal, bassin, diurèse</h1>
-    <div class="accroche"><p>— la personne boit moins pour ne pas avoir à aller aux WC (déshydratation volontaire).…</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 1">
+  <div class="wrap">
+    <span class="kicker">Bloc 1 · Leçon 7</span>
+    <h1>Aide à l'élimination : urinal, bassin, diurèse<em>Vie quotidienne</em></h1>
+    <div class="sub"><p>— la personne boit moins pour ne pas avoir à aller aux WC (déshydratation volontaire).…</p></div>
+    <div class="meta"><span>⏱ 40 min</span><span>📚 10 parties</span><span>🎯 19 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Accompagner l’élimination en préservant la dignité et l’intimité de la personne.</li><li>Choisir le dispositif adapté — urinal, bassin plat ou rond, chaise percée, protection — selon la mobilité et l’état de la personne.</li><li>Dérouler l’hygiène en trois temps : avant, pendant, après le soin.</li><li>Observer et décrire urines et selles : fréquence, quantité, couleur, odeur, consistance.</li><li>Repérer les situations qui imposent une transmission immédiate à l’IDE.</li><li>Éliminer excreta et protections dans la bonne filière, sans projection.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>L&#x27;élimination : un besoin fondamental souvent tabou</h3>
-<p><strong>Le vécu psychologique de la personne :</strong></p>
-<ul>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B1_L07</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Accompagner l’élimination en préservant la dignité et l’intimité de la personne.</p></div><div class="card"><div class="ico">📝</div><p>Choisir le dispositif adapté — urinal, bassin plat ou rond, chaise percée, protection — selon la mobilité et l’état de la personne.</p></div><div class="card"><div class="ico">👤</div><p>Dérouler l’hygiène en trois temps : avant, pendant, après le soin.</p></div><div class="card"><div class="ico">🔑</div><p>Observer et décrire urines et selles : fréquence, quantité, couleur, odeur, consistance.</p></div><div class="card"><div class="ico">🧭</div><p>Repérer les situations qui imposent une transmission immédiate à l’IDE.</p></div><div class="card"><div class="ico">⭐</div><p>Éliminer excreta et protections dans la bonne filière, sans projection.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>10 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 30 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>L'élimination : un besoin fondamental souvent tabou<small>Partie 1 / 10</small></h2></div>
+    <div class="prose"><p><strong>Le vécu psychologique de la personne :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>😔 Honte</strong> — sentiment de déchéance, perte de contrôle de son corps.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>👶 Infantilisation</strong> — impression de retour à l'enfance, dépendance totale.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>📉 Estime de soi</strong> — atteinte à l'image de soi, repli social.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🚫 Évitement</strong> — la personne boit moins pour ne pas avoir à aller aux WC (déshydratation volontaire).</li>
-</ul>
-<aside class="encadre"><h4>🔗 Repère professionnel</h4><p>L'élimination urinaire et fécale est un besoin physiologique vital (Henderson). Pourtant c'est un sujet <strong>tabou</strong> qui génère honte et malaise. Pour l'AS, accompagner l'élimination, c'est <strong>soigner avec dignité</strong> l'un des actes les plus intimes du quotidien.</p></aside>
-<aside class="encadre"><h4>💜 Le rôle clé de l&#x27;AS</h4><p>Respecter la dignité, préserver l'intimité, rassurer (« c'est normal, je suis là pour vous aider »), normaliser l'acte. C'est un acte de <strong>bientraitance</strong> : sa négligence peut devenir une <strong>maltraitance passive</strong>.</p></aside>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Conséquences d'une mauvaise prise en charge</strong></p>
-<p>Infections urinaires (1ʳᵉ cause d'infection nosocomiale chez la personne âgée) · constipation chronique → fécalome · rétention urinaire (globe vésical) · déshydratation volontaire · repli social, dépression, refus de soins.</p></aside>
-</section><section class="partie"><h3>Les dispositifs d&#x27;aide à l&#x27;élimination</h3>
-<p>Cinq grands dispositifs, plus la surveillance de la sonde. Le choix dépend de la mobilité et de l'état de la personne.</p>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+<div class="box box-info"><h4>🔗 Repère professionnel</h4><p>L'élimination urinaire et fécale est un besoin physiologique vital (Henderson). Pourtant c'est un sujet <strong>tabou</strong> qui génère honte et malaise. Pour l'AS, accompagner l'élimination, c'est <strong>soigner avec dignité</strong> l'un des actes les plus intimes du quotidien.</p></div>
+<div class="box box-info"><h4>💜 Le rôle clé de l'AS</h4><p>Respecter la dignité, préserver l'intimité, rassurer (« c'est normal, je suis là pour vous aider »), normaliser l'acte. C'est un acte de <strong>bientraitance</strong> : sa négligence peut devenir une <strong>maltraitance passive</strong>.</p></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Conséquences d'une mauvaise prise en charge</strong></p>
+<p>Infections urinaires (1ʳᵉ cause d'infection nosocomiale chez la personne âgée) · constipation chronique → fécalome · rétention urinaire (globe vésical) · déshydratation volontaire · repli social, dépression, refus de soins.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Les dispositifs d'aide à l'élimination<small>Partie 2 / 10</small></h2></div>
+    <div class="prose"><p>Cinq grands dispositifs, plus la surveillance de la sonde. Le choix dépend de la mobilité et de l'état de la personne.</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Dispositif</th>
 <th>Utilisation</th>
 <th>Points de vigilance</th>
@@ -141,21 +231,25 @@ section li{margin-bottom:6px}
 <td>Rôle AS : observer (couleur, débit, fuites), hygiène périnéale, sac toujours sous la vessie, ne jamais tirer</td>
 </tr>
 </tbody></table></div>
-</section><section class="partie"><h3>Choisir la bonne protection</h3>
-<p><strong>Quatre modèles, du plus dépendant au plus autonome :</strong></p>
-<ul>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Choisir la bonne protection<small>Partie 3 / 10</small></h2></div>
+    <div class="prose"><p><strong>Quatre modèles, du plus dépendant au plus autonome :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>N°1 — Change complet</strong> 🛏️ — grabataire (alité H24), incontinence forte/totale. Ceintures adhésives, posé allongé, très absorbant. <em>Changes fréquents (escarres, macération).</em></li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>N°2 — Change anatomique</strong> 🧍 — tient debout, incontinence forte. Maintenu par un filet/slip, posé debout. <em>Vérifier le maintien, surveiller les fuites latérales.</em></li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>N°3 — Pants / pull-ups</strong> 🩲 — va seul aux WC, incontinence moyenne. Se met comme un slip. <em>Préserve l'autonomie et la mobilité aux WC.</em></li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>N°4 — Bambinette / serviette</strong> 💧 — autonome, petites fuites d'effort. Protection plate dans le sous-vêtement. <em>Discrétion maximale.</em></li>
-</ul>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+<div class="tbl"><table><thead><tr>
 <th>Mobilité \ Incontinence</th>
 <th>Fuites légères</th>
 <th>Moyenne</th>
@@ -180,58 +274,66 @@ section li{margin-bottom:6px}
 <td>N°1 Complet</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4></h4><p><strong>🔗 La bonne protection n'est jamais « la plus absorbante »</strong></p>
-<p>C'est celle qui <strong>préserve l'autonomie et la dignité</strong> tout en assurant la sécurité. Mal choisie, elle infantilise, favorise les escarres et accélère la perte d'autonomie. On la réévalue dès que l'autonomie évolue.</p></aside>
-<aside class="encadre"><h4>🔗 Arbre de décision rapide</h4><p>Alité H24 → <strong>N°1 complet</strong>. Tient debout mais ne va pas aux WC → <strong>N°2 anatomique</strong>. Va aux WC seul → <strong>N°3 pants</strong>. Autonome avec petites fuites → <strong>N°4 bambinette</strong>.</p></aside>
-<aside class="vigilance"><h4>⚠ 🚫 Points de vigilance communs</h4><p>Taille adaptée (ni trop serré → marques, ni trop large → fuites) · changes réguliers dès que souillé (4 à 6×/jour si incontinence forte) · toilette + séchage à chaque change · vocabulaire respectueux (« protection », jamais « couche ») · réévaluation si l'autonomie évolue.</p></aside>
-</section><section class="partie"><h3>Règles d&#x27;hygiène et de sécurité</h3>
-<p><strong>🔜 Avant :</strong></p>
-<ul>
+<div class="box box-info"><h4></h4><p><strong>🔗 La bonne protection n'est jamais « la plus absorbante »</strong></p>
+<p>C'est celle qui <strong>préserve l'autonomie et la dignité</strong> tout en assurant la sécurité. Mal choisie, elle infantilise, favorise les escarres et accélère la perte d'autonomie. On la réévalue dès que l'autonomie évolue.</p></div>
+<div class="box box-info"><h4>🔗 Arbre de décision rapide</h4><p>Alité H24 → <strong>N°1 complet</strong>. Tient debout mais ne va pas aux WC → <strong>N°2 anatomique</strong>. Va aux WC seul → <strong>N°3 pants</strong>. Autonome avec petites fuites → <strong>N°4 bambinette</strong>.</p></div>
+<div class="box box-warn"><h4>⚠ 🚫 Points de vigilance communs</h4><p>Taille adaptée (ni trop serré → marques, ni trop large → fuites) · changes réguliers dès que souillé (4 à 6×/jour si incontinence forte) · toilette + séchage à chaque change · vocabulaire respectueux (« protection », jamais « couche ») · réévaluation si l'autonomie évolue.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Règles d'hygiène et de sécurité<small>Partie 4 / 10</small></h2></div>
+    <div class="prose"><p><strong>🔜 Avant :</strong></p></div>
+<div class="prose"><ul>
 <li>hygiène des mains (SHA) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>gants non stériles à usage unique ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>matériel propre, sec et vérifié ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>protéger le lit (alèse), fermer porte et rideau.</li>
-</ul>
-<p><strong>▶️ Pendant :</strong></p>
-<ul>
+</ul></div>
+<div class="prose"><p><strong>▶️ Pendant :</strong></p></div>
+<div class="prose"><ul>
 <li>installation confortable et sécurisée (freins, hauteur, maintien si instable) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>intimité préservée : laisser seul(e) si c'est sûr, la personne sonne quand c'est fini ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>respecter le temps nécessaire, ne jamais presser ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>soutien physique si besoin.</li>
-</ul>
-<p><strong>🔚 Après :</strong></p>
-<ul>
+</ul></div>
+<div class="prose"><p><strong>🔚 Après :</strong></p></div>
+<div class="prose"><ul>
 <li>toilette périnéale <strong>d'avant vers l'arrière</strong> (éviter la contamination urinaire) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>séchage complet (prévenir macération et mycoses) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>retrait des gants + SHA ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>bionettoyage du matériel : vider → rincer à l'eau froide → détergent-désinfectant → sécher → ranger en zone propre ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>déchets : sac DASRI si souillure biologique importante.</li>
-</ul>
-<aside class="vigilance"><h4>⚠ ⚠ Sécurité</h4><p>Ne jamais laisser seule une personne instable ; après usage du bassin, changer la position pour prévenir les escarres ; aucune réutilisation de matériel sans désinfection.</p></aside>
-</section><section class="partie"><h3>Observer l&#x27;élimination : surveillance clinique</h3>
-<p><strong>💧 Urines (diurèse) :</strong> fréquence (4-6 mictions/jour), quantité, couleur (jaune clair ✅, foncée = déshydratation, trouble = infection, rouge = sang), odeur.</p>
-<p><strong>📊 Selles :</strong> fréquence, consistance (molles ✅, dures = constipation, liquides = diarrhée), couleur (noire = méléna ⚠, rouge = sang frais ⚠), présence anormale (sang, glaires).</p>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+<div class="box box-warn"><h4>⚠ ⚠ Sécurité</h4><p>Ne jamais laisser seule une personne instable ; après usage du bassin, changer la position pour prévenir les escarres ; aucune réutilisation de matériel sans désinfection.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 5">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>Observer l'élimination : surveillance clinique<small>Partie 5 / 10</small></h2></div>
+    <div class="prose"><p><strong>💧 Urines (diurèse) :</strong> fréquence (4-6 mictions/jour), quantité, couleur (jaune clair ✅, foncée = déshydratation, trouble = infection, rouge = sang), odeur.</p></div>
+<div class="prose"><p><strong>📊 Selles :</strong> fréquence, consistance (molles ✅, dures = constipation, liquides = diarrhée), couleur (noire = méléna ⚠, rouge = sang frais ⚠), présence anormale (sang, glaires).</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Paramètre (urine)</th>
 <th>Normal</th>
 <th>⚠ Alerte</th>
@@ -257,7 +359,7 @@ section li{margin-bottom:6px}
 <td>Trouble, mousseux, dépôts</td>
 </tr>
 </tbody></table></div>
-<div class="tableau"><table><thead><tr>
+<div class="tbl"><table><thead><tr>
 <th>Paramètre (selles)</th>
 <th>Normal</th>
 <th>⚠ Alerte</th>
@@ -283,16 +385,20 @@ section li{margin-bottom:6px}
 <td>Sang, mucus, douleurs intenses</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4></h4><p><strong>🔗 L'observation de l'élimination est un acte clinique</strong></p>
-<p>L'AS est souvent le <strong>premier</strong> à repérer une anomalie. Savoir observer, décrire et transmettre peut éviter des complications graves.</p></aside>
-<div class="exemples">
+<div class="box box-info"><h4></h4><p><strong>🔗 L'observation de l'élimination est un acte clinique</strong></p>
+<p>L'AS est souvent le <strong>premier</strong> à repérer une anomalie. Savoir observer, décrire et transmettre peut éviter des complications graves.</p></div>
+<div class="exs">
 <div class="ex"><p>📝 Transmissions (DAR) — Noter systématiquement : fréquence, aspect, couleur, odeur, en lien avec l'hydratation, l'alimentation et les traitements (diurétiques, laxatifs, constipants). Informer l'IDE pour toute anomalie.</p></div>
 </div>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Signes d'alerte — transmission IMMÉDIATE à l'IDE</strong></p>
-<p>Rétention urinaire (absence d'urines &gt; 8h + douleur sus-pubienne + globe) · sang visible (urines rosées/rouges, selles noires/rouges) · fécalome suspecté (absence de selles &gt; 3-4 jours + douleur + ballonnements) · infection (fièvre + brûlures + urines troubles).</p></aside>
-</section><section class="partie"><h3>Adapter selon la pathologie</h3>
-<p>L'élimination est un <strong>indicateur clinique majeur</strong> : chaque pathologie a ses troubles, sa surveillance et ses signaux d'alerte.</p>
-<div class="tableau"><table><thead><tr>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Signes d'alerte — transmission IMMÉDIATE à l'IDE</strong></p>
+<p>Rétention urinaire (absence d'urines &gt; 8h + douleur sus-pubienne + globe) · sang visible (urines rosées/rouges, selles noires/rouges) · fécalome suspecté (absence de selles &gt; 3-4 jours + douleur + ballonnements) · infection (fièvre + brûlures + urines troubles).</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 6">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>Adapter selon la pathologie<small>Partie 6 / 10</small></h2></div>
+    <div class="prose"><p>L'élimination est un <strong>indicateur clinique majeur</strong> : chaque pathologie a ses troubles, sa surveillance et ses signaux d'alerte.</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Pathologie</th>
 <th>Trouble fréquent</th>
 <th>Rôle de l'AS</th>
@@ -341,12 +447,16 @@ section li{margin-bottom:6px}
 <td>Absence de selles &gt; 3 j, globe vésical, douleurs</td>
 </tr>
 </tbody></table></div>
-</section><section class="partie"><h3>Gestion des excreta — hygiène &amp; déchets</h3>
-<p>La <strong>gestion des excreta</strong> (urines, selles) est une source majeure d’infections : elle se fait sans projections et avec un tri rigoureux des déchets.</p>
-<p><strong>Le bassin :</strong> on l’achemine <strong>immédiatement, couvert</strong>, vers le <strong>lave-bassin</strong>. On ne le vide <strong>jamais</strong> dans les WC de la chambre (projections+++), on n’utilise <strong>ni la douchette ni la brosse des WC</strong>.</p>
-<p><strong>Trier les déchets — la règle dépend du contexte :</strong></p>
-<p><strong>Change + bionettoyage des surfaces hautes</strong> (matelas, ridelles, tablettes) : <strong>deux paires de gants</strong> — une pour le change, une autre pour le bionettoyage (on ne garde jamais les gants du change pour toucher les surfaces).</p>
-<div class="tableau"><table><thead><tr>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 7">
+  <div class="inner">
+    <div class="head"><div class="num">7</div><h2>Gestion des excreta — hygiène &amp; déchets<small>Partie 7 / 10</small></h2></div>
+    <div class="prose"><p>La <strong>gestion des excreta</strong> (urines, selles) est une source majeure d’infections : elle se fait sans projections et avec un tri rigoureux des déchets.</p></div>
+<div class="prose"><p><strong>Le bassin :</strong> on l’achemine <strong>immédiatement, couvert</strong>, vers le <strong>lave-bassin</strong>. On ne le vide <strong>jamais</strong> dans les WC de la chambre (projections+++), on n’utilise <strong>ni la douchette ni la brosse des WC</strong>.</p></div>
+<div class="prose"><p><strong>Trier les déchets — la règle dépend du contexte :</strong></p></div>
+<div class="prose"><p><strong>Change + bionettoyage des surfaces hautes</strong> (matelas, ridelles, tablettes) : <strong>deux paires de gants</strong> — une pour le change, une autre pour le bionettoyage (on ne garde jamais les gants du change pour toucher les surfaces).</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Situation</th>
 <th>Filière</th>
 </tr></thead><tbody>
@@ -363,31 +473,44 @@ section li{margin-bottom:6px}
 <td><strong>DASRI</strong> — boîte jaune</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4>Non conforme</h4><p>vider les urines/selles dans les WC du résident → aérosolisation et contamination de l’environnement.</p></aside>
-<aside class="encadre"><h4></h4><p><strong>Conseils à un résident autonome et continent :</strong> utiliser <strong>ses propres WC</strong> · se <strong>laver les mains</strong> en sortant · <strong>abaisser l’abattant avant de tirer la chasse</strong> (limite les projections).</p></aside>
-</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
-<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 04 : Aide à l’élimination).</p>
+<div class="box box-info"><h4>Non conforme</h4><p>vider les urines/selles dans les WC du résident → aérosolisation et contamination de l’environnement.</p></div>
+<div class="box box-info"><h4></h4><p><strong>Conseils à un résident autonome et continent :</strong> utiliser <strong>ses propres WC</strong> · se <strong>laver les mains</strong> en sortant · <strong>abaisser l’abattant avant de tirer la chasse</strong> (limite les projections).</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 8">
+  <div class="inner">
+    <div class="head"><div class="num">8</div><h2>📖 Approfondissement (livre ORACLE)<small>Partie 8 / 10</small></h2></div>
+    <div class="box box-info"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 04 : Aide à l’élimination).</p>
 <p><strong>Selles — échelle de Bristol</strong> (type 1 dur → type 7 liquide). Constipation → <strong>fécalome → occlusion = urgence</strong>. Reprise du transit : gaz puis selles.</p>
 <p><strong>Urines :</strong> diurèse <strong>800–1500 ml/24 h</strong>.</p>
 <p>Anomalies : <strong>polyurie</strong> &gt; 2 L, <strong>oligurie</strong>&lt; 500 ml, <strong>anurie</strong> &lt; 100 ml/24 h ; pollakiurie, dysurie, hématurie, pyurie, énurésie.</p>
-<p><strong>🎓 À l’oral / piège :</strong> Connaître Bristol et les seuils de diurèse par cœur : ce sont des chiffres « tombables » à l’oral.</p></aside>
-</section><section class="partie"><h3>Anatomie digestive &amp; urinaire + nouveaux gestes AS</h3>
-<p><strong>Digestion :</strong> bouche (mastication) → pharynx → œsophage (<strong>déglutition en 3 temps</strong> : buccal volontaire, pharyngien réflexe, œsophagien) → estomac (chyme) → intestin grêle (absorption) → côlon (selles). Le <strong>pancréas</strong> est une glande mixte (enzymes + insuline/glucagon) ; le foie produit la bile.</p>
-<p><strong>Appareil urinaire :</strong> les reins filtrent le sang et fabriquent l’urine (stérile) → uretères → vessie → urètre. <strong>Diurèse</strong> 800-1500 ml/24 h.</p>
-<aside class="encadre"><h4></h4><p><strong>Nouveaux gestes AS (réforme 2021), sur prescription/protocole :</strong><strong>pose de suppositoire</strong> pour l’aide à l’élimination · <strong>lecture instantanée de bandelettes urinaires</strong> · participation aux soins de stomie (poche, hors socle).</p></aside>
-</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p><strong>🎓 À l’oral / piège :</strong> Connaître Bristol et les seuils de diurèse par cœur : ce sont des chiffres « tombables » à l’oral.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 9">
+  <div class="inner">
+    <div class="head"><div class="num">9</div><h2>Anatomie digestive &amp; urinaire + nouveaux gestes AS<small>Partie 9 / 10</small></h2></div>
+    <div class="prose"><p><strong>Digestion :</strong> bouche (mastication) → pharynx → œsophage (<strong>déglutition en 3 temps</strong> : buccal volontaire, pharyngien réflexe, œsophagien) → estomac (chyme) → intestin grêle (absorption) → côlon (selles). Le <strong>pancréas</strong> est une glande mixte (enzymes + insuline/glucagon) ; le foie produit la bile.</p></div>
+<div class="prose"><p><strong>Appareil urinaire :</strong> les reins filtrent le sang et fabriquent l’urine (stérile) → uretères → vessie → urètre. <strong>Diurèse</strong> 800-1500 ml/24 h.</p></div>
+<div class="box box-info"><h4></h4><p><strong>Nouveaux gestes AS (réforme 2021), sur prescription/protocole :</strong><strong>pose de suppositoire</strong> pour l’aide à l’élimination · <strong>lecture instantanée de bandelettes urinaires</strong> · participation aux soins de stomie (poche, hors socle).</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 10">
+  <div class="inner">
+    <div class="head"><div class="num">10</div><h2>Ce que le jury attend (référentiel)<small>Partie 10 / 10</small></h2></div>
+    <div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
 <p><strong>Élimination fécale</strong> : liens avec alimentation (fibres), hydratation, mobilité ; accompagner aux WC à heures régulières.</p>
 <p>Évaluer les selles (aspect, quantité, odeur) ; alerter si diarrhée ou selles noires · <strong>constipation → fécalome → occlusion</strong> = urgence.</p>
 <p>Attention aux médicaments qui constipent (fer, morphine) ; pas de reprise alimentaire post-chirurgie digestive sans reprise du transit.</p>
 <p><strong>Élimination urinaire</strong> : diurèse 800–1500 ml/24 h ; vérifier l’émission ; <strong>rétention</strong> (globe) ou <strong>anurie</strong> = alerter.</p>
 <p>Infection urinaire : odeur, aspect, brûlures → transmettre précisément ; lien avec les diurétiques.</p>
-<p>Toilette intime : laver, rincer, sécher ; crème protectrice ; respecter le rythme · transmissions.</p></aside>
+<p>Toilette intime : laver, rincer, sécher ; crème protectrice ; respecter le rythme · transmissions.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Posture bienveillante, cas pratiques &amp; points clés</h2>
-<p><strong>Quatre piliers de la posture :</strong></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Posture bienveillante, cas pratiques &amp; points clés<small>Appliquer ce que vous avez appris</small></h2></div>
+    <p><strong>Quatre piliers de la posture :</strong></p>
 <ul>
 <li><strong>🗣️ Langage rassurant</strong> — « c'est normal, je suis là pour vous aider », « prenez votre temps » ; jamais d'infantilisation.</li>
 <li><strong>🚪 Intimité absolue</strong> — porte et rideau fermés, ne pas exposer, ne jamais commenter odeurs ou aspect.</li>
@@ -401,9 +524,7 @@ section li{margin-bottom:6px}
 <li>hygiène en 3 temps : avant (SHA, gants) → pendant (sécurité, intimité) → après (toilette d'avant en arrière, bionettoyage) ;</li>
 <li>observer et transmettre (couleur, fréquence, odeur, consistance) ; <strong>alerter immédiatement</strong> en cas de rétention, de sang, de fécalome ou de fièvre + brûlures.</li>
 </ul>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Refus du bassin de Mme D., 78 ans, alitée</strong></p></p>
-<div class="cas-piste"><p><em>Mme D., 78 ans, GIR 3, est alitée à la suite d'une fracture et ne peut se déplacer seule. Vous lui proposez le bassin pour l'aider à uriner ; elle refuse et vous dit : « c'est humiliant, je veux aller aux toilettes ».</em></p>
+    <div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Refus du bassin de Mme D., 78 ans, alitée</strong></p></div><div class="cas-piste"><p><em>Mme D., 78 ans, GIR 3, est alitée à la suite d'une fracture et ne peut se déplacer seule. Vous lui proposez le bassin pour l'aider à uriner ; elle refuse et vous dit : « c'est humiliant, je veux aller aux toilettes ».</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quelles émotions faut-il repérer et accueillir chez Mme D. ?</li>
@@ -415,11 +536,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Émotions.</strong> Honte et sentiment de perte de dignité liés à la dépendance imposée par l'alitement : un vécu fréquent et légitime face à l'élimination, à ne jamais banaliser.</p>
 <p><strong>2. Validation.</strong> Accueillir sa parole sans la minimiser (« je comprends que ce soit difficile, ce n'est pas humiliant, je suis là pour vous aider »), expliquer avec tact pourquoi le déplacement aux toilettes n'est pas possible pour l'instant (fracture, alitement), sans mentir ni brusquer.</p>
 <p><strong>3. Alternatives.</strong> Proposer la chaise percée si son état et la prescription le permettent, sinon installer le bassin dans les meilleures conditions de dignité (porte et rideau fermés, la laisser seule si c'est sûr, revenir dès qu'elle sonne).</p>
-<p><strong>4. Risques et transmission.</strong> Si elle se retient : risque de rétention urinaire (globe vésical), de constipation, voire de refus de s'hydrater. Transmettre à l'IDE le refus, le vécu exprimé et l'intérêt d'un réexamen des possibilités de mobilisation (lever assisté par exemple).</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — Domicile · Urines suspectes chez M. R., 85 ans, diabétique</strong></p></p>
-<div class="cas-piste"><p><em>Vous intervenez au domicile de M. R., 85 ans, diabétique. Depuis deux jours, il présente des urines très foncées et troubles, à l'odeur forte, ainsi que des brûlures à la miction.</em></p>
+<p><strong>4. Risques et transmission.</strong> Si elle se retient : risque de rétention urinaire (globe vésical), de constipation, voire de refus de s'hydrater. Transmettre à l'IDE le refus, le vécu exprimé et l'intérêt d'un réexamen des possibilités de mobilisation (lever assisté par exemple).</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — Domicile · Urines suspectes chez M. R., 85 ans, diabétique</strong></p></div><div class="cas-piste"><p><em>Vous intervenez au domicile de M. R., 85 ans, diabétique. Depuis deux jours, il présente des urines très foncées et troubles, à l'odeur forte, ainsi que des brûlures à la miction.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Que suspectez-vous devant ce tableau ?</li>
@@ -431,221 +548,109 @@ section li{margin-bottom:6px}
 <p><strong>1. Suspicion.</strong> Une infection urinaire probable, d'autant plus à surveiller chez un patient diabétique, plus exposé aux infections urinaires et à leurs complications.</p>
 <p><strong>2. Conduite immédiate.</strong> Encourager l'hydratation si rien ne s'y oppose, observer et décrire précisément (couleur, odeur, fréquence des mictions, fièvre éventuelle). Ne poser aucun diagnostic et ne proposer aucun traitement : cela relève de l'IDE ou du médecin.</p>
 <p><strong>3. Transmission.</strong> Alerter l'IDE sans délai : chez un diabétique, des signes évocateurs d'infection urinaire imposent une prise en charge rapide. En son absence, contacter le médecin traitant ou le service selon l'organisation du domicile.</p>
-<p><strong>4. Traçabilité.</strong> Noter la date d'apparition, l'aspect des urines, l'odeur, les brûlures rapportées par le patient, et l'action réalisée (transmission à l'IDE) — des faits observés, sans interprétation médicale.</p></div>
-</div>
+<p><strong>4. Traçabilité.</strong> Noter la date d'apparition, l'aspect des urines, l'odeur, les brûlures rapportées par le patient, et l'action réalisée (transmission à l'IDE) — des faits observés, sans interprétation médicale.</p></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Avant : hygiène des mains, gants à usage unique, alèse, porte et rideau fermés.</div><div class="memo-item">Toilette périnéale d’avant vers l’arrière, puis séchage complet.</div><div class="memo-item">Ne jamais laisser seule une personne instable ; ne pas laisser le bassin en place trop longtemps.</div><div class="memo-item">Bassin retiré : acheminé couvert au lave-bassin, jamais vidé dans les WC de la chambre.</div><div class="memo-item">Deux paires de gants quand le change est suivi du bionettoyage des surfaces.</div><div class="memo-item">Alerter sans attendre : absence d’urines depuis plus de 8 h avec douleur sus-pubienne, sang visible, fécalome suspecté, fièvre avec brûlures.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">L’élimination est un besoin vital et un sujet tabou : la négligence devient une maltraitance passive.</div><div class="pts-item">La bonne protection n’est pas la plus absorbante, c’est celle qui préserve l’autonomie.</div><div class="pts-item">On dit <strong>protection</strong>, jamais « couche ».</div><div class="pts-item">Volume urinaire attendu : 800 à 1500 mL par 24 heures.</div><div class="pts-item">Absence de selles depuis plus de trois jours : risque de fécalome, puis d’occlusion.</div><div class="pts-item">L’aide-soignant est souvent le premier à repérer une anomalie de l’élimination.</div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>19 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>19 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B1_L07 — Aide à l'élimination : urinal, bassin, diurèse</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B1_L06.html">← B1_L06</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B1_L08.html">B1_L08 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Lors de l'aide à l'élimination, l'hygiène des mains doit être réalisée :", "opts": ["Seulement avant si la personne est infectieuse", "Avant et après, systématiquement", "Uniquement si les mains sont sales", "Seulement après"], "ok": 1, "x": "Hygiène des mains avant ET après, systématiquement.<strong> 🎓 À l’oral VAE :</strong> SHA + gants pour l’intime."}, {"q": "Parler de l'aspect des selles d'un résident dans le couloir avec des collègues :", "opts": ["N'a aucune importance", "Est normal pour aller plus vite", "Est autorisé entre soignants", "Est une violation du secret professionnel à éviter"], "ok": 3, "x": "Parler des selles dans le couloir = violation du secret professionnel.<strong> 🎓 À l’oral VAE :</strong> la discrétion fait partie du soin."}, {"q": "Des urines troubles, malodorantes avec des brûlures évoquent :", "opts": ["Un phénomène normal", "Une simple déshydratation sans risque", "Une infection urinaire probable (alerter l'IDE)", "Une bonne hydratation"], "ok": 2, "x": "Urines troubles/malodorantes + brûlures = infection urinaire probable → IDE.<strong> 🎓 À l’oral VAE :</strong> encourager l’hydratation."}, {"q": "Mme X utilise le bassin au lit. Pour préserver sa dignité, vous :", "opts": ["Faites venir une collègue pour discuter", "Laissez la porte ouverte pour entendre", "Restez dans la chambre en permanence", "Fermez porte/rideau, la laissez seule si c'est sûr, revenez quand elle sonne"], "ok": 3, "x": "Bassin au lit : fermer porte/rideau, laisser seule si sûr, revenir à la sonnette.<strong> 🎓 À l’oral VAE :</strong> préserver dignité et intimité."}, {"q": "M. Y n'a pas eu de selles depuis 5 jours, avec douleur abdominale et ballonnements. Vous :", "opts": ["Lui dites de boire plus et d'attendre", "Attendez encore 2-3 jours", "Alertez l'IDE immédiatement (risque de fécalome)", "Donnez un laxatif de votre initiative"], "ok": 2, "x": "Pas de selles depuis 5 j + douleur/ballonnement = risque de fécalome → IDE.<strong> 🎓 À l’oral VAE :</strong> ne jamais banaliser la constipation."}, {"q": "Le nettoyage périnéal après élimination se fait :", "opts": ["En petits cercles", "De l'arrière vers l'avant", "Peu importe le sens", "D'avant vers l'arrière (du méat vers l'anus)"], "ok": 3, "x": "Nettoyage périnéal d’avant en arrière (méat vers anus).<strong> 🎓 À l’oral VAE :</strong> prévention de l’infection urinaire."}, {"q": "Concernant la sonde urinaire à demeure, le rôle de l'AS est :", "opts": ["Changer le sac chaque jour", "Clamper la sonde pour « entraîner » la vessie", "Observer (couleur, débit, fuites), hygiène périnéale, sac sous la vessie", "Poser et retirer la sonde"], "ok": 2, "x": "Sonde à demeure : l’AS observe (couleur, débit, fuites), hygiène, sac sous la vessie.<strong> 🎓 À l’oral VAE :</strong> jamais au sol, pour éviter le reflux."}, {"q": "Quand vous retirez le bassin d’un résident, vous…", "opts": ["Le nettoyez avec la brosse des WC", "L’acheminez immédiatement, couvert, vers le lave-bassin", "Le videz dans les WC de la chambre puis l’acheminez", "Utilisez une douchette pour le rincer"], "ok": 1, "x": "On achemine le bassin <strong>couvert</strong> vers le lave-bassin, sans le vider dans la chambre (projections).<strong> 🎓 À l’oral VAE :</strong> la douchette et la vidange dans les WC créent des aérosols contaminants."}, {"q": "Protections d’un résident porteur d’une BHRe : où les éliminer ?", "opts": ["DASRI systématiquement", "Dans les WC", "DASND (ex-DAOM)", "Avec le linge"], "ok": 2, "x": "Sauf souillure de sang/selles infectieuses, les protections d’un porteur de BHRe vont en <strong>DASND</strong> : la maîtrise repose sur les précautions, pas sur la filière DASRI.<strong> 🎓 À l’oral VAE :</strong> ne confondez pas BHRe (précautions contact) et déchet à risque infectieux."}, {"q": "Protections souillées de selles d’un résident en diarrhée infectieuse : filière ?", "opts": ["DASND (ex-DAOM)", "Linge sale", "Toilettes", "DASRI"], "ok": 3, "x": "Selles + diarrhée infectieuse = risque infectieux → <strong>DASRI</strong> .<strong> 🎓 À l’oral VAE :</strong> le contexte (infectieux) décide de la filière."}, {"q": "Conseils à un résident autonome et continent allant aux toilettes :", "opts": ["Utiliser ses WC, se laver les mains, abaisser l’abattant avant de tirer la chasse", "Laisser l’abattant levé", "Qu’il n’est pas nécessaire de se laver les mains après avoir uriné", "Utiliser n’importe quels WC du service"], "ok": 0, "x": "On encourage l’hygiène des mains et l’abaissement de l’abattant <strong>avant</strong> la chasse (limite les projections d’aérosols).<strong> 🎓 À l’oral VAE :</strong> réponses a+b+d de la Gazette ; se laver les mains reste nécessaire."}, {"q": "Change suivi du bionettoyage des surfaces hautes : combien de paires de gants ?", "opts": ["Une seule", "Aucune", "Deux", "Trois"], "ok": 2, "x": "<strong>Deux paires</strong> : une pour le change, une autre pour le bionettoyage — on ne touche jamais les surfaces avec les gants du change.<strong> 🎓 À l’oral VAE :</strong> changer de gants + hygiène des mains entre les deux temps."}, {"q": "La déglutition se déroule en…", "opts": ["5 temps", "2 temps", "3 temps (buccal, pharyngien, œsophagien)", "1 temps"], "ok": 2, "x": "3 temps : buccal (volontaire), pharyngien (réflexe), œsophagien (péristaltisme).<strong> 🎓 À l’oral VAE :</strong> reliez à la prévention des fausses routes."}, {"q": "La pose de suppositoire par l’AS est…", "opts": ["Sans cadre", "Un soin stérile IDE", "Interdite", "Un nouveau geste AS, sur prescription"], "ok": 3, "x": "C’est un nouveau geste AS (réforme 2021), sur prescription, pour l’aide à l’élimination.<strong> 🎓 À l’oral VAE :</strong> gants non stériles, respect de la pudeur."}, {"q": "Les urines, en l’absence d’infection, sont…", "opts": ["Acides comme les selles", "Naturellement stériles", "Riches en bactéries utiles", "Toujours porteuses de germes"], "ok": 1, "x": "Les urines sont normalement <strong>stériles</strong> ; les selles, elles, contiennent la flore intestinale.<strong> 🎓 À l’oral VAE :</strong> d’où le recueil aseptique pour l’ECBU."}, {"q": "La diurèse, c’est…", "opts": ["Le poids", "La quantité d’urine", "La tension", "La fréquence des selles"], "ok": 1, "x": "Diurèse = production/quantité d’urine.<strong> 🎓 À l’oral VAE :</strong> surveillez aussi l’aspect."}, {"q": "Pour prévenir l’incontinence, on…", "opts": ["Ignore les appels", "Limite les boissons", "Propose les toilettes à heures régulières", "Met d’office une sonde"], "ok": 2, "x": "Mictions programmées + réponse rapide aux appels.<strong> 🎓 À l’oral VAE :</strong> respect de la dignité avant tout."}, {"q": "Des urines foncées/odorantes peuvent évoquer…", "opts": ["Une déshydratation/infection à signaler", "Un excès d’eau", "Rien", "Une bonne hydratation"], "ok": 0, "x": "On encourage l’hydratation et on alerte l’IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS observe, hydrate, alerte, trace."}, {"q": "Une constipation prolongée nécessite…", "opts": ["De surveiller et alerter l’IDE", "De donner un laxatif soi-même", "De rien faire", "D’attendre"], "ok": 0, "x": "Risque de fécalome : surveillance + alerte IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS ne prescrit pas."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Avant : hygiène des mains, gants à usage unique, alèse, porte et rideau fermés.</li><li>Toilette périnéale d’avant vers l’arrière, puis séchage complet.</li><li>Ne jamais laisser seule une personne instable ; ne pas laisser le bassin en place trop longtemps.</li><li>Bassin retiré : acheminé couvert au lave-bassin, jamais vidé dans les WC de la chambre.</li><li>Deux paires de gants quand le change est suivi du bionettoyage des surfaces.</li><li>Alerter sans attendre : absence d’urines depuis plus de 8 h avec douleur sus-pubienne, sang visible, fécalome suspecté, fièvre avec brûlures.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’élimination est un besoin vital et un sujet tabou : la négligence devient une maltraitance passive.</li><li>La bonne protection n’est pas la plus absorbante, c’est celle qui préserve l’autonomie.</li><li>On dit <strong>protection</strong>, jamais « couche ».</li><li>Volume urinaire attendu : 800 à 1500 mL par 24 heures.</li><li>Absence de selles depuis plus de trois jours : risque de fécalome, puis d’occlusion.</li><li>L’aide-soignant est souvent le premier à repérer une anomalie de l’élimination.</li></ul></section>
-  
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="b" data-id="q0">
-<p class="q"><strong>Q1.</strong> Lors de l'aide à l'élimination, l'hygiène des mains doit être réalisée :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Seulement avant si la personne est infectieuse</li>
-<li data-cle="b" onclick="window._pickQ(this)">Avant et après, systématiquement</li>
-<li data-cle="c" onclick="window._pickQ(this)">Uniquement si les mains sont sales</li>
-<li data-cle="d" onclick="window._pickQ(this)">Seulement après</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Hygiène des mains avant ET après, systématiquement.<strong> 🎓 À l’oral VAE :</strong> SHA + gants pour l’intime.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q1">
-<p class="q"><strong>Q2.</strong> Parler de l'aspect des selles d'un résident dans le couloir avec des collègues :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">N'a aucune importance</li>
-<li data-cle="b" onclick="window._pickQ(this)">Est normal pour aller plus vite</li>
-<li data-cle="c" onclick="window._pickQ(this)">Est autorisé entre soignants</li>
-<li data-cle="d" onclick="window._pickQ(this)">Est une violation du secret professionnel à éviter</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Parler des selles dans le couloir = violation du secret professionnel.<strong> 🎓 À l’oral VAE :</strong> la discrétion fait partie du soin.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q2">
-<p class="q"><strong>Q3.</strong> Des urines troubles, malodorantes avec des brûlures évoquent :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Un phénomène normal</li>
-<li data-cle="b" onclick="window._pickQ(this)">Une simple déshydratation sans risque</li>
-<li data-cle="c" onclick="window._pickQ(this)">Une infection urinaire probable (alerter l'IDE)</li>
-<li data-cle="d" onclick="window._pickQ(this)">Une bonne hydratation</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Urines troubles/malodorantes + brûlures = infection urinaire probable → IDE.<strong> 🎓 À l’oral VAE :</strong> encourager l’hydratation.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q3">
-<p class="q"><strong>Q4.</strong> Mme X utilise le bassin au lit. Pour préserver sa dignité, vous :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Faites venir une collègue pour discuter</li>
-<li data-cle="b" onclick="window._pickQ(this)">Laissez la porte ouverte pour entendre</li>
-<li data-cle="c" onclick="window._pickQ(this)">Restez dans la chambre en permanence</li>
-<li data-cle="d" onclick="window._pickQ(this)">Fermez porte/rideau, la laissez seule si c'est sûr, revenez quand elle sonne</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Bassin au lit : fermer porte/rideau, laisser seule si sûr, revenir à la sonnette.<strong> 🎓 À l’oral VAE :</strong> préserver dignité et intimité.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q4">
-<p class="q"><strong>Q5.</strong> M. Y n'a pas eu de selles depuis 5 jours, avec douleur abdominale et ballonnements. Vous :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Lui dites de boire plus et d'attendre</li>
-<li data-cle="b" onclick="window._pickQ(this)">Attendez encore 2-3 jours</li>
-<li data-cle="c" onclick="window._pickQ(this)">Alertez l'IDE immédiatement (risque de fécalome)</li>
-<li data-cle="d" onclick="window._pickQ(this)">Donnez un laxatif de votre initiative</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Pas de selles depuis 5 j + douleur/ballonnement = risque de fécalome → IDE.<strong> 🎓 À l’oral VAE :</strong> ne jamais banaliser la constipation.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q5">
-<p class="q"><strong>Q6.</strong> Le nettoyage périnéal après élimination se fait :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">En petits cercles</li>
-<li data-cle="b" onclick="window._pickQ(this)">De l'arrière vers l'avant</li>
-<li data-cle="c" onclick="window._pickQ(this)">Peu importe le sens</li>
-<li data-cle="d" onclick="window._pickQ(this)">D'avant vers l'arrière (du méat vers l'anus)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Nettoyage périnéal d’avant en arrière (méat vers anus).<strong> 🎓 À l’oral VAE :</strong> prévention de l’infection urinaire.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q6">
-<p class="q"><strong>Q7.</strong> Concernant la sonde urinaire à demeure, le rôle de l'AS est :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Changer le sac chaque jour</li>
-<li data-cle="b" onclick="window._pickQ(this)">Clamper la sonde pour « entraîner » la vessie</li>
-<li data-cle="c" onclick="window._pickQ(this)">Observer (couleur, débit, fuites), hygiène périnéale, sac sous la vessie</li>
-<li data-cle="d" onclick="window._pickQ(this)">Poser et retirer la sonde</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Sonde à demeure : l’AS observe (couleur, débit, fuites), hygiène, sac sous la vessie.<strong> 🎓 À l’oral VAE :</strong> jamais au sol, pour éviter le reflux.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q7">
-<p class="q"><strong>Q8.</strong> Quand vous retirez le bassin d’un résident, vous…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le nettoyez avec la brosse des WC</li>
-<li data-cle="b" onclick="window._pickQ(this)">L’acheminez immédiatement, couvert, vers le lave-bassin</li>
-<li data-cle="c" onclick="window._pickQ(this)">Le videz dans les WC de la chambre puis l’acheminez</li>
-<li data-cle="d" onclick="window._pickQ(this)">Utilisez une douchette pour le rincer</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>On achemine le bassin <strong>couvert</strong> vers le lave-bassin, sans le vider dans la chambre (projections).<strong> 🎓 À l’oral VAE :</strong> la douchette et la vidange dans les WC créent des aérosols contaminants.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q8">
-<p class="q"><strong>Q9.</strong> Protections d’un résident porteur d’une BHRe : où les éliminer ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">DASRI systématiquement</li>
-<li data-cle="b" onclick="window._pickQ(this)">Dans les WC</li>
-<li data-cle="c" onclick="window._pickQ(this)">DASND (ex-DAOM)</li>
-<li data-cle="d" onclick="window._pickQ(this)">Avec le linge</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Sauf souillure de sang/selles infectieuses, les protections d’un porteur de BHRe vont en <strong>DASND</strong> : la maîtrise repose sur les précautions, pas sur la filière DASRI.<strong> 🎓 À l’oral VAE :</strong> ne confondez pas BHRe (précautions contact) et déchet à risque infectieux.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q9">
-<p class="q"><strong>Q10.</strong> Protections souillées de selles d’un résident en diarrhée infectieuse : filière ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">DASND (ex-DAOM)</li>
-<li data-cle="b" onclick="window._pickQ(this)">Linge sale</li>
-<li data-cle="c" onclick="window._pickQ(this)">Toilettes</li>
-<li data-cle="d" onclick="window._pickQ(this)">DASRI</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Selles + diarrhée infectieuse = risque infectieux → <strong>DASRI</strong> .<strong> 🎓 À l’oral VAE :</strong> le contexte (infectieux) décide de la filière.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q10">
-<p class="q"><strong>Q11.</strong> Conseils à un résident autonome et continent allant aux toilettes :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Utiliser ses WC, se laver les mains, abaisser l’abattant avant de tirer la chasse</li>
-<li data-cle="b" onclick="window._pickQ(this)">Laisser l’abattant levé</li>
-<li data-cle="c" onclick="window._pickQ(this)">Qu’il n’est pas nécessaire de se laver les mains après avoir uriné</li>
-<li data-cle="d" onclick="window._pickQ(this)">Utiliser n’importe quels WC du service</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>On encourage l’hygiène des mains et l’abaissement de l’abattant <strong>avant</strong> la chasse (limite les projections d’aérosols).<strong> 🎓 À l’oral VAE :</strong> réponses a+b+d de la Gazette ; se laver les mains reste nécessaire.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q11">
-<p class="q"><strong>Q12.</strong> Change suivi du bionettoyage des surfaces hautes : combien de paires de gants ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Une seule</li>
-<li data-cle="b" onclick="window._pickQ(this)">Aucune</li>
-<li data-cle="c" onclick="window._pickQ(this)">Deux</li>
-<li data-cle="d" onclick="window._pickQ(this)">Trois</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p><strong>Deux paires</strong> : une pour le change, une autre pour le bionettoyage — on ne touche jamais les surfaces avec les gants du change.<strong> 🎓 À l’oral VAE :</strong> changer de gants + hygiène des mains entre les deux temps.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q12">
-<p class="q"><strong>Q13.</strong> La déglutition se déroule en…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">5 temps</li>
-<li data-cle="b" onclick="window._pickQ(this)">2 temps</li>
-<li data-cle="c" onclick="window._pickQ(this)">3 temps (buccal, pharyngien, œsophagien)</li>
-<li data-cle="d" onclick="window._pickQ(this)">1 temps</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>3 temps : buccal (volontaire), pharyngien (réflexe), œsophagien (péristaltisme).<strong> 🎓 À l’oral VAE :</strong> reliez à la prévention des fausses routes.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q13">
-<p class="q"><strong>Q14.</strong> La pose de suppositoire par l’AS est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Sans cadre</li>
-<li data-cle="b" onclick="window._pickQ(this)">Un soin stérile IDE</li>
-<li data-cle="c" onclick="window._pickQ(this)">Interdite</li>
-<li data-cle="d" onclick="window._pickQ(this)">Un nouveau geste AS, sur prescription</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>C’est un nouveau geste AS (réforme 2021), sur prescription, pour l’aide à l’élimination.<strong> 🎓 À l’oral VAE :</strong> gants non stériles, respect de la pudeur.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q14">
-<p class="q"><strong>Q15.</strong> Les urines, en l’absence d’infection, sont…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Acides comme les selles</li>
-<li data-cle="b" onclick="window._pickQ(this)">Naturellement stériles</li>
-<li data-cle="c" onclick="window._pickQ(this)">Riches en bactéries utiles</li>
-<li data-cle="d" onclick="window._pickQ(this)">Toujours porteuses de germes</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Les urines sont normalement <strong>stériles</strong> ; les selles, elles, contiennent la flore intestinale.<strong> 🎓 À l’oral VAE :</strong> d’où le recueil aseptique pour l’ECBU.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q15">
-<p class="q"><strong>Q16.</strong> La diurèse, c’est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le poids</li>
-<li data-cle="b" onclick="window._pickQ(this)">La quantité d’urine</li>
-<li data-cle="c" onclick="window._pickQ(this)">La tension</li>
-<li data-cle="d" onclick="window._pickQ(this)">La fréquence des selles</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Diurèse = production/quantité d’urine.<strong> 🎓 À l’oral VAE :</strong> surveillez aussi l’aspect.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q16">
-<p class="q"><strong>Q17.</strong> Pour prévenir l’incontinence, on…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Ignore les appels</li>
-<li data-cle="b" onclick="window._pickQ(this)">Limite les boissons</li>
-<li data-cle="c" onclick="window._pickQ(this)">Propose les toilettes à heures régulières</li>
-<li data-cle="d" onclick="window._pickQ(this)">Met d’office une sonde</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Mictions programmées + réponse rapide aux appels.<strong> 🎓 À l’oral VAE :</strong> respect de la dignité avant tout.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q17">
-<p class="q"><strong>Q18.</strong> Des urines foncées/odorantes peuvent évoquer…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Une déshydratation/infection à signaler</li>
-<li data-cle="b" onclick="window._pickQ(this)">Un excès d’eau</li>
-<li data-cle="c" onclick="window._pickQ(this)">Rien</li>
-<li data-cle="d" onclick="window._pickQ(this)">Une bonne hydratation</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>On encourage l’hydratation et on alerte l’IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS observe, hydrate, alerte, trace.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q18">
-<p class="q"><strong>Q19.</strong> Une constipation prolongée nécessite…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">De surveiller et alerter l’IDE</li>
-<li data-cle="b" onclick="window._pickQ(this)">De donner un laxatif soi-même</li>
-<li data-cle="c" onclick="window._pickQ(this)">De rien faire</li>
-<li data-cle="d" onclick="window._pickQ(this)">D’attendre</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Risque de fécalome : surveillance + alerte IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS ne prescrit pas.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B1_L06.html" class="back">← B1_L06</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L08.html">B1_L08 →</a></div>
-</div>
 </body></html>

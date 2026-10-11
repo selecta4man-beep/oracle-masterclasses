@@ -1,146 +1,244 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bloc 1 · B1_L02 · Toilette, change & soins d'hygiène — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L02 · Toilette, change &amp; soins d'hygiène — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B1_L02 · Toilette, change &amp; soins d'hygiène</span>
+  <span class="mod" id="modLbl">Bloc 1</span>
+  <span class="counter" id="counter">1 / 20</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L02</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 2</span><span>⏱ 60 min</span><span>VAE DEAS</span></div>
-    <h1>Toilette, change &amp; soins d&#x27;hygiène</h1>
-    <div class="accroche"><p>— fermer la porte et les rideaux, poser l'étiquette de présence, ne découvrir que la zone lavée, couvrir avec un drap de bain, limiter le nombre de personnes présentes.</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 1">
+  <div class="wrap">
+    <span class="kicker">Bloc 1 · Leçon 2</span>
+    <h1>Toilette, change &amp; soins d'hygiène<em>Vie quotidienne</em></h1>
+    <div class="sub"><p>— fermer la porte et les rideaux, poser l'étiquette de présence, ne découvrir que la zone lavée, couvrir avec un drap de bain, limiter le nombre de personnes présentes.</p></div>
+    <div class="meta"><span>⏱ 60 min</span><span>📚 10 parties</span><span>🎯 17 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Appliquer les six principes de la toilette : pudeur, consentement, autonomie, observation, communication, hygiène.</li><li>Préparer le matériel et votre tenue avant d’entrer dans la chambre.</li><li>Dérouler la toilette dans l’ordre, de l’entrée jusqu’aux finitions.</li><li>Choisir entre toilette au lit, au lavabo, à la douche ou au chariot-douche selon l’autonomie et l’état clinique.</li><li>Adapter le soin à la pathologie et justifier cette adaptation devant le jury.</li><li>Transmettre les faits observés pendant le soin, sans poser de diagnostic.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>Les 6 principes fondamentaux de la toilette</h3>
-<p>La toilette n'est <strong>jamais un geste mécanique</strong>. C'est un soin global qui touche à l'intimité la plus profonde de la personne, et un moment privilégié d'<strong>observation et de relation</strong>. Six principes la gouvernent.</p>
-<ul>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B1_L02</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Appliquer les six principes de la toilette : pudeur, consentement, autonomie, observation, communication, hygiène.</p></div><div class="card"><div class="ico">📝</div><p>Préparer le matériel et votre tenue avant d’entrer dans la chambre.</p></div><div class="card"><div class="ico">👤</div><p>Dérouler la toilette dans l’ordre, de l’entrée jusqu’aux finitions.</p></div><div class="card"><div class="ico">🔑</div><p>Choisir entre toilette au lit, au lavabo, à la douche ou au chariot-douche selon l’autonomie et l’état clinique.</p></div><div class="card"><div class="ico">🧭</div><p>Adapter le soin à la pathologie et justifier cette adaptation devant le jury.</p></div><div class="card"><div class="ico">⭐</div><p>Transmettre les faits observés pendant le soin, sans poser de diagnostic.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>10 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 50 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Les 6 principes fondamentaux de la toilette<small>Partie 1 / 10</small></h2></div>
+    <div class="prose"><p>La toilette n'est <strong>jamais un geste mécanique</strong>. C'est un soin global qui touche à l'intimité la plus profonde de la personne, et un moment privilégié d'<strong>observation et de relation</strong>. Six principes la gouvernent.</p></div>
+<div class="prose"><ul>
 <li><strong>🫣 Pudeur et intimité</strong> — fermer la porte et les rideaux, poser l'étiquette de présence, ne découvrir que la zone lavée, couvrir avec un drap de bain, limiter le nombre de personnes présentes.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>✋ Consentement</strong> — la personne doit pouvoir dire oui ou non librement. Informer avant chaque geste (« je vais laver votre bras droit »), respecter le refus, proposer de différer. Un silence n'est pas un consentement.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🤲 Préservation de l'autonomie</strong> — tout ce que la personne peut faire seule, elle le fait. L'AS guide, stimule, accompagne mais ne fait pas à la place. Chaque geste conservé = dignité préservée.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>👁️ Observation clinique</strong> — la toilette donne accès à tout le corps : on évalue la douleur (EVA, ALGOPLUS), l'état cutané (rougeurs, escarres, mycoses, œdèmes), les muqueuses, l'humeur et la mobilité.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🗣️ Communication</strong> — expliquer chaque geste, rassurer, vérifier la température de l'eau, maintenir le contact visuel, appeler la personne par le nom qu'elle a choisi.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🧤 Hygiène et sécurité</strong> — friction GHA avant/après, gants à usage unique pour la toilette intime, règle du propre au sale, lit à hauteur freins bloqués, ergonomie pour prévenir chutes et TMS.</li>
-</ul>
-<aside class="encadre"><h4>🎓 Attendu du jury VAE</h4><p>La toilette est le <strong>soin n°1 évalué par le jury</strong>. On vous demandera de décrire une toilette que vous avez réalisée : technique, pudeur, consentement, observation pendant le soin, adaptation à l'autonomie, et analyse réflexive.</p></aside>
-</section><section class="partie"><h3>Préparer le soin : matériel &amp; tenue professionnelle</h3>
-<p><strong>🛒 Chariot magasin / réserve</strong> — approvisionné chaque jour, nettoyé chaque semaine : changes, alèses, serviettes, gants de toilette, gants UU et tabliers UU, GHA, savon, crème hydratante, sacs et lavettes, linge de lit.</p>
-<p><strong>🛒 Guéridon extérieur (hors chambre)</strong> — 2 gants et 2 serviettes, carrés d'essuyage, produit d'incontinence, linge de change du lit, lavette + spray désinfectant, gants et tablier UU pour le soignant, sac poubelle.</p>
-<p><strong>🛒 Guéridon intérieur (nominatif)</strong> — cuvette et savon de la personne, rasoir/mousse, crèmes et produits de beauté selon ses habitudes, nécessaire anti-escarres, brosse, peigne, coupe-ongles, nécessaire bucco-dentaire, et le <strong>linge que la personne aura choisi</strong>.</p>
-<p><strong>⚙️ Avant d'entrer :</strong></p>
-<ul>
+</ul></div>
+<div class="box box-info"><h4>🎓 Attendu du jury VAE</h4><p>La toilette est le <strong>soin n°1 évalué par le jury</strong>. On vous demandera de décrire une toilette que vous avez réalisée : technique, pudeur, consentement, observation pendant le soin, adaptation à l'autonomie, et analyse réflexive.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Préparer le soin : matériel &amp; tenue professionnelle<small>Partie 2 / 10</small></h2></div>
+    <div class="prose"><p><strong>🛒 Chariot magasin / réserve</strong> — approvisionné chaque jour, nettoyé chaque semaine : changes, alèses, serviettes, gants de toilette, gants UU et tabliers UU, GHA, savon, crème hydratante, sacs et lavettes, linge de lit.</p></div>
+<div class="prose"><p><strong>🛒 Guéridon extérieur (hors chambre)</strong> — 2 gants et 2 serviettes, carrés d'essuyage, produit d'incontinence, linge de change du lit, lavette + spray désinfectant, gants et tablier UU pour le soignant, sac poubelle.</p></div>
+<div class="prose"><p><strong>🛒 Guéridon intérieur (nominatif)</strong> — cuvette et savon de la personne, rasoir/mousse, crèmes et produits de beauté selon ses habitudes, nécessaire anti-escarres, brosse, peigne, coupe-ongles, nécessaire bucco-dentaire, et le <strong>linge que la personne aura choisi</strong>.</p></div>
+<div class="prose"><p><strong>⚙️ Avant d'entrer :</strong></p></div>
+<div class="prose"><ul>
 <li>Vérifier que le moment est opportun (fatigue, rendez-vous), consulter le plan de soins et les transmissions.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>Vérifier le matériel présent en chambre et compléter.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>Friction GHA, préparer le matériel propre, ne rien stocker dans les poches de la tenue.</li>
-</ul>
-<aside class="encadre"><h4>📋 Repère professionnel</h4><p>La préparation conditionne tout le soin : un matériel complet évite les interruptions de tâche et les allers-retours qui rompent la relation.</p></aside>
-<aside class="encadre"><h4>👔 Tenue professionnelle — checklist</h4><p>Manches courtes · aucun bijou aux mains et poignets · ongles courts non vernis (ni faux ongles) · tablier UU pour chaque intervenant, retiré et changé entre chaque patient · cheveux courts ou attachés.</p></aside>
-</section><section class="partie"><h3>Le déroulé complet, étape par étape</h3>
-<p><strong>🚪 Étape 0 — Entrée :</strong> frapper et attendre la réponse, poser l'étiquette de présence, refermer, se présenter, friction GHA, fermer la fenêtre et tirer les rideaux, lit à hauteur (freins bloqués, barrière côté opposé), proposer un passage aux toilettes/urinal/bassin.</p>
-<p><strong>🦷 Étape 1 — Soins bucco-dentaires (en premier) :</strong> gants UU, brossage ou bâtonnet selon l'état, nettoyage des prothèses, rinçage. <em>Cas Alzheimer : commencer par les mains pour habituer au contact de l'eau.</em></p>
-<p><strong>2 — Visage :</strong> eau claire sans savon, gant dédié. Yeux du coin interne vers l'externe, puis front → nez → joues → menton → derrière les oreilles. Rasage ou soins de beauté selon les habitudes. Sécher par tamponnement.</p>
-<p><strong>3 — Cou et bras :</strong> du plus éloigné au plus proche. Insister sur les aisselles, bien sécher les plis (macération). Vérifier les mains (ongles, mycoses).</p>
-<p><strong>4 — Thorax et abdomen :</strong> insister sous les seins, observer la peau, laver l'abdomen et l'ombilic. Effleurer les points d'appui avec un corps gras.</p>
-<p><strong>5 — Dos :</strong> en position latérale (barrière en place). Observer les points d'appui (sacrum, omoplates, talons), repérer rougeurs et escarres. <em>Pas de massage sur une rougeur qui ne blanchit pas.</em></p>
-<p><strong>6 — Jambes et pieds :</strong> changer l'eau. Du plus éloigné au plus proche, insister entre les orteils, bien sécher. Couper les ongles au carré si besoin (<strong>jamais chez le diabétique → pédicure-podologue</strong>).</p>
-<p><strong>✅ Étape 9 — Finitions :</strong> habillage selon les souhaits, coiffage, lunettes/bijoux, installation confortable avec le nécessaire à portée (eau, appel malade), friction GHA, récupérer l'étiquette de présence et saluer en sortant.</p>
-<aside class="encadre"><h4>🧭 Règle d&#x27;or</h4><p>Du <strong>propre vers le sale</strong>, du <strong>haut vers le bas</strong>, du <strong>plus éloigné au plus proche</strong>. Chaque zone est lavée, rincée puis séchée avant de passer à la suivante.</p></aside>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Exception au sens de la toilette</strong></p>
-<p>Uniquement en présence de selles : on commence alors par la toilette du siège pour éviter la contamination.</p></aside>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Étape 7 — Toilette uro-génitale — EN DERNIER</strong></p>
-<p>Changer l'eau, le gant et la serviette. Friction GHA puis gants UU. Femme : du pubis vers l'anus (vulve → périnée → anus), <strong>jamais l'inverse</strong> (risque d'infection urinaire). Homme : décalotter, laver, rincer, recalotter.</p></aside>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Étape 8 — Toilette du siège (si selles)</strong></p>
-<p>Retirer l'excédent de selles, laver des organes génitaux vers l'anus, rincer, sécher. Retirer les gants, friction GHA, se laver les mains, poser une protection propre bien centrée.</p></aside>
-</section><section class="partie"><h3>Les 4 types de toilette</h3>
-<p>On choisit le type de toilette selon l'autonomie, l'état clinique et l'environnement. Le principe et l'ordre restent les mêmes ; seule la mise en œuvre change.</p>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+<div class="box box-info"><h4>📋 Repère professionnel</h4><p>La préparation conditionne tout le soin : un matériel complet évite les interruptions de tâche et les allers-retours qui rompent la relation.</p></div>
+<div class="box box-info"><h4>👔 Tenue professionnelle — checklist</h4><p>Manches courtes · aucun bijou aux mains et poignets · ongles courts non vernis (ni faux ongles) · tablier UU pour chaque intervenant, retiré et changé entre chaque patient · cheveux courts ou attachés.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Le déroulé complet, étape par étape<small>Partie 3 / 10</small></h2></div>
+    <div class="prose"><p><strong>🚪 Étape 0 — Entrée :</strong> frapper et attendre la réponse, poser l'étiquette de présence, refermer, se présenter, friction GHA, fermer la fenêtre et tirer les rideaux, lit à hauteur (freins bloqués, barrière côté opposé), proposer un passage aux toilettes/urinal/bassin.</p></div>
+<div class="prose"><p><strong>🦷 Étape 1 — Soins bucco-dentaires (en premier) :</strong> gants UU, brossage ou bâtonnet selon l'état, nettoyage des prothèses, rinçage. <em>Cas Alzheimer : commencer par les mains pour habituer au contact de l'eau.</em></p></div>
+<div class="prose"><p><strong>2 — Visage :</strong> eau claire sans savon, gant dédié. Yeux du coin interne vers l'externe, puis front → nez → joues → menton → derrière les oreilles. Rasage ou soins de beauté selon les habitudes. Sécher par tamponnement.</p></div>
+<div class="prose"><p><strong>3 — Cou et bras :</strong> du plus éloigné au plus proche. Insister sur les aisselles, bien sécher les plis (macération). Vérifier les mains (ongles, mycoses).</p></div>
+<div class="prose"><p><strong>4 — Thorax et abdomen :</strong> insister sous les seins, observer la peau, laver l'abdomen et l'ombilic. Effleurer les points d'appui avec un corps gras.</p></div>
+<div class="prose"><p><strong>5 — Dos :</strong> en position latérale (barrière en place). Observer les points d'appui (sacrum, omoplates, talons), repérer rougeurs et escarres. <em>Pas de massage sur une rougeur qui ne blanchit pas.</em></p></div>
+<div class="prose"><p><strong>6 — Jambes et pieds :</strong> changer l'eau. Du plus éloigné au plus proche, insister entre les orteils, bien sécher. Couper les ongles au carré si besoin (<strong>jamais chez le diabétique → pédicure-podologue</strong>).</p></div>
+<div class="prose"><p><strong>✅ Étape 9 — Finitions :</strong> habillage selon les souhaits, coiffage, lunettes/bijoux, installation confortable avec le nécessaire à portée (eau, appel malade), friction GHA, récupérer l'étiquette de présence et saluer en sortant.</p></div>
+<div class="box box-info"><h4>🧭 Règle d'or</h4><p>Du <strong>propre vers le sale</strong>, du <strong>haut vers le bas</strong>, du <strong>plus éloigné au plus proche</strong>. Chaque zone est lavée, rincée puis séchée avant de passer à la suivante.</p></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Exception au sens de la toilette</strong></p>
+<p>Uniquement en présence de selles : on commence alors par la toilette du siège pour éviter la contamination.</p></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Étape 7 — Toilette uro-génitale — EN DERNIER</strong></p>
+<p>Changer l'eau, le gant et la serviette. Friction GHA puis gants UU. Femme : du pubis vers l'anus (vulve → périnée → anus), <strong>jamais l'inverse</strong> (risque d'infection urinaire). Homme : décalotter, laver, rincer, recalotter.</p></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Étape 8 — Toilette du siège (si selles)</strong></p>
+<p>Retirer l'excédent de selles, laver des organes génitaux vers l'anus, rincer, sécher. Retirer les gants, friction GHA, se laver les mains, poser une protection propre bien centrée.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Les 4 types de toilette<small>Partie 4 / 10</small></h2></div>
+    <div class="prose"><p>On choisit le type de toilette selon l'autonomie, l'état clinique et l'environnement. Le principe et l'ordre restent les mêmes ; seule la mise en œuvre change.</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Type</th>
 <th>Pour qui</th>
 <th>Technique</th>
@@ -171,34 +269,46 @@ section li{margin-bottom:6px}
 <td>Transport sécurisé (2 soignants), température, protéger la pudeur pendant le transfert</td>
 </tr>
 </tbody></table></div>
-</section><section class="partie"><h3>Le change — protocole &amp; dignité</h3>
-<ul>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 5">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>Le change — protocole &amp; dignité<small>Partie 5 / 10</small></h2></div>
+    <div class="prose"><ul>
 <li><strong>Préparer</strong> — protection propre, gants UU, alèse si besoin, eau tiède, crème protectrice. Informer la personne.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>Retirer la protection souillée</strong> — tourner sur le côté, rouler la protection sur elle-même pour enfermer les souillures, l'emballer et la jeter.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>Nettoyer</strong> — eau tiède + savon doux, toujours du propre vers le sale. Femme : vulve → anus. Homme : verge → périnée. Rincer, sécher parfaitement.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>Protéger</strong> — crème barrière si rougeur, protection propre à la bonne taille, bien centrée.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>Réinstaller et transmettre</strong> — noter l'aspect des selles (échelle de Bristol), des urines, l'état cutané du siège.</li>
-</ul>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Le change n'est pas un geste anodin</strong></p>
-<p>Pour la personne, c'est une situation de dépendance et de vulnérabilité extrême. Parler doucement, expliquer, ne jamais montrer de dégoût, ne jamais commenter l'état des selles devant elle ou un tiers.</p></aside>
-</section><section class="partie"><h3>Entretien de l&#x27;environnement après le soin</h3>
-<p><strong>🛏️ Réfection du lit</strong> — aérer la chambre, changer les draps si souillés (ou chaque jour si la personne est alitée), désinfecter le matelas et attendre le séchage avant de remettre des draps propres.</p>
-<p><strong>🔧 Points de contact à désinfecter</strong> (lavette + spray) — barrières, télécommande, poignée de suspension, pied de lit ; dossier, poignées et assise du fauteuil ; commandes du lève-personne ; flacons et tubes utilisés.</p>
-<p><strong>🪣 Matériel de toilette</strong> — bassine rincée extérieur puis intérieur (lave-bassin 1×/semaine), produit désinfectant laissé agir, lavette et gants/tablier UU éliminés dans la poubelle du guéridon.</p>
-<p><strong>🗑️ Déchets et linge</strong> — élimination immédiate après l'habillage, serviette et gant de la zone uro-génitale éliminés directement, tri du linge et des déchets selon la filière (DASRI si souillures biologiques).</p>
-<aside class="encadre"><h4>📋 Repère professionnel</h4><p>Étape obligatoire et évaluée lors des audits de soins : elle conditionne la prévention des infections nosocomiales.</p></aside>
-<aside class="vigilance"><h4>⚠ ⚠ Matériel non désinfectable</h4><p>Le linge, les protections et les gants UU sont laissés en chambre : jamais remis sur le chariot magasin ni réutilisés pour une autre personne.</p></aside>
-</section><section class="partie"><h3>Adapter la toilette selon l&#x27;autonomie et la pathologie</h3>
-<p>Le même soin se décline selon la personne. Savoir l'adapter — et le justifier — est exactement ce que le jury cherche à entendre.</p>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Le change n'est pas un geste anodin</strong></p>
+<p>Pour la personne, c'est une situation de dépendance et de vulnérabilité extrême. Parler doucement, expliquer, ne jamais montrer de dégoût, ne jamais commenter l'état des selles devant elle ou un tiers.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 6">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>Entretien de l'environnement après le soin<small>Partie 6 / 10</small></h2></div>
+    <div class="prose"><p><strong>🛏️ Réfection du lit</strong> — aérer la chambre, changer les draps si souillés (ou chaque jour si la personne est alitée), désinfecter le matelas et attendre le séchage avant de remettre des draps propres.</p></div>
+<div class="prose"><p><strong>🔧 Points de contact à désinfecter</strong> (lavette + spray) — barrières, télécommande, poignée de suspension, pied de lit ; dossier, poignées et assise du fauteuil ; commandes du lève-personne ; flacons et tubes utilisés.</p></div>
+<div class="prose"><p><strong>🪣 Matériel de toilette</strong> — bassine rincée extérieur puis intérieur (lave-bassin 1×/semaine), produit désinfectant laissé agir, lavette et gants/tablier UU éliminés dans la poubelle du guéridon.</p></div>
+<div class="prose"><p><strong>🗑️ Déchets et linge</strong> — élimination immédiate après l'habillage, serviette et gant de la zone uro-génitale éliminés directement, tri du linge et des déchets selon la filière (DASRI si souillures biologiques).</p></div>
+<div class="box box-info"><h4>📋 Repère professionnel</h4><p>Étape obligatoire et évaluée lors des audits de soins : elle conditionne la prévention des infections nosocomiales.</p></div>
+<div class="box box-warn"><h4>⚠ ⚠ Matériel non désinfectable</h4><p>Le linge, les protections et les gants UU sont laissés en chambre : jamais remis sur le chariot magasin ni réutilisés pour une autre personne.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 7">
+  <div class="inner">
+    <div class="head"><div class="num">7</div><h2>Adapter la toilette selon l'autonomie et la pathologie<small>Partie 7 / 10</small></h2></div>
+    <div class="prose"><p>Le même soin se décline selon la personne. Savoir l'adapter — et le justifier — est exactement ce que le jury cherche à entendre.</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Situation</th>
 <th>Adaptation de la toilette</th>
 <th>Ce que le jury attend</th>
@@ -244,37 +354,50 @@ section li{margin-bottom:6px}
 <td>Connaissance de la délégation du soin en EHPAD + travail en binôme</td>
 </tr>
 </tbody></table></div>
-</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
-<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 03 : Toilette &amp; change).</p>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 8">
+  <div class="inner">
+    <div class="head"><div class="num">8</div><h2>📖 Approfondissement (livre ORACLE)<small>Partie 8 / 10</small></h2></div>
+    <div class="box box-info"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 03 : Toilette &amp; change).</p>
 <p><strong>Ordre :</strong> du plus propre au plus sale ; gants et gants de toilette <strong>distincts</strong> (haut du corps / jambes / zone intime) ; changer l’eau ; <strong>friction SHA avant ET après</strong> les gants.</p>
 <p>C’est le soin le plus <strong>emblématique</strong> : il touche au corps et à l’intimité → <strong>consentement, pudeur, autonomie</strong> (faire-avec, pas faire-à-la-place).</p>
 <p>Moment d’<strong>observation privilégié</strong> : état cutané (rougeurs, lésions), douleur au mouvement, mobilité, humeur, hygiène buccale.</p>
 <p>Avant de quitter la chambre : <strong>lit rabaissé, barrières (si prescrites), sonnette à portée, faire boire</strong>.</p>
 <p>Change : observer <strong>aspect, quantité, qualité, odeur</strong> des urines/selles → tracer et alerter si anomalie.</p>
 <p>Refus : ne pas insister ; proposer une <strong>toilette partielle au lavabo</strong>, revenir plus tard.</p>
-<p><strong>🎓 À l’oral / piège :</strong> Ne jamais découvrir entièrement la personne : préserve la pudeur tout au long. La toilette est un <strong>soin relationnel et d’observation</strong>, pas une simple tâche.</p></aside>
-</section><section class="partie"><h3>Les fondamentaux du métier (livre ORACLE)</h3>
-<p>Avant toute technique, le livre ORACLE pose une idée qui structure tout le Bloc 1 : <strong>l'aide-soignant n'exécute pas une tâche, il accompagne une personne</strong>. La tâche est le moyen ; la personne est la finalité. Quatre exigences se tiennent en permanence.</p>
-<p>Quatre mots à ne jamais confondre — les mélanger, c'est mal accompagner :</p>
-<aside class="encadre"><h4></h4><p><strong>📘 Référence livre ORACLE — l'idée centrale du module</strong></p>
-<p>Accompagner le quotidien, c'est relier sans cesse la <strong>dignité</strong> (respecter la personne), l'<strong>autonomie</strong> (faire <em>avec</em>, pas à la place), la <strong>sécurité</strong> (prévenir le risque) et le <strong>projet de vie</strong> (respecter habitudes, choix, histoire).</p></aside>
-<aside class="encadre"><h4></h4><p><strong>📖 Autonomie / Dépendance / Fragilité / Handicap</strong></p>
-<p><strong>Autonomie</strong> = capacité à décider pour soi (une personne très dépendante physiquement peut rester pleinement autonome). <strong>Dépendance</strong> = besoin d'aide pour les actes, mesurée acte par acte. <strong>Fragilité</strong> = état instable qui augmente le risque (chute, dénutrition, isolement). <strong>Handicap</strong> = limitation durable demandant des adaptations, sans réduire la personne à son handicap.</p></aside>
-<aside class="encadre"><h4>🩺 la règle d&#x27;or de l&#x27;autonomie</h4><p>Accompagner l'autonomie, <strong>ne pas faire à la place</strong>. Si la personne peut laver son visage seule, on la laisse faire et on l'aide pour le dos. « Faire plus vite à sa place » est confortable pour le soignant et dévalorisant pour la personne.</p></aside>
-<aside class="encadre"><h4>📣 ce que l&#x27;AS transmet (toilette)</h4><p>Rougeur ou lésion cutanée, douleur au mouvement, refus de toilette, baisse de participation, signe d'inconfort. Une <strong>rougeur qui ne blanchit pas à la pression</strong> doit être signalée sans attendre. On transmet le <strong>fait observé</strong> (« n'a mangé que deux cuillères »), pas une interprétation médicale.</p></aside>
-</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p><strong>🎓 À l’oral / piège :</strong> Ne jamais découvrir entièrement la personne : préserve la pudeur tout au long. La toilette est un <strong>soin relationnel et d’observation</strong>, pas une simple tâche.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 9">
+  <div class="inner">
+    <div class="head"><div class="num">9</div><h2>Les fondamentaux du métier (livre ORACLE)<small>Partie 9 / 10</small></h2></div>
+    <div class="prose"><p>Avant toute technique, le livre ORACLE pose une idée qui structure tout le Bloc 1 : <strong>l'aide-soignant n'exécute pas une tâche, il accompagne une personne</strong>. La tâche est le moyen ; la personne est la finalité. Quatre exigences se tiennent en permanence.</p></div>
+<div class="prose"><p>Quatre mots à ne jamais confondre — les mélanger, c'est mal accompagner :</p></div>
+<div class="box box-info"><h4></h4><p><strong>📘 Référence livre ORACLE — l'idée centrale du module</strong></p>
+<p>Accompagner le quotidien, c'est relier sans cesse la <strong>dignité</strong> (respecter la personne), l'<strong>autonomie</strong> (faire <em>avec</em>, pas à la place), la <strong>sécurité</strong> (prévenir le risque) et le <strong>projet de vie</strong> (respecter habitudes, choix, histoire).</p></div>
+<div class="box box-info"><h4></h4><p><strong>📖 Autonomie / Dépendance / Fragilité / Handicap</strong></p>
+<p><strong>Autonomie</strong> = capacité à décider pour soi (une personne très dépendante physiquement peut rester pleinement autonome). <strong>Dépendance</strong> = besoin d'aide pour les actes, mesurée acte par acte. <strong>Fragilité</strong> = état instable qui augmente le risque (chute, dénutrition, isolement). <strong>Handicap</strong> = limitation durable demandant des adaptations, sans réduire la personne à son handicap.</p></div>
+<div class="box box-info"><h4>🩺 la règle d'or de l'autonomie</h4><p>Accompagner l'autonomie, <strong>ne pas faire à la place</strong>. Si la personne peut laver son visage seule, on la laisse faire et on l'aide pour le dos. « Faire plus vite à sa place » est confortable pour le soignant et dévalorisant pour la personne.</p></div>
+<div class="box box-info"><h4>📣 ce que l'AS transmet (toilette)</h4><p>Rougeur ou lésion cutanée, douleur au mouvement, refus de toilette, baisse de participation, signe d'inconfort. Une <strong>rougeur qui ne blanchit pas à la pression</strong> doit être signalée sans attendre. On transmet le <strong>fait observé</strong> (« n'a mangé que deux cuillères »), pas une interprétation médicale.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 10">
+  <div class="inner">
+    <div class="head"><div class="num">10</div><h2>Ce que le jury attend (référentiel)<small>Partie 10 / 10</small></h2></div>
+    <div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
 <p>S’assurer du <strong>consentement et de l’adhésion</strong> (prévenir, communication bienveillante, antalgique par l’IDE si besoin avant le soin).</p>
 <p><strong>Sécurité</strong> : prévention des chutes (siège de douche, sol sec, sonnette à portée), transferts avec dispositifs adaptés, chambre chauffée.</p>
 <p><strong>Maintien de l’autonomie</strong> (laisser faire) · ergonomie du soignant · n’apporter que le matériel nécessaire.</p>
 <p>Hygiène : tablier, <strong>du plus propre au plus sale</strong>, gants non stériles pour l’intime, SHA avant/après, gants/serviettes distincts, changer l’eau.</p>
 <p>Observation : comportement, douleur, état cutané (effleurage si pas de rougeur persistante), <strong>respect de la pudeur</strong>.</p>
-<p>Avant de quitter la chambre : personne réinstallée, faire boire, sonnette, effets personnels · aérer · entretien · transmissions.</p></aside>
+<p>Avant de quitter la chambre : personne réinstallée, faire boire, sonnette, effets personnels · aérer · entretien · transmissions.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Cas pratiques corrigés du livre ORACLE</h2>
-<p><strong>Points de contrôle clés (auto-évaluation) :</strong></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Cas pratiques corrigés du livre ORACLE<small>Appliquer ce que vous avez appris</small></h2></div>
+    <p><strong>Points de contrôle clés (auto-évaluation) :</strong></p>
 <ul>
 <li>Préparation après friction GHA, sans gants de soins ; surface de travail désinfectée.</li>
 <li>Ordre conforme (propre → sale) ; exception siège en premier seulement si selles.</li>
@@ -283,9 +406,7 @@ section li{margin-bottom:6px}
 <li>Prévention des escarres réalisée ; soins bucco-dentaires, coiffage, rasage selon habitudes.</li>
 <li>Élimination immédiate du linge/déchets, désinfection du matériel, friction GHA finale, <strong>traçabilité dans les transmissions ciblées</strong>.</li>
 </ul>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette de Mme Petit, 83 ans, refus et douleur à l'épaule</strong></p></p>
-<div class="cas-piste"><p><em>Vous accompagnez Mme Petit, 83 ans, atteinte d'une maladie d'Alzheimer modérée, en EHPAD, pour sa toilette du matin. Dès que vous approchez, elle repousse votre main et refuse le soin. Quand vous touchez son épaule droite pour l'aider à se mobiliser, elle grimace nettement.</em></p>
+    <div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette de Mme Petit, 83 ans, refus et douleur à l'épaule</strong></p></div><div class="cas-piste"><p><em>Vous accompagnez Mme Petit, 83 ans, atteinte d'une maladie d'Alzheimer modérée, en EHPAD, pour sa toilette du matin. Dès que vous approchez, elle repousse votre main et refuse le soin. Quand vous touchez son épaule droite pour l'aider à se mobiliser, elle grimace nettement.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quelles observations retenir et pourquoi ?</li>
@@ -297,11 +418,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Observations.</strong> Le refus verbal et le geste de repousser la main expriment un défaut de consentement à respecter immédiatement. La grimace à la mobilisation de l'épaule droite est un signe non verbal de douleur, nouveau et localisé, qui doit alerter même chez une personne atteinte de troubles cognitifs.</p>
 <p><strong>2. Conduite immédiate.</strong> Ne pas insister ni forcer le soin : le refus se respecte toujours. Rassurer avec une voix calme et des phrases courtes, proposer de différer la toilette ou de la réaliser en partie, mobiliser l'épaule a minima et avec douceur si un geste est indispensable.</p>
 <p><strong>3. Transmission.</strong> Transmettre sans délai à l'IDE la douleur nouvelle à la mobilisation de l'épaule droite (cause à rechercher : chute, contracture, fracture méconnue) ainsi que le refus de toilette. Transmission orale immédiate puis écrite ciblée. On décrit des faits observés, on ne pose pas de diagnostic.</p>
-<p><strong>4. Erreur à éviter.</strong> Mettre la grimace sur le compte de la démence et forcer le soin pour « gagner du temps » : tout changement de comportement ou signe de douleur nouveau doit être pris au sérieux et signalé, quel que soit l'état cognitif de la personne.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette au lavabo de M. Bernard, hémiplégie gauche</strong></p></p>
-<div class="cas-piste"><p><em>M. Bernard, 72 ans, hémiplégique gauche à la suite d'un AVC, a demandé une toilette au lavabo. Alors que vous l'installez, il se décourage et vous dit : « je ne peux plus rien faire seul ». Le service impose de poursuivre la tournée sans s'attarder.</em></p>
+<p><strong>4. Erreur à éviter.</strong> Mettre la grimace sur le compte de la démence et forcer le soin pour « gagner du temps » : tout changement de comportement ou signe de douleur nouveau doit être pris au sérieux et signalé, quel que soit l'état cognitif de la personne.</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette au lavabo de M. Bernard, hémiplégie gauche</strong></p></div><div class="cas-piste"><p><em>M. Bernard, 72 ans, hémiplégique gauche à la suite d'un AVC, a demandé une toilette au lavabo. Alors que vous l'installez, il se décourage et vous dit : « je ne peux plus rien faire seul ». Le service impose de poursuivre la tournée sans s'attarder.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quelles observations retenir sur son état physique et moral ?</li>
@@ -313,11 +430,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Observations.</strong> L'hémiplégie gauche laisse le côté droit fonctionnel : M. Bernard peut réaliser une partie de sa toilette seul. Sa phrase « je ne peux plus rien faire seul » traduit un découragement et une dévalorisation de soi à ne pas banaliser.</p>
 <p><strong>2. Adaptation.</strong> L'installer au lavabo et le stimuler pour tout ce qu'il peut faire avec son côté valide (visage, torse), n'aider que pour les zones inaccessibles (dos, pied gauche). Valoriser chaque geste réussi. Pour l'habillage, commencer par le côté atteint (gauche). Ne pas faire à sa place pour aller plus vite.</p>
 <p><strong>3. Transmission.</strong> Signaler à l'équipe (IDE, éventuellement psychologue selon l'organisation) le sentiment de dévalorisation exprimé, pour envisager un accompagnement adapté. Transmission factuelle du propos tenu, sans interprétation.</p>
-<p><strong>4. Erreur à éviter.</strong> Faire le soin à sa place pour gagner du temps : cela confirmerait son sentiment d'incapacité et accélérerait la perte d'autonomie et l'estime de soi.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette de Mme D., 88 ans</strong></p></p>
-<div class="cas-piste"><p><em>Vous accompagnez Mme D. pour sa toilette du matin. D'ordinaire participative, elle reste passive, garde les yeux fermés et grimace quand vous lui soulevez le bras gauche. En la lavant, vous remarquez une rougeur au sacrum qui ne disparaît pas à la pression. Le service est en sous-effectif et vous avez encore trois toilettes à faire.</em></p>
+<p><strong>4. Erreur à éviter.</strong> Faire le soin à sa place pour gagner du temps : cela confirmerait son sentiment d'incapacité et accélérerait la perte d'autonomie et l'estime de soi.</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toilette de Mme D., 88 ans</strong></p></div><div class="cas-piste"><p><em>Vous accompagnez Mme D. pour sa toilette du matin. D'ordinaire participative, elle reste passive, garde les yeux fermés et grimace quand vous lui soulevez le bras gauche. En la lavant, vous remarquez une rougeur au sacrum qui ne disparaît pas à la pression. Le service est en sous-effectif et vous avez encore trois toilettes à faire.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quelles observations retenir et pourquoi ?</li>
@@ -329,11 +442,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Observations.</strong> Trois éléments anormaux par rapport à l'habituel : passivité inhabituelle (changement de comportement), douleur à la mobilisation du bras gauche (la grimace est un <strong>signe non verbal de douleur</strong>), et surtout la <strong>rougeur sacrée qui ne blanchit pas</strong> — signe d'alerte d'<strong>escarre débutante</strong>, prioritaire.</p>
 <p><strong>2. Adaptation.</strong> Ralentir, expliquer chaque geste, mobiliser le bras gauche en douceur et a minima, préserver la zone sacrée (ne pas frotter), installer en soulageant le point d'appui.</p>
 <p><strong>3. Transmission.</strong> Sans attendre à l'IDE : rougeur sacrée ne blanchissant pas (urgent), douleur à la mobilisation, passivité inhabituelle. Transmission orale immédiate + écrite (ciblée). On décrit des <strong>faits</strong>, on ne pose pas de diagnostic.</p>
-<p><strong>4. Erreur à éviter.</strong> Laisser le sous-effectif primer sur la sécurité (« je verrai plus tard »). Le contexte ne justifie <strong>jamais</strong> de négliger un signe d'alerte.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — Domicile · Refus &amp; place de l'aidant (M. P., 82 ans)</strong></p></p>
-<div class="cas-piste"><p><em>Vous intervenez chez M. P., troubles cognitifs débutants. Son épouse, épuisée, insiste pour que vous fassiez « tout, et vite ». Au moment de la toilette, M. P. repousse votre main : « non, pas maintenant ». Son épouse vous presse de « ne pas l'écouter ».</em></p>
+<p><strong>4. Erreur à éviter.</strong> Laisser le sous-effectif primer sur la sécurité (« je verrai plus tard »). Le contexte ne justifie <strong>jamais</strong> de négliger un signe d'alerte.</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — Domicile · Refus &amp; place de l'aidant (M. P., 82 ans)</strong></p></div><div class="cas-piste"><p><em>Vous intervenez chez M. P., troubles cognitifs débutants. Son épouse, épuisée, insiste pour que vous fassiez « tout, et vite ». Au moment de la toilette, M. P. repousse votre main : « non, pas maintenant ». Son épouse vous presse de « ne pas l'écouter ».</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Comment réagir face au refus de M. P. ?</li>
@@ -345,11 +454,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Refus.</strong> Le refus se respecte : on ne force pas. Comprendre (douleur ? gêne ? moment mal choisi ?), rassurer avec une communication simple adaptée aux troubles cognitifs, proposer autrement (toilette partielle, plus tard, autre ordre). Forcer = atteinte à la dignité et risque d'aggraver l'opposition.</p>
 <p><strong>2. Épouse.</strong> Accueillir son épuisement avec empathie, sans la juger ni lui obéir contre la volonté de M. P. Expliquer avec tact qu'on ne peut imposer le soin de force ; reconnaître son rôle d'aidante et l'orienter, via l'équipe, vers un soutien.</p>
 <p><strong>3. Personnalisation.</strong> Tenir compte des troubles cognitifs (repères, gestes annoncés, douceur), du domicile, du moment (revenir quand M. P. est disponible), et préserver la relation de confiance.</p>
-<p><strong>4. Transmission.</strong> Refus et contexte, attitude adoptée, épuisement de l'aidante. Signaler à l'IDE pour réévaluer l'organisation. On reste dans son rôle : on ne décide pas seul.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — Domicile · Risque de brûlure (M. G., 79 ans, diabétique)</strong></p></p>
-<div class="cas-piste"><p><em>Chez M. G., diabétique avec sensibilité diminuée des pieds, vous préparez la toilette. Le chauffe-eau est réglé très chaud ; il vous dit « mettez bien chaud, j'aime ça ».</em></p>
+<p><strong>4. Transmission.</strong> Refus et contexte, attitude adoptée, épuisement de l'aidante. Signaler à l'IDE pour réévaluer l'organisation. On reste dans son rôle : on ne décide pas seul.</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — Domicile · Risque de brûlure (M. G., 79 ans, diabétique)</strong></p></div><div class="cas-piste"><p><em>Chez M. G., diabétique avec sensibilité diminuée des pieds, vous préparez la toilette. Le chauffe-eau est réglé très chaud ; il vous dit « mettez bien chaud, j'aime ça ».</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quel risque ?</li>
@@ -361,199 +466,109 @@ section li{margin-bottom:6px}
 <p><strong>Risque.</strong> Brûlure, majorée par la sensibilité diminuée (il peut ne pas percevoir une eau trop chaude).</p>
 <p><strong>Sécurisation.</strong> Contrôler la température de l'eau avant le contact (sur soi / au thermomètre), tempérer, expliquer le risque avec tact, surveiller l'état cutané.</p>
 <p><strong>Transmission.</strong> Signaler le réglage à risque et la sensibilité diminuée à l'IDE pour adaptation.</p>
-<p><strong>Piège.</strong> Suivre la demande « bien chaud » sans contrôler, en se fiant au ressenti d'une personne dont la sensibilité est altérée.</p></div>
-</div>
+<p><strong>Piège.</strong> Suivre la demande « bien chaud » sans contrôler, en se fiant au ressenti d'une personne dont la sensibilité est altérée.</p></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Frapper et attendre la réponse · étiquette de présence · porte et rideaux fermés.</div><div class="memo-item">Ne découvrir que la zone lavée, couvrir le reste avec un drap de bain.</div><div class="memo-item">Changer l’eau, le gant et la serviette avant la zone uro-génitale ; friction GHA avant et après les gants.</div><div class="memo-item">Sécher les plis par tamponnement : sous les seins, à l’aine, entre les orteils.</div><div class="memo-item">Diabète : eau tiède jamais chaude, et aucune coupe d’ongles — pédicure-podologue.</div><div class="memo-item">Avant de sortir : lit rabaissé, sonnette à portée, faire boire, puis tracer dans les transmissions.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">Du propre vers le sale, du haut vers le bas, du plus éloigné au plus proche.</div><div class="pts-item">La toilette uro-génitale vient en dernier — chez la femme, du pubis vers l’anus.</div><div class="pts-item">Seule exception à l’ordre : la présence de selles, qui fait commencer par le siège.</div><div class="pts-item">Un silence n’est pas un consentement ; le refus se respecte et se transmet.</div><div class="pts-item">Une rougeur qui ne blanchit pas à la pression ne se masse jamais : elle se signale sans attendre.</div><div class="pts-item">La toilette est le soin n°1 évalué par le jury : technique, pudeur, observation, analyse.</div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>17 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>17 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B1_L02 — Toilette, change &amp; soins d'hygiène</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B1_L01.html">← B1_L01</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B1_L03.html">B1_L03 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Quelle est la règle d'or de la toilette ?", "opts": ["Du bas vers le haut", "Toujours commencer par le siège", "Du sale vers le propre", "Du propre vers le sale, du haut vers le bas"], "ok": 3, "x": "Du propre vers le sale, du haut vers le bas : on finit par la zone intime.<strong> 🎓 À l’oral VAE :</strong> énoncez la règle d’or, le jury l’attend."}, {"q": "Chez la femme, dans quel sens se fait la toilette intime ?", "opts": ["Du pubis vers l'anus", "Peu importe le sens", "Latéralement", "De l'anus vers le pubis"], "ok": 0, "x": "Toilette intime féminine : du pubis vers l’anus, pour ne pas ramener de germes.<strong> 🎓 À l’oral VAE :</strong> justifiez par la prévention de l’infection urinaire."}, {"q": "Pourquoi changer l'eau avant la toilette uro-génitale ?", "opts": ["Pour mieux rincer le savon", "Pour éviter la contamination croisée", "Pour économiser l'eau", "Parce qu'elle a refroidi"], "ok": 1, "x": "On change l’eau avant l’uro-génital pour éviter la contamination croisée.<strong> 🎓 À l’oral VAE :</strong> montrez votre rigueur d’asepsie."}, {"q": "Toilette d'une personne Alzheimer : par où commencer ?", "opts": ["Par le visage", "Par les mains", "Par les pieds", "Par la toilette intime"], "ok": 1, "x": "Chez Alzheimer, commencer par les mains rassure et amorce le geste en douceur.<strong> 🎓 À l’oral VAE :</strong> gestes calmes, une consigne à la fois."}, {"q": "Un patient refuse la toilette. Que faites-vous ?", "opts": ["Abandonner tout soin de la journée", "Respecter, chercher la cause, proposer une alternative, transmettre", "Appeler la famille pour le convaincre", "Forcer doucement pour finir vite"], "ok": 1, "x": "On respecte le refus, on cherche la cause, on propose une alternative, on transmet.<strong> 🎓 À l’oral VAE :</strong> le refus est un droit ; jamais de force."}, {"q": "Pour habiller un patient hémiplégique gauche :", "opts": ["Peu importe le côté", "Le côté atteint (gauche) en premier", "Toujours commencer par le bas", "Le côté sain (droit) en premier"], "ok": 1, "x": "Hémiplégie : on habille le côté atteint en premier (plus difficile à mobiliser).<strong> 🎓 À l’oral VAE :</strong> et on déshabille le côté sain en premier."}, {"q": "Pourquoi ne PAS couper les ongles d'un patient diabétique ?", "opts": ["Pour gagner du temps", "C'est interdit par la loi", "Ses ongles repoussent trop vite", "Risque de plaie infectieuse (neuropathie + cicatrisation difficile)"], "ok": 3, "x": "Ongles du diabétique : risque de plaie infectieuse (neuropathie + cicatrisation lente).<strong> 🎓 À l’oral VAE :</strong> on confie la coupe à l’IDE/pédicure."}, {"q": "Quelles situations imposent une toilette en binôme ?", "opts": ["Toute toilette au lit", "Fin de vie, algies, troubles du comportement, dispositifs médicaux", "Seulement si le patient le demande", "Uniquement la nuit"], "ok": 1, "x": "Binôme : fin de vie, douleurs, troubles du comportement, dispositifs médicaux.<strong> 🎓 À l’oral VAE :</strong> sécurité du résident ET du soignant."}, {"q": "Pourquoi bien sécher les plis cutanés ?", "opts": ["Uniquement pour le confort", "Pour gagner du temps", "Pour prévenir la macération et les mycoses", "Pour parfumer la peau"], "ok": 2, "x": "Bien sécher les plis prévient macération et mycoses.<strong> 🎓 À l’oral VAE :</strong> insistez sous les seins, aine, espaces interdigitaux."}, {"q": "Que noter dans les transmissions après la toilette ?", "opts": ["Rien si tout va bien", "Seulement l'heure du soin", "Uniquement un éventuel refus", "Soin validé + anomalies observées + transmission ciblée si besoin"], "ok": 3, "x": "On trace : soin validé + anomalies + transmission ciblée si besoin.<strong> 🎓 À l’oral VAE :</strong> « ce qui n’est pas écrit n’est pas fait »."}, {"q": "(Livre ORACLE) « Accompagner l'autonomie » signifie d'abord…", "opts": ["Laisser la personne faire ce qu'elle peut et compenser seulement le reste", "Faire à la place de la personne pour la soulager", "Faire le soin le plus vite possible", "Attendre que la personne demande de l'aide"], "ok": 0, "x": "Accompagner l’autonomie = laisser faire ce que la personne peut, compenser le reste.<strong> 🎓 À l’oral VAE :</strong> « faire avec », pas « à la place »."}, {"q": "(Livre ORACLE) Une personne très dépendante physiquement ne peut pas être autonome.", "opts": ["Vrai", "Faux"], "ok": 1, "x": "Faux : on peut être dépendant pour les gestes mais autonome dans ses choix.<strong> 🎓 À l’oral VAE :</strong> distinguez dépendance (gestes) et autonomie (décisions)."}, {"q": "(Livre ORACLE) Rougeur au sacrum qui ne blanchit pas à la pression : que faites-vous ?", "opts": ["Vous transmettez immédiatement à l'IDE (signe d'escarre débutante)", "Vous décidez seul que c'est une escarre et posez un pansement", "Vous attendez le lendemain pour voir si elle persiste", "Rien, c'est fréquent chez la personne âgée"], "ok": 0, "x": "Rougeur sacrée qui ne blanchit pas = escarre débutante → transmettre à l’IDE.<strong> 🎓 À l’oral VAE :</strong> ne jamais masser, signaler tout de suite."}, {"q": "On lave…", "opts": ["Au hasard", "Du plus sale au plus propre", "Sans ordre", "Du plus propre au plus sale"], "ok": 3, "x": "Du plus propre vers le plus sale, sauf souillure.<strong> 🎓 À l’oral VAE :</strong> règle d’asepsie de base."}, {"q": "Sur une rougeur persistante, on…", "opts": ["N’effleure plus la zone", "Frictionne", "Masse", "Ignore"], "ok": 0, "x": "Jamais masser une rougeur : on stoppe l’effleurage et on signale.<strong> 🎓 À l’oral VAE :</strong> interdit clé en prévention d’escarre."}, {"q": "Pour un résident hémiplégique, l’habillage commence par…", "opts": ["Le côté atteint", "Peu importe", "Le haut", "Le côté sain"], "ok": 0, "x": "Habillage par le côté atteint, plus difficile à mobiliser.<strong> 🎓 À l’oral VAE :</strong> adaptez le geste à la pathologie."}, {"q": "La toilette est un soin…", "opts": ["Purement esthétique", "Uniquement technique", "Technique ET relationnel", "Sans observation"], "ok": 2, "x": "Hygiène + relation + observation.<strong> 🎓 À l’oral VAE :</strong> c’est un moment d’évaluation clinique."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Frapper et attendre la réponse · étiquette de présence · porte et rideaux fermés.</li><li>Ne découvrir que la zone lavée, couvrir le reste avec un drap de bain.</li><li>Changer l’eau, le gant et la serviette avant la zone uro-génitale ; friction GHA avant et après les gants.</li><li>Sécher les plis par tamponnement : sous les seins, à l’aine, entre les orteils.</li><li>Diabète : eau tiède jamais chaude, et aucune coupe d’ongles — pédicure-podologue.</li><li>Avant de sortir : lit rabaissé, sonnette à portée, faire boire, puis tracer dans les transmissions.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Du propre vers le sale, du haut vers le bas, du plus éloigné au plus proche.</li><li>La toilette uro-génitale vient en dernier — chez la femme, du pubis vers l’anus.</li><li>Seule exception à l’ordre : la présence de selles, qui fait commencer par le siège.</li><li>Un silence n’est pas un consentement ; le refus se respecte et se transmet.</li><li>Une rougeur qui ne blanchit pas à la pression ne se masse jamais : elle se signale sans attendre.</li><li>La toilette est le soin n°1 évalué par le jury : technique, pudeur, observation, analyse.</li></ul></section>
-  
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="d" data-id="q0">
-<p class="q"><strong>Q1.</strong> Quelle est la règle d'or de la toilette ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Du bas vers le haut</li>
-<li data-cle="b" onclick="window._pickQ(this)">Toujours commencer par le siège</li>
-<li data-cle="c" onclick="window._pickQ(this)">Du sale vers le propre</li>
-<li data-cle="d" onclick="window._pickQ(this)">Du propre vers le sale, du haut vers le bas</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Du propre vers le sale, du haut vers le bas : on finit par la zone intime.<strong> 🎓 À l’oral VAE :</strong> énoncez la règle d’or, le jury l’attend.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q1">
-<p class="q"><strong>Q2.</strong> Chez la femme, dans quel sens se fait la toilette intime ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Du pubis vers l'anus</li>
-<li data-cle="b" onclick="window._pickQ(this)">Peu importe le sens</li>
-<li data-cle="c" onclick="window._pickQ(this)">Latéralement</li>
-<li data-cle="d" onclick="window._pickQ(this)">De l'anus vers le pubis</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Toilette intime féminine : du pubis vers l’anus, pour ne pas ramener de germes.<strong> 🎓 À l’oral VAE :</strong> justifiez par la prévention de l’infection urinaire.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q2">
-<p class="q"><strong>Q3.</strong> Pourquoi changer l'eau avant la toilette uro-génitale ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Pour mieux rincer le savon</li>
-<li data-cle="b" onclick="window._pickQ(this)">Pour éviter la contamination croisée</li>
-<li data-cle="c" onclick="window._pickQ(this)">Pour économiser l'eau</li>
-<li data-cle="d" onclick="window._pickQ(this)">Parce qu'elle a refroidi</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>On change l’eau avant l’uro-génital pour éviter la contamination croisée.<strong> 🎓 À l’oral VAE :</strong> montrez votre rigueur d’asepsie.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q3">
-<p class="q"><strong>Q4.</strong> Toilette d'une personne Alzheimer : par où commencer ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Par le visage</li>
-<li data-cle="b" onclick="window._pickQ(this)">Par les mains</li>
-<li data-cle="c" onclick="window._pickQ(this)">Par les pieds</li>
-<li data-cle="d" onclick="window._pickQ(this)">Par la toilette intime</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Chez Alzheimer, commencer par les mains rassure et amorce le geste en douceur.<strong> 🎓 À l’oral VAE :</strong> gestes calmes, une consigne à la fois.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q4">
-<p class="q"><strong>Q5.</strong> Un patient refuse la toilette. Que faites-vous ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Abandonner tout soin de la journée</li>
-<li data-cle="b" onclick="window._pickQ(this)">Respecter, chercher la cause, proposer une alternative, transmettre</li>
-<li data-cle="c" onclick="window._pickQ(this)">Appeler la famille pour le convaincre</li>
-<li data-cle="d" onclick="window._pickQ(this)">Forcer doucement pour finir vite</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>On respecte le refus, on cherche la cause, on propose une alternative, on transmet.<strong> 🎓 À l’oral VAE :</strong> le refus est un droit ; jamais de force.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q5">
-<p class="q"><strong>Q6.</strong> Pour habiller un patient hémiplégique gauche :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Peu importe le côté</li>
-<li data-cle="b" onclick="window._pickQ(this)">Le côté atteint (gauche) en premier</li>
-<li data-cle="c" onclick="window._pickQ(this)">Toujours commencer par le bas</li>
-<li data-cle="d" onclick="window._pickQ(this)">Le côté sain (droit) en premier</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Hémiplégie : on habille le côté atteint en premier (plus difficile à mobiliser).<strong> 🎓 À l’oral VAE :</strong> et on déshabille le côté sain en premier.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q6">
-<p class="q"><strong>Q7.</strong> Pourquoi ne PAS couper les ongles d'un patient diabétique ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Pour gagner du temps</li>
-<li data-cle="b" onclick="window._pickQ(this)">C'est interdit par la loi</li>
-<li data-cle="c" onclick="window._pickQ(this)">Ses ongles repoussent trop vite</li>
-<li data-cle="d" onclick="window._pickQ(this)">Risque de plaie infectieuse (neuropathie + cicatrisation difficile)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Ongles du diabétique : risque de plaie infectieuse (neuropathie + cicatrisation lente).<strong> 🎓 À l’oral VAE :</strong> on confie la coupe à l’IDE/pédicure.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q7">
-<p class="q"><strong>Q8.</strong> Quelles situations imposent une toilette en binôme ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Toute toilette au lit</li>
-<li data-cle="b" onclick="window._pickQ(this)">Fin de vie, algies, troubles du comportement, dispositifs médicaux</li>
-<li data-cle="c" onclick="window._pickQ(this)">Seulement si le patient le demande</li>
-<li data-cle="d" onclick="window._pickQ(this)">Uniquement la nuit</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Binôme : fin de vie, douleurs, troubles du comportement, dispositifs médicaux.<strong> 🎓 À l’oral VAE :</strong> sécurité du résident ET du soignant.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q8">
-<p class="q"><strong>Q9.</strong> Pourquoi bien sécher les plis cutanés ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Uniquement pour le confort</li>
-<li data-cle="b" onclick="window._pickQ(this)">Pour gagner du temps</li>
-<li data-cle="c" onclick="window._pickQ(this)">Pour prévenir la macération et les mycoses</li>
-<li data-cle="d" onclick="window._pickQ(this)">Pour parfumer la peau</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Bien sécher les plis prévient macération et mycoses.<strong> 🎓 À l’oral VAE :</strong> insistez sous les seins, aine, espaces interdigitaux.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q9">
-<p class="q"><strong>Q10.</strong> Que noter dans les transmissions après la toilette ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Rien si tout va bien</li>
-<li data-cle="b" onclick="window._pickQ(this)">Seulement l'heure du soin</li>
-<li data-cle="c" onclick="window._pickQ(this)">Uniquement un éventuel refus</li>
-<li data-cle="d" onclick="window._pickQ(this)">Soin validé + anomalies observées + transmission ciblée si besoin</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>On trace : soin validé + anomalies + transmission ciblée si besoin.<strong> 🎓 À l’oral VAE :</strong> « ce qui n’est pas écrit n’est pas fait ».</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q10">
-<p class="q"><strong>Q11.</strong> (Livre ORACLE) « Accompagner l'autonomie » signifie d'abord…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Laisser la personne faire ce qu'elle peut et compenser seulement le reste</li>
-<li data-cle="b" onclick="window._pickQ(this)">Faire à la place de la personne pour la soulager</li>
-<li data-cle="c" onclick="window._pickQ(this)">Faire le soin le plus vite possible</li>
-<li data-cle="d" onclick="window._pickQ(this)">Attendre que la personne demande de l'aide</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Accompagner l’autonomie = laisser faire ce que la personne peut, compenser le reste.<strong> 🎓 À l’oral VAE :</strong> « faire avec », pas « à la place ».</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q11">
-<p class="q"><strong>Q12.</strong> (Livre ORACLE) Une personne très dépendante physiquement ne peut pas être autonome.</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Vrai</li>
-<li data-cle="b" onclick="window._pickQ(this)">Faux</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Faux : on peut être dépendant pour les gestes mais autonome dans ses choix.<strong> 🎓 À l’oral VAE :</strong> distinguez dépendance (gestes) et autonomie (décisions).</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q12">
-<p class="q"><strong>Q13.</strong> (Livre ORACLE) Rougeur au sacrum qui ne blanchit pas à la pression : que faites-vous ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Vous transmettez immédiatement à l'IDE (signe d'escarre débutante)</li>
-<li data-cle="b" onclick="window._pickQ(this)">Vous décidez seul que c'est une escarre et posez un pansement</li>
-<li data-cle="c" onclick="window._pickQ(this)">Vous attendez le lendemain pour voir si elle persiste</li>
-<li data-cle="d" onclick="window._pickQ(this)">Rien, c'est fréquent chez la personne âgée</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Rougeur sacrée qui ne blanchit pas = escarre débutante → transmettre à l’IDE.<strong> 🎓 À l’oral VAE :</strong> ne jamais masser, signaler tout de suite.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q13">
-<p class="q"><strong>Q14.</strong> On lave…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Au hasard</li>
-<li data-cle="b" onclick="window._pickQ(this)">Du plus sale au plus propre</li>
-<li data-cle="c" onclick="window._pickQ(this)">Sans ordre</li>
-<li data-cle="d" onclick="window._pickQ(this)">Du plus propre au plus sale</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Du plus propre vers le plus sale, sauf souillure.<strong> 🎓 À l’oral VAE :</strong> règle d’asepsie de base.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q14">
-<p class="q"><strong>Q15.</strong> Sur une rougeur persistante, on…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">N’effleure plus la zone</li>
-<li data-cle="b" onclick="window._pickQ(this)">Frictionne</li>
-<li data-cle="c" onclick="window._pickQ(this)">Masse</li>
-<li data-cle="d" onclick="window._pickQ(this)">Ignore</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Jamais masser une rougeur : on stoppe l’effleurage et on signale.<strong> 🎓 À l’oral VAE :</strong> interdit clé en prévention d’escarre.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q15">
-<p class="q"><strong>Q16.</strong> Pour un résident hémiplégique, l’habillage commence par…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le côté atteint</li>
-<li data-cle="b" onclick="window._pickQ(this)">Peu importe</li>
-<li data-cle="c" onclick="window._pickQ(this)">Le haut</li>
-<li data-cle="d" onclick="window._pickQ(this)">Le côté sain</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Habillage par le côté atteint, plus difficile à mobiliser.<strong> 🎓 À l’oral VAE :</strong> adaptez le geste à la pathologie.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q16">
-<p class="q"><strong>Q17.</strong> La toilette est un soin…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Purement esthétique</li>
-<li data-cle="b" onclick="window._pickQ(this)">Uniquement technique</li>
-<li data-cle="c" onclick="window._pickQ(this)">Technique ET relationnel</li>
-<li data-cle="d" onclick="window._pickQ(this)">Sans observation</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Hygiène + relation + observation.<strong> 🎓 À l’oral VAE :</strong> c’est un moment d’évaluation clinique.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B1_L01.html" class="back">← B1_L01</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L03.html">B1_L03 →</a></div>
-</div>
 </body></html>

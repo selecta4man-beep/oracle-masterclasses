@@ -1,107 +1,201 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bloc 5 · B5_L01 · Pourquoi & quoi transmettre — ORACLE VAE AS</title>
+<title>Bloc 5 · B5_L01 · Pourquoi &amp; quoi transmettre — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B5_L01 · Pourquoi &amp; quoi transmettre</span>
+  <span class="mod" id="modLbl">Bloc 5</span>
+  <span class="counter" id="counter">1 / 15</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 5</strong> › B5_L01</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 5</span><span>Leçon 1</span><span>⏱ 30 min</span><span>VAE DEAS</span></div>
-    <h1>Pourquoi &amp; quoi transmettre</h1>
-    <div class="accroche"><p>Les soins sont assurés par une <strong>équipe qui se relaie 24 h/24</strong>. La continuité et la sécurité reposent entièrement sur la qualité des informations échangées. Une information non transmise est une <strong>information perdue</strong> ; une information fausse ou floue peut conduire à une erreur.</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 5">
+  <div class="wrap">
+    <span class="kicker">Bloc 5 · Leçon 1</span>
+    <h1>Pourquoi &amp; quoi transmettre<em>Équipe pluridisciplinaire</em></h1>
+    <div class="sub"><p>Les soins sont assurés par une <strong>équipe qui se relaie 24 h/24</strong>. La continuité et la sécurité reposent entièrement sur la qualité des informations échangées. Une information non transmise est une <strong>information perdue</strong> ; une information fausse ou floue peut conduire à une erreur.</p></div>
+    <div class="meta"><span>⏱ 30 min</span><span>📚 5 parties</span><span>🎯 6 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Expliquer pourquoi la transmission conditionne la continuité et la sécurité des soins.</li><li>Trier ce qui se transmet de ce qui encombre la relève.</li><li>Choisir le canal et le destinataire selon la nature de l’information.</li><li>Hiérarchiser : distinguer ce qui attend la relève de ce qui ne peut pas attendre.</li><li>Reformuler un jugement de valeur en fait observé.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>La transmission, maillon vital du soin</h3>
-<p>Les soins sont assurés par une <strong>équipe qui se relaie 24 h/24</strong>. La continuité et la sécurité reposent entièrement sur la qualité des informations échangées. Une information non transmise est une <strong>information perdue</strong> ; une information fausse ou floue peut conduire à une erreur.</p>
-<p>24h/24</p>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B5_L01</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Expliquer pourquoi la transmission conditionne la continuité et la sécurité des soins.</p></div><div class="card"><div class="ico">📝</div><p>Trier ce qui se transmet de ce qui encombre la relève.</p></div><div class="card"><div class="ico">👤</div><p>Choisir le canal et le destinataire selon la nature de l’information.</p></div><div class="card"><div class="ico">🔑</div><p>Hiérarchiser : distinguer ce qui attend la relève de ce qui ne peut pas attendre.</p></div><div class="card"><div class="ico">🧭</div><p>Reformuler un jugement de valeur en fait observé.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>5 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 20 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>La transmission, maillon vital du soin<small>Partie 1 / 5</small></h2></div>
+    <div class="prose"><p>Les soins sont assurés par une <strong>équipe qui se relaie 24 h/24</strong>. La continuité et la sécurité reposent entièrement sur la qualité des informations échangées. Une information non transmise est une <strong>information perdue</strong> ; une information fausse ou floue peut conduire à une erreur.</p></div>
+<div class="prose"><p>24h/24</p>
 <p>le soin est assuré en relais, jamais par une seule personne</p>
 <p>1 maillon</p>
 <p>la transmission relie l'observation à la décision</p>
 <p>0 perte</p>
-<p>objectif : aucune information utile ne se perd</p>
-<aside class="encadre"><h4>✦ L&#x27;idée centrale du module</h4><p>Une bonne transmission est <strong>fiable</strong> (factuelle et exacte), <strong>claire</strong> (précise, datée, compréhensible) et <strong>confidentielle</strong>. Elle est transmise <strong>à la bonne personne, au bon moment</strong>.</p></aside>
-<aside class="encadre"><h4></h4><p><strong>📘 Référence livre ORACLE — le maillon vital</strong></p>
-<p>« Sans transmission fiable, l'observation la plus juste ne sert à rien. » Un soin bien fait mais mal transmis n'est pas un soin sûr.</p></aside>
-</section><section class="partie"><h3>Trier : information pertinente vs superflue</h3>
-<p>Tout ne se transmet pas. On transmet ce qui est <strong>utile à la continuité et à la sécurité</strong> : un changement, un signe, un refus, une douleur, un événement. On évite le bavardage et les jugements de valeur.</p>
-<aside class="encadre"><h4>💡 Réflexe professionnel</h4><p>Avant de transmettre, se demander : « <strong>est-ce utile à l'équipe pour la suite des soins ?</strong> » Si oui, je transmets ; sinon, je m'abstiens.</p></aside>
-</section><section class="partie"><h3>Bien transmettre selon la situation</h3>
-<p>Le bon canal et le bon destinataire dépendent de l'information :</p>
-<div class="tableau"><table><thead><tr>
+<p>objectif : aucune information utile ne se perd</p></div>
+<div class="box box-info"><h4>✦ L'idée centrale du module</h4><p>Une bonne transmission est <strong>fiable</strong> (factuelle et exacte), <strong>claire</strong> (précise, datée, compréhensible) et <strong>confidentielle</strong>. Elle est transmise <strong>à la bonne personne, au bon moment</strong>.</p></div>
+<div class="box box-info"><h4></h4><p><strong>📘 Référence livre ORACLE — le maillon vital</strong></p>
+<p>« Sans transmission fiable, l'observation la plus juste ne sert à rien. » Un soin bien fait mais mal transmis n'est pas un soin sûr.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Trier : information pertinente vs superflue<small>Partie 2 / 5</small></h2></div>
+    <div class="prose"><p>Tout ne se transmet pas. On transmet ce qui est <strong>utile à la continuité et à la sécurité</strong> : un changement, un signe, un refus, une douleur, un événement. On évite le bavardage et les jugements de valeur.</p></div>
+<div class="box box-info"><h4>💡 Réflexe professionnel</h4><p>Avant de transmettre, se demander : « <strong>est-ce utile à l'équipe pour la suite des soins ?</strong> » Si oui, je transmets ; sinon, je m'abstiens.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Bien transmettre selon la situation<small>Partie 3 / 5</small></h2></div>
+    <div class="prose"><p>Le bon canal et le bon destinataire dépendent de l'information :</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Information</th>
 <th>Pertinente ?</th>
 <th>Comment transmettre</th>
@@ -150,124 +244,146 @@ section li{margin-bottom:6px}
 <td>IDE ; ne pas attendre la relève</td>
 </tr>
 </tbody></table></div>
-</section><section class="partie"><h3>Hiérarchiser : l&#x27;urgent d&#x27;abord</h3>
-<p>Toutes les informations n'ont pas le même degré d'urgence. Une <strong>information urgente</strong> (chute, douleur intense, malaise) se transmet <strong>oralement et immédiatement à l'IDE</strong>, puis se trace par écrit. On n'attend jamais la relève pour l'urgent.</p>
-<aside class="vigilance"><h4>⚠ ⚠️ Points de vigilance</h4><p>« Je le dirai à la relève » pour une information urgente est une erreur : l'urgent se transmet <strong>sans délai</strong>, à l'oral, puis on trace.</p></aside>
-</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
-<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 9 (ACTIVITÉ 25 : transmissions).</p>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Hiérarchiser : l'urgent d'abord<small>Partie 4 / 5</small></h2></div>
+    <div class="prose"><p>Toutes les informations n'ont pas le même degré d'urgence. Une <strong>information urgente</strong> (chute, douleur intense, malaise) se transmet <strong>oralement et immédiatement à l'IDE</strong>, puis se trace par écrit. On n'attend jamais la relève pour l'urgent.</p></div>
+<div class="box box-warn"><h4>⚠ ⚠️ Points de vigilance</h4><p>« Je le dirai à la relève » pour une information urgente est une erreur : l'urgent se transmet <strong>sans délai</strong>, à l'oral, puis on trace.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 5">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>📖 Approfondissement (livre ORACLE)<small>Partie 5 / 5</small></h2></div>
+    <div class="box box-info"><h4></h4><p>Issu de votre livre intégral — Module 9 (ACTIVITÉ 25 : transmissions).</p>
 <p><strong>But :</strong> assurer la continuité et la sécurité des soins (l’info circule).</p>
 <p><strong>Règle juridique :</strong> « <strong>pas tracé = pas fait</strong> » (art. R4311-5 CSP).</p>
 <p>Transmettre des <strong>faits</strong>, sans jugement de valeur ; hiérarchiser (urgent d’abord).</p>
-<p><strong>🎓 À l’oral / piège :</strong> « Pas tracé = pas fait » : la phrase qui justifie l’importance des transmissions.</p></aside>
+<p><strong>🎓 À l’oral / piège :</strong> « Pas tracé = pas fait » : la phrase qui justifie l’importance des transmissions.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
-<div class="cas-item">
-<p class="cas-q"><p>Cas — Chute non transmise</p></p>
-<div class="cas-piste"><p><em>Chute « sans gravité » non transmise.</em></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Cas concrets — entraînement oral VAE<small>Appliquer ce que vous avez appris</small></h2></div>
+    
+    <div class="cas-item"><div class="cas-q"><p>Cas — Chute non transmise</p></div><div class="cas-piste"><p><em>Chute « sans gravité » non transmise.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Transmettre toute chute (orale + écrite).</li>
 <li>Décrire faits, surveillance.</li>
 <li>Informer l’IDE.</li>
 <li>Comprendre l’enjeu sécurité.</li>
-</ul></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p>Cas 2 — Transmettre une amélioration</p></p>
-<div class="cas-piste"><p><em>M. K. a remangé normalement.</em></p>
+</ul></div></div><div class="cas-item"><div class="cas-q"><p>Cas 2 — Transmettre une amélioration</p></div><div class="cas-piste"><p><em>M. K. a remangé normalement.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Transmettre le positif.</li>
 <li>Tracer ce qui a aidé.</li>
 <li>Permettre d’ajuster le projet.</li>
 <li>Valoriser.</li>
-</ul></div>
-</div>
+</ul></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Transmettre en priorité un changement, un signe d’alerte, une action et son effet.</div><div class="memo-item">Toute chute se transmet : oral immédiat à l’IDE, puis écrit avec les circonstances et la surveillance.</div><div class="memo-item">Douleur intense, malaise : IDE sans délai, jamais « je le dirai à la relève ».</div><div class="memo-item">Baisse d’appétit : quantifier et dater · refus de soin : noter le refus, le motif, l’attitude.</div><div class="memo-item">« Pénible », « exigeante » : décrire le fait observé à la place.</div><div class="memo-item">Transmettre aussi une amélioration, et ce qui l’a permise.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">Le soin est assuré en relais 24 h/24, jamais par une seule personne.</div><div class="pts-item">Une information non transmise est une information perdue ; une information floue peut conduire à une erreur.</div><div class="pts-item">Une bonne transmission est fiable, claire et confidentielle — à la bonne personne, au bon moment.</div><div class="pts-item">Le tri tient en une question : est-ce utile à l’équipe pour la suite des soins ?</div><div class="pts-item">L’urgent se dit à l’oral sans délai, puis se trace.</div><div class="pts-item">Pas tracé = pas fait.</div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>6 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>6 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B5_L01 — Pourquoi &amp; quoi transmettre</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B4_L08.html">← B4_L08</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B5_L02.html">B5_L02 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Une bonne transmission est avant tout :", "opts": ["Fiable, claire et confidentielle", "Orale uniquement", "Longue et détaillée sur tout", "Basée sur des impressions"], "ok": 0, "x": "Bonne transmission : fiable, claire, confidentielle.<strong> 🎓 À l’oral VAE :</strong> les 3 qualités."}, {"q": "Avant de transmettre une information, je me demande :", "opts": ["Est-ce rapide à dire ?", "Est-ce utile à l'équipe pour la suite des soins ?", "Est-ce que ça plaira au cadre ?", "Est-ce drôle à raconter ?"], "ok": 1, "x": "Avant de transmettre : est-ce utile à l’équipe pour la suite ?<strong> 🎓 À l’oral VAE :</strong> trier l’information."}, {"q": "Laquelle de ces informations NE se transmet PAS dans la relève ?", "opts": ["Une douleur exprimée", "Une chute", "Une anecdote sans lien avec le soin", "Un refus de soin"], "ok": 2, "x": "Une anecdote sans lien avec le soin ne se transmet pas.<strong> 🎓 À l’oral VAE :</strong> aller à l’essentiel."}, {"q": "Une information urgente (ex. chute) se transmet :", "opts": ["Seulement par écrit le lendemain", "À la prochaine relève", "Immédiatement à l'IDE, puis on trace", "À la famille d'abord"], "ok": 2, "x": "Info urgente (chute) : immédiatement à l’IDE, puis tracer.<strong> 🎓 À l’oral VAE :</strong> oral d’abord, écrit ensuite."}, {"q": "« Mme X est pénible » est :", "opts": ["Une bonne transmission", "Une donnée chiffrée", "Un jugement de valeur à reformuler en fait", "Une information urgente"], "ok": 2, "x": "« Mme X est pénible » = jugement à reformuler en fait.<strong> 🎓 À l’oral VAE :</strong> décrire le comportement."}, {"q": "On transmet en priorité :", "opts": ["Ce que l'on a le temps de dire", "Un changement, un signe d'alerte, une action et son effet", "Tout ce qui s'est dit dans la journée", "Uniquement les bonnes nouvelles"], "ok": 1, "x": "Transmettre en priorité : un changement, un signe d’alerte, une action et son effet.<strong> 🎓 À l’oral VAE :</strong> l’utile à la continuité."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Transmettre en priorité un changement, un signe d’alerte, une action et son effet.</li><li>Toute chute se transmet : oral immédiat à l’IDE, puis écrit avec les circonstances et la surveillance.</li><li>Douleur intense, malaise : IDE sans délai, jamais « je le dirai à la relève ».</li><li>Baisse d’appétit : quantifier et dater · refus de soin : noter le refus, le motif, l’attitude.</li><li>« Pénible », « exigeante » : décrire le fait observé à la place.</li><li>Transmettre aussi une amélioration, et ce qui l’a permise.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Le soin est assuré en relais 24 h/24, jamais par une seule personne.</li><li>Une information non transmise est une information perdue ; une information floue peut conduire à une erreur.</li><li>Une bonne transmission est fiable, claire et confidentielle — à la bonne personne, au bon moment.</li><li>Le tri tient en une question : est-ce utile à l’équipe pour la suite des soins ?</li><li>L’urgent se dit à l’oral sans délai, puis se trace.</li><li>Pas tracé = pas fait.</li></ul></section>
-  
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="a" data-id="q0">
-<p class="q"><strong>Q1.</strong> Une bonne transmission est avant tout :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Fiable, claire et confidentielle</li>
-<li data-cle="b" onclick="window._pickQ(this)">Orale uniquement</li>
-<li data-cle="c" onclick="window._pickQ(this)">Longue et détaillée sur tout</li>
-<li data-cle="d" onclick="window._pickQ(this)">Basée sur des impressions</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Bonne transmission : fiable, claire, confidentielle.<strong> 🎓 À l’oral VAE :</strong> les 3 qualités.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q1">
-<p class="q"><strong>Q2.</strong> Avant de transmettre une information, je me demande :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Est-ce rapide à dire ?</li>
-<li data-cle="b" onclick="window._pickQ(this)">Est-ce utile à l'équipe pour la suite des soins ?</li>
-<li data-cle="c" onclick="window._pickQ(this)">Est-ce que ça plaira au cadre ?</li>
-<li data-cle="d" onclick="window._pickQ(this)">Est-ce drôle à raconter ?</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Avant de transmettre : est-ce utile à l’équipe pour la suite ?<strong> 🎓 À l’oral VAE :</strong> trier l’information.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q2">
-<p class="q"><strong>Q3.</strong> Laquelle de ces informations NE se transmet PAS dans la relève ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Une douleur exprimée</li>
-<li data-cle="b" onclick="window._pickQ(this)">Une chute</li>
-<li data-cle="c" onclick="window._pickQ(this)">Une anecdote sans lien avec le soin</li>
-<li data-cle="d" onclick="window._pickQ(this)">Un refus de soin</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Une anecdote sans lien avec le soin ne se transmet pas.<strong> 🎓 À l’oral VAE :</strong> aller à l’essentiel.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q3">
-<p class="q"><strong>Q4.</strong> Une information urgente (ex. chute) se transmet :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Seulement par écrit le lendemain</li>
-<li data-cle="b" onclick="window._pickQ(this)">À la prochaine relève</li>
-<li data-cle="c" onclick="window._pickQ(this)">Immédiatement à l'IDE, puis on trace</li>
-<li data-cle="d" onclick="window._pickQ(this)">À la famille d'abord</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Info urgente (chute) : immédiatement à l’IDE, puis tracer.<strong> 🎓 À l’oral VAE :</strong> oral d’abord, écrit ensuite.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q4">
-<p class="q"><strong>Q5.</strong> « Mme X est pénible » est :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Une bonne transmission</li>
-<li data-cle="b" onclick="window._pickQ(this)">Une donnée chiffrée</li>
-<li data-cle="c" onclick="window._pickQ(this)">Un jugement de valeur à reformuler en fait</li>
-<li data-cle="d" onclick="window._pickQ(this)">Une information urgente</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>« Mme X est pénible » = jugement à reformuler en fait.<strong> 🎓 À l’oral VAE :</strong> décrire le comportement.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q5">
-<p class="q"><strong>Q6.</strong> On transmet en priorité :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Ce que l'on a le temps de dire</li>
-<li data-cle="b" onclick="window._pickQ(this)">Un changement, un signe d'alerte, une action et son effet</li>
-<li data-cle="c" onclick="window._pickQ(this)">Tout ce qui s'est dit dans la journée</li>
-<li data-cle="d" onclick="window._pickQ(this)">Uniquement les bonnes nouvelles</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Transmettre en priorité : un changement, un signe d’alerte, une action et son effet.<strong> 🎓 À l’oral VAE :</strong> l’utile à la continuité.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B4_L08.html" class="back">← B4_L08</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B5_L02.html">B5_L02 →</a></div>
-</div>
 </body></html>

@@ -1,141 +1,243 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bloc 1 · B1_L13 · Éthique & déontologie du soignant — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L13 · Éthique &amp; déontologie du soignant — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B1_L13 · Éthique &amp; déontologie du soignant</span>
+  <span class="mod" id="modLbl">Bloc 1</span>
+  <span class="counter" id="counter">1 / 16</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L13</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 13</span><span>⏱ 50 min</span><span>VAE DEAS</span></div>
-    <h1>Éthique &amp; déontologie du soignant</h1>
-    <div class="accroche"><p>— questionner le « bon » choix quand la situation est complexe (respect, humanité).…</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 1">
+  <div class="wrap">
+    <span class="kicker">Bloc 1 · Leçon 13</span>
+    <h1>Éthique &amp; déontologie du soignant<em>Vie quotidienne</em></h1>
+    <div class="sub"><p>— questionner le « bon » choix quand la situation est complexe (respect, humanité).…</p></div>
+    <div class="meta"><span>⏱ 50 min</span><span>📚 5 parties</span><span>🎯 12 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Distinguer ce qui relève de l’éthique, de la déontologie et du droit.</li><li>Appliquer les trois règles non négociables : respect, consentement, secret professionnel.</li><li>Tenir une conduite adaptée face à un refus, à une famille insistante, à un résident agressif, à une suspicion de maltraitance.</li><li>Situer les conditions strictes d’une contention ou d’une barrière de lit.</li><li>Conduire une réflexion éthique en équipe, étape par étape, devant un dilemme.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>Les 3 piliers : éthique, déontologie, droit</h3>
-<p>Trois dimensions encadrent la pratique soignante. Elles ne s'opposent pas : elles se superposent comme des cercles concentriques. Le <strong>droit</strong> est le socle obligatoire, la <strong>déontologie</strong> fixe les règles du métier, l'<strong>éthique</strong> questionne le sens de chaque acte.</p>
-<ul>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B1_L13</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Distinguer ce qui relève de l’éthique, de la déontologie et du droit.</p></div><div class="card"><div class="ico">📝</div><p>Appliquer les trois règles non négociables : respect, consentement, secret professionnel.</p></div><div class="card"><div class="ico">👤</div><p>Tenir une conduite adaptée face à un refus, à une famille insistante, à un résident agressif, à une suspicion de maltraitance.</p></div><div class="card"><div class="ico">🔑</div><p>Situer les conditions strictes d’une contention ou d’une barrière de lit.</p></div><div class="card"><div class="ico">🧭</div><p>Conduire une réflexion éthique en équipe, étape par étape, devant un dilemme.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>5 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 40 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Les 3 piliers : éthique, déontologie, droit<small>Partie 1 / 5</small></h2></div>
+    <div class="prose"><p>Trois dimensions encadrent la pratique soignante. Elles ne s'opposent pas : elles se superposent comme des cercles concentriques. Le <strong>droit</strong> est le socle obligatoire, la <strong>déontologie</strong> fixe les règles du métier, l'<strong>éthique</strong> questionne le sens de chaque acte.</p></div>
+<div class="prose"><ul>
 <li><strong>⚖️ Éthique = le sens</strong> — questionner le « bon » choix quand la situation est complexe (respect, humanité).</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>📜 Déontologie = les règles</strong> — protocoles, procédures, rôle propre de l'AS (sécurité, qualité).</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>⚖️ Droit = la loi</strong> — obligations légales : consentement, secret professionnel, droits de la personne (protection, obligation).</li>
-</ul>
-<aside class="encadre"><h4>🔗 La synthèse en une phrase</h4><p>Je questionne le sens (<strong>éthique</strong>) · j'applique les règles (<strong>déontologie</strong>) · je respecte la loi (<strong>droit</strong>).</p></aside>
-</section><section class="partie"><h3>Les 3 règles non négociables</h3>
-<ul>
+</ul></div>
+<div class="box box-info"><h4>🔗 La synthèse en une phrase</h4><p>Je questionne le sens (<strong>éthique</strong>) · j'applique les règles (<strong>déontologie</strong>) · je respecte la loi (<strong>droit</strong>).</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Les 3 règles non négociables<small>Partie 2 / 5</small></h2></div>
+    <div class="prose"><ul>
 <li><strong>1. Respect de la personne</strong> — toujours <strong>frapper, se présenter, expliquer</strong> avant d'agir ; protéger l'intimité (porte fermée, drap, pudeur) ; <strong>ne jamais infantiliser</strong> (pas de surnoms, vouvoiement sauf demande contraire).</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>2. Autonomie &amp; consentement</strong> — <strong>pas de soin « en force »</strong>. Consentement = information + accord. En cas de refus : respecter, réexpliquer, proposer des choix, transmettre à l'IDE (art. L.1111-4 CSP).</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>3. Secret professionnel</strong> — tout ce qui est vu, entendu, compris ou confié <strong>reste confidentiel</strong>. Interdit : discussions en couloir, ascenseur, salle de pause porte ouverte. Partage uniquement utile, en équipe soignante, au bon moment (<strong>secret partagé</strong>).</li>
-</ul>
-<aside class="vigilance"><h4>⚠ ⚠ Pourquoi « non négociables »</h4><p>Le non-respect de ces règles engage votre <strong>responsabilité</strong> et peut constituer de la <strong>maltraitance</strong> — même sans intention de nuire.</p></aside>
-</section><section class="partie"><h3>Situations typiques &amp; conduite à tenir</h3>
-<aside class="encadre"><h4>🔗 1. Refus de toilette</h4><p>Chercher la cause cachée (douleur ? infection ? globe vésical ? peur ? pudeur ?). Respecter → proposer plus tard → négocier (offrir des choix : horaire, savon, partie du corps) → si refus persistant : ne pas forcer, <strong>tracer et transmettre à l'IDE</strong>.</p></aside>
-<aside class="encadre"><h4></h4><p><strong>🔗 2. Famille insistante « dites-moi tout »</strong></p>
-<p>Ne pas donner de détails médicaux, de diagnostic ni d'avis personnel. Répondre dans son champ de compétence (confort, repas, activités), rassurer, <strong>orienter vers l'IDE ou le médecin</strong> : « je transmets votre demande à l'infirmière qui pourra vous répondre précisément ».</p></aside>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ 3. Résident confus / agressif — protocole en 4 étapes</strong></p>
-<p>1. <strong>Sécurité</strong> (se protéger et protéger le résident) · 2. <strong>Calme</strong> (voix posée, gestes lents, ne pas confronter) · 3. <strong>Renfort</strong> (appeler un collègue, alerter l'IDE) · 4. <strong>Cause</strong> (douleur, infection, médicament, peur).</p></aside>
-<aside class="vigilance"><h4>⚠ ⚠ 4. Suspicion de maltraitance</h4><p>Observer et relater des <strong>faits objectifs</strong> (hématomes, changement brutal de comportement), pas d'opinions. Dater, mentionner les témoins, alerter immédiatement l'IDE/la hiérarchie et remplir une <strong>fiche d'événement indésirable (FEI)</strong>. Numéro national : 3977.</p></aside>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ 5. Contentions &amp; barrières de lit</strong></p>
-<p><strong>Jamais « pour être tranquille »</strong> ni par défaut. Uniquement sur <strong>prescription médicale</strong>, selon protocole strict (HAS), décision tracée et <strong>réévaluation régulière</strong>. Mesure exceptionnelle, toujours justifiée et proportionnée.</p></aside>
-</section><section class="partie"><h3>Synthèse &amp; points clés</h3>
-<ul>
+</ul></div>
+<div class="box box-warn"><h4>⚠ ⚠ Pourquoi « non négociables »</h4><p>Le non-respect de ces règles engage votre <strong>responsabilité</strong> et peut constituer de la <strong>maltraitance</strong> — même sans intention de nuire.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Situations typiques &amp; conduite à tenir<small>Partie 3 / 5</small></h2></div>
+    <div class="box box-info"><h4>🔗 1. Refus de toilette</h4><p>Chercher la cause cachée (douleur ? infection ? globe vésical ? peur ? pudeur ?). Respecter → proposer plus tard → négocier (offrir des choix : horaire, savon, partie du corps) → si refus persistant : ne pas forcer, <strong>tracer et transmettre à l'IDE</strong>.</p></div>
+<div class="box box-info"><h4></h4><p><strong>🔗 2. Famille insistante « dites-moi tout »</strong></p>
+<p>Ne pas donner de détails médicaux, de diagnostic ni d'avis personnel. Répondre dans son champ de compétence (confort, repas, activités), rassurer, <strong>orienter vers l'IDE ou le médecin</strong> : « je transmets votre demande à l'infirmière qui pourra vous répondre précisément ».</p></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ 3. Résident confus / agressif — protocole en 4 étapes</strong></p>
+<p>1. <strong>Sécurité</strong> (se protéger et protéger le résident) · 2. <strong>Calme</strong> (voix posée, gestes lents, ne pas confronter) · 3. <strong>Renfort</strong> (appeler un collègue, alerter l'IDE) · 4. <strong>Cause</strong> (douleur, infection, médicament, peur).</p></div>
+<div class="box box-warn"><h4>⚠ ⚠ 4. Suspicion de maltraitance</h4><p>Observer et relater des <strong>faits objectifs</strong> (hématomes, changement brutal de comportement), pas d'opinions. Dater, mentionner les témoins, alerter immédiatement l'IDE/la hiérarchie et remplir une <strong>fiche d'événement indésirable (FEI)</strong>. Numéro national : 3977.</p></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ 5. Contentions &amp; barrières de lit</strong></p>
+<p><strong>Jamais « pour être tranquille »</strong> ni par défaut. Uniquement sur <strong>prescription médicale</strong>, selon protocole strict (HAS), décision tracée et <strong>réévaluation régulière</strong>. Mesure exceptionnelle, toujours justifiée et proportionnée.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Synthèse &amp; points clés<small>Partie 4 / 5</small></h2></div>
+    <div class="prose"><ul>
 <li><strong>3 piliers</strong> : éthique (le sens) + déontologie (les règles) + droit (la loi).</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>3 règles non négociables</strong> : respect de la personne, consentement (jamais de soin en force), secret professionnel.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>Situations clés</strong> : refus (respecter + tracer), famille insistante (orienter vers l'IDE), confusion/agressivité (sécurité → calme → renfort → cause), maltraitance (observer → alerter → FEI).</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>Traçabilité</strong> : « ce qui n'est pas écrit n'existe pas » — écrire protège le résident <em>et</em> le soignant.</li>
-</ul>
-<aside class="encadre"><h4>🔗 Le cœur du module</h4><p>« La bientraitance n'est pas seulement une intention, c'est une <strong>action réfléchie et adaptée à chaque instant</strong>. » L'éthique n'est pas un concept abstrait : c'est une pratique quotidienne concrète.</p></aside>
-<aside class="encadre"><h4></h4><p><strong>✦ Astuce ORACLE — vers votre Livret 2</strong></p>
-<p>Décrivez une situation où vous avez fait un choix difficile (refus, demande d'une famille, suspicion de maltraitance) : la règle ou la loi en jeu, votre réflexion éthique, votre posture et votre transmission. C'est exactement ce que le jury attend pour évaluer votre posture professionnelle.</p></aside>
-</section><section class="partie"><h3>Une méthode de réflexion éthique</h3>
-<p>Face à un <strong>dilemme</strong> (deux valeurs en tension, ex. autonomie vs sécurité), l’équipe suit une démarche :</p>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+<div class="box box-info"><h4>🔗 Le cœur du module</h4><p>« La bientraitance n'est pas seulement une intention, c'est une <strong>action réfléchie et adaptée à chaque instant</strong>. » L'éthique n'est pas un concept abstrait : c'est une pratique quotidienne concrète.</p></div>
+<div class="box box-info"><h4></h4><p><strong>✦ Astuce ORACLE — vers votre Livret 2</strong></p>
+<p>Décrivez une situation où vous avez fait un choix difficile (refus, demande d'une famille, suspicion de maltraitance) : la règle ou la loi en jeu, votre réflexion éthique, votre posture et votre transmission. C'est exactement ce que le jury attend pour évaluer votre posture professionnelle.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 5">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>Une méthode de réflexion éthique<small>Partie 5 / 5</small></h2></div>
+    <div class="prose"><p>Face à un <strong>dilemme</strong> (deux valeurs en tension, ex. autonomie vs sécurité), l’équipe suit une démarche :</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Étape</th>
 <th>Question</th>
 </tr></thead><tbody>
@@ -164,176 +266,136 @@ section li{margin-bottom:6px}
 <td>On réévalue la décision et on l’ajuste</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4></h4><p>L’éthique <strong>questionne le sens</strong> ; la déontologie <strong>impose les règles</strong>. La décision éthique se prend en équipe, jamais seul.</p></aside>
+<div class="box box-info"><h4></h4><p>L’éthique <strong>questionne le sens</strong> ; la déontologie <strong>impose les règles</strong>. La décision éthique se prend en équipe, jamais seul.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
-<div class="cas-item">
-<p class="cas-q"><p>Cas — Refus de toilette</p></p>
-<div class="cas-piste"><p><em>Mme G. refuse sa toilette.</em></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Cas concrets — entraînement oral VAE<small>Appliquer ce que vous avez appris</small></h2></div>
+    
+    <div class="cas-item"><div class="cas-q"><p>Cas — Refus de toilette</p></div><div class="cas-piste"><p><em>Mme G. refuse sa toilette.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Respecter le refus, ne pas forcer (dignité).</li>
 <li>Chercher la cause, reproposer plus tard.</li>
 <li>Proposer une alternative (toilette partielle).</li>
 <li>Tracer et alerter l’IDE si répétition.</li>
-</ul></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p>Cas 2 — Confidence d’un résident</p></p>
-<div class="cas-piste"><p><em>Un résident vous confie une information et demande le silence.</em></p>
+</ul></div></div><div class="cas-item"><div class="cas-q"><p>Cas 2 — Confidence d’un résident</p></div><div class="cas-piste"><p><em>Un résident vous confie une information et demande le silence.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Écouter ; expliquer le secret partagé en équipe.</li>
 <li>Ne transmettre que l’utile au soin.</li>
 <li>Si danger : alerter IDE/cadre.</li>
 <li>Tracer si pertinent.</li>
-</ul></div>
-</div>
+</ul></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Frapper, se présenter, expliquer avant d’agir ; porte fermée, drap, pudeur protégée.</div><div class="memo-item">Vouvoyer, pas de surnom : on ne parle pas à un adulte comme à un enfant.</div><div class="memo-item">Refus : chercher la cause cachée, reproposer, offrir des choix — puis tracer et transmettre à l’IDE.</div><div class="memo-item">Famille qui insiste : répondre sur le confort, les repas, les activités ; orienter vers l’IDE ou le médecin pour le médical.</div><div class="memo-item">Résident confus ou agressif : sécurité, calme, renfort, puis recherche de la cause.</div><div class="memo-item">Suspicion de maltraitance : des faits datés, des témoins, alerte immédiate, fiche d’événement indésirable — le 3977 existe.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">L’éthique questionne le sens, la déontologie fixe les règles du métier, le droit impose la loi.</div><div class="pts-item">Pas de soin en force : le consentement, c’est l’information plus l’accord.</div><div class="pts-item">Le secret couvre tout ce qui est vu, entendu, compris ou confié ; le secret partagé se limite à l’utile, en équipe soignante.</div><div class="pts-item">Une toilette expédiée sans prévenir est déjà de la maltraitance, même sans intention de nuire.</div><div class="pts-item">Contention et barrières : prescription médicale, protocole, traçabilité, réévaluation — jamais pour être tranquille.</div><div class="pts-item">Une décision éthique se prend en équipe, se trace et s’explique à la personne.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Réflexe terrain">
+  <div class="inner">
+    <div class="head"><div class="num">🧠</div><h2>Réflexe terrain<small>À poser dans votre pratique dès cette semaine</small></h2></div>
+    <div class="reflexe-wrap"><h3>🗣 Formulation VAE</h3><p>« Devant un dilemme entre autonomie et sécurité, je ne tranche pas seul : je rapporte les faits en équipe, nous identifions les valeurs en tension et nous prenons une décision collégiale, tracée et expliquée à la personne. »</p></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>12 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>12 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B1_L13 — Éthique &amp; déontologie du soignant</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B1_L12.html">← B1_L12</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B1_L14.html">B1_L14 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Un résident refuse sa glycémie capillaire. L'AS :", "opts": ["Respecte, réexplique et transmet à l'IDE", "La force pour sa santé", "L'ignore et passe au suivant", "Le punit"], "ok": 0, "x": "Refus de glycémie : respecter, réexpliquer, transmettre à l’IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS ne contraint pas."}, {"q": "La fille d'une résidente demande le diagnostic médical. L'AS :", "opts": ["Donne le diagnostic", "Donne son avis personnel", "Refuse sèchement de répondre", "Oriente vers l'IDE ou le médecin (secret professionnel)"], "ok": 3, "x": "Diagnostic demandé par la famille : orienter vers IDE/médecin (secret pro).<strong> 🎓 À l’oral VAE :</strong> l’AS ne donne pas le médical."}, {"q": "Discuter d'un résident en salle de pause, porte ouverte :", "opts": ["Recommandé", "Interdit : risque de rupture du secret professionnel", "Sans importance", "Acceptable entre collègues"], "ok": 1, "x": "Discuter d’un résident porte ouverte = risque de rupture du secret.<strong> 🎓 À l’oral VAE :</strong> la discrétion est un devoir."}, {"q": "Une toilette expédiée sans prévenir « parce qu'on est en retard » :", "opts": ["N'est pas un problème", "Est obligatoire", "Est un gain de temps acceptable", "Est une forme de maltraitance (ordinaire / institutionnelle)"], "ok": 3, "x": "Toilette expédiée sans prévenir = maltraitance ordinaire/institutionnelle.<strong> 🎓 À l’oral VAE :</strong> la cadence n’excuse rien."}, {"q": "La différence entre éthique et déontologie :", "opts": ["L'éthique est une loi", "Ce sont des synonymes", "L'éthique questionne le sens ; la déontologie impose les règles du métier", "La déontologie est facultative"], "ok": 2, "x": "Éthique = questionne le sens ; déontologie = impose les règles du métier.<strong> 🎓 À l’oral VAE :</strong> distinguez les deux notions."}, {"q": "Poser des barrières de lit parce que le résident risque de tomber :", "opts": ["Toujours interdit en toute circonstance", "Nécessite une prescription médicale et une réévaluation (HAS)", "Au choix de l'AS", "Autorisé sans prescription"], "ok": 1, "x": "Barrières de lit : prescription médicale + réévaluation (HAS).<strong> 🎓 À l’oral VAE :</strong> c’est une contention."}, {"q": "Face à un résident confus et agressif, les 4 étapes sont :", "opts": ["Forcer, isoler, attacher, ignorer", "Sécurité → calme → renfort → recherche de la cause", "Crier, contenir, partir, oublier", "Médicament, contention, silence, départ"], "ok": 1, "x": "Résident confus/agressif : sécurité → calme → renfort → cause.<strong> 🎓 À l’oral VAE :</strong> cherchez toujours la cause."}, {"q": "Le « secret partagé » signifie :", "opts": ["Partager seulement l'information utile, avec l'équipe soignante impliquée", "Partager librement avec la famille", "Tout dire à tout le monde", "Ne jamais rien transmettre"], "ok": 0, "x": "Secret partagé : partager seulement l’info utile, avec l’équipe impliquée.<strong> 🎓 À l’oral VAE :</strong> ni plus, ni à n’importe qui."}, {"q": "« Ce qui n'est pas écrit n'existe pas » signifie :", "opts": ["Que la traçabilité écrite est une preuve : non noté = considéré non survenu", "Que l'oral suffit", "Qu'il ne faut rien écrire", "Que seul le médecin écrit"], "ok": 0, "x": "« Non écrit = non survenu » : la traçabilité est une preuve.<strong> 🎓 À l’oral VAE :</strong> tracez systématiquement."}, {"q": "La phrase clé du module est :", "opts": ["« Il faut aller vite »", "« Le soignant a toujours raison »", "« La bientraitance est une action réfléchie et adaptée à chaque instant »", "« Le secret professionnel n'existe pas »"], "ok": 2, "x": "« La bientraitance est une action réfléchie et adaptée à chaque instant ».<strong> 🎓 À l’oral VAE :</strong> la phrase-clé à retenir."}, {"q": "Un dilemme éthique fréquent oppose…", "opts": ["L’autonomie et la sécurité", "Le budget et le temps", "Le matin et le soir", "Deux soignants"], "ok": 0, "x": "Ex. laisser marcher (autonomie) vs risque de chute (sécurité).<strong> 🎓 À l’oral VAE :</strong> la réflexion éthique se fait en équipe."}, {"q": "Une décision éthique se prend…", "opts": ["De façon collégiale, tracée et expliquée", "Au hasard", "Par la famille seule", "Par l’AS seul"], "ok": 0, "x": "Collégialité + traçabilité + information de la personne.<strong> 🎓 À l’oral VAE :</strong> montrez la démarche, pas une opinion."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Frapper, se présenter, expliquer avant d’agir ; porte fermée, drap, pudeur protégée.</li><li>Vouvoyer, pas de surnom : on ne parle pas à un adulte comme à un enfant.</li><li>Refus : chercher la cause cachée, reproposer, offrir des choix — puis tracer et transmettre à l’IDE.</li><li>Famille qui insiste : répondre sur le confort, les repas, les activités ; orienter vers l’IDE ou le médecin pour le médical.</li><li>Résident confus ou agressif : sécurité, calme, renfort, puis recherche de la cause.</li><li>Suspicion de maltraitance : des faits datés, des témoins, alerte immédiate, fiche d’événement indésirable — le 3977 existe.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>L’éthique questionne le sens, la déontologie fixe les règles du métier, le droit impose la loi.</li><li>Pas de soin en force : le consentement, c’est l’information plus l’accord.</li><li>Le secret couvre tout ce qui est vu, entendu, compris ou confié ; le secret partagé se limite à l’utile, en équipe soignante.</li><li>Une toilette expédiée sans prévenir est déjà de la maltraitance, même sans intention de nuire.</li><li>Contention et barrières : prescription médicale, protocole, traçabilité, réévaluation — jamais pour être tranquille.</li><li>Une décision éthique se prend en équipe, se trace et s’explique à la personne.</li></ul></section>
-  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« Devant un dilemme entre autonomie et sécurité, je ne tranche pas seul : je rapporte les faits en équipe, nous identifions les valeurs en tension et nous prenons une décision collégiale, tracée et expliquée à la personne. »</p></section>
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="a" data-id="q0">
-<p class="q"><strong>Q1.</strong> Un résident refuse sa glycémie capillaire. L'AS :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Respecte, réexplique et transmet à l'IDE</li>
-<li data-cle="b" onclick="window._pickQ(this)">La force pour sa santé</li>
-<li data-cle="c" onclick="window._pickQ(this)">L'ignore et passe au suivant</li>
-<li data-cle="d" onclick="window._pickQ(this)">Le punit</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Refus de glycémie : respecter, réexpliquer, transmettre à l’IDE.<strong> 🎓 À l’oral VAE :</strong> l’AS ne contraint pas.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q1">
-<p class="q"><strong>Q2.</strong> La fille d'une résidente demande le diagnostic médical. L'AS :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Donne le diagnostic</li>
-<li data-cle="b" onclick="window._pickQ(this)">Donne son avis personnel</li>
-<li data-cle="c" onclick="window._pickQ(this)">Refuse sèchement de répondre</li>
-<li data-cle="d" onclick="window._pickQ(this)">Oriente vers l'IDE ou le médecin (secret professionnel)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Diagnostic demandé par la famille : orienter vers IDE/médecin (secret pro).<strong> 🎓 À l’oral VAE :</strong> l’AS ne donne pas le médical.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q2">
-<p class="q"><strong>Q3.</strong> Discuter d'un résident en salle de pause, porte ouverte :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Recommandé</li>
-<li data-cle="b" onclick="window._pickQ(this)">Interdit : risque de rupture du secret professionnel</li>
-<li data-cle="c" onclick="window._pickQ(this)">Sans importance</li>
-<li data-cle="d" onclick="window._pickQ(this)">Acceptable entre collègues</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Discuter d’un résident porte ouverte = risque de rupture du secret.<strong> 🎓 À l’oral VAE :</strong> la discrétion est un devoir.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q3">
-<p class="q"><strong>Q4.</strong> Une toilette expédiée sans prévenir « parce qu'on est en retard » :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">N'est pas un problème</li>
-<li data-cle="b" onclick="window._pickQ(this)">Est obligatoire</li>
-<li data-cle="c" onclick="window._pickQ(this)">Est un gain de temps acceptable</li>
-<li data-cle="d" onclick="window._pickQ(this)">Est une forme de maltraitance (ordinaire / institutionnelle)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Toilette expédiée sans prévenir = maltraitance ordinaire/institutionnelle.<strong> 🎓 À l’oral VAE :</strong> la cadence n’excuse rien.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q4">
-<p class="q"><strong>Q5.</strong> La différence entre éthique et déontologie :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">L'éthique est une loi</li>
-<li data-cle="b" onclick="window._pickQ(this)">Ce sont des synonymes</li>
-<li data-cle="c" onclick="window._pickQ(this)">L'éthique questionne le sens ; la déontologie impose les règles du métier</li>
-<li data-cle="d" onclick="window._pickQ(this)">La déontologie est facultative</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Éthique = questionne le sens ; déontologie = impose les règles du métier.<strong> 🎓 À l’oral VAE :</strong> distinguez les deux notions.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q5">
-<p class="q"><strong>Q6.</strong> Poser des barrières de lit parce que le résident risque de tomber :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Toujours interdit en toute circonstance</li>
-<li data-cle="b" onclick="window._pickQ(this)">Nécessite une prescription médicale et une réévaluation (HAS)</li>
-<li data-cle="c" onclick="window._pickQ(this)">Au choix de l'AS</li>
-<li data-cle="d" onclick="window._pickQ(this)">Autorisé sans prescription</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Barrières de lit : prescription médicale + réévaluation (HAS).<strong> 🎓 À l’oral VAE :</strong> c’est une contention.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q6">
-<p class="q"><strong>Q7.</strong> Face à un résident confus et agressif, les 4 étapes sont :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Forcer, isoler, attacher, ignorer</li>
-<li data-cle="b" onclick="window._pickQ(this)">Sécurité → calme → renfort → recherche de la cause</li>
-<li data-cle="c" onclick="window._pickQ(this)">Crier, contenir, partir, oublier</li>
-<li data-cle="d" onclick="window._pickQ(this)">Médicament, contention, silence, départ</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Résident confus/agressif : sécurité → calme → renfort → cause.<strong> 🎓 À l’oral VAE :</strong> cherchez toujours la cause.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q7">
-<p class="q"><strong>Q8.</strong> Le « secret partagé » signifie :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Partager seulement l'information utile, avec l'équipe soignante impliquée</li>
-<li data-cle="b" onclick="window._pickQ(this)">Partager librement avec la famille</li>
-<li data-cle="c" onclick="window._pickQ(this)">Tout dire à tout le monde</li>
-<li data-cle="d" onclick="window._pickQ(this)">Ne jamais rien transmettre</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Secret partagé : partager seulement l’info utile, avec l’équipe impliquée.<strong> 🎓 À l’oral VAE :</strong> ni plus, ni à n’importe qui.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q8">
-<p class="q"><strong>Q9.</strong> « Ce qui n'est pas écrit n'existe pas » signifie :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Que la traçabilité écrite est une preuve : non noté = considéré non survenu</li>
-<li data-cle="b" onclick="window._pickQ(this)">Que l'oral suffit</li>
-<li data-cle="c" onclick="window._pickQ(this)">Qu'il ne faut rien écrire</li>
-<li data-cle="d" onclick="window._pickQ(this)">Que seul le médecin écrit</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>« Non écrit = non survenu » : la traçabilité est une preuve.<strong> 🎓 À l’oral VAE :</strong> tracez systématiquement.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q9">
-<p class="q"><strong>Q10.</strong> La phrase clé du module est :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">« Il faut aller vite »</li>
-<li data-cle="b" onclick="window._pickQ(this)">« Le soignant a toujours raison »</li>
-<li data-cle="c" onclick="window._pickQ(this)">« La bientraitance est une action réfléchie et adaptée à chaque instant »</li>
-<li data-cle="d" onclick="window._pickQ(this)">« Le secret professionnel n'existe pas »</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>« La bientraitance est une action réfléchie et adaptée à chaque instant ».<strong> 🎓 À l’oral VAE :</strong> la phrase-clé à retenir.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q10">
-<p class="q"><strong>Q11.</strong> Un dilemme éthique fréquent oppose…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">L’autonomie et la sécurité</li>
-<li data-cle="b" onclick="window._pickQ(this)">Le budget et le temps</li>
-<li data-cle="c" onclick="window._pickQ(this)">Le matin et le soir</li>
-<li data-cle="d" onclick="window._pickQ(this)">Deux soignants</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Ex. laisser marcher (autonomie) vs risque de chute (sécurité).<strong> 🎓 À l’oral VAE :</strong> la réflexion éthique se fait en équipe.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q11">
-<p class="q"><strong>Q12.</strong> Une décision éthique se prend…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">De façon collégiale, tracée et expliquée</li>
-<li data-cle="b" onclick="window._pickQ(this)">Au hasard</li>
-<li data-cle="c" onclick="window._pickQ(this)">Par la famille seule</li>
-<li data-cle="d" onclick="window._pickQ(this)">Par l’AS seul</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Collégialité + traçabilité + information de la personne.<strong> 🎓 À l’oral VAE :</strong> montrez la démarche, pas une opinion.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B1_L12.html" class="back">← B1_L12</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L14.html">B1_L14 →</a></div>
-</div>
 </body></html>

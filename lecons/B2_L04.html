@@ -1,108 +1,198 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bloc 2 · B2_L04 · Fausse route & troubles de la déglutition — ORACLE VAE AS</title>
+<title>Bloc 2 · B2_L04 · Fausse route &amp; troubles de la déglutition — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B2_L04 · Fausse route &amp; troubles de la déglutition</span>
+  <span class="mod" id="modLbl">Bloc 2</span>
+  <span class="counter" id="counter">1 / 13</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 2</strong> › B2_L04</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 2</span><span>Leçon 4</span><span>⏱ 35 min</span><span>VAE DEAS</span></div>
-    <h1>Fausse route &amp; troubles de la déglutition</h1>
-    <div class="accroche"><p>La fausse route est le passage d'aliment ou de boisson dans les voies respiratoires. Le risque augmente avec les <strong>troubles de la déglutition</strong>, une mauvaise installation ou la précipitation.</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 2">
+  <div class="wrap">
+    <span class="kicker">Bloc 2 · Leçon 4</span>
+    <h1>Fausse route &amp; troubles de la déglutition<em>État clinique</em></h1>
+    <div class="sub"><p>La fausse route est le passage d'aliment ou de boisson dans les voies respiratoires. Le risque augmente avec les <strong>troubles de la déglutition</strong>, une mauvaise installation ou la précipitation.</p></div>
+    <div class="meta"><span>⏱ 35 min</span><span>📚 2 parties</span><span>🎯 6 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Expliquer ce qu’est une fausse route et ce qui en augmente le risque.</li><li>Installer une personne pour un repas sécurisé : assise, tronc droit, tête légèrement fléchie.</li><li>Respecter strictement les textures prescrites, mixé comme eau gélifiée.</li><li>Repérer les signes d’un trouble de la déglutition pendant le repas.</li><li>Conduire les gestes d’urgence devant une obstruction, partielle ou totale.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>Comprendre et prévenir la fausse route</h3>
-<p>La fausse route est le passage d'aliment ou de boisson dans les voies respiratoires. Le risque augmente avec les <strong>troubles de la déglutition</strong>, une mauvaise installation ou la précipitation.</p>
-<aside class="encadre"><h4></h4><p><strong>🩺 prévenir la fausse route (rôle AS)</strong></p>
-<p>Installer la personne <strong>assise</strong>, tête légèrement fléchie ; respecter le <strong>rythme</strong> ; adapter la <strong>texture si prescrit</strong> (mixé, eau gélifiée) ; rester attentif pendant tout le repas ; ne <strong>jamais</strong> faire manger une personne mal positionnée ou somnolente.</p></aside>
-<aside class="vigilance"><h4>⚠ 🚨 en cas de fausse route</h4><p>Arrêter immédiatement, sécuriser, évaluer la gêne respiratoire, <strong>donner l'alerte sans délai</strong>. Obstruction totale : 5 claques dans le dos + 5 compressions abdominales (Heimlich), selon la formation AFGSU.</p></aside>
-</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
-<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 06 : aide au repas).</p>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B2_L04</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Expliquer ce qu’est une fausse route et ce qui en augmente le risque.</p></div><div class="card"><div class="ico">📝</div><p>Installer une personne pour un repas sécurisé : assise, tronc droit, tête légèrement fléchie.</p></div><div class="card"><div class="ico">👤</div><p>Respecter strictement les textures prescrites, mixé comme eau gélifiée.</p></div><div class="card"><div class="ico">🔑</div><p>Repérer les signes d’un trouble de la déglutition pendant le repas.</p></div><div class="card"><div class="ico">🧭</div><p>Conduire les gestes d’urgence devant une obstruction, partielle ou totale.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>2 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 25 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Comprendre et prévenir la fausse route<small>Partie 1 / 2</small></h2></div>
+    <div class="prose"><p>La fausse route est le passage d'aliment ou de boisson dans les voies respiratoires. Le risque augmente avec les <strong>troubles de la déglutition</strong>, une mauvaise installation ou la précipitation.</p></div>
+<div class="box box-info"><h4></h4><p><strong>🩺 prévenir la fausse route (rôle AS)</strong></p>
+<p>Installer la personne <strong>assise</strong>, tête légèrement fléchie ; respecter le <strong>rythme</strong> ; adapter la <strong>texture si prescrit</strong> (mixé, eau gélifiée) ; rester attentif pendant tout le repas ; ne <strong>jamais</strong> faire manger une personne mal positionnée ou somnolente.</p></div>
+<div class="box box-warn"><h4>⚠ 🚨 en cas de fausse route</h4><p>Arrêter immédiatement, sécuriser, évaluer la gêne respiratoire, <strong>donner l'alerte sans délai</strong>. Obstruction totale : 5 claques dans le dos + 5 compressions abdominales (Heimlich), selon la formation AFGSU.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>📖 Approfondissement (livre ORACLE)<small>Partie 2 / 2</small></h2></div>
+    <div class="box box-info"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 06 : aide au repas).</p>
 <p>Installation : <strong>tronc droit, tête légèrement fléchie</strong> ; <strong>jamais boire tête en arrière</strong>.</p>
 <p>Vérifier la <strong>texture</strong> (coupé/haché/mixé/gélifiée).</p>
 <p><strong>Fausse route = urgence vitale</strong> : arrêter, encourager la toux ; obstruction totale → 5 claques dos + 5 Heimlich, alerter IDE/15.</p>
-<p><strong>🎓 À l’oral / piège :</strong> La position tête fléchie est LE réflexe anti-fausse route attendu.</p></aside>
+<p><strong>🎓 À l’oral / piège :</strong> La position tête fléchie est LE réflexe anti-fausse route attendu.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Cas cliniques — entraînement oral VAE</h2>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · repas adapté &amp; sécurité (M. D., troubles déglutition)</strong></p></p>
-<div class="cas-piste"><p><em>M. D., troubles de la déglutition connus, a une texture mixée et de l'eau gélifiée prescrites. Le service est pressé par le temps.</em></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Cas cliniques — entraînement oral VAE<small>Appliquer ce que vous avez appris</small></h2></div>
+    
+    <div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · repas adapté &amp; sécurité (M. D., troubles déglutition)</strong></p></div><div class="cas-piste"><p><em>M. D., troubles de la déglutition connus, a une texture mixée et de l'eau gélifiée prescrites. Le service est pressé par le temps.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Comment installez-vous et alimentez-vous ?</li>
@@ -114,112 +204,128 @@ section li{margin-bottom:6px}
 <p><strong>Installation.</strong> Position <strong>assise</strong>, tête légèrement fléchie, à son rythme ; respecter strictement la <strong>texture mixée et l'eau gélifiée prescrites</strong>.</p>
 <p><strong>Surveillance.</strong> Signes de fausse route, quantités prises, fatigue, déglutition.</p>
 <p><strong>Transmission.</strong> Quantités, tolérance, tout épisode de fausse route, à l'IDE.</p>
-<p><strong>Pièges.</strong> Céder à la pression du temps, donner une texture non conforme, alimenter une personne mal positionnée ou somnolente.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p>Cas — Mme T., voix « mouillée » au repas</p></p>
-<div class="cas-piste"><p><em>Pendant le déjeuner, Mme T. tousse et sa voix devient « mouillée ».</em></p>
+<p><strong>Pièges.</strong> Céder à la pression du temps, donner une texture non conforme, alimenter une personne mal positionnée ou somnolente.</p></div></div><div class="cas-item"><div class="cas-q"><p>Cas — Mme T., voix « mouillée » au repas</p></div><div class="cas-piste"><p><em>Pendant le déjeuner, Mme T. tousse et sa voix devient « mouillée ».</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Suspecter un <strong>trouble de la déglutition</strong> / fausse route.</li>
 <li>Arrêter le repas, installer assise buste droit, menton fléchi.</li>
 <li>Ne pas faire boire dans le doute ; alerter l’IDE.</li>
 <li>Tracer ; vérifier les textures prescrites.</li>
-</ul></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p>Cas 2 — Fausse route franche au repas</p></p>
-<div class="cas-piste"><p><em>M. B. tousse violemment, devient rouge, mais respire encore.</em></p>
+</ul></div></div><div class="cas-item"><div class="cas-q"><p>Cas 2 — Fausse route franche au repas</p></div><div class="cas-piste"><p><em>M. B. tousse violemment, devient rouge, mais respire encore.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Encourager la <strong>toux</strong> (obstruction partielle), rester près de lui.</li>
 <li>Si obstruction totale : 5 claques dos + 5 compressions (Heimlich).</li>
 <li>Alerter, surveiller, tracer.</li>
-</ul></div>
-</div>
+</ul></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Ne jamais faire manger une personne mal positionnée ou somnolente.</div><div class="memo-item">Rester présent tout le repas, respecter le rythme, ne pas céder à la pression du temps.</div><div class="memo-item">Toux et rougeur mais respiration conservée : encourager la toux et rester près de la personne.</div><div class="memo-item">Obstruction totale : 5 claques dans le dos, puis 5 compressions abdominales.</div><div class="memo-item">Dans le doute, ne pas faire boire — arrêter le repas et alerter l’IDE.</div><div class="memo-item">Transmettre les quantités prises, la tolérance et tout épisode de fausse route.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">La fausse route est le passage d’aliment ou de boisson dans les voies respiratoires.</div><div class="pts-item">Assis, tête légèrement fléchie : jamais boire tête en arrière.</div><div class="pts-item">Les textures adaptées sont des prescriptions, pas des options.</div><div class="pts-item">Toux et voix « mouillée » au repas signent un trouble de la déglutition.</div><div class="pts-item">Les liquides fins sont la texture la plus à risque.</div><div class="pts-item">Une fausse route est une urgence vitale.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Réflexe terrain">
+  <div class="inner">
+    <div class="head"><div class="num">🧠</div><h2>Réflexe terrain<small>À poser dans votre pratique dès cette semaine</small></h2></div>
+    <div class="reflexe-wrap"><h3>🗣 Formulation VAE</h3><p>« Je préviens la fausse route par l’installation (assis, menton fléchi) et le respect des textures prescrites. Devant une voix mouillée et une toux aux repas, je ne fais pas boire dans le doute, j’installe et j’alerte. »</p></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>6 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>6 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B2_L04 — Fausse route &amp; troubles de la déglutition</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B2_L03.html">← B2_L03</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B2_L05.html">B2_L05 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Pour prévenir une fausse route, la personne doit être…", "opts": ["Couchée sur le côté droit", "Assise, tête légèrement fléchie", "Allongée à plat, tête en arrière", "Debout, en train de marcher"], "ok": 1, "x": "Prévention fausse route : assis, tête légèrement fléchie, texture adaptée si prescrite.<strong> 🎓 À l’oral VAE :</strong> l’installation d’abord."}, {"q": "L'eau gélifiée et la texture mixée sont…", "opts": ["Des choix de l'AS", "Réservées à la nuit", "Facultatives", "Des prescriptions à respecter strictement"], "ok": 3, "x": "Eau gélifiée / mixé = prescriptions à respecter strictement.<strong> 🎓 À l’oral VAE :</strong> jamais d’écart de texture."}, {"q": "En cas d'obstruction totale des voies aériennes, on applique…", "opts": ["Un verre d'eau", "Rien, on attend", "Une position allongée", "5 claques dans le dos + 5 compressions abdominales (Heimlich)"], "ok": 3, "x": "Obstruction totale : 5 claques dans le dos + 5 compressions (Heimlich).<strong> 🎓 À l’oral VAE :</strong> gestes d’urgence à connaître."}, {"q": "Une voix « mouillée » et une toux aux repas évoquent…", "opts": ["Un rhume banal", "Un trouble de la déglutition à signaler", "Une bonne hydratation", "Un problème de dentier uniquement"], "ok": 1, "x": "Voix « mouillée » + toux aux repas = trouble de déglutition à signaler.<strong> 🎓 À l’oral VAE :</strong> vigilance fausse route."}, {"q": "Devant une fausse route avec toux efficace et respiration conservée (obstruction partielle), l’AS…", "opts": ["Réalise immédiatement les 5 claques dans le dos", "La fait boire pour dégager", "L'encourage à tousser et reste auprès d'elle, sans manœuvre de désobstruction", "La laisse seule le temps d'aller chercher de l'aide"], "ok": 2, "x": "Obstruction partielle (toux efficace) : encourager à tousser, rester présent, pas de manœuvre de désobstruction.<strong> 🎓 À l’oral VAE :</strong> distinguez obstruction partielle et totale."}, {"q": "La texture la PLUS à risque de fausse route est…", "opts": ["Le liquide fin (eau pure)", "La compote", "Le mixé lisse", "Le haché"], "ok": 0, "x": "Les liquides fins sont les plus à risque → eau gélifiée si prescrit.<strong> 🎓 À l’oral VAE :</strong> reliez texture et sécurité."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Ne jamais faire manger une personne mal positionnée ou somnolente.</li><li>Rester présent tout le repas, respecter le rythme, ne pas céder à la pression du temps.</li><li>Toux et rougeur mais respiration conservée : encourager la toux et rester près de la personne.</li><li>Obstruction totale : 5 claques dans le dos, puis 5 compressions abdominales.</li><li>Dans le doute, ne pas faire boire — arrêter le repas et alerter l’IDE.</li><li>Transmettre les quantités prises, la tolérance et tout épisode de fausse route.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>La fausse route est le passage d’aliment ou de boisson dans les voies respiratoires.</li><li>Assis, tête légèrement fléchie : jamais boire tête en arrière.</li><li>Les textures adaptées sont des prescriptions, pas des options.</li><li>Toux et voix « mouillée » au repas signent un trouble de la déglutition.</li><li>Les liquides fins sont la texture la plus à risque.</li><li>Une fausse route est une urgence vitale.</li></ul></section>
-  <section class="reflexe"><h2>🧠 Réflexe terrain</h2><h4>🗣 Formulation VAE</h4><p>« Je préviens la fausse route par l’installation (assis, menton fléchi) et le respect des textures prescrites. Devant une voix mouillée et une toux aux repas, je ne fais pas boire dans le doute, j’installe et j’alerte. »</p></section>
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="b" data-id="q0">
-<p class="q"><strong>Q1.</strong> Pour prévenir une fausse route, la personne doit être…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Couchée sur le côté droit</li>
-<li data-cle="b" onclick="window._pickQ(this)">Assise, tête légèrement fléchie</li>
-<li data-cle="c" onclick="window._pickQ(this)">Allongée à plat, tête en arrière</li>
-<li data-cle="d" onclick="window._pickQ(this)">Debout, en train de marcher</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Prévention fausse route : assis, tête légèrement fléchie, texture adaptée si prescrite.<strong> 🎓 À l’oral VAE :</strong> l’installation d’abord.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q1">
-<p class="q"><strong>Q2.</strong> L'eau gélifiée et la texture mixée sont…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Des choix de l'AS</li>
-<li data-cle="b" onclick="window._pickQ(this)">Réservées à la nuit</li>
-<li data-cle="c" onclick="window._pickQ(this)">Facultatives</li>
-<li data-cle="d" onclick="window._pickQ(this)">Des prescriptions à respecter strictement</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Eau gélifiée / mixé = prescriptions à respecter strictement.<strong> 🎓 À l’oral VAE :</strong> jamais d’écart de texture.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q2">
-<p class="q"><strong>Q3.</strong> En cas d'obstruction totale des voies aériennes, on applique…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Un verre d'eau</li>
-<li data-cle="b" onclick="window._pickQ(this)">Rien, on attend</li>
-<li data-cle="c" onclick="window._pickQ(this)">Une position allongée</li>
-<li data-cle="d" onclick="window._pickQ(this)">5 claques dans le dos + 5 compressions abdominales (Heimlich)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Obstruction totale : 5 claques dans le dos + 5 compressions (Heimlich).<strong> 🎓 À l’oral VAE :</strong> gestes d’urgence à connaître.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q3">
-<p class="q"><strong>Q4.</strong> Une voix « mouillée » et une toux aux repas évoquent…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Un rhume banal</li>
-<li data-cle="b" onclick="window._pickQ(this)">Un trouble de la déglutition à signaler</li>
-<li data-cle="c" onclick="window._pickQ(this)">Une bonne hydratation</li>
-<li data-cle="d" onclick="window._pickQ(this)">Un problème de dentier uniquement</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Voix « mouillée » + toux aux repas = trouble de déglutition à signaler.<strong> 🎓 À l’oral VAE :</strong> vigilance fausse route.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q4">
-<p class="q"><strong>Q5.</strong> Devant une fausse route avec toux efficace et respiration conservée (obstruction partielle), l’AS…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Réalise immédiatement les 5 claques dans le dos</li>
-<li data-cle="b" onclick="window._pickQ(this)">La fait boire pour dégager</li>
-<li data-cle="c" onclick="window._pickQ(this)">L'encourage à tousser et reste auprès d'elle, sans manœuvre de désobstruction</li>
-<li data-cle="d" onclick="window._pickQ(this)">La laisse seule le temps d'aller chercher de l'aide</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Obstruction partielle (toux efficace) : encourager à tousser, rester présent, pas de manœuvre de désobstruction.<strong> 🎓 À l’oral VAE :</strong> distinguez obstruction partielle et totale.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q5">
-<p class="q"><strong>Q6.</strong> La texture la PLUS à risque de fausse route est…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le liquide fin (eau pure)</li>
-<li data-cle="b" onclick="window._pickQ(this)">La compote</li>
-<li data-cle="c" onclick="window._pickQ(this)">Le mixé lisse</li>
-<li data-cle="d" onclick="window._pickQ(this)">Le haché</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Les liquides fins sont les plus à risque → eau gélifiée si prescrit.<strong> 🎓 À l’oral VAE :</strong> reliez texture et sécurité.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B2_L03.html" class="back">← B2_L03</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B2_L05.html">B2_L05 →</a></div>
-</div>
 </body></html>

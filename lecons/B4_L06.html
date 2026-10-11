@@ -2,97 +2,187 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bloc 4 · B4_L06 · Entretien matériel — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B4_L06 · Entretien matériel</span>
+  <span class="mod" id="modLbl">Bloc 4</span>
+  <span class="counter" id="counter">1 / 14</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 4</strong> › B4_L06</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 4</span><span>Leçon 6</span><span>⏱ 30 min</span><span>VAE DEAS</span></div>
-    <h1>Entretien matériel</h1>
-    <div class="accroche"><p>Chiffonnettes, bandeaux, supports : le matériel d'entretien doit lui-même être propre. Un matériel d'entretien sale <strong>contamine au lieu de nettoyer</strong>.</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 4">
+  <div class="wrap">
+    <span class="kicker">Bloc 4 · Leçon 6</span>
+    <h1>Entretien matériel<em>Environnement</em></h1>
+    <div class="sub"><p>Chiffonnettes, bandeaux, supports : le matériel d'entretien doit lui-même être propre. Un matériel d'entretien sale <strong>contamine au lieu de nettoyer</strong>.</p></div>
+    <div class="meta"><span>⏱ 30 min</span><span>📚 4 parties</span><span>🎯 5 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Entretenir le matériel d’entretien lui-même, selon le protocole et le code couleur.</li><li>Nettoyer et désinfecter une aide technique partagée entre deux utilisations.</li><li>Vérifier l’état d’un matériel avant de l’utiliser.</li><li>Signaler à temps un écart qui pourrait devenir un risque infectieux.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>Le matériel d&#x27;entretien lui-même</h3>
-<p>Chiffonnettes, bandeaux, supports : le matériel d'entretien doit lui-même être propre. Un matériel d'entretien sale <strong>contamine au lieu de nettoyer</strong>.</p>
-<aside class="encadre"><h4>🩺 Code couleur &amp; changement régulier</h4><p>Le matériel s'utilise selon le protocole, suit souvent un <strong>code couleur</strong> par zone (sanitaires vs surfaces), se <strong>change régulièrement</strong> et s'entretient lui-même.</p></aside>
-<aside class="encadre"><h4></h4><p><strong>📘 Référence livre ORACLE — le matériel d'entretien</strong></p>
-<p>« Le matériel s'utilise selon le protocole, se change régulièrement et s'entretient lui-même : un matériel d'entretien sale contamine au lieu de nettoyer. »</p></aside>
-</section><section class="partie"><h3>Entretien du matériel de soin &amp; aides techniques</h3>
-<p>Lits, adaptables, fauteuils, lève-personnes, déambulateurs, matériel partagé : tout ce qui touche plusieurs personnes doit être <strong>nettoyé et désinfecté entre deux utilisations</strong>, selon le protocole.</p>
-<div class="tableau"><table><thead><tr>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B4_L06</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Entretenir le matériel d’entretien lui-même, selon le protocole et le code couleur.</p></div><div class="card"><div class="ico">📝</div><p>Nettoyer et désinfecter une aide technique partagée entre deux utilisations.</p></div><div class="card"><div class="ico">👤</div><p>Vérifier l’état d’un matériel avant de l’utiliser.</p></div><div class="card"><div class="ico">🔑</div><p>Signaler à temps un écart qui pourrait devenir un risque infectieux.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>4 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 20 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Le matériel d'entretien lui-même<small>Partie 1 / 4</small></h2></div>
+    <div class="prose"><p>Chiffonnettes, bandeaux, supports : le matériel d'entretien doit lui-même être propre. Un matériel d'entretien sale <strong>contamine au lieu de nettoyer</strong>.</p></div>
+<div class="box box-info"><h4>🩺 Code couleur &amp; changement régulier</h4><p>Le matériel s'utilise selon le protocole, suit souvent un <strong>code couleur</strong> par zone (sanitaires vs surfaces), se <strong>change régulièrement</strong> et s'entretient lui-même.</p></div>
+<div class="box box-info"><h4></h4><p><strong>📘 Référence livre ORACLE — le matériel d'entretien</strong></p>
+<p>« Le matériel s'utilise selon le protocole, se change régulièrement et s'entretient lui-même : un matériel d'entretien sale contamine au lieu de nettoyer. »</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Entretien du matériel de soin &amp; aides techniques<small>Partie 2 / 4</small></h2></div>
+    <div class="prose"><p>Lits, adaptables, fauteuils, lève-personnes, déambulateurs, matériel partagé : tout ce qui touche plusieurs personnes doit être <strong>nettoyé et désinfecté entre deux utilisations</strong>, selon le protocole.</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Aide technique</th>
 <th>Entre deux usages</th>
 </tr></thead><tbody>
@@ -113,116 +203,148 @@ section li{margin-bottom:6px}
 <td>Nettoyer poignées et structure</td>
 </tr>
 </tbody></table></div>
-<aside class="vigilance"><h4>⚠ ⚠️ Vigilance</h4><p>Vérifier l'état du matériel (sangles, surfaces, roues) avant usage. Ne jamais réutiliser sans désinfection « parce qu'on est pressé ».</p></aside>
-</section><section class="partie"><h3>Signalement &amp; limites</h3>
-<aside class="encadre"><h4></h4><p><strong>📣 Ce qu'il faut transmettre / signaler</strong></p>
-<p>Matériel défectueux, usé ou impossible à désinfecter ; rupture de stock de produits ; toute situation à risque infectieux. Signalés à temps, ces écarts sont corrigés avant de devenir un risque.</p></aside>
-<aside class="encadre"><h4>🎓 Pourquoi le signalement est essentiel</h4><p>Un matériel non désinfectable, une rupture de produit, un contenant DASRI plein : signalés à temps, ces écarts sont corrigés <strong>avant</strong> de devenir un risque infectieux. Le réflexe de signalement est évalué en IFAS.</p></aside>
-</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
-<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 8 (ACTIVITÉ 24).</p>
+<div class="box box-warn"><h4>⚠ ⚠️ Vigilance</h4><p>Vérifier l'état du matériel (sangles, surfaces, roues) avant usage. Ne jamais réutiliser sans désinfection « parce qu'on est pressé ».</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Signalement &amp; limites<small>Partie 3 / 4</small></h2></div>
+    <div class="box box-info"><h4></h4><p><strong>📣 Ce qu'il faut transmettre / signaler</strong></p>
+<p>Matériel défectueux, usé ou impossible à désinfecter ; rupture de stock de produits ; toute situation à risque infectieux. Signalés à temps, ces écarts sont corrigés avant de devenir un risque.</p></div>
+<div class="box box-info"><h4>🎓 Pourquoi le signalement est essentiel</h4><p>Un matériel non désinfectable, une rupture de produit, un contenant DASRI plein : signalés à temps, ces écarts sont corrigés <strong>avant</strong> de devenir un risque infectieux. Le réflexe de signalement est évalué en IFAS.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>📖 Approfondissement (livre ORACLE)<small>Partie 4 / 4</small></h2></div>
+    <div class="box box-info"><h4></h4><p>Issu de votre livre intégral — Module 8 (ACTIVITÉ 24).</p>
 <p>Nettoyer puis désinfecter selon le protocole ; respecter dosage et <strong>temps de contact</strong>.</p>
 <p><strong>Matériel dédié à la chambre</strong> en cas d’isolement.</p>
 <p>Lire les FDS, ne jamais mélanger les produits, ranger au sec.</p>
-<p><strong>🎓 À l’oral / piège :</strong> Le temps de contact du désinfectant n’est pas optionnel : un produit n’agit pas instantanément.</p></aside>
+<p><strong>🎓 À l’oral / piège :</strong> Le temps de contact du désinfectant n’est pas optionnel : un produit n’agit pas instantanément.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Cas concrets — entraînement oral VAE</h2>
-<div class="cas-item">
-<p class="cas-q"><p>Cas — Fauteuil partagé</p></p>
-<div class="cas-piste"><p><em>Fauteuil utilisé par plusieurs résidents.</em></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Cas concrets — entraînement oral VAE<small>Appliquer ce que vous avez appris</small></h2></div>
+    
+    <div class="cas-item"><div class="cas-q"><p>Cas — Fauteuil partagé</p></div><div class="cas-piste"><p><em>Fauteuil utilisé par plusieurs résidents.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Désinfecter contacts entre usagers.</li>
 <li>Vérifier freins/repose-pieds.</li>
 <li>Produits adaptés (codes couleur).</li>
 <li>Signaler défaillance, tracer.</li>
-</ul></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p>Cas 2 — Lève-personne suspect</p></p>
-<div class="cas-piste"><p><em>Bruit anormal du lève-personne.</em></p>
+</ul></div></div><div class="cas-item"><div class="cas-q"><p>Cas 2 — Lève-personne suspect</p></div><div class="cas-piste"><p><em>Bruit anormal du lève-personne.</em></p>
 <p><strong>Conduite étape par étape :</strong></p>
 <ul>
 <li>Ne pas l’utiliser en cas de doute.</li>
 <li>Vérifier sangles/batterie, signaler.</li>
 <li>Matériel conforme de remplacement.</li>
 <li>Tracer la maintenance.</li>
-</ul></div>
-</div>
+</ul></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Avant usage : vérifier sangles, surfaces, roues, freins, repose-pieds.</div><div class="memo-item">En cas de doute sur un lève-personne, ne pas l’utiliser ; prendre un matériel conforme et signaler.</div><div class="memo-item">Fauteuil : accoudoirs et assise ; déambulateur : poignées et structure ; lit et adaptable : surfaces de contact.</div><div class="memo-item">Jamais de réutilisation sans désinfection sous prétexte d’être pressé.</div><div class="memo-item">Lire les fiches de données de sécurité, ne jamais mélanger les produits, ranger au sec.</div><div class="memo-item">Signaler matériel défectueux ou non désinfectable, rupture de produit, contenant DASRI plein — puis tracer.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">Un matériel d’entretien sale contamine au lieu de nettoyer.</div><div class="pts-item">Le code couleur sépare les zones : sanitaires d’un côté, surfaces de l’autre.</div><div class="pts-item">Tout ce qui sert à plusieurs personnes se nettoie et se désinfecte entre deux usages.</div><div class="pts-item">On nettoie d’abord, on désinfecte ensuite : dosage et temps de contact ne sont pas optionnels.</div><div class="pts-item">En chambre d’isolement, le matériel est dédié à la chambre.</div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>5 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>5 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B4_L06 — Entretien matériel</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B4_L05.html">← B4_L05</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B4_L07.html">B4_L07 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Un matériel d'entretien sale :", "opts": ["Se range tel quel", "N'a aucun effet", "Nettoie quand même bien", "Contamine au lieu de nettoyer"], "ok": 3, "x": "Matériel d’entretien sale : contamine au lieu de nettoyer.<strong> 🎓 À l’oral VAE :</strong> l’entretenir."}, {"q": "Les aides techniques partagées (fauteuil, lève-personne) sont :", "opts": ["Nettoyées et désinfectées entre deux utilisations", "Nettoyées une fois par mois", "Réservées à une seule personne à vie", "Jamais nettoyées"], "ok": 0, "x": "Aides techniques partagées : nettoyées/désinfectées entre usages.<strong> 🎓 À l’oral VAE :</strong> fauteuil, lève-personne."}, {"q": "Avant d'utiliser un lève-personne, l'AS :", "opts": ["L'utilise sans regarder", "Vérifie l'état (sangles, surfaces) et désinfecte", "Le repeint", "Le démonte"], "ok": 1, "x": "Avant un lève-personne : vérifier l’état (sangles) et désinfecter.<strong> 🎓 À l’oral VAE :</strong> sécurité."}, {"q": "Le code couleur du matériel d'entretien permet de :", "opts": ["Indiquer le prix", "Décorer", "Séparer les zones (sanitaires / surfaces)", "Rien"], "ok": 2, "x": "Code couleur : séparer les zones (sanitaires/surfaces).<strong> 🎓 À l’oral VAE :</strong> éviter la contamination."}, {"q": "Face à un matériel impossible à désinfecter, le réflexe attendu est :", "opts": ["Le jeter à la poubelle ordinaire", "L'utiliser vite", "L'ignorer", "Le signaler à l'équipe"], "ok": 3, "x": "Matériel impossible à désinfecter : le signaler à l’équipe.<strong> 🎓 À l’oral VAE :</strong> réflexe attendu."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Avant usage : vérifier sangles, surfaces, roues, freins, repose-pieds.</li><li>En cas de doute sur un lève-personne, ne pas l’utiliser ; prendre un matériel conforme et signaler.</li><li>Fauteuil : accoudoirs et assise ; déambulateur : poignées et structure ; lit et adaptable : surfaces de contact.</li><li>Jamais de réutilisation sans désinfection sous prétexte d’être pressé.</li><li>Lire les fiches de données de sécurité, ne jamais mélanger les produits, ranger au sec.</li><li>Signaler matériel défectueux ou non désinfectable, rupture de produit, contenant DASRI plein — puis tracer.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Un matériel d’entretien sale contamine au lieu de nettoyer.</li><li>Le code couleur sépare les zones : sanitaires d’un côté, surfaces de l’autre.</li><li>Tout ce qui sert à plusieurs personnes se nettoie et se désinfecte entre deux usages.</li><li>On nettoie d’abord, on désinfecte ensuite : dosage et temps de contact ne sont pas optionnels.</li><li>En chambre d’isolement, le matériel est dédié à la chambre.</li></ul></section>
-  
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="d" data-id="q0">
-<p class="q"><strong>Q1.</strong> Un matériel d'entretien sale :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Se range tel quel</li>
-<li data-cle="b" onclick="window._pickQ(this)">N'a aucun effet</li>
-<li data-cle="c" onclick="window._pickQ(this)">Nettoie quand même bien</li>
-<li data-cle="d" onclick="window._pickQ(this)">Contamine au lieu de nettoyer</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Matériel d’entretien sale : contamine au lieu de nettoyer.<strong> 🎓 À l’oral VAE :</strong> l’entretenir.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q1">
-<p class="q"><strong>Q2.</strong> Les aides techniques partagées (fauteuil, lève-personne) sont :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Nettoyées et désinfectées entre deux utilisations</li>
-<li data-cle="b" onclick="window._pickQ(this)">Nettoyées une fois par mois</li>
-<li data-cle="c" onclick="window._pickQ(this)">Réservées à une seule personne à vie</li>
-<li data-cle="d" onclick="window._pickQ(this)">Jamais nettoyées</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Aides techniques partagées : nettoyées/désinfectées entre usages.<strong> 🎓 À l’oral VAE :</strong> fauteuil, lève-personne.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q2">
-<p class="q"><strong>Q3.</strong> Avant d'utiliser un lève-personne, l'AS :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">L'utilise sans regarder</li>
-<li data-cle="b" onclick="window._pickQ(this)">Vérifie l'état (sangles, surfaces) et désinfecte</li>
-<li data-cle="c" onclick="window._pickQ(this)">Le repeint</li>
-<li data-cle="d" onclick="window._pickQ(this)">Le démonte</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Avant un lève-personne : vérifier l’état (sangles) et désinfecter.<strong> 🎓 À l’oral VAE :</strong> sécurité.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q3">
-<p class="q"><strong>Q4.</strong> Le code couleur du matériel d'entretien permet de :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Indiquer le prix</li>
-<li data-cle="b" onclick="window._pickQ(this)">Décorer</li>
-<li data-cle="c" onclick="window._pickQ(this)">Séparer les zones (sanitaires / surfaces)</li>
-<li data-cle="d" onclick="window._pickQ(this)">Rien</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Code couleur : séparer les zones (sanitaires/surfaces).<strong> 🎓 À l’oral VAE :</strong> éviter la contamination.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q4">
-<p class="q"><strong>Q5.</strong> Face à un matériel impossible à désinfecter, le réflexe attendu est :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le jeter à la poubelle ordinaire</li>
-<li data-cle="b" onclick="window._pickQ(this)">L'utiliser vite</li>
-<li data-cle="c" onclick="window._pickQ(this)">L'ignorer</li>
-<li data-cle="d" onclick="window._pickQ(this)">Le signaler à l'équipe</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Matériel impossible à désinfecter : le signaler à l’équipe.<strong> 🎓 À l’oral VAE :</strong> réflexe attendu.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B4_L05.html" class="back">← B4_L05</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B4_L07.html">B4_L07 →</a></div>
-</div>
 </body></html>

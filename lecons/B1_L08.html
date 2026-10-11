@@ -1,171 +1,273 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bloc 1 · B1_L08 · Alimentation & hydratation de la personne âgée — ORACLE VAE AS</title>
+<title>Bloc 1 · B1_L08 · Alimentation &amp; hydratation de la personne âgée — ORACLE VAE AS</title>
 <style>
-:root{--teal:#0d7377;--teal-d:#064e51;--gold:#f5b700;--pink:#f06292;--cream:#fdf6e9;--ink:#1a2332;--ink-s:#44546b;--bg:#f8fafb;--card:#fff;--line:#e8e3d4;--ok:#2a9d4e;--ko:#c43232}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);line-height:1.65;background:var(--bg)}
-.bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--teal-d),var(--teal));color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.bar a{color:var(--gold);text-decoration:none;font-weight:600;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:24px 20px 80px}
-.breadcrumb{font-size:13px;color:var(--ink-s);margin-bottom:14px}
-.breadcrumb a{color:var(--teal);text-decoration:none;font-weight:600}
-.hero{background:linear-gradient(135deg,#fff,var(--cream));border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(13,115,119,.08);border-left:6px solid var(--teal)}
-.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.hero .meta span{background:var(--teal);color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.hero .meta .bloc{background:var(--gold);color:var(--ink)}
-.hero h1{font-size:clamp(22px,4vw,32px);color:var(--teal-d);margin-bottom:12px;line-height:1.25;font-weight:900}
-.hero .accroche{font-size:16px;color:var(--ink-s)}
-.hero .accroche p{margin-bottom:8px}
-section{background:var(--card);border-radius:14px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(13,115,119,.06)}
-section h2{color:var(--teal-d);font-size:21px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--cream);font-weight:800}
-section h3{color:var(--teal);font-size:17px;margin:16px 0 10px;font-weight:700}
-section h4{color:var(--teal-d);font-size:15px;margin:10px 0 6px;font-weight:700}
-section p{margin-bottom:10px}
-section ul,section ol{margin:8px 0 12px 24px}
-section li{margin-bottom:6px}
-.objectifs{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--teal)}
-.partie{background:linear-gradient(180deg,#fff,#fcfbf7);border-left:4px solid var(--teal);padding-left:22px;padding-right:22px;border-radius:0 12px 12px 0;margin-bottom:16px}
-.encadre{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0}
-.vigilance{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0}
-.vigilance h4{color:#9a4b00}
-.exemples .ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
-.tableau{overflow-x:auto;margin:12px 0}
-.tableau table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.tableau th,.tableau td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
-.tableau th{background:var(--teal);color:#fff;font-weight:700;letter-spacing:.3px}
-.tableau tbody tr:nth-child(even){background:#fbf8f0}
-.memo{background:linear-gradient(135deg,var(--cream),#fff);border:1px dashed var(--teal)}
-.memo ul{list-style:none;margin-left:0}
-.memo li{padding:8px 14px 8px 30px;position:relative;background:#fff;border-radius:8px;margin-bottom:6px;border-left:3px solid var(--teal)}
-.memo li::before{content:"💡";position:absolute;left:8px;top:8px}
-.points-cles ul{list-style:none;margin-left:0}
-.points-cles ul li{padding:10px 14px 10px 36px;position:relative;background:linear-gradient(135deg,#fff,var(--cream));border-left:4px solid var(--gold);border-radius:8px;margin-bottom:8px}
-.points-cles ul li::before{content:"★";position:absolute;left:12px;color:var(--gold);font-weight:900;font-size:18px}
-.cas{background:linear-gradient(135deg,#fff,var(--cream));border-left:5px solid var(--pink)}
-.cas-item{background:#fff;border-radius:10px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.cas-q{font-weight:700;color:var(--teal-d);margin-bottom:8px}
-.cas-piste{color:var(--ink-s)}
-.reflexe{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff}
-.reflexe h2{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
-.reflexe p,.reflexe li{color:#fff}
-.quiz-wrap h3{margin-top:14px}
-.qblock{background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--gold)}
-.qblock .q{color:var(--teal-d);margin-bottom:8px}
-.qblock .opts{margin-left:20px;list-style:lower-alpha}
-.qblock .opts li{padding:8px 12px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.qblock .opts li:hover{background:#fff}
-.qblock .opts li.ok{background:#dcf5e4;color:#0e5e2a;font-weight:700;border-color:var(--ok)}
-.qblock .opts li.ko{background:#fde0e0;color:#7a1818;text-decoration:line-through;border-color:var(--ko)}
-.qblock .expl{font-size:14px;color:var(--ink-s);margin-top:10px;padding:10px 14px;background:#fff;border-radius:8px;border-left:3px solid var(--ok)}
-.qblock .expl.hidden{display:none}
-.footer-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap}
-.footer-nav a{flex:1;min-width:120px;background:#fff;color:var(--teal-d);padding:14px 18px;border-radius:12px;text-decoration:none;box-shadow:0 2px 8px rgba(13,115,119,.1);font-weight:700;text-align:center;transition:all .18s;font-size:14px}
-.footer-nav a:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
-.footer-nav .back{background:var(--gold);color:var(--ink)}
-.footer-nav .mid{background:var(--cream);color:var(--ink)}
-@media(max-width:640px){.container{padding:18px 12px 60px}section{padding:18px}.hero{padding:20px}.footer-nav{flex-direction:column}}
+:root{
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-gold:#f5b700;
+  --oracle-cream:#fdf6e9;--oracle-pink:#f06292;
+  --ink:#1a2332;--ink-soft:#44546b;--bg:#f8fafb;
+  --radius:14px;--shadow-sm:0 2px 10px rgba(13,115,119,.08);--shadow-md:0 8px 28px rgba(13,115,119,.14)
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.deck{position:relative;height:100vh;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;height:52px;display:flex;align-items:center;gap:14px;padding:0 20px;background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:13px}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.bar .brand img{height:22px;filter:brightness(1.3)}
+.bar .ref{flex:1;color:#fde68a;font-weight:600}
+.bar .mod{background:var(--oracle-gold);color:var(--ink);padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.bar .counter{font-weight:800;color:#fff}
+.progress{position:fixed;top:52px;left:0;right:0;z-index:59;height:3px;background:rgba(13,115,119,.1)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-teal));transition:width .3s}
+.dots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:58;display:flex;gap:5px;background:rgba(255,255,255,.9);padding:6px 10px;border-radius:999px;box-shadow:var(--shadow-sm);flex-wrap:wrap;max-width:min(90vw,480px);justify-content:center}
+.dots span{width:9px;height:9px;border-radius:50%;background:rgba(13,115,119,.25);cursor:pointer;transition:background .15s}
+.dots span:hover{background:var(--oracle-teal)}
+.dots span.on{background:var(--oracle-gold)}
+.ctrl{position:fixed;bottom:14px;z-index:58;display:flex;gap:6px}
+.ctrl.left{left:14px}
+.ctrl.right{right:14px}
+.ctrl button{background:#fff;color:var(--oracle-teal-dark);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-sm);font-size:18px;font-weight:900;transition:all .15s}
+.ctrl button:hover:not(:disabled){background:var(--oracle-teal);color:#fff;transform:translateY(-2px)}
+.ctrl button:disabled{opacity:.35;cursor:not-allowed}
+.slide{position:absolute;inset:52px 0 0 0;opacity:0;visibility:hidden;transition:opacity .25s;overflow-y:auto;padding:30px 20px 70px}
+.slide.on{opacity:1;visibility:visible}
+.slide .inner{max-width:1000px;margin:0 auto}
+.slide.hero{background:linear-gradient(135deg,var(--oracle-cream),#fff);display:flex;align-items:center;justify-content:center;padding:52px 24px 70px}
+.slide.hero .wrap{max-width:900px;text-align:center}
+.slide.hero .kicker{display:inline-block;background:var(--oracle-gold);color:var(--ink);padding:5px 16px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px}
+.slide.hero h1{font-size:clamp(28px,5vw,46px);color:var(--oracle-teal-dark);font-weight:900;line-height:1.15;margin-bottom:12px}
+.slide.hero h1 em{display:block;font-style:normal;font-size:.55em;color:var(--ink-soft);margin-top:10px;font-weight:600}
+.slide.hero .sub{font-size:17px;color:var(--ink-soft);margin-bottom:22px;max-width:720px;margin-left:auto;margin-right:auto}
+.slide.hero .meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;font-size:13px}
+.slide.hero .meta span{background:#fff;padding:7px 16px;border-radius:999px;box-shadow:var(--shadow-sm);color:var(--oracle-teal-dark);font-weight:700}
+.slide.hero .cta{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:15px 32px;border:none;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);transition:all .18s}
+.slide.hero .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(13,115,119,.3)}
+.slide.hero .cta svg{width:18px;height:18px}
+.slide.hero .signature{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:12px;color:var(--ink-soft);font-style:italic}
+.slide.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px}
+.slide.chapter .wrap{max-width:860px;text-align:center}
+.slide.chapter .big{font-size:clamp(70px,12vw,130px);font-weight:900;line-height:1;color:var(--oracle-gold);margin-bottom:14px;position:relative}
+.slide.chapter .big em{display:block;font-style:normal;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;margin-top:12px}
+.slide.chapter h1{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px}
+.slide.chapter p{font-size:16px;color:#fde68a;line-height:1.6;max-width:720px;margin:0 auto 16px}
+.slide.chapter .dura{display:inline-block;background:rgba(245,183,0,.2);border:1px solid var(--oracle-gold);padding:8px 20px;border-radius:999px;font-weight:700;color:var(--oracle-gold)}
+.slide.std .inner{background:transparent;padding:0}
+.slide.std .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.slide.std .head .num{background:var(--oracle-teal);color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;flex-shrink:0}
+.slide.std .head h2{font-size:clamp(20px,2.6vw,28px);color:var(--oracle-teal-dark);font-weight:800;line-height:1.2}
+.slide.std .head h2 small{display:block;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:4px}
+.prose p{margin-bottom:10px;font-size:15.5px}
+.prose ul{margin:8px 0 12px 22px}
+.prose li{margin-bottom:5px}
+.prose strong{color:var(--oracle-teal-dark)}
+.tbl{overflow-x:auto;margin:14px 0;border-radius:12px;box-shadow:var(--shadow-sm);background:#fff}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--oracle-teal);color:#fff;text-align:left;padding:11px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid #e8e3d4;vertical-align:top}
+.tbl tbody tr:nth-child(even){background:#fbf8f0}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0}
+.box h4{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.box.box-info{background:linear-gradient(135deg,#fff,var(--oracle-cream));border:1px dashed var(--oracle-teal)}
+.box.box-info h4{color:var(--oracle-teal-dark)}
+.box.box-warn{background:linear-gradient(135deg,#fff5e6,#ffe8c6);border-left:5px solid #d97706}
+.box.box-warn h4{color:#9a4b00}
+.box p{font-size:14.5px;margin-bottom:6px}
+.box ul{margin:6px 0 4px 20px;font-size:14.5px}
+.exs{margin-top:12px}
+.ex{background:linear-gradient(135deg,#eef7fb,#dfeef9);border-left:4px solid #2a7fb0;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.ex p{margin-bottom:5px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.obj .card{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.obj .card .ico{font-size:28px;margin-bottom:8px}
+.obj .card h3{font-size:15px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:6px}
+.obj .card p{font-size:13.5px;color:var(--ink-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.memo-item,.pts-item{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm)}
+.memo-item{border-left:4px solid var(--oracle-teal)}
+.memo-item::before{content:"💡 ";margin-right:4px}
+.pts-item{border-left:4px solid var(--oracle-gold)}
+.pts-item::before{content:"★ ";color:var(--oracle-gold);font-weight:900;margin-right:4px}
+.memo-item,.pts-item{font-size:14.5px}
+.cas-item{background:#fff;border-left:5px solid var(--oracle-pink);border-radius:0 12px 12px 0;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.cas-item .cas-q{font-weight:800;color:var(--oracle-teal-dark);margin-bottom:8px;font-size:15.5px}
+.cas-item .cas-piste{color:var(--ink-soft);font-size:14.5px}
+.reflexe-wrap{background:linear-gradient(135deg,#2a9d8f,#1f6f5f);color:#fff;border-radius:14px;padding:20px 24px;margin-top:14px}
+.reflexe-wrap h3{color:#fff;font-size:16px;margin:10px 0 6px}
+.reflexe-wrap ul{margin:6px 0 10px 20px}
+.reflexe-wrap p{font-size:15px;margin-bottom:6px}
+.reflexe-wrap strong{color:#fde68a}
+.quiz-wrap{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:24px;max-width:720px;margin:0 auto}
+.quiz-wrap .count{font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.quiz-wrap .question{font-size:17px;color:var(--oracle-teal-dark);font-weight:700;margin-bottom:18px;line-height:1.4}
+.quiz-wrap .answers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-wrap .answers button{background:#fff;border:2px solid #e8e3d4;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;transition:all .15s}
+.quiz-wrap .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.quiz-wrap .answers button.disabled{cursor:default}
+.quiz-wrap .answers button.ok{background:#dcf5e4;border-color:#2a9d4e;color:#0e5e2a;font-weight:700}
+.quiz-wrap .answers button.ko{background:#fde0e0;border-color:#c43232;color:#7a1818;text-decoration:line-through}
+.quiz-wrap .answers .letter{background:var(--oracle-teal);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.quiz-wrap .answers button.ok .letter{background:#2a9d4e}
+.quiz-wrap .answers button.ko .letter{background:#c43232}
+.quiz-wrap .expl{display:none;background:var(--oracle-cream);border-left:4px solid var(--oracle-teal);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-soft);margin-bottom:12px}
+.quiz-wrap .expl.on{display:block}
+.quiz-wrap .expl strong{color:var(--oracle-teal-dark)}
+.quiz-wrap .nextq{display:none;background:var(--oracle-teal);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-weight:700;cursor:pointer;font-size:14px}
+.quiz-wrap .nextq.on{display:inline-block}
+.quiz-wrap .nextq:hover{background:var(--oracle-teal-dark)}
+.quiz-wrap .score{text-align:center;padding:16px 0}
+.quiz-wrap .score .big{font-size:60px;font-weight:900;color:var(--oracle-teal-dark);line-height:1}
+.quiz-wrap .score .big em{font-style:normal;font-size:.4em;color:var(--ink-soft)}
+.quiz-wrap .score .label{display:inline-block;padding:5px 16px;border-radius:999px;font-weight:800;margin:10px 0;font-size:13px}
+.quiz-wrap .score .label.ok{background:#dcf5e4;color:#0e5e2a}
+.quiz-wrap .score .label.mid{background:#fff5e6;color:#9a4b00}
+.quiz-wrap .score .label.ko{background:#fde0e0;color:#7a1818}
+.quiz-wrap .score .msg{color:var(--ink-soft);margin-bottom:14px}
+.quiz-wrap .again{background:var(--oracle-gold);color:var(--ink);border:none;padding:10px 22px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+.slide.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;display:flex;align-items:center;justify-content:center;padding:52px 24px;text-align:center}
+.slide.end .wrap{max-width:700px}
+.slide.end h1{font-size:clamp(28px,5vw,44px);margin-bottom:14px}
+.slide.end p{font-size:16px;color:#fde68a;margin-bottom:22px}
+.slide.end .nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.slide.end .nav a{background:#fff;color:var(--oracle-teal-dark);padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:var(--shadow-md)}
+.slide.end .nav a.gold{background:var(--oracle-gold);color:var(--ink)}
+@media(max-width:640px){.slide{padding:20px 14px 70px}.slide.std .head{flex-direction:column;gap:8px}}
 </style>
 </head><body>
+<div class="deck" id="deck">
 <div class="bar">
-  <div class="brand"><span>🫀</span> ORACLE VAE AS</div>
-  <a href="../index-lecons.html">📘 Retour catalogue</a>
+  <div class="brand"><img src="../assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">B1_L08 · Alimentation &amp; hydratation de la personne âgée</span>
+  <span class="mod" id="modLbl">Bloc 1</span>
+  <span class="counter" id="counter">1 / 19</span>
 </div>
-<div class="container">
-  <div class="breadcrumb"><a href="../index-lecons.html">Catalogue</a> › <strong>Bloc 1</strong> › B1_L08</div>
-  <div class="hero">
-    <div class="meta"><span class="bloc">Bloc 1</span><span>Leçon 8</span><span>⏱ 55 min</span><span>VAE DEAS</span></div>
-    <h1>Alimentation &amp; hydratation de la personne âgée</h1>
-    <div class="accroche"><p>— péristaltisme ralenti → sensation d'aliment « coincé », boire pendant le repas.…</p></div>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+<div class="ctrl left"><button id="prevB" onclick="go(current-1)">◀</button></div>
+<div class="ctrl right"><button id="nextB" onclick="go(current+1)">▶</button></div>
+
+<section class="slide hero on" data-mod="Bloc 1">
+  <div class="wrap">
+    <span class="kicker">Bloc 1 · Leçon 8</span>
+    <h1>Alimentation &amp; hydratation de la personne âgée<em>Vie quotidienne</em></h1>
+    <div class="sub"><p>— péristaltisme ralenti → sensation d'aliment « coincé », boire pendant le repas.…</p></div>
+    <div class="meta"><span>⏱ 55 min</span><span>📚 9 parties</span><span>🎯 14 questions</span><span>🏆 VAE DEAS</span></div>
+    <button class="cta" onclick="go(1)">Commencer la leçon <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-
-  <section class="objectifs"><h2>🎯 Ce que vous saurez faire</h2>
-    <ul><li>Relier les changements digestifs et sensoriels liés à l’âge à des adaptations concrètes du repas.</li><li>Prévenir la déshydratation en proposant à boire sans attendre la demande.</li><li>Accompagner le repas avant, pendant et après, jusqu’à la traçabilité des quantités.</li><li>Repérer les signes d’un trouble de la déglutition et installer la personne en position de sécurité.</li><li>Situer les textures adaptées, du liquide fin au mixé lisse, et respecter la prescription.</li><li>Accueillir un refus alimentaire en cherchant sa cause et son sens, dans le cadre de la loi Léonetti.</li></ul>
-  </section>
-
-  <section><h2>📚 Contenu</h2>
-    <section class="partie"><h3>Changements physiologiques liés à l&#x27;âge</h3>
-<p><strong>Changements digestifs :</strong></p>
-<ul>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · B1_L08</div>
+</section>
+<section class="slide std" data-mod="Objectifs">
+  <div class="inner">
+    <div class="head"><div class="num">🎯</div><h2>Objectifs<small>Ce que vous saurez à l'issue de la leçon</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">🎯</div><p>Relier les changements digestifs et sensoriels liés à l’âge à des adaptations concrètes du repas.</p></div><div class="card"><div class="ico">📝</div><p>Prévenir la déshydratation en proposant à boire sans attendre la demande.</p></div><div class="card"><div class="ico">👤</div><p>Accompagner le repas avant, pendant et après, jusqu’à la traçabilité des quantités.</p></div><div class="card"><div class="ico">🔑</div><p>Repérer les signes d’un trouble de la déglutition et installer la personne en position de sécurité.</p></div><div class="card"><div class="ico">🧭</div><p>Situer les textures adaptées, du liquide fin au mixé lisse, et respecter la prescription.</p></div><div class="card"><div class="ico">⭐</div><p>Accueillir un refus alimentaire en cherchant sa cause et son sens, dans le cadre de la loi Léonetti.</p></div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Contenu">
+  <div class="wrap">
+    <div class="big">01<em>Chapitre</em></div>
+    <h1>Le contenu</h1>
+    <p>9 parties à parcourir avant les points clés et le quiz.</p>
+    <div class="dura">⏱ 45 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 1">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Changements physiologiques liés à l'âge<small>Partie 1 / 9</small></h2></div>
+    <div class="prose"><p><strong>Changements digestifs :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>👄 Bouche</strong> — perte de dents, moins de salive, goût altéré → textures plus molles.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🔽 Œsophage</strong> — péristaltisme ralenti → sensation d'aliment « coincé », boire pendant le repas.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🫃 Estomac</strong> — vidange lente, acidité diminuée (moins bonne absorption du fer, de la B12), capacité réduite → satiété rapide.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>🔄 Intestin</strong> — constipation fréquente → fibres, eau et régularité.</li>
-</ul>
-<p><strong>Changements sensoriels :</strong></p>
-<ul>
+</ul></div>
+<div class="prose"><p><strong>Changements sensoriels :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>👅 Goût</strong> — papilles moins nombreuses (sucré et salé perdus en premier) → nourriture « fade ».</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>👃 Odorat</strong> — diminue souvent avant le goût → moins de plaisir.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>👁️ Vue</strong> — difficultés à servir/repérer → aide, contrastes visuels.</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>💊 Médicaments</strong> — modifient le goût, coupent l'appétit, donnent des nausées.</li>
-</ul>
-<aside class="encadre"><h4></h4><p><strong>🔗 Idée reçue dangereuse : « on mange moins quand on est âgé »</strong></p>
-<p>Les besoins énergétiques baissent un peu, mais les besoins en <strong>protéines, vitamines et minéraux restent essentiels</strong>. Manger moins de tout = dénutrition et <strong>sarcopénie</strong> (fonte musculaire). La bonne approche : des portions <strong>plus petites mais plus denses</strong>, fractionnées en 4 à 6 prises.</p></aside>
-<aside class="encadre"><h4>✅ Conséquence pratique</h4><p>Satiété rapide = portions plus petites mais nutritionnellement denses, et repas fractionnés (4 à 6 petites prises/collations dans la journée).</p></aside>
-</section><section class="partie"><h3>Hydratation : un enjeu critique</h3>
-<p><strong>Besoins :</strong><strong>1,5 à 2 L/jour minimum</strong>. Plus en cas de fièvre, diarrhée, chaleur ou diurétiques ; moins en cas d'insuffisance cardiaque (demander à l'IDE). Sources variées : eau, lait, thé/café, soupe, jus, fruits aqueux (pastèque, melon ≈ 90 % d'eau).</p>
-<aside class="encadre"><h4>✅ Stratégies pour faire boire</h4><p>Proposer régulièrement (verre au réveil, à chaque repas, entre les repas — « un petit verre avec moi ? ») · varier (boisson préférée, température voulue, citron/menthe, pétillant, eau gélifiée) · faciliter l'accès (bouteille à portée, verre léger, paille) · tenir une <strong>fiche de suivi hydrique</strong>.</p></aside>
-<aside class="vigilance"><h4>⚠ ⚠ La soif diminue avec l&#x27;âge</h4><p>La personne peut être <strong>gravement déshydratée sans avoir soif</strong>. Associée à la crainte de l'incontinence, elle boit trop peu. <strong>C'est au soignant de proposer activement</strong>, sans attendre la demande.</p></aside>
-<aside class="vigilance"><h4>⚠ ⚠ Signes de déshydratation</h4><p>Corporels : peau sèche/peu élastique, lèvres et bouche sèches, yeux creux, urines foncées. <strong>Neurologiques : confusion (parfois le seul signe !)</strong>, agitation, léthargie, vertiges. Cardiovasculaires : tachycardie, chute de tension, essoufflement.</p></aside>
-</section><section class="partie"><h3>Accompagner le repas : avant, pendant, après</h3>
-<p><strong>🔜 Avant :</strong></p>
-<ul>
+</ul></div>
+<div class="box box-info"><h4></h4><p><strong>🔗 Idée reçue dangereuse : « on mange moins quand on est âgé »</strong></p>
+<p>Les besoins énergétiques baissent un peu, mais les besoins en <strong>protéines, vitamines et minéraux restent essentiels</strong>. Manger moins de tout = dénutrition et <strong>sarcopénie</strong> (fonte musculaire). La bonne approche : des portions <strong>plus petites mais plus denses</strong>, fractionnées en 4 à 6 prises.</p></div>
+<div class="box box-info"><h4>✅ Conséquence pratique</h4><p>Satiété rapide = portions plus petites mais nutritionnellement denses, et repas fractionnés (4 à 6 petites prises/collations dans la journée).</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 2">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>Hydratation : un enjeu critique<small>Partie 2 / 9</small></h2></div>
+    <div class="prose"><p><strong>Besoins :</strong><strong>1,5 à 2 L/jour minimum</strong>. Plus en cas de fièvre, diarrhée, chaleur ou diurétiques ; moins en cas d'insuffisance cardiaque (demander à l'IDE). Sources variées : eau, lait, thé/café, soupe, jus, fruits aqueux (pastèque, melon ≈ 90 % d'eau).</p></div>
+<div class="box box-info"><h4>✅ Stratégies pour faire boire</h4><p>Proposer régulièrement (verre au réveil, à chaque repas, entre les repas — « un petit verre avec moi ? ») · varier (boisson préférée, température voulue, citron/menthe, pétillant, eau gélifiée) · faciliter l'accès (bouteille à portée, verre léger, paille) · tenir une <strong>fiche de suivi hydrique</strong>.</p></div>
+<div class="box box-warn"><h4>⚠ ⚠ La soif diminue avec l'âge</h4><p>La personne peut être <strong>gravement déshydratée sans avoir soif</strong>. Associée à la crainte de l'incontinence, elle boit trop peu. <strong>C'est au soignant de proposer activement</strong>, sans attendre la demande.</p></div>
+<div class="box box-warn"><h4>⚠ ⚠ Signes de déshydratation</h4><p>Corporels : peau sèche/peu élastique, lèvres et bouche sèches, yeux creux, urines foncées. <strong>Neurologiques : confusion (parfois le seul signe !)</strong>, agitation, léthargie, vertiges. Cardiovasculaires : tachycardie, chute de tension, essoufflement.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 3">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>Accompagner le repas : avant, pendant, après<small>Partie 3 / 9</small></h2></div>
+    <div class="prose"><p><strong>🔜 Avant :</strong></p></div>
+<div class="prose"><ul>
 <li>hygiène des mains, prothèse dentaire vérifiée et en place ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>position <strong>assise, buste droit, menton fléchi</strong> (prévention des fausses routes) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>environnement calme et plaisant : table propre, bonne lumière, <strong>TV éteinte</strong> ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>présenter le repas avec envie, respecter un éventuel refus.</li>
-</ul>
-<p><strong>▶️ Pendant :</strong></p>
-<ul>
+</ul></div>
+<div class="prose"><p><strong>▶️ Pendant :</strong></p></div>
+<div class="prose"><ul>
 <li>favoriser l'autonomie (couverts adaptés, tapis antidérapant) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>aider en se mettant <strong>à hauteur</strong>, nommer chaque bouchée, respecter le rythme (5 à 10 s entre les bouchées) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>observer : toux, fatigue, grimaces, <strong>voix « mouillée »</strong> ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>appuyer doucement la cuillère sur la langue pour déclencher la déglutition.</li>
-</ul>
-<p><strong>🔚 Après :</strong></p>
-<ul>
+</ul></div>
+<div class="prose"><p><strong>🔚 Après :</strong></p></div>
+<div class="prose"><ul>
 <li>hygiène buccale (bouche + prothèse, absence de résidus) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>rester <strong>assis 30 min minimum</strong> (prévient reflux et fausses routes) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li>transmettre : quantité mangée et bue, refus ou difficulté, signaler à l'équipe.</li>
-</ul>
-</section><section class="partie"><h3>Fausses routes &amp; troubles de la déglutition</h3>
-<p><strong>Signes d'alerte :</strong> toux à la déglutition · <strong>voix mouillée ou rauque</strong> après quelques bouchées · gêne respiratoire, apnée ou cyanose pendant le repas · pneumopathies/bronchites à répétition · régurgitation par le nez, bavage · repas qui s'allonge, angoisse, refus de manger en commun.</p>
-<p><strong>Contextes à risque :</strong> troubles de la vigilance (somnolence) · maladies neuro (démence, Parkinson, AVC, SLA) · mauvais état buccal (prothèses inadaptées, mycose, sécheresse) · iatrogénie (sédatifs, morphiniques, neuroleptiques) · dyspnée sévère · reflux ou sonde naso-gastrique.</p>
-<aside class="encadre"><h4>🔗 Définition</h4><p>Une fausse route = passage d'aliments ou de liquides dans les <strong>voies aériennes</strong>. C'est un risque vital (asphyxie, pneumopathie d'inhalation).</p></aside>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Fausse route aiguë avec obstruction complète — URGENCE</strong></p>
-<p><strong>5 claques dorsales</strong> sèches, puis <strong>5 compressions abdominales (manœuvre de Heimlich)</strong>, en alternance jusqu'à désobstruction. Appeler les secours (15) en cas d'échec. Un matériel d'aspiration doit être à proximité dans les services à risque.</p></aside>
-</section><section class="partie"><h3>Textures adaptées (SFAP) &amp; position de sécurité</h3>
-<p>Quand la déglutition est altérée, on adapte la texture des aliments et des boissons. Échelle de référence (du plus à risque au plus sûr) :</p>
-<div class="tableau"><table><thead><tr>
+</ul></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 4">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Fausses routes &amp; troubles de la déglutition<small>Partie 4 / 9</small></h2></div>
+    <div class="prose"><p><strong>Signes d'alerte :</strong> toux à la déglutition · <strong>voix mouillée ou rauque</strong> après quelques bouchées · gêne respiratoire, apnée ou cyanose pendant le repas · pneumopathies/bronchites à répétition · régurgitation par le nez, bavage · repas qui s'allonge, angoisse, refus de manger en commun.</p></div>
+<div class="prose"><p><strong>Contextes à risque :</strong> troubles de la vigilance (somnolence) · maladies neuro (démence, Parkinson, AVC, SLA) · mauvais état buccal (prothèses inadaptées, mycose, sécheresse) · iatrogénie (sédatifs, morphiniques, neuroleptiques) · dyspnée sévère · reflux ou sonde naso-gastrique.</p></div>
+<div class="box box-info"><h4>🔗 Définition</h4><p>Une fausse route = passage d'aliments ou de liquides dans les <strong>voies aériennes</strong>. C'est un risque vital (asphyxie, pneumopathie d'inhalation).</p></div>
+<div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>⚠ Fausse route aiguë avec obstruction complète — URGENCE</strong></p>
+<p><strong>5 claques dorsales</strong> sèches, puis <strong>5 compressions abdominales (manœuvre de Heimlich)</strong>, en alternance jusqu'à désobstruction. Appeler les secours (15) en cas d'échec. Un matériel d'aspiration doit être à proximité dans les services à risque.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 5">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>Textures adaptées (SFAP) &amp; position de sécurité<small>Partie 5 / 9</small></h2></div>
+    <div class="prose"><p>Quand la déglutition est altérée, on adapte la texture des aliments et des boissons. Échelle de référence (du plus à risque au plus sûr) :</p></div>
+<div class="tbl"><table><thead><tr>
 <th>Niveau</th>
 <th>Texture</th>
 <th>Repère</th>
@@ -196,40 +298,56 @@ section li{margin-bottom:6px}
 <td>Le PLUS sûr ; séparer les goûts pour le plaisir</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4></h4><p><strong>🚫 Interdits en cas de troubles de la déglutition</strong></p>
-<p>Eau à température ambiante (préférer franchement froid ou chaud) · aliments fibreux (salade) · graines (riz, couscous) · textures collantes/compactes · <strong>verre canard</strong> (favorise les fausses routes) · cuillère à soupe (trop grosse).</p></aside>
-<aside class="encadre"><h4>✅ Bonne position pour le repas</h4><p>Assis, buste droit ou très légèrement incliné en arrière (max 30°), <strong>menton fléchi sur la poitrine</strong>, coussin dans le dos si besoin. Le soignant s'assoit <strong>à la même hauteur</strong>. <strong>Interdit :</strong> tête en arrière (ouvre les voies aériennes).</p></aside>
-</section><section class="partie"><h3>Refus alimentaire : comprendre &amp; accompagner</h3>
-<p><strong>D'abord éliminer une cause :</strong></p>
-<ul>
+<div class="box box-info"><h4></h4><p><strong>🚫 Interdits en cas de troubles de la déglutition</strong></p>
+<p>Eau à température ambiante (préférer franchement froid ou chaud) · aliments fibreux (salade) · graines (riz, couscous) · textures collantes/compactes · <strong>verre canard</strong> (favorise les fausses routes) · cuillère à soupe (trop grosse).</p></div>
+<div class="box box-info"><h4>✅ Bonne position pour le repas</h4><p>Assis, buste droit ou très légèrement incliné en arrière (max 30°), <strong>menton fléchi sur la poitrine</strong>, coussin dans le dos si besoin. Le soignant s'assoit <strong>à la même hauteur</strong>. <strong>Interdit :</strong> tête en arrière (ouvre les voies aériennes).</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 6">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>Refus alimentaire : comprendre &amp; accompagner<small>Partie 6 / 9</small></h2></div>
+    <div class="prose"><p><strong>D'abord éliminer une cause :</strong></p></div>
+<div class="prose"><ul>
 <li><strong>organique</strong> — trouble de déglutition, douleur, mycose/bouche sèche, anorexie médicamenteuse ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>psychiatrique</strong> — syndrome de glissement, dépression sévère (un refus peut être un équivalent suicidaire), idées délirantes (peur d'être empoisonné) ;</li>
-</ul>
-<ul>
+</ul></div>
+<div class="prose"><ul>
 <li><strong>socio-environnementale</strong> — isolement au repas, plats peu appétissants, bruit, entrée en institution mal vécue.</li>
-</ul>
-<aside class="encadre"><h4></h4><p><strong>🔗 Le sens du refus (SFAP) — 3 formes</strong></p>
-<p><strong>Opposition</strong> : refus des conditions de vie ou de soins pénibles, message adressé à l'entourage. <strong>Résignation</strong> : épuisement, sentiment d'inutilité (« je ne sers plus à rien »). <strong>Acceptation</strong> : la personne se réapproprie sa fin de vie (« je me retire de ce monde »).</p></aside>
-<aside class="encadre"><h4>⚖ Cadre légal et éthique</h4><p><strong>Loi Léonetti (2005)</strong>, complétée par <strong>Claeys-Leonetti (2016)</strong> : droit de refuser un traitement jugé futile, directives anticipées, personne de confiance ; pas d'<strong>obstination déraisonnable</strong>. L'alimentation artificielle est un <strong>traitement</strong> qui peut être arrêté. Principes : autonomie, bienfaisance/non-malfaisance, non-futilité, humanité.</p></aside>
-<aside class="encadre"><h4>✅ En pratique</h4><p>Un refus avéré se <strong>respecte</strong> : on n'oblige jamais, on cherche le pourquoi, on oriente vers le <strong>confort</strong> (soins de bouche fréquents, boissons appréciées, accompagnement). On alerte l'IDE si le refus se prolonge ; les décisions de fin de vie sont <strong>collégiales</strong>.</p></aside>
-</section><section class="partie"><h3>📖 Approfondissement (livre ORACLE)</h3>
-<aside class="encadre"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 06 : Aide au repas).</p>
+</ul></div>
+<div class="box box-info"><h4></h4><p><strong>🔗 Le sens du refus (SFAP) — 3 formes</strong></p>
+<p><strong>Opposition</strong> : refus des conditions de vie ou de soins pénibles, message adressé à l'entourage. <strong>Résignation</strong> : épuisement, sentiment d'inutilité (« je ne sers plus à rien »). <strong>Acceptation</strong> : la personne se réapproprie sa fin de vie (« je me retire de ce monde »).</p></div>
+<div class="box box-info"><h4>⚖ Cadre légal et éthique</h4><p><strong>Loi Léonetti (2005)</strong>, complétée par <strong>Claeys-Leonetti (2016)</strong> : droit de refuser un traitement jugé futile, directives anticipées, personne de confiance ; pas d'<strong>obstination déraisonnable</strong>. L'alimentation artificielle est un <strong>traitement</strong> qui peut être arrêté. Principes : autonomie, bienfaisance/non-malfaisance, non-futilité, humanité.</p></div>
+<div class="box box-info"><h4>✅ En pratique</h4><p>Un refus avéré se <strong>respecte</strong> : on n'oblige jamais, on cherche le pourquoi, on oriente vers le <strong>confort</strong> (soins de bouche fréquents, boissons appréciées, accompagnement). On alerte l'IDE si le refus se prolonge ; les décisions de fin de vie sont <strong>collégiales</strong>.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 7">
+  <div class="inner">
+    <div class="head"><div class="num">7</div><h2>📖 Approfondissement (livre ORACLE)<small>Partie 7 / 9</small></h2></div>
+    <div class="box box-info"><h4></h4><p>Issu de votre livre intégral — Module 1 (ACTIVITÉ 06 : Aide au repas).</p>
 <p>Vérifier <strong>régime et textures</strong> (coupé / haché / mixé / gélifiée).</p>
 <p>Installation : <strong>tronc droit, tête légèrement fléchie</strong> ; <strong>jamais boire tête en arrière</strong>.</p>
 <p><strong>Fausse route = urgence vitale</strong> : arrêter, encourager la toux, alerter IDE / 15.</p>
 <p><strong>Quantifier les ingesta</strong> et tracer.</p>
-<p><strong>🎓 À l’oral / piège :</strong> La position (tête fléchie) prévient la fausse route : c’est LE réflexe attendu au jury.</p></aside>
-</section><section class="partie"><h3>Ce que le jury attend (référentiel)</h3>
-<aside class="vigilance"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
+<p><strong>🎓 À l’oral / piège :</strong> La position (tête fléchie) prévient la fausse route : c’est LE réflexe attendu au jury.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 8">
+  <div class="inner">
+    <div class="head"><div class="num">8</div><h2>Ce que le jury attend (référentiel)<small>Partie 8 / 9</small></h2></div>
+    <div class="box box-warn"><h4>⚠ Point de vigilance</h4><p><strong>🎓 Points de vigilance attendus par le jury (référentiel officiel) :</strong></p>
 <p><strong>Avant</strong> : vérifier température, régime/interdits, <strong>textures</strong> (haché/mixé) et boisson (gélifiée), portions, installation, ustensiles adaptés.</p>
 <p><strong>Pendant</strong> : présenter le plat, vigilance au comportement social, aide ciblée ; si donné par le soignant : <strong>tronc droit, annoncer l’aliment, laisser le temps</strong> de mastiquer/déglutir.</p>
 <p>Vigilance aux <strong>distracteurs</strong> en cas de troubles cognitifs (pas de TV/bruit/parole pendant la déglutition).</p>
 <p><strong>Après</strong> : propreté, quantifier ce qui a été mangé, ne pas recoucher trop vite.</p>
-<p>Famille : expliquer les restrictions (texture, hydrique, régime) · hygiène alimentaire (dates, stockage propre) · transmissions, vigilance dénutrition.</p></aside>
-</section><section class="partie"><h3>Les régimes alimentaires</h3>
-<div class="tableau"><table><thead><tr>
+<p>Famille : expliquer les restrictions (texture, hydrique, régime) · hygiène alimentaire (dates, stockage propre) · transmissions, vigilance dénutrition.</p></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Partie 9">
+  <div class="inner">
+    <div class="head"><div class="num">9</div><h2>Les régimes alimentaires<small>Partie 9 / 9</small></h2></div>
+    <div class="tbl"><table><thead><tr>
 <th>Régime</th>
 <th>Principe / vigilance AS</th>
 </tr></thead><tbody>
@@ -258,12 +376,13 @@ section li{margin-bottom:6px}
 <td>Sur prescription ; surveiller et expliquer à la famille</td>
 </tr>
 </tbody></table></div>
-<aside class="encadre"><h4></h4><p>Un régime est une <strong>prescription</strong> : l’AS le respecte, l’explique, vérifie que la famille n’apporte pas d’aliments contraires, et signale tout refus.</p></aside>
+<div class="box box-info"><h4></h4><p>Un régime est une <strong>prescription</strong> : l’AS le respecte, l’explique, vérifie que la famille n’apporte pas d’aliments contraires, et signale tout refus.</p></div>
+  </div>
 </section>
-  </section>
-
-  <section class="cas"><h2>📂 Référence livre ORACLE &amp; cas pratique</h2>
-<p><strong>📌 8 réflexes à retenir :</strong></p>
+<section class="slide std" data-mod="Cas pratique">
+  <div class="inner">
+    <div class="head"><div class="num">📂</div><h2>Référence livre ORACLE &amp; cas pratique<small>Appliquer ce que vous avez appris</small></h2></div>
+    <p><strong>📌 8 réflexes à retenir :</strong></p>
 <ul>
 <li>portions petites mais <strong>denses</strong> (protéines essentielles) ;</li>
 <li><strong>1,5-2 L/jour</strong>, proposer sans attendre la soif ;</li>
@@ -274,9 +393,7 @@ section li{margin-bottom:6px}
 <li>loi Léonetti : le refus est un <strong>droit</strong> du patient ;</li>
 <li><strong>documenter et transmettre</strong> : ta vigilance protège.</li>
 </ul>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toux au repas de M. D., 84 ans (Alzheimer)</strong></p></p>
-<div class="cas-piste"><p><em>M. D., 84 ans, résident en EHPAD, atteint d'une maladie d'Alzheimer modérée. Pendant le repas, il tousse deux fois en buvant son potage, puis mange sa purée sans difficulté apparente. Vous remarquez qu'il a le menton levé, car il regarde la télévision allumée en face de lui.</em></p>
+    <div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Toux au repas de M. D., 84 ans (Alzheimer)</strong></p></div><div class="cas-piste"><p><em>M. D., 84 ans, résident en EHPAD, atteint d'une maladie d'Alzheimer modérée. Pendant le repas, il tousse deux fois en buvant son potage, puis mange sa purée sans difficulté apparente. Vous remarquez qu'il a le menton levé, car il regarde la télévision allumée en face de lui.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quelle est la cause probable de cette toux ?</li>
@@ -288,11 +405,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Cause probable.</strong> Le menton levé (tête en arrière) ouvre les voies aériennes et favorise le passage du liquide vers les voies respiratoires : c'est une position à risque de fausse route. Le potage, texture liquide fine, est la texture la plus à risque ; la télévision agit comme distracteur et détourne l'attention du repas, ce qui aggrave le risque chez une personne Alzheimer.</p>
 <p><strong>2. Conduite immédiate.</strong> Éteindre la télévision, réinstaller M. D. assis, buste droit, menton fléchi sur la poitrine ; arrêter de lui donner à boire tant que la toux n'est pas calmée ; le laisser récupérer puis observer sa respiration, sa coloration et sa voix (mouillée ou non). Si une fausse route franche survient avec obstruction, réaliser 5 claques dorsales puis 5 compressions abdominales en alternance, et appeler le 15 en cas d'échec.</p>
 <p><strong>3. Transmission.</strong> Alerter l'IDE : une toux répétée à la déglutition est un signe d'alerte de trouble de la déglutition. Transmettre par écrit les circonstances (texture en cause, position au moment des faits, tolérance de la purée ensuite) afin qu'une évaluation de la déglutition et un éventuel épaississement des liquides soient envisagés.</p>
-<p><strong>4. Erreur à éviter.</strong> Laisser la télévision allumée pendant le repas, poursuivre à donner du liquide fin sans adapter la position ni la texture, et banaliser une toux répétée à la déglutition en pensant qu'elle est sans conséquence.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — Soins palliatifs · Refus alimentaire de Mme P., 91 ans</strong></p></p>
-<div class="cas-piste"><p><em>Mme P., 91 ans, est suivie en soins palliatifs. Elle refuse de manger depuis 5 jours mais accepte encore un peu d'eau et de glace. Sa fille vous dit : « vous la laissez mourir de faim ! ». Le médecin a décidé, en concertation, de ne pas poser de sonde d'alimentation.</em></p>
+<p><strong>4. Erreur à éviter.</strong> Laisser la télévision allumée pendant le repas, poursuivre à donner du liquide fin sans adapter la position ni la texture, et banaliser une toux répétée à la déglutition en pensant qu'elle est sans conséquence.</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — Soins palliatifs · Refus alimentaire de Mme P., 91 ans</strong></p></div><div class="cas-piste"><p><em>Mme P., 91 ans, est suivie en soins palliatifs. Elle refuse de manger depuis 5 jours mais accepte encore un peu d'eau et de glace. Sa fille vous dit : « vous la laissez mourir de faim ! ». Le médecin a décidé, en concertation, de ne pas poser de sonde d'alimentation.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Quelle est la signification de ce refus alimentaire dans ce contexte de fin de vie ?</li>
@@ -304,11 +417,7 @@ section li{margin-bottom:6px}
 <p><strong>1. Signification.</strong> En fin de vie, la baisse puis l'arrêt de l'alimentation sont un phénomène naturel et non une souffrance : la sensation de faim disparaît. Le fait que Mme P. accepte encore l'eau et la glace montre qu'elle n'est pas dans un refus total et douloureux mais dans une évolution progressive et attendue.</p>
 <p><strong>2. Soins de confort.</strong> Proposer régulièrement, sans jamais forcer, ce qu'elle accepte (eau, glaçons) ; réaliser des soins de bouche fréquents et pluriquotidiens, qui sont le geste de confort majeur en fin de vie ; veiller à une installation confortable, à la prévention d'escarre, et maintenir une présence calme et rassurante.</p>
 <p><strong>3. Réponse à la fille.</strong> Expliquer avec des mots simples que la sensation de faim disparaît en fin de vie, que sa mère ne souffre pas de cet arrêt, et qu'une sonde n'apporterait pas de confort supplémentaire (elle peut même augmenter l'encombrement) ; rappeler que la décision a été prise de façon collégiale avec le médecin, dans l'intérêt de sa mère ; proposer à la fille de participer aux soins de confort (soins de bouche) si elle le souhaite, et rester à l'écoute de sa détresse sans la minimiser.</p>
-<p><strong>4. Cadre légal.</strong> La loi Léonetti (2005), complétée par la loi Claeys-Leonetti (2016), prévoit que la nutrition et l'hydratation artificielles sont des traitements qui peuvent être arrêtés pour éviter l'obstination déraisonnable, sur décision collégiale — c'est le cas ici. L'AS ne décide jamais seule : elle observe, transmet à l'IDE et au médecin tout signe de souffrance, et documente ses observations.</p></div>
-</div>
-<div class="cas-item">
-<p class="cas-q"><p><strong>📂 Cas livre — EHPAD · Canicule &amp; déshydratation (Mme F., 88 ans)</strong></p></p>
-<div class="cas-piste"><p><em>Forte chaleur. Mme F., désorientée, ne réclame jamais à boire. Ce midi, vous la trouvez somnolente, les lèvres sèches ; elle a très peu touché à son verre depuis le matin.</em></p>
+<p><strong>4. Cadre légal.</strong> La loi Léonetti (2005), complétée par la loi Claeys-Leonetti (2016), prévoit que la nutrition et l'hydratation artificielles sont des traitements qui peuvent être arrêtés pour éviter l'obstination déraisonnable, sur décision collégiale — c'est le cas ici. L'AS ne décide jamais seule : elle observe, transmet à l'IDE et au médecin tout signe de souffrance, et documente ses observations.</p></div></div><div class="cas-item"><div class="cas-q"><p><strong>📂 Cas livre — EHPAD · Canicule &amp; déshydratation (Mme F., 88 ans)</strong></p></div><div class="cas-piste"><p><em>Forte chaleur. Mme F., désorientée, ne réclame jamais à boire. Ce midi, vous la trouvez somnolente, les lèvres sèches ; elle a très peu touché à son verre depuis le matin.</em></p>
 <p><strong>Questions :</strong></p>
 <ul>
 <li>Que repérez-vous ?</li>
@@ -320,171 +429,109 @@ section li{margin-bottom:6px}
 <p><strong>Repérage.</strong> Faisceau évoquant une déshydratation (chaleur + faible hydratation + lèvres sèches + somnolence inhabituelle), aggravé par l'absence de sensation de soif liée à la désorientation.</p>
 <p><strong>Prévention.</strong> Proposer à boire en petites quantités fréquentes, varier/rafraîchir les boissons, installer au frais, tracer les apports, surveiller.</p>
 <p><strong>Transmission.</strong> Alerter l'IDE sans délai (somnolence + signes de déshydratation en contexte de chaleur).</p>
-<p><strong>Piège.</strong> Attendre qu'elle « demande à boire » — beaucoup de personnes âgées ne ressentent plus la soif.</p></div>
-</div>
+<p><strong>Piège.</strong> Attendre qu'elle « demande à boire » — beaucoup de personnes âgées ne ressentent plus la soif.</p></div></div>
+  </div>
 </section>
+<section class="slide chapter" data-mod="À retenir">
+  <div class="wrap">
+    <div class="big">02<em>Chapitre</em></div>
+    <h1>À retenir</h1>
+    <p>Mémo opérationnel, points clés, et le réflexe terrain à ancrer.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std" data-mod="Mémo">
+  <div class="inner">
+    <div class="head"><div class="num">💡</div><h2>Mémo<small>Les gestes et vérifs à poser au quotidien</small></h2></div>
+    <div class="grid2"><div class="memo-item">Avant : prothèse vérifiée et en place, régime et texture contrôlés, télévision éteinte, installation assise.</div><div class="memo-item">Pendant : se mettre à hauteur, annoncer chaque bouchée, laisser 5 à 10 secondes ; jamais de tête en arrière, ni verre canard, ni cuillère à soupe.</div><div class="memo-item">Arrêter le repas et alerter l’IDE devant une toux à la déglutition, une voix mouillée, une gêne respiratoire.</div><div class="memo-item">Obstruction complète : 5 claques dorsales, puis 5 compressions abdominales, en alternance ; le 15 en cas d’échec.</div><div class="memo-item">Fausses routes aux liquides : épaissir les boissons, sans interdire de boire.</div><div class="memo-item">Après : soin de bouche, rester assis 30 minutes minimum, quantifier ce qui a été mangé et bu, transmettre.</div></div>
+  </div>
+</section>
+<section class="slide std" data-mod="Points clés">
+  <div class="inner">
+    <div class="head"><div class="num">⭐</div><h2>Points clés<small>Ce que vous devez savoir restituer au jury</small></h2></div>
+    <div class="grid2"><div class="pts-item">Les besoins en protéines, vitamines et minéraux restent essentiels : portions plus petites mais plus denses, fractionnées en 4 à 6 prises.</div><div class="pts-item">1,5 à 2 L par jour ; la soif diminue avec l’âge, on peut être gravement déshydraté sans avoir soif.</div><div class="pts-item">Confusion, agitation, léthargie : penser déshydratation — la confusion est parfois le seul signe.</div><div class="pts-item">Assis, buste droit, menton fléchi sur la poitrine : la position qui prévient la fausse route.</div><div class="pts-item">Le liquide fin est la texture la plus à risque, le mixé lisse la plus sûre.</div><div class="pts-item">Un refus avéré se respecte : on n’oblige jamais, on cherche le pourquoi, on oriente vers le confort.</div></div>
+  </div>
+</section>
+<section class="slide chapter" data-mod="Quiz">
+  <div class="wrap">
+    <div class="big">03<em>Chapitre</em></div>
+    <h1>Vérifiez vos acquis</h1>
+    <p>14 questions pour valider ce que vous retenez de cette leçon.</p>
+    <div class="dura">⏱ 5 min</div>
+  </div>
+</section>
+<section class="slide std slide-quiz" data-mod="Quiz">
+  <div class="inner">
+    <div class="head"><div class="num">?</div><h2>Quiz<small>14 questions pour valider la leçon</small></h2></div>
+    <div class="quiz-wrap" id="quiz"></div>
+  </div>
+</section>
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <h1>🎓 Leçon terminée</h1>
+    <p>Vous avez parcouru <strong>B1_L08 — Alimentation &amp; hydratation de la personne âgée</strong>.<br>Passez à la suivante quand vous êtes prêt·e.</p>
+    <div class="nav"><a href="B1_L07.html">← B1_L07</a><a href="../index-lecons.html" class="gold">📘 Catalogue</a><a href="B1_L09.html">B1_L09 →</a></div>
+  </div>
+</section>
+</div>
+<script>const QUIZ = [{"q": "Avec l'âge, les besoins nutritionnels :", "opts": ["Diminuent fortement : il faut manger beaucoup moins", "Restent essentiels en protéines/vitamines : portions plus petites mais plus denses", "Disparaissent presque", "Augmentent surtout en sucres"], "ok": 1, "x": "Besoins maintenus en protéines/vitamines : portions plus petites mais plus denses.<strong> 🎓 À l’oral VAE :</strong> luttez contre la dénutrition."}, {"q": "La soif, chez la personne âgée, est :", "opts": ["Diminuée : on peut être déshydraté sans avoir soif", "Augmentée avec l'âge", "Sans rapport avec l'hydratation", "Un indicateur fiable d'hydratation"], "ok": 0, "x": "La soif diminue avec l’âge : on peut être déshydraté sans soif.<strong> 🎓 À l’oral VAE :</strong> proposez à boire activement."}, {"q": "Volume d'eau minimum recommandé par jour :", "opts": ["1,5 à 2 L", "0,5 à 1 L", "Selon la soif uniquement", "3 à 4 L systématiquement"], "ok": 0, "x": "Apport visé : 1,5 à 2 L/jour.<strong> 🎓 À l’oral VAE :</strong> fractionnez sur la journée."}, {"q": "Un signe neurologique fréquent (parfois unique) de déshydratation :", "opts": ["Une prise de poids", "La confusion / désorientation", "Une éruption cutanée", "Une toux"], "ok": 1, "x": "Signe neuro de déshydratation : confusion/désorientation.<strong> 🎓 À l’oral VAE :</strong> parfois le seul signe."}, {"q": "Position de sécurité pour prévenir les fausses routes :", "opts": ["Assis, buste droit, menton fléchi sur la poitrine", "Penché en avant sur la table", "Allongé à plat", "Tête en arrière"], "ok": 0, "x": "Position anti-fausse route : assis, buste droit, menton fléchi.<strong> 🎓 À l’oral VAE :</strong> jamais allongé pour manger/boire."}, {"q": "En cas de fausses routes aux liquides, on :", "opts": ["Donne de l'eau à température ambiante", "Interdit toute boisson", "Utilise un verre canard", "Épaissit les boissons (eau gélifiée)"], "ok": 3, "x": "Fausses routes aux liquides : épaissir les boissons (eau gélifiée).<strong> 🎓 À l’oral VAE :</strong> sur prescription/protocole."}, {"q": "Après quelques bouchées, la voix devient « mouillée » ou rauque. Ce signe évoque :", "opts": ["Un manque d’appétit passager", "Une prothèse mal ajustée uniquement", "Une fausse route silencieuse, à signaler sans délai", "Un simple enrouement sans gravité"], "ok": 2, "x": "Voix mouillée après la déglutition = signe d’alerte de fausse route.<strong> 🎓 À l’oral VAE :</strong> alertez sans attendre une aggravation."}, {"q": "Après le repas, la personne doit rester assise :", "opts": ["Allongée immédiatement", "Au moins 30 minutes (prévenir reflux et fausses routes)", "Aucune obligation", "5 minutes"], "ok": 1, "x": "Rester assis ≥ 30 min après le repas.<strong> 🎓 À l’oral VAE :</strong> prévient reflux et fausses routes."}, {"q": "Face à un refus alimentaire, l'AS doit :", "opts": ["Ignorer et passer au suivant", "Forcer la personne « pour sa santé »", "Chercher le pourquoi, proposer des alternatives, alerter l'IDE", "Supprimer définitivement les repas"], "ok": 2, "x": "Refus alimentaire : chercher le pourquoi, proposer des alternatives, alerter l’IDE.<strong> 🎓 À l’oral VAE :</strong> surveiller le poids."}, {"q": "La loi qui encadre le refus de traitement en fin de vie :", "opts": ["Le seul secret médical", "Aucune loi ne le prévoit", "La loi Léonetti (2005), complétée par Claeys-Leonetti (2016)", "Une simple consigne interne"], "ok": 2, "x": "Refus de traitement en fin de vie : loi Léonetti (2005) + Claeys-Leonetti (2016).<strong> 🎓 À l’oral VAE :</strong> citez les deux lois."}, {"q": "(Livre ORACLE) Pour prévenir une fausse route pendant le repas, l'AS doit avant tout…", "opts": ["Laisser la personne manger seule sans surveillance", "Installer la personne assise et adapter la texture si prescrit", "Faire manger la personne allongée pour qu'elle se repose", "Donner à manger le plus vite possible"], "ok": 1, "x": "Prévenir la fausse route : installer assis + adapter la texture si prescrit.<strong> 🎓 À l’oral VAE :</strong> l’installation d’abord."}, {"q": "(Livre ORACLE · canicule) Mme F. désorientée ne réclame jamais à boire. Le bon réflexe ?", "opts": ["Proposer à boire en petites quantités fréquentes, tracer les apports et surveiller", "Ne rien changer, c'est l'âge", "Donner un grand verre d'eau d'un coup", "Attendre qu'elle demande à boire"], "ok": 0, "x": "Canicule : proposer à boire en petites quantités fréquentes, tracer, surveiller.<strong> 🎓 À l’oral VAE :</strong> ne pas attendre la demande."}, {"q": "Les comprimés effervescents sont déconseillés en régime…", "opts": ["Diabétique", "Hyperprotéiné", "Sans résidus", "Sans sel (ils sont salés)"], "ok": 3, "x": "Les effervescents contiennent du sodium → vigilance en hyposodé.<strong> 🎓 À l’oral VAE :</strong> vérifiez les apports cachés."}, {"q": "Une texture « mixée » prescrite doit être…", "opts": ["Adaptée à l’envie du jour", "Ignorée si la personne mange bien", "Décidée par l’AS", "Respectée strictement (sécurité déglutition)"], "ok": 3, "x": "La texture modifiée prévient la fausse route → prescription à respecter.<strong> 🎓 À l’oral VAE :</strong> jamais d’écart de texture."}];
 
-  <section class="memo"><h2>💡 Mémo</h2><ul><li>Avant : prothèse vérifiée et en place, régime et texture contrôlés, télévision éteinte, installation assise.</li><li>Pendant : se mettre à hauteur, annoncer chaque bouchée, laisser 5 à 10 secondes ; jamais de tête en arrière, ni verre canard, ni cuillère à soupe.</li><li>Arrêter le repas et alerter l’IDE devant une toux à la déglutition, une voix mouillée, une gêne respiratoire.</li><li>Obstruction complète : 5 claques dorsales, puis 5 compressions abdominales, en alternance ; le 15 en cas d’échec.</li><li>Fausses routes aux liquides : épaissir les boissons, sans interdire de boire.</li><li>Après : soin de bouche, rester assis 30 minutes minimum, quantifier ce qui a été mangé et bu, transmettre.</li></ul></section>
-  <section class="points-cles"><h2>⭐ Points clés</h2><ul><li>Les besoins en protéines, vitamines et minéraux restent essentiels : portions plus petites mais plus denses, fractionnées en 4 à 6 prises.</li><li>1,5 à 2 L par jour ; la soif diminue avec l’âge, on peut être gravement déshydraté sans avoir soif.</li><li>Confusion, agitation, léthargie : penser déshydratation — la confusion est parfois le seul signe.</li><li>Assis, buste droit, menton fléchi sur la poitrine : la position qui prévient la fausse route.</li><li>Le liquide fin est la texture la plus à risque, le mixé lisse la plus sûre.</li><li>Un refus avéré se respecte : on n’oblige jamais, on cherche le pourquoi, on oriente vers le confort.</li></ul></section>
-  
-  <section class="quiz"><h2>🎯 Quiz</h2>
-<div class="qblock" data-correct="b" data-id="q0">
-<p class="q"><strong>Q1.</strong> Avec l'âge, les besoins nutritionnels :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Diminuent fortement : il faut manger beaucoup moins</li>
-<li data-cle="b" onclick="window._pickQ(this)">Restent essentiels en protéines/vitamines : portions plus petites mais plus denses</li>
-<li data-cle="c" onclick="window._pickQ(this)">Disparaissent presque</li>
-<li data-cle="d" onclick="window._pickQ(this)">Augmentent surtout en sucres</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Besoins maintenus en protéines/vitamines : portions plus petites mais plus denses.<strong> 🎓 À l’oral VAE :</strong> luttez contre la dénutrition.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q1">
-<p class="q"><strong>Q2.</strong> La soif, chez la personne âgée, est :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Diminuée : on peut être déshydraté sans avoir soif</li>
-<li data-cle="b" onclick="window._pickQ(this)">Augmentée avec l'âge</li>
-<li data-cle="c" onclick="window._pickQ(this)">Sans rapport avec l'hydratation</li>
-<li data-cle="d" onclick="window._pickQ(this)">Un indicateur fiable d'hydratation</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>La soif diminue avec l’âge : on peut être déshydraté sans soif.<strong> 🎓 À l’oral VAE :</strong> proposez à boire activement.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q2">
-<p class="q"><strong>Q3.</strong> Volume d'eau minimum recommandé par jour :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">1,5 à 2 L</li>
-<li data-cle="b" onclick="window._pickQ(this)">0,5 à 1 L</li>
-<li data-cle="c" onclick="window._pickQ(this)">Selon la soif uniquement</li>
-<li data-cle="d" onclick="window._pickQ(this)">3 à 4 L systématiquement</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Apport visé : 1,5 à 2 L/jour.<strong> 🎓 À l’oral VAE :</strong> fractionnez sur la journée.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q3">
-<p class="q"><strong>Q4.</strong> Un signe neurologique fréquent (parfois unique) de déshydratation :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Une prise de poids</li>
-<li data-cle="b" onclick="window._pickQ(this)">La confusion / désorientation</li>
-<li data-cle="c" onclick="window._pickQ(this)">Une éruption cutanée</li>
-<li data-cle="d" onclick="window._pickQ(this)">Une toux</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Signe neuro de déshydratation : confusion/désorientation.<strong> 🎓 À l’oral VAE :</strong> parfois le seul signe.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q4">
-<p class="q"><strong>Q5.</strong> Position de sécurité pour prévenir les fausses routes :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Assis, buste droit, menton fléchi sur la poitrine</li>
-<li data-cle="b" onclick="window._pickQ(this)">Penché en avant sur la table</li>
-<li data-cle="c" onclick="window._pickQ(this)">Allongé à plat</li>
-<li data-cle="d" onclick="window._pickQ(this)">Tête en arrière</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Position anti-fausse route : assis, buste droit, menton fléchi.<strong> 🎓 À l’oral VAE :</strong> jamais allongé pour manger/boire.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q5">
-<p class="q"><strong>Q6.</strong> En cas de fausses routes aux liquides, on :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Donne de l'eau à température ambiante</li>
-<li data-cle="b" onclick="window._pickQ(this)">Interdit toute boisson</li>
-<li data-cle="c" onclick="window._pickQ(this)">Utilise un verre canard</li>
-<li data-cle="d" onclick="window._pickQ(this)">Épaissit les boissons (eau gélifiée)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Fausses routes aux liquides : épaissir les boissons (eau gélifiée).<strong> 🎓 À l’oral VAE :</strong> sur prescription/protocole.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q6">
-<p class="q"><strong>Q7.</strong> Après quelques bouchées, la voix devient « mouillée » ou rauque. Ce signe évoque :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Un manque d’appétit passager</li>
-<li data-cle="b" onclick="window._pickQ(this)">Une prothèse mal ajustée uniquement</li>
-<li data-cle="c" onclick="window._pickQ(this)">Une fausse route silencieuse, à signaler sans délai</li>
-<li data-cle="d" onclick="window._pickQ(this)">Un simple enrouement sans gravité</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Voix mouillée après la déglutition = signe d’alerte de fausse route.<strong> 🎓 À l’oral VAE :</strong> alertez sans attendre une aggravation.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q7">
-<p class="q"><strong>Q8.</strong> Après le repas, la personne doit rester assise :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Allongée immédiatement</li>
-<li data-cle="b" onclick="window._pickQ(this)">Au moins 30 minutes (prévenir reflux et fausses routes)</li>
-<li data-cle="c" onclick="window._pickQ(this)">Aucune obligation</li>
-<li data-cle="d" onclick="window._pickQ(this)">5 minutes</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Rester assis ≥ 30 min après le repas.<strong> 🎓 À l’oral VAE :</strong> prévient reflux et fausses routes.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q8">
-<p class="q"><strong>Q9.</strong> Face à un refus alimentaire, l'AS doit :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Ignorer et passer au suivant</li>
-<li data-cle="b" onclick="window._pickQ(this)">Forcer la personne « pour sa santé »</li>
-<li data-cle="c" onclick="window._pickQ(this)">Chercher le pourquoi, proposer des alternatives, alerter l'IDE</li>
-<li data-cle="d" onclick="window._pickQ(this)">Supprimer définitivement les repas</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Refus alimentaire : chercher le pourquoi, proposer des alternatives, alerter l’IDE.<strong> 🎓 À l’oral VAE :</strong> surveiller le poids.</p></div>
-</div>
-<div class="qblock" data-correct="c" data-id="q9">
-<p class="q"><strong>Q10.</strong> La loi qui encadre le refus de traitement en fin de vie :</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Le seul secret médical</li>
-<li data-cle="b" onclick="window._pickQ(this)">Aucune loi ne le prévoit</li>
-<li data-cle="c" onclick="window._pickQ(this)">La loi Léonetti (2005), complétée par Claeys-Leonetti (2016)</li>
-<li data-cle="d" onclick="window._pickQ(this)">Une simple consigne interne</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Refus de traitement en fin de vie : loi Léonetti (2005) + Claeys-Leonetti (2016).<strong> 🎓 À l’oral VAE :</strong> citez les deux lois.</p></div>
-</div>
-<div class="qblock" data-correct="b" data-id="q10">
-<p class="q"><strong>Q11.</strong> (Livre ORACLE) Pour prévenir une fausse route pendant le repas, l'AS doit avant tout…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Laisser la personne manger seule sans surveillance</li>
-<li data-cle="b" onclick="window._pickQ(this)">Installer la personne assise et adapter la texture si prescrit</li>
-<li data-cle="c" onclick="window._pickQ(this)">Faire manger la personne allongée pour qu'elle se repose</li>
-<li data-cle="d" onclick="window._pickQ(this)">Donner à manger le plus vite possible</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Prévenir la fausse route : installer assis + adapter la texture si prescrit.<strong> 🎓 À l’oral VAE :</strong> l’installation d’abord.</p></div>
-</div>
-<div class="qblock" data-correct="a" data-id="q11">
-<p class="q"><strong>Q12.</strong> (Livre ORACLE · canicule) Mme F. désorientée ne réclame jamais à boire. Le bon réflexe ?</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Proposer à boire en petites quantités fréquentes, tracer les apports et surveiller</li>
-<li data-cle="b" onclick="window._pickQ(this)">Ne rien changer, c'est l'âge</li>
-<li data-cle="c" onclick="window._pickQ(this)">Donner un grand verre d'eau d'un coup</li>
-<li data-cle="d" onclick="window._pickQ(this)">Attendre qu'elle demande à boire</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Canicule : proposer à boire en petites quantités fréquentes, tracer, surveiller.<strong> 🎓 À l’oral VAE :</strong> ne pas attendre la demande.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q12">
-<p class="q"><strong>Q13.</strong> Les comprimés effervescents sont déconseillés en régime…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Diabétique</li>
-<li data-cle="b" onclick="window._pickQ(this)">Hyperprotéiné</li>
-<li data-cle="c" onclick="window._pickQ(this)">Sans résidus</li>
-<li data-cle="d" onclick="window._pickQ(this)">Sans sel (ils sont salés)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>Les effervescents contiennent du sodium → vigilance en hyposodé.<strong> 🎓 À l’oral VAE :</strong> vérifiez les apports cachés.</p></div>
-</div>
-<div class="qblock" data-correct="d" data-id="q13">
-<p class="q"><strong>Q14.</strong> Une texture « mixée » prescrite doit être…</p>
-<ol class="opts" type="a">
-<li data-cle="a" onclick="window._pickQ(this)">Adaptée à l’envie du jour</li>
-<li data-cle="b" onclick="window._pickQ(this)">Ignorée si la personne mange bien</li>
-<li data-cle="c" onclick="window._pickQ(this)">Décidée par l’AS</li>
-<li data-cle="d" onclick="window._pickQ(this)">Respectée strictement (sécurité déglutition)</li>
-</ol>
-<div class="expl hidden"><strong>Réponse :</strong> <p>La texture modifiée prévient la fausse route → prescription à respecter.<strong> 🎓 À l’oral VAE :</strong> jamais d’écart de texture.</p></div>
-</div>
-</section>
-<script>
-window._pickQ = function(li) {
-  const block = li.closest('.qblock');
-  if (block.dataset.answered) return;
-  block.dataset.answered = '1';
-  const correct = block.dataset.correct;
-  block.querySelectorAll('li').forEach(x => {
-    x.style.cursor = 'default';
-    const isCorrect = (x.dataset.cle === correct);
-    if (isCorrect) x.classList.add('ok');
-    else if (x === li) x.classList.add('ko');
-  });
-  const expl = block.querySelector('.expl');
-  if (expl) expl.classList.remove('hidden');
-};
+function makeQuiz(containerId, data){
+  let qi=0, qs=0, qa=null;
+  const r=()=>{
+    const el=document.getElementById(containerId);
+    if(!el)return;
+    if(qi>=data.length){
+      const pct=Math.round(qs/data.length*100);
+      let cls='ok', msg='Leçon validée. 🎓';
+      if(pct<50){cls='ko';msg='Révisez la leçon avant de passer à la suivante.';}
+      else if(pct<80){cls='mid';msg='À consolider — relisez les points clés.';}
+      el.innerHTML=`<div class="score"><div class="big">${qs}<em>/${data.length}</em></div><div class="label ${cls}">${pct}%</div><p class="msg">${msg}</p><button class="again" onclick="window._r_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qi];qa=null;
+    el.innerHTML=`<div class="count">Question ${qi+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._p_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x||''}</div><button class="nextq" id="${containerId}next" onclick="window._n_${containerId}()">Suivante →</button>`;
+  };
+  window['_p_'+containerId]=(i,btn)=>{
+    if(qa!==null)return;qa=i;const q=data[qi];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok)qs++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qi===data.length-1)document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_n_'+containerId]=()=>{qi++;r()};
+  window['_r_'+containerId]=()=>{qi=0;qs=0;r()};
+  r();
+}
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0, _quizInit=false;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(slides[current].classList.contains('slide-quiz') && !_quizInit){
+    _quizInit=true;
+    makeQuiz('quiz', QUIZ);
+  }
+  slides[current].scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
-  <div class="footer-nav"><a href="B1_L07.html" class="back">← B1_L07</a><a href="../index-lecons.html" class="mid">↑ Catalogue</a><a href="B1_L09.html">B1_L09 →</a></div>
-</div>
 </body></html>
