@@ -415,7 +415,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent
   <div class="brand"><img src="assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
   <span class="ref">MC01 · Référentiel décodé</span>
   <span class="mod" id="modLbl">Accueil</span>
-  <span class="counter" id="counter">1 / 32</span>
+  <span class="counter" id="counter">1 / 37</span>
 </div>
 <div class="progress"><i id="prog"></i></div>
 <div class="dots" id="dots"></div>
@@ -429,7 +429,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent
     <p class="sub">La base de toute votre VAE DEAS. Comprendre exactement ce que fait un aide-soignant — et ce qu'il ne fait pas. Les règles, les pièges, les bonnes phrases pour le jury.</p>
     <div class="meta">
       <span>⏱ 2 h</span>
-      <span>📚 6 modules · 32 slides</span>
+      <span>📚 6 modules · 37 slides</span>
       <span>🎯 Quiz final 20 questions</span>
       <span>🏆 DEAS Niveau 4 CNCP</span>
     </div>
@@ -465,12 +465,12 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent
   <div class="inner">
     <div class="head"><div class="num">2</div><h2>Programme de la masterclass<small>6 modules enchaînés — temps estimé par module</small></h2></div>
     <div class="sommaire">
-      <div class="item" onclick="go(4)"><div class="mn">1</div><div class="mt"><h3>Le cadre légal</h3><p>Articles R.4311-4 & 5, arrêté 28/03/2022, collaboration AS/IDE</p></div><div class="dr">25 min</div></div>
+      <div class="item" onclick="go(3)"><div class="mn">1</div><div class="mt"><h3>Le cadre légal</h3><p>Articles R.4311-4 & 5, arrêté 28/03/2022, collaboration AS/IDE</p></div><div class="dr">25 min</div></div>
       <div class="item" onclick="go(10)"><div class="mn">2</div><div class="mt"><h3>Les 5 blocs & les 12 récits</h3><p>Détail bloc par bloc, pièges, 27 domaines de savoir</p></div><div class="dr">25 min</div></div>
       <div class="item" onclick="go(18)"><div class="mn">3</div><div class="mt"><h3>Mes actes, mes limites</h3><p>Fait / fait jamais / collaboration, 20 situations OUI-NON</p></div><div class="dr">25 min</div></div>
       <div class="item" onclick="go(24)"><div class="mn">4</div><div class="mt"><h3>Risques & protection</h3><p>3 responsabilités, 3 critères éliminatoires, refuser proprement</p></div><div class="dr">15 min</div></div>
-      <div class="item" onclick="go(27)"><div class="mn">5</div><div class="mt"><h3>Préparation oral jury</h3><p>Composition jury, 3 temps, grille cotation, 3 piliers raisonnement</p></div><div class="dr">20 min</div></div>
-      <div class="item" onclick="go(31)"><div class="mn">6</div><div class="mt"><h3>Synthèse & évaluation</h3><p>15 points clés, 12 flashcards, quiz final 20 questions</p></div><div class="dr">10 min</div></div>
+      <div class="item" onclick="go(28)"><div class="mn">5</div><div class="mt"><h3>Préparation oral jury</h3><p>Composition jury, 3 temps, grille cotation, 3 piliers raisonnement</p></div><div class="dr">20 min</div></div>
+      <div class="item" onclick="go(33)"><div class="mn">6</div><div class="mt"><h3>Synthèse & évaluation</h3><p>15 points clés, 12 flashcards, quiz final 20 questions</p></div><div class="dr">10 min</div></div>
     </div>
   </div>
 </section>
@@ -1280,11 +1280,11 @@ function go(n){
   document.getElementById('nextB').disabled=current===TOTAL-1;
   document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
   document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
-  if(current===8&&!renderMini1){renderMini1=makeQuiz('mq1',MINI1);renderMini1()}
-  if(current===21&&!document.querySelector('.situ'))renderSitus();
-  if(current===22&&!renderMini3){renderMini3=makeQuiz('mq3',MINI3);renderMini3()}
-  if(current===28)renderFC();
-  if(current===29&&!renderQuiz){renderQuiz=makeQuiz('qz',QUIZ);renderQuiz()}
+  if(current===9&&!renderMini1){renderMini1=makeQuiz('mq1',MINI1);renderMini1()}
+  if(current===22&&!document.querySelector('.situ'))renderSitus();
+  if(current===23&&!renderMini3){renderMini3=makeQuiz('mq3',MINI3);renderMini3()}
+  if(current===34)renderFC();
+  if(current===35&&!renderQuiz){renderQuiz=makeQuiz('qz',QUIZ);renderQuiz()}
   closeModal();
   slides[current].querySelector('.inner')?.scrollTo(0,0);
 }
