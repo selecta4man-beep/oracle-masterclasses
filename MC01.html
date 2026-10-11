@@ -6,68 +6,58 @@
 <title>MC01 · Le référentiel décodé — ORACLE VAE AS</title>
 <style>
 :root{
-  --oracle-teal:#0d7377;
-  --oracle-teal-dark:#064e51;
-  --oracle-teal-light:#14a098;
-  --oracle-gold:#f5b700;
-  --oracle-pink:#f06292;
-  --oracle-cream:#fdf6e9;
-  --oracle-paper:#f8f1e4;
-  --ink:#1a2332;
-  --ink-soft:#44546b;
-  --card:#ffffff;
+  --oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-teal-light:#14a098;
+  --oracle-gold:#f5b700;--oracle-pink:#f06292;
+  --oracle-cream:#fdf6e9;--oracle-paper:#f8f1e4;
+  --ink:#1a2332;--ink-soft:#44546b;--card:#ffffff;
   --shadow-sm:0 2px 8px rgba(13,115,119,.08);
   --shadow-md:0 8px 24px rgba(13,115,119,.14);
   --shadow-lg:0 20px 60px rgba(13,115,119,.22);
   --radius:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#000}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:#000}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent}
-a{color:inherit}
-
-/* ===== Shell ===== */
 .deck{position:fixed;inset:0;overflow:hidden;background:#07151a}
-.slide{position:absolute;inset:0;display:none;flex-direction:column;opacity:0;transition:opacity .4s ease}
-.slide.on{display:flex;opacity:1;z-index:2}
-.slide.anim{opacity:0}
-.slide.on.anim{animation:slideIn .5s forwards}
-@keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;opacity:0}
+.slide.on{display:flex;opacity:1;z-index:2;animation:fIn .4s ease}
+@keyframes fIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* ===== Top bar ===== */
+/* Top bar */
 .bar{position:fixed;top:0;left:0;right:0;z-index:100;height:48px;background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0));display:flex;align-items:center;padding:0 18px;gap:14px;color:#fff;pointer-events:none}
-.bar .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px;font-size:14px;pointer-events:auto}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;pointer-events:auto}
 .bar .brand img{width:28px;height:28px}
 .bar .ref{opacity:.75;font-size:12px}
 .bar .counter{margin-left:auto;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;pointer-events:auto;backdrop-filter:blur(6px)}
+.bar .mod{background:var(--oracle-gold);color:#1a2332;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;pointer-events:auto}
 .progress{position:fixed;top:48px;left:0;right:0;height:3px;background:rgba(255,255,255,.08);z-index:99}
 .progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-pink));transition:width .4s ease;box-shadow:0 0 10px var(--oracle-gold)}
 
-/* ===== Nav ===== */
+/* Nav */
 .nav{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:100}
 .nav button{min-width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);color:#fff;font-size:18px;transition:all .25s;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.1)}
 .nav button:hover{background:var(--oracle-teal-light);transform:translateY(-2px)}
-.nav button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.nav button:disabled{opacity:.35;cursor:not-allowed}
 .nav .menu{padding:0 18px;border-radius:46px;width:auto;font-size:13px;font-weight:600}
 
-/* ===== Slide types ===== */
+/* Hero */
 .hero{background:#0a2a2f}
 .hero .bg{position:absolute;inset:0;background:url('assets/hero-cover.webp') center/cover no-repeat;filter:brightness(.55) saturate(1.1)}
 .hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,42,47,.75) 0%,rgba(13,115,119,.4) 50%,rgba(240,98,146,.3) 100%)}
 .hero .wrap{position:relative;z-index:2;margin:auto;max-width:980px;padding:40px 32px;color:#fff;text-align:center}
 .hero .kicker{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;background:rgba(0,0,0,.25);backdrop-filter:blur(6px)}
-.hero h1{font-size:clamp(32px,5.5vw,66px);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin-bottom:18px;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hero h1{font-size:clamp(32px,5.5vw,66px);font-weight:900;line-height:1.05;margin-bottom:18px;text-shadow:0 4px 30px rgba(0,0,0,.5)}
 .hero h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.65em;font-weight:600;margin-top:12px;letter-spacing:.08em}
 .hero .sub{font-size:clamp(16px,2vw,22px);opacity:.92;max-width:720px;margin:0 auto 36px;line-height:1.5}
 .hero .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:40px}
 .hero .meta span{background:rgba(255,255,255,.12);border-radius:999px;padding:8px 18px;font-size:13px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
 .hero .cta{display:inline-flex;align-items:center;gap:12px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 36px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4);transition:all .3s}
-.hero .cta:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(245,183,0,.55)}
+.hero .cta:hover{transform:translateY(-3px)}
 .hero .cta svg{width:18px;height:18px}
 .hero .signature{position:absolute;bottom:24px;left:0;right:0;text-align:center;color:#fff;opacity:.85;font-size:12px;z-index:3}
 .hero .signature strong{color:var(--oracle-gold)}
 
-/* ===== Standard slide ===== */
+/* Standard slide */
 .std{background:var(--oracle-cream)}
 .std .inner{display:flex;flex-direction:column;width:100%;height:100%;padding:70px 48px 90px;max-width:1600px;margin:0 auto;overflow:auto}
 .std .head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
@@ -75,189 +65,345 @@ a{color:inherit}
 .std h2{font-size:clamp(22px,3.2vw,38px);font-weight:800;color:var(--oracle-teal-dark);letter-spacing:-.01em;line-height:1.15}
 .std h2 small{display:block;color:var(--ink-soft);font-size:.52em;font-weight:500;margin-top:4px;letter-spacing:0}
 
-/* ===== Objectifs ===== */
+/* Chapter intro */
+.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark) 0%,var(--oracle-teal) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
+.chapter .wrap{max-width:720px}
+.chapter .big{font-size:140px;font-weight:900;color:var(--oracle-gold);line-height:.9;text-shadow:0 10px 40px rgba(0,0,0,.3);opacity:.95}
+.chapter .big em{font-style:normal;color:#fff;display:block;font-size:.2em;margin-top:12px;letter-spacing:.4em;text-transform:uppercase;opacity:.8}
+.chapter h1{font-size:clamp(28px,4.5vw,52px);font-weight:900;margin:28px 0 12px;line-height:1.1}
+.chapter p{font-size:18px;opacity:.95;line-height:1.5}
+.chapter .dura{margin-top:24px;background:rgba(255,255,255,.15);padding:10px 24px;border-radius:999px;display:inline-block;font-size:14px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2)}
+
+/* Objectifs */
 .obj{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
 .obj .card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-md);border:1px solid rgba(13,115,119,.08);position:relative;overflow:hidden}
 .obj .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-teal-light))}
 .obj .card .ico{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--oracle-cream),#fff);border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:28px}
 .obj .card h3{font-size:19px;color:var(--oracle-teal-dark);margin-bottom:10px;font-weight:700}
 .obj .card p{color:var(--ink-soft);line-height:1.55;font-size:15px}
-.duree{margin-top:26px;background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:var(--radius);padding:20px 24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center;box-shadow:var(--shadow-sm);border:1px dashed var(--oracle-teal-light)}
+.duree{grid-column:1/-1;margin-top:26px;background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:var(--radius);padding:20px 24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center;box-shadow:var(--shadow-sm);border:1px dashed var(--oracle-teal-light)}
 .duree>div{text-align:center;min-width:90px}
 .duree strong{display:block;color:var(--oracle-teal);font-size:28px;font-weight:900;line-height:1}
 .duree span{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-top:6px}
 
-/* ===== Fiche interactive (slide 3) ===== */
+/* Sommaire */
+.sommaire{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px;flex:1;overflow:auto}
+.sommaire .item{background:#fff;border-radius:12px;padding:16px 20px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:14px;border-left:5px solid var(--oracle-teal);cursor:pointer;transition:all .2s}
+.sommaire .item:hover{transform:translateX(4px);box-shadow:var(--shadow-md)}
+.sommaire .item .mn{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;font-size:18px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.sommaire .item .mt{flex:1}
+.sommaire .item .mt h3{font-size:16px;color:var(--oracle-teal-dark);font-weight:800;margin-bottom:2px}
+.sommaire .item .mt p{font-size:13px;color:var(--ink-soft)}
+.sommaire .item .dr{background:var(--oracle-gold);color:#1a2332;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800}
+
+/* Fiche interactive */
 .fiche-wrap{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;flex:1;margin-top:16px;min-height:0}
 .fiche-img{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;display:flex;align-items:center;justify-content:center;padding:12px}
 .fiche-img .ficheHolder{position:relative;height:100%;display:inline-block;max-width:100%}
 .fiche-img .ficheHolder img{height:100%;width:auto;max-width:100%;display:block;object-fit:contain}
-.hot{position:absolute;width:44px;height:44px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;font-size:18px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25);transition:all .25s;z-index:2;animation:pulse 2s infinite}
+.hot{position:absolute;width:44px;height:44px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;font-size:18px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25);transition:all .25s;z-index:2;animation:pulse 2s infinite;border:0}
 .hot:hover{transform:scale(1.18);background:var(--oracle-pink);color:#fff;z-index:3}
 @keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25)}50%{box-shadow:0 4px 16px rgba(245,183,0,.7),0 0 0 10px rgba(245,183,0,0)}}
 .fiche-side{display:flex;flex-direction:column;gap:16px;overflow:auto;padding-right:4px}
-.fiche-side h3{font-size:16px;color:var(--oracle-teal-dark);font-weight:800;letter-spacing:.02em;text-transform:uppercase;margin-bottom:4px}
-.fiche-side p{color:var(--ink-soft);line-height:1.55;font-size:14px;margin-bottom:8px}
+.fiche-side h3{font-size:16px;color:var(--oracle-teal-dark);font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.fiche-side p{color:var(--ink-soft);line-height:1.55;font-size:14px}
 .fiche-side .ptip{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-left:4px solid var(--oracle-gold);padding:14px 16px;border-radius:8px;font-size:13px;line-height:1.5;color:var(--ink-soft);box-shadow:var(--shadow-sm)}
 .fiche-side .ptip strong{color:var(--oracle-teal-dark)}
 .chapters{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.chapters button{background:#fff;border:1px solid rgba(13,115,119,.1);border-radius:10px;padding:10px 10px;text-align:left;color:var(--ink);font-size:12px;font-weight:600;transition:all .2s;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:8px}
-.chapters button:hover{background:var(--oracle-teal);color:#fff;transform:translateX(2px)}
+.chapters button{background:#fff;border:1px solid rgba(13,115,119,.1);border-radius:10px;padding:10px;text-align:left;color:var(--ink);font-size:12px;font-weight:600;transition:all .2s;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:8px}
+.chapters button:hover{background:var(--oracle-teal);color:#fff}
 .chapters button b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--oracle-teal);color:#fff;font-size:11px;flex-shrink:0}
 .chapters button:hover b{background:var(--oracle-gold);color:#1a2332}
 
-/* ===== Modal ===== */
-.modal-bg{position:fixed;inset:0;background:rgba(10,30,36,.72);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .25s ease}
-.modal-bg.on{display:flex}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:#fff;border-radius:18px;max-width:720px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:modalIn .35s cubic-bezier(.3,1.3,.5,1.0)}
-@keyframes modalIn{from{transform:translateY(20px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-.modal .mhead{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:22px 28px;display:flex;align-items:center;gap:14px;position:relative}
-.modal .mhead .mnum{width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
-.modal .mhead h3{font-size:20px;font-weight:800;flex:1}
-.modal .mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:18px;display:inline-flex;align-items:center;justify-content:center}
-.modal .mclose:hover{background:rgba(255,255,255,.35)}
-.modal .mbody{padding:28px;overflow:auto;color:var(--ink)}
-.modal .mbody h4{color:var(--oracle-teal-dark);font-size:15px;margin:16px 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
-.modal .mbody h4:first-child{margin-top:0}
-.modal .mbody ul{margin:4px 0 12px 20px;line-height:1.6;font-size:14.5px;color:var(--ink-soft)}
-.modal .mbody ul li{margin-bottom:6px}
-.modal .mbody .q{background:var(--oracle-cream);border-radius:12px;padding:18px;margin-top:10px;border-left:4px solid var(--oracle-pink)}
-.modal .mbody .q p{font-weight:600;color:var(--ink);margin-bottom:12px}
-.modal .mbody .q .opts{display:flex;flex-direction:column;gap:8px}
-.modal .mbody .q .opts button{background:#fff;border:2px solid rgba(13,115,119,.15);border-radius:10px;padding:11px 14px;text-align:left;font-size:14px;transition:all .2s}
-.modal .mbody .q .opts button:hover{border-color:var(--oracle-teal-light)}
-.modal .mbody .q .opts button.ok{background:#dcf5e4;border-color:#2ea84f;color:#0e5e2a;font-weight:700}
-.modal .mbody .q .opts button.ko{background:#fde3e3;border-color:#d65757;color:#8a1a1a;font-weight:700}
-.modal .mbody .q .fb{display:none;margin-top:12px;padding:12px;border-radius:8px;font-size:14px;line-height:1.5}
-.modal .mbody .q .fb.on{display:block}
-.modal .mbody .q .fb.good{background:#dcf5e4;color:#0e5e2a;border-left:4px solid #2ea84f}
-.modal .mbody .q .fb.bad{background:#fde3e3;color:#8a1a1a;border-left:4px solid #d65757}
+/* Article code expliqué */
+.article{background:#fff;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-md);margin-top:16px;flex:1;overflow:auto;display:grid;grid-template-columns:280px 1fr;gap:28px}
+.article .code{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal));color:#fff;border-radius:12px;padding:24px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.article .code .lbl{font-size:11px;letter-spacing:3px;text-transform:uppercase;opacity:.8;margin-bottom:10px}
+.article .code .ref{font-size:34px;font-weight:900;line-height:1;margin-bottom:12px;color:var(--oracle-gold)}
+.article .code .ty{font-size:14px;opacity:.95;line-height:1.4}
+.article .expl h3{color:var(--oracle-teal-dark);font-size:18px;margin-bottom:10px;font-weight:800}
+.article .expl ul{list-style:none;margin-top:12px}
+.article .expl ul li{padding:10px 0 10px 28px;position:relative;font-size:14.5px;line-height:1.5;color:var(--ink);border-bottom:1px dashed rgba(13,115,119,.1)}
+.article .expl ul li:last-child{border-bottom:0}
+.article .expl ul li::before{content:"→";position:absolute;left:0;color:var(--oracle-teal);font-weight:900}
+.article .expl ul li b{color:var(--oracle-teal-dark)}
+.article .expl .warn{margin-top:16px;background:#fff3cd;border-left:4px solid var(--oracle-gold);padding:14px 16px;border-radius:8px;font-size:14px;line-height:1.5;color:#5a4500}
+.article .expl .warn b{color:#8a6a00}
 
-/* ===== 5 Blocs ===== */
+/* Arrêté timeline */
+.timeline{display:flex;flex-direction:column;gap:14px;margin-top:20px;flex:1;overflow:auto}
+.tl{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:140px 1fr;gap:20px;align-items:center;border-left:5px solid var(--oracle-teal)}
+.tl.active{border-left-color:var(--oracle-gold);background:linear-gradient(90deg,var(--oracle-cream) 0%,#fff 25%)}
+.tl .d{color:var(--oracle-teal-dark);font-weight:800;font-size:15px}
+.tl .d em{font-style:normal;color:var(--oracle-pink);display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.tl .c h3{color:var(--ink);font-size:15px;margin-bottom:4px;font-weight:800}
+.tl .c p{color:var(--ink-soft);font-size:13.5px;line-height:1.5}
+
+/* 5 blocs */
 .blocs{display:flex;flex-direction:column;gap:12px;margin-top:24px;flex:1;overflow:auto}
 .bloc{background:#fff;border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:20px;transition:all .3s;cursor:pointer;border-left:6px solid var(--oracle-teal)}
 .bloc:hover{transform:translateX(4px);box-shadow:var(--shadow-md)}
-.bloc.open{box-shadow:var(--shadow-lg)}
 .bloc .bn{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;font-size:22px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 .bloc .bt{flex:1}
 .bloc .bt h3{color:var(--oracle-teal-dark);font-size:17px;font-weight:800;margin-bottom:3px}
 .bloc .bt p{color:var(--ink-soft);font-size:13.5px}
 .bloc .bc{background:var(--oracle-pink);color:#fff;font-weight:700;padding:4px 12px;border-radius:999px;font-size:12px;flex-shrink:0}
-.bloc-detail{display:none;grid-column:1/-1;background:var(--oracle-cream);border-radius:0 0 var(--radius) var(--radius);padding:16px 20px;margin:-6px 0 0 0;border-top:1px dashed rgba(13,115,119,.2);font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+.bloc-detail{display:none;background:var(--oracle-cream);border-radius:0 0 var(--radius) var(--radius);padding:16px 20px;border-top:1px dashed rgba(13,115,119,.2);font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
 .bloc-detail.on{display:block}
 .bloc-detail strong{color:var(--oracle-teal-dark)}
+.bloc-detail em{color:var(--oracle-pink);font-style:normal;font-weight:700}
 
-/* ===== Fais / Fais pas ===== */
+/* Bloc détaillé (slide par bloc) */
+.bloc-page{display:grid;grid-template-columns:60px 1fr;gap:24px;margin-top:16px;flex:1;overflow:auto}
+.bloc-page .bside{background:linear-gradient(180deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:50px;font-weight:900;padding:20px 0;writing-mode:vertical-rl;transform:rotate(180deg)}
+.bloc-page .bmain{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:start}
+.bloc-page .bmain>div{background:#fff;border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.bloc-page .bmain h3{color:var(--oracle-teal-dark);font-size:16px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.bloc-page .bmain h3 .mi{width:28px;height:28px;background:var(--oracle-cream);border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+.bloc-page .bmain ul{list-style:none}
+.bloc-page .bmain ul li{padding:5px 0 5px 18px;position:relative;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.bloc-page .bmain ul li::before{content:"•";position:absolute;left:4px;color:var(--oracle-teal);font-weight:900}
+.bloc-page .bmain .trap{grid-column:1/-1;background:linear-gradient(135deg,#fff3cd,#ffeaa7);border-left:5px solid var(--oracle-gold);padding:16px 20px;border-radius:12px;color:#5a4500;font-size:14px;line-height:1.5}
+.bloc-page .bmain .trap b{color:#8a6a00}
+
+/* 27 domaines grid */
+.domaines{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px;flex:1;overflow:auto;align-content:start}
+.dom-block{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-sm);border-top:4px solid var(--oracle-teal)}
+.dom-block h3{color:var(--oracle-teal-dark);font-size:14px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.dom-block h3 span{background:var(--oracle-teal);color:#fff;padding:2px 8px;border-radius:999px;font-size:11px}
+.dom-block ol{margin-left:16px;font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.dom-block ol li{padding:2px 0}
+
+/* Fait / fait pas */
 .vs{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;flex:1;overflow:auto}
 .col{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-md)}
 .col.yes{border-top:5px solid #2ea84f}
 .col.no{border-top:5px solid #d65757}
+.col.collab{border-top:5px solid var(--oracle-gold)}
 .col h3{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;margin-bottom:16px}
 .col.yes h3{color:#0e5e2a}
 .col.no h3{color:#8a1a1a}
+.col.collab h3{color:#8a6a00}
 .col h3 .ico{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:900}
 .col.yes h3 .ico{background:#dcf5e4;color:#2ea84f}
 .col.no h3 .ico{background:#fde3e3;color:#d65757}
+.col.collab h3 .ico{background:#fef2d0;color:#8a6a00}
 .col ul{list-style:none}
 .col ul li{padding:9px 0 9px 28px;position:relative;font-size:14px;line-height:1.5;border-bottom:1px solid rgba(0,0,0,.04)}
 .col ul li:last-child{border-bottom:0}
 .col.yes ul li::before{content:"✓";position:absolute;left:4px;color:#2ea84f;font-weight:900}
 .col.no ul li::before{content:"✕";position:absolute;left:4px;color:#d65757;font-weight:900}
+.col.collab ul li::before{content:"◆";position:absolute;left:4px;color:#8a6a00;font-weight:900}
 
-/* ===== Risques ===== */
-.risques{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:24px;flex:1}
-.risque{background:#fff;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-md);text-align:center;position:relative;overflow:hidden}
+/* Rôle quotidien */
+.role-split{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:16px;flex:1;overflow:auto}
+.role-split .pic{background:#fff;border-radius:14px;padding:0;box-shadow:var(--shadow-md);overflow:hidden}
+.role-split .pic img{width:100%;height:auto;display:block}
+.role-split .list{display:flex;flex-direction:column;gap:12px}
+.role-split .list .ch{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm)}
+.role-split .list .ch.c1{border-left:4px solid var(--oracle-teal-light)}
+.role-split .list .ch.c2{border-left:4px solid var(--oracle-pink)}
+.role-split .list .ch.c3{border-left:4px solid var(--oracle-gold)}
+.role-split .list .ch h4{color:var(--oracle-teal-dark);margin-bottom:6px;font-size:15px}
+.role-split .list .ch p{font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.role-split .list .ptip{background:var(--oracle-cream);border-radius:12px;padding:16px;border:1px dashed var(--oracle-teal);font-size:13px;color:var(--ink-soft);line-height:1.55}
+.role-split .list .ptip strong{color:var(--oracle-teal-dark)}
+
+/* Situations grid */
+.situs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;flex:1;overflow:auto;align-content:start}
+.situ{background:#fff;border-radius:10px;padding:14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px}
+.situ p{font-size:13.5px;color:var(--ink);line-height:1.4}
+.situ p b{color:var(--oracle-teal);margin-right:6px}
+.situ .btns{display:flex;gap:6px}
+.situ .sb{flex:1;font-weight:700;padding:7px;border-radius:7px;border:2px solid transparent;font-size:12.5px;cursor:pointer;transition:all .2s}
+.situ .sb.y{background:#dcf5e4;color:#0e5e2a}
+.situ .sb.n{background:#fde3e3;color:#8a1a1a}
+.situ .sfb{display:none;font-size:12px;padding:8px;border-radius:7px;line-height:1.4}
+
+/* Risques */
+.risques{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px}
+.risque{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-md);text-align:center;position:relative;overflow:hidden}
 .risque::before{content:"";position:absolute;top:0;left:0;right:0;height:6px}
 .risque.penal::before{background:#d65757}
 .risque.civil::before{background:#f5b700}
 .risque.disc::before{background:#9c5bb3}
-.risque .icon{width:64px;height:64px;border-radius:50%;margin:4px auto 16px;display:inline-flex;align-items:center;justify-content:center;font-size:28px}
+.risque .icon{width:60px;height:60px;border-radius:50%;margin:4px auto 14px;display:inline-flex;align-items:center;justify-content:center;font-size:26px}
 .risque.penal .icon{background:#fde3e3;color:#8a1a1a}
 .risque.civil .icon{background:#fef2d0;color:#8a6a00}
 .risque.disc .icon{background:#efdef7;color:#5a2d75}
-.risque h3{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:12px}
-.risque p{color:var(--ink-soft);font-size:14px;line-height:1.55;margin-bottom:12px;text-align:left}
-.risque .ex{background:var(--oracle-cream);border-radius:8px;padding:12px;font-size:13px;color:var(--ink-soft);text-align:left;line-height:1.5}
-.risque .ex b{color:var(--oracle-teal-dark);display:block;margin-bottom:4px}
+.risque h3{font-size:17px;font-weight:800;margin-bottom:10px}
+.risque p{color:var(--ink-soft);font-size:13.5px;line-height:1.5;margin-bottom:10px;text-align:left}
+.risque .ex{background:var(--oracle-cream);border-radius:8px;padding:11px;font-size:12.5px;color:var(--ink-soft);text-align:left;line-height:1.5}
+.risque .ex b{color:var(--oracle-teal-dark);display:block;margin-bottom:3px}
 
-/* ===== Points clés ===== */
-.cles{background:#fff;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-md);margin-top:20px;flex:1;overflow:auto}
-.cles .item{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px dashed rgba(13,115,119,.1);cursor:pointer;transition:all .2s}
-.cles .item:last-child{border-bottom:0}
-.cles .item:hover{padding-left:6px}
-.cles .cb{width:26px;height:26px;border-radius:8px;border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0;transition:all .2s;margin-top:2px}
+/* Critères éliminatoires */
+.elim{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px}
+.elim .card{background:#fff;border-radius:14px;padding:24px;box-shadow:var(--shadow-md);text-align:center;border-top:5px solid #d65757;position:relative}
+.elim .card .num{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:40px;height:40px;background:#d65757;color:#fff;border-radius:50%;font-weight:900;display:inline-flex;align-items:center;justify-content:center;font-size:18px;box-shadow:var(--shadow-md)}
+.elim .card h3{color:#8a1a1a;font-size:16px;font-weight:800;margin:12px 0 10px}
+.elim .card p{color:var(--ink-soft);font-size:13.5px;line-height:1.5}
+
+/* Jury composition */
+.jury{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;flex:1;overflow:auto}
+.jury .card{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--shadow-md)}
+.jury .card h3{color:var(--oracle-teal-dark);font-size:17px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.jury .card h3 .mi{width:36px;height:36px;background:var(--oracle-cream);border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:18px}
+.jury .card ul{list-style:none}
+.jury .card ul li{padding:7px 0 7px 20px;position:relative;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.jury .card ul li::before{content:"▸";position:absolute;left:0;color:var(--oracle-teal);font-weight:900}
+
+/* 3 temps timeline */
+.temps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;flex:1;overflow:auto;align-content:start}
+.temp{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--shadow-md);border-top:5px solid var(--oracle-teal);position:relative}
+.temp::before{content:attr(data-t);position:absolute;top:-18px;left:20px;background:var(--oracle-teal);color:#fff;padding:4px 14px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.temp h3{color:var(--oracle-teal-dark);font-size:16px;font-weight:800;margin:8px 0 10px}
+.temp .dur{color:var(--oracle-pink);font-size:13px;font-weight:700;margin-bottom:10px}
+.temp ul{list-style:none}
+.temp ul li{padding:6px 0 6px 20px;position:relative;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.temp ul li::before{content:"→";position:absolute;left:0;color:var(--oracle-teal);font-weight:900}
+
+/* Grille cotation */
+.cotation{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px;flex:1}
+.cot{background:#fff;border-radius:14px;padding:24px;box-shadow:var(--shadow-md);text-align:center;position:relative;border-top:5px solid}
+.cot.acq{border-color:#2ea84f}
+.cot.ver{border-color:#f5b700}
+.cot.non{border-color:#d65757}
+.cot .lbl{display:inline-block;padding:6px 16px;border-radius:999px;font-weight:800;font-size:14px;margin-bottom:14px;letter-spacing:1px}
+.cot.acq .lbl{background:#dcf5e4;color:#0e5e2a}
+.cot.ver .lbl{background:#fef2d0;color:#8a6a00}
+.cot.non .lbl{background:#fde3e3;color:#8a1a1a}
+.cot p{color:var(--ink-soft);font-size:13.5px;line-height:1.55;margin-bottom:12px;text-align:left}
+.cot .ex{background:var(--oracle-cream);border-radius:8px;padding:12px;font-size:12.5px;line-height:1.5;text-align:left;color:var(--ink-soft)}
+.cot .ex b{color:var(--oracle-teal-dark)}
+
+/* 3 piliers */
+.piliers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px;flex:1}
+.pil{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:16px;padding:28px 22px;box-shadow:var(--shadow-md);text-align:center;border-top:6px solid var(--oracle-pink)}
+.pil .num{font-size:60px;font-weight:900;color:var(--oracle-pink);line-height:.9;margin-bottom:12px;opacity:.3}
+.pil h3{color:var(--oracle-teal-dark);font-size:17px;font-weight:900;margin-bottom:14px}
+.pil .q{background:#fff;border-radius:10px;padding:14px;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:10px;border-left:4px solid var(--oracle-gold)}
+.pil .q em{font-style:normal;color:var(--oracle-pink)}
+.pil p{color:var(--ink-soft);font-size:13px;line-height:1.5}
+
+/* Points clés checkbox */
+.cles{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-md);margin-top:16px;flex:1;overflow:auto}
+.cles .item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(13,115,119,.1);cursor:pointer}
+.cles .item:last-of-type{border-bottom:0}
+.cles .cb{width:24px;height:24px;border-radius:7px;border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0;transition:all .2s;margin-top:1px}
 .cles .item.ok .cb{background:var(--oracle-teal);border-color:var(--oracle-teal)}
-.cles .item p{font-size:15px;line-height:1.55;color:var(--ink)}
+.cles .item p{font-size:14px;line-height:1.5;color:var(--ink)}
 .cles .item.ok p{color:var(--ink-soft);text-decoration:line-through}
-.cles .progress-m{margin-top:16px;background:var(--oracle-cream);border-radius:10px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:600;color:var(--oracle-teal-dark)}
+.cles .progress-m{margin-top:14px;background:var(--oracle-cream);border-radius:10px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--oracle-teal-dark)}
 .cles .pb{width:200px;height:8px;background:rgba(13,115,119,.15);border-radius:999px;overflow:hidden}
 .cles .pb i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-gold));width:0;transition:width .4s}
 
-/* ===== Quiz final ===== */
-.qz{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);padding:32px;margin-top:20px;max-width:900px;margin-left:auto;margin-right:auto;flex:1;display:flex;flex-direction:column}
+/* Flashcards */
+.flashwrap{margin-top:16px;flex:1;display:flex;flex-direction:column;overflow:auto}
+.flashbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;background:#fff;padding:10px 18px;border-radius:10px;box-shadow:var(--shadow-sm)}
+.flashbar span{font-weight:700;color:var(--oracle-teal-dark);font-size:14px}
+.flashbar button{background:var(--oracle-teal);color:#fff;padding:6px 14px;border-radius:8px;font-weight:700;font-size:13px}
+.flashbar button:hover{background:var(--oracle-teal-dark)}
+.flashcard{perspective:1200px;flex:1;min-height:320px;max-height:480px;cursor:pointer}
+.flashcard .flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s}
+.flashcard.turned .flip{transform:rotateY(180deg)}
+.flashcard .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.flashcard .face.front{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff}
+.flashcard .face.back{background:#fff;color:var(--ink);transform:rotateY(180deg)}
+.flashcard .face .hint{font-size:11px;letter-spacing:3px;text-transform:uppercase;opacity:.65;margin-bottom:20px}
+.flashcard .face.front h3{font-size:28px;font-weight:800;line-height:1.3;max-width:640px}
+.flashcard .face.back h3{color:var(--oracle-teal-dark);font-size:18px;margin-bottom:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.flashcard .face.back p{color:var(--ink);font-size:17px;line-height:1.5;max-width:640px;font-weight:500}
+.flashcard .tap{position:absolute;bottom:12px;left:0;right:0;text-align:center;opacity:.65;font-size:12px}
+
+/* Quiz final */
+.qz{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);padding:28px;margin-top:16px;max-width:900px;margin-left:auto;margin-right:auto;flex:1;display:flex;flex-direction:column}
 .qz .count{color:var(--oracle-teal);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
-.qz .question{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:20px;line-height:1.35}
-.qz .answers{display:flex;flex-direction:column;gap:10px}
-.qz .answers button{background:#fff;border:2px solid rgba(13,115,119,.15);border-radius:12px;padding:14px 18px;text-align:left;font-size:15px;transition:all .2s;display:flex;align-items:center;gap:12px}
+.qz .question{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35}
+.qz .answers{display:flex;flex-direction:column;gap:9px}
+.qz .answers button{background:#fff;border:2px solid rgba(13,115,119,.15);border-radius:12px;padding:12px 16px;text-align:left;font-size:14.5px;transition:all .2s;display:flex;align-items:center;gap:12px}
 .qz .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
 .qz .answers button.ok{background:#dcf5e4;border-color:#2ea84f;color:#0e5e2a;font-weight:700}
 .qz .answers button.ko{background:#fde3e3;border-color:#d65757;color:#8a1a1a;font-weight:700}
-.qz .answers button .letter{width:30px;height:30px;border-radius:8px;background:var(--oracle-cream);display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.qz .answers button .letter{width:28px;height:28px;border-radius:8px;background:var(--oracle-cream);display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:13px}
 .qz .answers button.ok .letter{background:#2ea84f;color:#fff}
 .qz .answers button.ko .letter{background:#d65757;color:#fff}
-.qz .expl{display:none;margin-top:16px;padding:16px;background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);border-radius:8px;font-size:14px;line-height:1.6;color:var(--ink-soft)}
+.qz .expl{display:none;margin-top:14px;padding:14px;background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);border-radius:8px;font-size:14px;line-height:1.55;color:var(--ink-soft)}
 .qz .expl.on{display:block}
-.qz .nextq{margin-top:16px;background:var(--oracle-teal);color:#fff;padding:12px 24px;border-radius:999px;font-weight:700;display:inline-block;align-self:flex-end;display:none}
+.qz .nextq{display:none;margin-top:12px;background:var(--oracle-teal);color:#fff;padding:10px 22px;border-radius:999px;font-weight:700;align-self:flex-end;font-size:13.5px}
 .qz .nextq.on{display:inline-block}
 .qz .nextq:hover{background:var(--oracle-teal-dark)}
 
-/* ===== Score ===== */
-.score{text-align:center;padding:40px}
+/* Score */
+.score{text-align:center;padding:30px}
 .score .big{font-size:88px;font-weight:900;color:var(--oracle-teal);line-height:1;margin-bottom:8px}
 .score .big em{font-style:normal;color:var(--ink-soft);font-size:.4em;font-weight:400}
-.score .label{font-size:20px;font-weight:700;margin-bottom:28px}
+.score .label{font-size:20px;font-weight:700;margin-bottom:24px}
 .score .label.ok{color:#0e5e2a}
 .score .label.mid{color:#8a6a00}
 .score .label.ko{color:#8a1a1a}
-.score .msg{font-size:16px;color:var(--ink-soft);line-height:1.55;max-width:500px;margin:0 auto 28px}
-.score .again{background:var(--oracle-teal);color:#fff;padding:12px 28px;border-radius:999px;font-weight:700}
-.score .again:hover{background:var(--oracle-teal-dark)}
+.score .msg{font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:500px;margin:0 auto 24px}
+.score .again{background:var(--oracle-teal);color:#fff;padding:10px 24px;border-radius:999px;font-weight:700}
 
-/* ===== End ===== */
+/* End */
 .end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal) 50%,var(--oracle-pink) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
 .end .wrap{max-width:720px}
 .end .ok{width:92px;height:92px;border-radius:50%;background:rgba(255,255,255,.2);display:inline-flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:24px;backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.3)}
 .end h1{font-size:clamp(32px,5vw,52px);font-weight:900;margin-bottom:14px;line-height:1.1}
 .end h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.6em;margin-top:8px}
 .end p{font-size:18px;opacity:.95;line-height:1.5;margin-bottom:32px}
-.end .nxt{display:inline-flex;align-items:center;gap:14px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 32px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4);transition:all .3s}
-.end .nxt:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(245,183,0,.55)}
+.end .nxt{display:inline-flex;align-items:center;gap:14px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 32px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4)}
+.end .nxt:hover{transform:translateY(-3px)}
 .end .nxt svg{width:20px;height:20px}
 .end .mini{margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.end .mini a{background:rgba(255,255,255,.14);padding:10px 20px;border-radius:999px;font-size:13px;color:#fff;text-decoration:none;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);transition:all .25s}
+.end .mini a{background:rgba(255,255,255,.14);padding:10px 20px;border-radius:999px;font-size:13px;color:#fff;text-decoration:none;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
 .end .mini a:hover{background:rgba(255,255,255,.25)}
 
-/* ===== Dot indicator ===== */
-.dots{position:fixed;left:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:99}
-.dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .3s;cursor:pointer;display:block}
-.dots span.on{background:var(--oracle-gold);box-shadow:0 0 10px var(--oracle-gold);width:10px;height:10px}
-.dots span:hover{background:rgba(255,255,255,.6)}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(10,30,36,.72);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;animation:fIn .25s ease}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:720px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:mIn .35s cubic-bezier(.3,1.3,.5,1)}
+@keyframes mIn{from{transform:translateY(20px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.modal .mhead{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:22px 28px;display:flex;align-items:center;gap:14px;position:relative}
+.modal .mhead .mnum{width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
+.modal .mhead h3{font-size:20px;font-weight:800;flex:1}
+.modal .mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+.modal .mclose:hover{background:rgba(255,255,255,.35)}
+.modal .mbody{padding:28px;overflow:auto;color:var(--ink)}
+.modal .mbody h4{color:var(--oracle-teal-dark);font-size:14px;margin:16px 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.modal .mbody h4:first-child{margin-top:0}
+.modal .mbody ul{margin:4px 0 12px 20px;line-height:1.6;font-size:14px;color:var(--ink-soft)}
+.modal .mbody ul li{margin-bottom:5px}
+.modal .mbody .q{background:var(--oracle-cream);border-radius:12px;padding:16px;margin-top:10px;border-left:4px solid var(--oracle-pink)}
+.modal .mbody .q p{font-weight:600;color:var(--ink);margin-bottom:10px;font-size:14.5px}
+.modal .mbody .q .opts{display:flex;flex-direction:column;gap:7px}
+.modal .mbody .q .opts button{background:#fff;border:2px solid rgba(13,115,119,.15);border-radius:10px;padding:10px 12px;text-align:left;font-size:13.5px}
+.modal .mbody .q .opts button:hover{border-color:var(--oracle-teal-light)}
+.modal .mbody .q .opts button.ok{background:#dcf5e4;border-color:#2ea84f;color:#0e5e2a;font-weight:700}
+.modal .mbody .q .opts button.ko{background:#fde3e3;border-color:#d65757;color:#8a1a1a;font-weight:700}
+.modal .mbody .q .fb{display:none;margin-top:10px;padding:11px;border-radius:8px;font-size:13.5px;line-height:1.5}
+.modal .mbody .q .fb.on{display:block}
+.modal .mbody .q .fb.good{background:#dcf5e4;color:#0e5e2a;border-left:4px solid #2ea84f}
+.modal .mbody .q .fb.bad{background:#fde3e3;color:#8a1a1a;border-left:4px solid #d65757}
+
+/* Dots */
+.dots{position:fixed;left:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:99;max-height:70vh;overflow:hidden}
+.dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s;cursor:pointer;display:block}
+.dots span.on{background:var(--oracle-gold);box-shadow:0 0 10px var(--oracle-gold);width:9px;height:9px}
+.dots span.sep{height:1px;width:12px;background:rgba(255,255,255,.15);margin:4px 0}
 .std .dots span{background:rgba(13,115,119,.3)}
 .std .dots span.on{background:var(--oracle-teal)}
 
-/* ===== Responsive ===== */
 @media(max-width:1024px){
-  .obj,.risques{grid-template-columns:1fr 1fr}
-  .fiche-wrap{grid-template-columns:1fr;grid-template-rows:auto auto}
-  .fiche-img{max-height:50vh}
-  .vs{grid-template-columns:1fr}
+  .obj,.risques,.elim,.sommaire,.jury,.temps,.cotation,.piliers,.domaines{grid-template-columns:1fr 1fr}
+  .fiche-wrap,.role-split,.vs,.article{grid-template-columns:1fr}
+  .bloc-page{grid-template-columns:1fr}
+  .bloc-page .bside{writing-mode:horizontal-tb;transform:none;font-size:30px;padding:10px}
 }
 @media(max-width:640px){
   .std .inner{padding:60px 20px 90px}
-  .obj,.risques{grid-template-columns:1fr}
+  .obj,.risques,.elim,.sommaire,.jury,.temps,.cotation,.piliers,.domaines{grid-template-columns:1fr}
   .chapters{grid-template-columns:1fr}
-  .hero h1{font-size:34px}
+  .hero h1{font-size:32px}
 }
 </style>
 </head>
@@ -265,77 +411,87 @@ a{color:inherit}
 
 <div class="deck" id="deck">
 
-<!-- Top bar -->
 <div class="bar">
   <div class="brand"><img src="assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
   <span class="ref">MC01 · Référentiel décodé</span>
-  <span class="counter" id="counter">1 / 11</span>
+  <span class="mod" id="modLbl">Accueil</span>
+  <span class="counter" id="counter">1 / 32</span>
 </div>
 <div class="progress"><i id="prog"></i></div>
-
-<!-- Dots -->
 <div class="dots" id="dots"></div>
 
-<!-- SLIDE 1 — HERO -->
-<section class="slide hero on">
+<!-- 1. HERO -->
+<section class="slide hero on" data-mod="Accueil">
   <div class="bg"></div>
   <div class="wrap">
     <span class="kicker">Masterclass 01</span>
-    <h1>Le référentiel décodé<em>Champ de compétence · Rôle propre · Les 5 blocs · Les 11 activités</em></h1>
-    <p class="sub">Comprendre exactement ce que fait un aide-soignant — et ce qu'il ne fait pas. La base de tout votre Livret 2.</p>
+    <h1>Le référentiel décodé<em>Champ de compétence · Rôle propre · Les 5 blocs · Les 12 récits</em></h1>
+    <p class="sub">La base de toute votre VAE DEAS. Comprendre exactement ce que fait un aide-soignant — et ce qu'il ne fait pas. Les règles, les pièges, les bonnes phrases pour le jury.</p>
     <div class="meta">
-      <span>⏱ 25 min</span>
-      <span>📚 8 chapitres</span>
-      <span>🎯 Quiz final 12 questions</span>
-      <span>🏆 Niveau DEAS</span>
+      <span>⏱ 2 h</span>
+      <span>📚 6 modules · 32 slides</span>
+      <span>🎯 Quiz final 20 questions</span>
+      <span>🏆 DEAS Niveau 4 CNCP</span>
     </div>
     <button class="cta" onclick="go(1)">Commencer la masterclass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-  <div class="signature">
-    Formation <strong>ORACLE VAE AS</strong> · Stéphane Forman — Architecte de parcours VAE
-  </div>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · Stéphane Forman — Architecte accompagnateur de parcours VAE</div>
 </section>
 
-<!-- SLIDE 2 — OBJECTIFS -->
-<section class="slide std">
+<!-- 2. OBJECTIFS -->
+<section class="slide std" data-mod="Accueil">
   <div class="inner">
-    <div class="head"><div class="num">1</div><h2>Objectifs de cette masterclass<small>À l'issue des 25 minutes, vous saurez répondre à trois questions-piège du jury</small></h2></div>
+    <div class="head"><div class="num">1</div><h2>Objectifs & prérequis<small>Ce que vous saurez à l'issue des 2 heures</small></h2></div>
     <div class="obj">
-      <div class="card">
-        <div class="ico">⚖️</div>
-        <h3>Comprendre le cadre légal</h3>
-        <p>Distinguer <strong>R.4311-4</strong> (champ de l'AS) et <strong>R.4311-5</strong> (rôle propre infirmier) — l'erreur classique en jury.</p>
-      </div>
-      <div class="card">
-        <div class="ico">🎯</div>
-        <h3>Identifier mes actes et mes limites</h3>
-        <p>Savoir ce que l'AS fait, ne fait pas, et ce qu'il fait en <strong>collaboration</strong> avec l'IDE.</p>
-      </div>
-      <div class="card">
-        <div class="ico">🛡</div>
-        <h3>Prévenir le dépassement</h3>
-        <p>Connaître les <strong>risques civil, pénal et disciplinaire</strong> si vous sortez de votre champ.</p>
+      <div class="card"><div class="ico">⚖️</div><h3>Comprendre le cadre légal</h3><p>Distinguer <b>R.4311-4</b> (champ AS) et <b>R.4311-5</b> (rôle propre IDE). L'erreur-piège favorite du jury.</p></div>
+      <div class="card"><div class="ico">🎯</div><h3>Identifier mes actes et limites</h3><p>Savoir ce que l'AS fait, ne fait pas, et ce qu'il fait en <b>collaboration</b> avec l'IDE.</p></div>
+      <div class="card"><div class="ico">🛡</div><h3>Prévenir le dépassement</h3><p>Connaître les <b>risques civil, pénal et disciplinaire</b> et savoir refuser proprement.</p></div>
+      <div class="duree">
+        <div><strong>5</strong><span>Blocs DEAS</span></div>
+        <div><strong>11</strong><span>Activités</span></div>
+        <div><strong>12</strong><span>Récits à produire</span></div>
+        <div><strong>18</strong><span>Éléments total</span></div>
+        <div><strong>27</strong><span>Domaines savoir</span></div>
       </div>
     </div>
-    <div class="duree">
-      <div><strong>5</strong><span>Blocs DEAS</span></div>
-      <div><strong>11</strong><span>Activités</span></div>
-      <div><strong>12</strong><span>Récits à produire</span></div>
-      <div><strong>18</strong><span>Éléments total</span></div>
-      <div><strong>27</strong><span>Domaines savoir</span></div>
+    <div style="margin-top:20px;background:#fff;border-radius:12px;padding:18px 22px;box-shadow:var(--shadow-sm);border-left:5px solid var(--oracle-gold);font-size:14px;line-height:1.6;color:var(--ink-soft)">
+      <strong style="color:var(--oracle-teal-dark)">Prérequis</strong> — Aucun diplôme préalable n'est requis pour suivre MC01. Il vous suffit d'exercer ou d'avoir exercé des missions d'aide à la personne. Prévoyez un cahier et un crayon : vous allez prendre des notes.
     </div>
   </div>
 </section>
 
-<!-- SLIDE 3 — FICHE INTERACTIVE (centerpiece) -->
-<section class="slide std">
+<!-- 3. SOMMAIRE -->
+<section class="slide std" data-mod="Accueil">
   <div class="inner">
-    <div class="head"><div class="num">2</div><h2>Le champ de compétence en 8 points<small>Cliquez sur chaque pastille dorée pour explorer la section</small></h2></div>
+    <div class="head"><div class="num">2</div><h2>Programme de la masterclass<small>6 modules enchaînés — temps estimé par module</small></h2></div>
+    <div class="sommaire">
+      <div class="item" onclick="go(4)"><div class="mn">1</div><div class="mt"><h3>Le cadre légal</h3><p>Articles R.4311-4 & 5, arrêté 28/03/2022, collaboration AS/IDE</p></div><div class="dr">25 min</div></div>
+      <div class="item" onclick="go(10)"><div class="mn">2</div><div class="mt"><h3>Les 5 blocs & les 12 récits</h3><p>Détail bloc par bloc, pièges, 27 domaines de savoir</p></div><div class="dr">25 min</div></div>
+      <div class="item" onclick="go(18)"><div class="mn">3</div><div class="mt"><h3>Mes actes, mes limites</h3><p>Fait / fait jamais / collaboration, 20 situations OUI-NON</p></div><div class="dr">25 min</div></div>
+      <div class="item" onclick="go(24)"><div class="mn">4</div><div class="mt"><h3>Risques & protection</h3><p>3 responsabilités, 3 critères éliminatoires, refuser proprement</p></div><div class="dr">15 min</div></div>
+      <div class="item" onclick="go(27)"><div class="mn">5</div><div class="mt"><h3>Préparation oral jury</h3><p>Composition jury, 3 temps, grille cotation, 3 piliers raisonnement</p></div><div class="dr">20 min</div></div>
+      <div class="item" onclick="go(31)"><div class="mn">6</div><div class="mt"><h3>Synthèse & évaluation</h3><p>15 points clés, 12 flashcards, quiz final 20 questions</p></div><div class="dr">10 min</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. MODULE 1 - Fiche interactive -->
+<section class="slide chapter" data-mod="Module 1">
+  <div class="wrap">
+    <div class="big">01<em>Module</em></div>
+    <h1>Le cadre légal</h1>
+    <p>Les articles qui définissent votre métier et les erreurs classiques en jury. Vous allez explorer la fiche ORACLE "Champ de compétence" section par section.</p>
+    <div class="dura">⏱ 25 minutes · 6 slides</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 1">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>La fiche ORACLE du champ de compétence<small>Cliquez sur chaque pastille dorée pour explorer la section</small></h2></div>
     <div class="fiche-wrap">
       <div class="fiche-img">
         <div class="ficheHolder">
-          <img src="assets/fiche-competences.webp" alt="Fiche Champ de Compétences ORACLE" id="ficheImg">
-          <!-- Hotspots positioned by percentage over the fiche image itself -->
+          <img src="assets/fiche-competences.webp" alt="Fiche Champ de Compétences ORACLE">
           <button class="hot" style="top:13%;left:14%" onclick="openModal(1)">1</button>
           <button class="hot" style="top:13%;left:62%" onclick="openModal(2)">2</button>
           <button class="hot" style="top:37%;left:14%" onclick="openModal(3)">3</button>
@@ -348,8 +504,8 @@ a{color:inherit}
       </div>
       <div class="fiche-side">
         <h3>Fiche de révision ORACLE</h3>
-        <p>Cette fiche condense le champ de compétence de l'AS en 8 blocs numérotés. C'est la matière des 8 chapitres suivants.</p>
-        <div class="ptip"><strong>💡 Astuce jury</strong><br>Le jury pose souvent une question sur <em>un</em> de ces 8 blocs. Si vous maîtrisez les 8, vous êtes paré pour toute question sur le périmètre AS.</div>
+        <p>Cette fiche condense le champ de compétence de l'AS en 8 blocs numérotés. C'est la matière de tout le Module 1.</p>
+        <div class="ptip"><strong>💡 Astuce jury</strong><br>Le jury pose souvent une question sur <em>un</em> de ces 8 blocs. Maîtrisez les 8, et vous êtes paré pour toute question sur le périmètre AS.</div>
         <div class="chapters">
           <button onclick="openModal(1)"><b>1</b>Cadre légal</button>
           <button onclick="openModal(2)"><b>2</b>5 blocs DEAS</button>
@@ -365,204 +521,537 @@ a{color:inherit}
   </div>
 </section>
 
-<!-- SLIDE 4 — LES 5 BLOCS -->
-<section class="slide std">
+<!-- 5. Article R.4311-4 -->
+<section class="slide std" data-mod="Module 1">
   <div class="inner">
-    <div class="head"><div class="num">3</div><h2>Les 5 blocs du DEAS et leurs 11 activités<small>Cliquez sur un bloc pour voir ses activités</small></h2></div>
-    <div class="blocs">
-      <div class="bloc" onclick="toggleBloc(this)">
-        <div class="bn">1</div>
-        <div class="bt">
-          <h3>Accompagnement dans les activités de la vie quotidienne et sociale</h3>
-          <p>Au cœur du métier : accompagner la vie quotidienne du résident, préserver son autonomie</p>
-        </div>
-        <div class="bc">2 activités</div>
+    <div class="head"><div class="num">4</div><h2>Article R.4311-4 — le champ de l'AS<small>Code de la santé publique — la base de votre métier</small></h2></div>
+    <div class="article">
+      <div class="code">
+        <div class="lbl">Code santé publique</div>
+        <div class="ref">R.4311-4</div>
+        <div class="ty">Article qui définit le<br><strong>champ d'intervention</strong><br>de l'aide-soignant</div>
       </div>
-      <div class="bloc-detail"><strong>Activité 1</strong> — Accompagner la personne dans les actes essentiels de la vie quotidienne (toilette, habillage, repas, élimination, mobilisation, communication).<br><strong>Activité 2</strong> — Repérer les fragilités, prévenir et accompagner.</div>
-
-      <div class="bloc" onclick="toggleBloc(this)">
-        <div class="bn">2</div>
-        <div class="bt">
-          <h3>Évaluation de l'état clinique et réalisation de soins adaptés</h3>
-          <p>Observer, mesurer, participer aux soins — en collaboration avec l'IDE</p>
-        </div>
-        <div class="bc">3 activités</div>
+      <div class="expl">
+        <h3>Ce que dit l'article</h3>
+        <p style="color:var(--ink-soft);font-size:14px;line-height:1.5">Cet article pose le cadre : l'AS <b>collabore</b> aux soins infirmiers, exerce <b>sous la responsabilité</b> de l'infirmier, et peut réaliser certains actes de la vie quotidienne et de surveillance sous protocole.</p>
+        <h3 style="margin-top:16px">Les 4 principes à retenir</h3>
+        <ul>
+          <li><b>Collaboration</b> — L'AS n'est pas sous les ordres directs du médecin. Il collabore à l'activité infirmière.</li>
+          <li><b>Responsabilité IDE</b> — L'AS exerce sous la responsabilité de l'IDE qui lui confie certains actes.</li>
+          <li><b>Protocole</b> — Chaque acte confié s'inscrit dans un protocole écrit du service.</li>
+          <li><b>Formation</b> — Certains actes (glycémie, aide à la prise de médicaments) nécessitent une habilitation.</li>
+        </ul>
+        <div class="warn"><b>⚠️ Piège jury favori</b> — « L'AS reçoit ses ordres du médecin » → FAUX. L'AS collabore à l'activité IDE qui elle est confiée par le médecin.</div>
       </div>
-      <div class="bloc-detail"><strong>Activité 3</strong> — Évaluer l'état clinique (constantes, signes d'alerte, douleur).<br><strong>Activité 4</strong> — Mettre en œuvre les soins (hygiène, confort, élimination, soins aigus / chroniques / fin de vie).<br><strong>Activité 5</strong> — Installer, mobiliser, aider aux déplacements.</div>
-
-      <div class="bloc" onclick="toggleBloc(this)">
-        <div class="bn">3</div>
-        <div class="bt">
-          <h3>Information et accompagnement des personnes et des apprenants</h3>
-          <p>Communiquer, informer, former — la relation triangulaire résident/famille/équipe</p>
-        </div>
-        <div class="bc">2 activités</div>
-      </div>
-      <div class="bloc-detail"><strong>Activité 6</strong> — Communiquer avec la personne et son entourage.<br><strong>Activité 7</strong> — Informer et former les pairs, stagiaires, nouveaux arrivants.</div>
-
-      <div class="bloc" onclick="toggleBloc(this)">
-        <div class="bn">4</div>
-        <div class="bt">
-          <h3>Entretien de l'environnement immédiat et des matériels</h3>
-          <p>Hygiène des locaux, bionettoyage, prévention des infections associées aux soins</p>
-        </div>
-        <div class="bc">2 activités</div>
-      </div>
-      <div class="bloc-detail"><strong>Activité 8</strong> — Entretenir les locaux et le matériel (bionettoyage, protocoles). <em style="color:var(--oracle-pink)">Piège : contexte SORTIE DE PATIENT exigé.</em><br><strong>Activité 9</strong> — Repérer et signaler les anomalies des locaux et matériels. <em style="color:var(--oracle-pink)">Spécificité : compte DOUBLE (deux récits). Jamais le corps du patient.</em></div>
-
-      <div class="bloc" onclick="toggleBloc(this)">
-        <div class="bn">5</div>
-        <div class="bt">
-          <h3>Travail en équipe pluriprofessionnelle, traitement des informations, qualité et risques</h3>
-          <p>Transmissions, inventaire, démarche qualité — le volet transversal</p>
-        </div>
-        <div class="bc">2 activités</div>
-      </div>
-      <div class="bloc-detail"><strong>Activité 10</strong> — Transmettre les informations (DAR, orales, écrites). <em style="color:var(--oracle-pink)">Spécificité : traitée par un INVENTAIRE, pas par un récit.</em><br><strong>Activité 11</strong> — Participer à l'organisation d'équipe et à la démarche qualité. <em style="color:var(--oracle-pink)">Spécificité : compte DOUBLE (deux récits à produire).</em></div>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 5 — FAIT / FAIT PAS -->
-<section class="slide std">
+<!-- 6. Article R.4311-5 -->
+<section class="slide std" data-mod="Module 1">
   <div class="inner">
-    <div class="head"><div class="num">4</div><h2>Ce que l'AS fait vs ce qu'il ne fait JAMAIS<small>La question-piège favorite du jury</small></h2></div>
+    <div class="head"><div class="num">5</div><h2>Article R.4311-5 — le rôle propre de l'IDE<small>Pourquoi vous devez le connaître sans en revendiquer les actes</small></h2></div>
+    <div class="article">
+      <div class="code" style="background:linear-gradient(135deg,var(--oracle-pink),#c62d6e)">
+        <div class="lbl">Code santé publique</div>
+        <div class="ref">R.4311-5</div>
+        <div class="ty">Article qui liste le<br><strong>rôle propre</strong><br>de l'infirmier</div>
+      </div>
+      <div class="expl">
+        <h3>Ce qu'il faut comprendre</h3>
+        <p style="color:var(--ink-soft);font-size:14px;line-height:1.5">Cet article liste les actes que <b>seul l'IDE</b> peut réaliser en autonomie, sans prescription médicale. L'AS <b>collabore</b> à ces actes mais ne les porte pas en propre.</p>
+        <h3 style="margin-top:16px">Les actes du rôle propre IDE auxquels l'AS collabore</h3>
+        <ul>
+          <li><b>Soins d'hygiène et de confort</b> — Toilette, change, installation : l'AS les réalise sous responsabilité IDE</li>
+          <li><b>Prise de constantes</b> — TA, FC, température, saturation : AS sur protocole, l'IDE analyse</li>
+          <li><b>Surveillance et observation</b> — AS observe, IDE interprète et décide</li>
+          <li><b>Recueil de données</b> — Glycémie capillaire, bandelette urinaire : AS si formé et habilité</li>
+          <li><b>Participation aux soins</b> — Positionnement, aide IDE pour soins techniques</li>
+        </ul>
+        <div class="warn"><b>⚠️ Question-piège type</b> — « Avez-vous un rôle propre ? » → Réponse ORACLE : <b>« Non, je collabore au rôle propre infirmier. Je n'ai pas de rôle propre au sens juridique. »</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Textes de référence -->
+<section class="slide std" data-mod="Module 1">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>L'arrêté du 28 mars 2022 et les textes récents<small>Pourquoi votre DEAS a été entièrement rénové</small></h2></div>
+    <div class="timeline">
+      <div class="tl"><div class="d">10 juin 2021<em>Arrêté</em></div><div class="c"><h3>Réforme du diplôme d'État AS</h3><p>Nouvelle architecture : 5 blocs de compétences, 11 activités, 10 modules de formation. Fin du DEAS "ancien" qui comportait 8 modules.</p></div></div>
+      <div class="tl active"><div class="d">28 mars 2022<em>Arrêté en vigueur</em></div><div class="c"><h3>Référentiel actuel DEAS 2022</h3><p><b>C'est l'arrêté à citer en jury</b>. Il fixe le référentiel d'activités et de compétences, précise les modalités VAE, et consolide l'architecture 5/11/12/18/27.</p></div></div>
+      <div class="tl"><div class="d">21 déc. 2022<em>Loi n° 2022-1598</em></div><div class="c"><h3>Loi de réforme de la VAE</h3><p>Simplifie l'accès à la VAE : création du dispositif "France VAE", élargissement du droit, nouveau rôle de l'architecte accompagnateur de parcours.</p></div></div>
+      <div class="tl"><div class="d">27 déc. 2023<em>Décret n° 2023-1275</em></div><div class="c"><h3>Décret d'application VAE</h3><p>Précise les règles pratiques de la nouvelle VAE : recevabilité en continu, parcours individualisé, nouvelle grille de cotation à 3 niveaux.</p></div></div>
+      <div class="tl"><div class="d">3 juillet 2025<em>Arrêté AAP</em></div><div class="c"><h3>Obligations des accompagnateurs</h3><p>Fixe les obligations des Architectes Accompagnateurs de Parcours (dont ORACLE VAE AS fait partie). Base légale de votre contrat.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Collaboration AS/IDE -->
+<section class="slide std" data-mod="Module 1">
+  <div class="inner">
+    <div class="head"><div class="num">7</div><h2>La collaboration AS/IDE en pratique<small>Fiche ORACLE Collaboration — la zone grise, décodée</small></h2></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:16px;flex:1;overflow:auto">
+      <div style="background:#fff;border-radius:14px;padding:0;box-shadow:var(--shadow-md);overflow:hidden">
+        <img src="assets/fiche-collaboration.webp" alt="Fiche Collaboration AS/IDE ORACLE" style="width:100%;height:auto;display:block">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border-left:4px solid var(--oracle-teal-light)">
+          <h4 style="color:var(--oracle-teal-dark);margin-bottom:6px">1️⃣ L'IDE confie, elle n'ordonne pas</h4>
+          <p style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">Il n'existe pas de « lien hiérarchique » IDE→AS. L'IDE <b>délègue</b> ou <b>confie</b> un acte en précisant les modalités et le protocole.</p>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border-left:4px solid var(--oracle-pink)">
+          <h4 style="color:var(--oracle-teal-dark);margin-bottom:6px">2️⃣ L'AS peut refuser un acte</h4>
+          <p style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">Si l'acte dépasse ses compétences, l'AS a le <b>droit ET le devoir</b> de refuser et de tracer. L'IDE n'est pas insultée : elle est protégée.</p>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border-left:4px solid var(--oracle-gold)">
+          <h4 style="color:var(--oracle-teal-dark);margin-bottom:6px">3️⃣ Toute collaboration se trace</h4>
+          <p style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">Qui a confié ? Quand ? Sur quel protocole ? Si pas de trace, pas de collaboration — l'AS devient seul responsable.</p>
+        </div>
+        <div style="background:var(--oracle-cream);border-radius:12px;padding:14px;border:1px dashed var(--oracle-teal);font-size:13px;color:var(--ink-soft);line-height:1.5">
+          <strong style="color:var(--oracle-teal-dark)">💬 Phrase jury parfaite</strong><br>« L'IDE me confie un acte sur protocole écrit. J'ai le droit et le devoir de refuser si je sens qu'il dépasse mes compétences — tracer ce refus me protège. »
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. Mini-quiz Module 1 -->
+<section class="slide std" data-mod="Module 1">
+  <div class="inner">
+    <div class="head"><div class="num">8</div><h2>Mini-quiz Module 1 — Le cadre légal<small>5 questions pour valider le module</small></h2></div>
+    <div class="qz" id="mq1"></div>
+  </div>
+</section>
+
+<!-- 10. MODULE 2 intro -->
+<section class="slide chapter" data-mod="Module 2">
+  <div class="wrap">
+    <div class="big">02<em>Module</em></div>
+    <h1>Les 5 blocs & les 12 récits</h1>
+    <p>5 blocs, 11 activités, 12 récits, 18 éléments à produire, 27 domaines de savoir. Les pièges du bloc 4 (sortie patient) et du bloc 5 (inventaire activité 10).</p>
+    <div class="dura">⏱ 25 minutes · 7 slides</div>
+  </div>
+</section>
+
+<!-- 11. Les 5 blocs vue d'ensemble -->
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">9</div><h2>Vue d'ensemble des 5 blocs<small>Cliquez sur un bloc pour voir ses activités et ses récits</small></h2></div>
+    <div class="blocs">
+      <div class="bloc" onclick="toggleBloc(this)"><div class="bn">1</div><div class="bt"><h3>Accompagnement dans les activités de la vie quotidienne et sociale</h3><p>Au cœur du métier : accompagner la vie quotidienne, préserver l'autonomie</p></div><div class="bc">2 récits</div></div>
+      <div class="bloc-detail"><strong>Activité 1</strong> — Accompagner la personne dans les actes essentiels (toilette, habillage, repas, élimination, mobilisation, communication).<br><strong>Activité 2</strong> — Repérer les fragilités, prévenir et accompagner les risques.</div>
+      <div class="bloc" onclick="toggleBloc(this)"><div class="bn">2</div><div class="bt"><h3>Évaluation de l'état clinique et réalisation de soins adaptés</h3><p>Le plus lourd — 13 des 27 domaines de savoir</p></div><div class="bc">3 récits</div></div>
+      <div class="bloc-detail"><strong>Activité 3</strong> — Évaluer l'état clinique (constantes, signes d'alerte, douleur).<br><strong>Activité 4</strong> — Mettre en œuvre les soins (hygiène, confort, aigus, fin de vie).<br><strong>Activité 5</strong> — Installer, mobiliser, aider aux déplacements. <em>Appartient à BC2 clinique, pas BC1.</em></div>
+      <div class="bloc" onclick="toggleBloc(this)"><div class="bn">3</div><div class="bt"><h3>Information et accompagnement des personnes et des apprenants</h3><p>Communication, formation des pairs, relation triangulaire</p></div><div class="bc">2 récits</div></div>
+      <div class="bloc-detail"><strong>Activité 6</strong> — Communiquer avec la personne et son entourage.<br><strong>Activité 7</strong> — Informer et former les pairs, stagiaires, nouveaux arrivants.</div>
+      <div class="bloc" onclick="toggleBloc(this)"><div class="bn">4</div><div class="bt"><h3>Entretien de l'environnement immédiat et des matériels</h3><p>Attention : contexte SORTIE DE PATIENT exigé</p></div><div class="bc">3 récits</div></div>
+      <div class="bloc-detail"><strong>Activité 8</strong> — Entretenir locaux et matériel. <em>Piège : contexte SORTIE DE PATIENT exigé.</em><br><strong>Activité 9</strong> — Repérer et signaler anomalies des locaux/matériels. <em>Spécificité : compte DOUBLE (2 récits). Jamais le corps du patient.</em></div>
+      <div class="bloc" onclick="toggleBloc(this)"><div class="bn">5</div><div class="bt"><h3>Travail en équipe, traitement des informations, qualité et risques</h3><p>Transmissions, inventaire — le volet transversal</p></div><div class="bc">2 récits</div></div>
+      <div class="bloc-detail"><strong>Activité 10</strong> — Transmettre les informations (DAR). <em>Spécificité : traitée par INVENTAIRE, pas par récit.</em><br><strong>Activité 11</strong> — Participer organisation équipe et démarche qualité. <em>Spécificité : compte DOUBLE (2 récits).</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. BLOC 1 détaillé -->
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">10</div><h2>Bloc 1 — Vie quotidienne et sociale<small>2 activités · 2 récits · le socle du métier AS</small></h2></div>
+    <div class="bloc-page">
+      <div class="bside">BLOC 1</div>
+      <div class="bmain">
+        <div><h3><span class="mi">1</span>Activité 1 — Vie quotidienne</h3><p style="font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:8px">Accompagner les actes essentiels du résident</p><ul><li>Toilette complète ou partielle</li><li>Habillage, change</li><li>Aide aux repas</li><li>Accompagnement élimination</li><li>Mobilisation et déplacements internes</li><li>Communication quotidienne</li></ul></div>
+        <div><h3><span class="mi">2</span>Activité 2 — Repérer et prévenir</h3><p style="font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:8px">Détecter les fragilités avant qu'elles s'aggravent</p><ul><li>Repérer : chutes, dénutrition, confusion</li><li>Alerter l'IDE si signe d'alerte</li><li>Mettre en place prévention (hydratation, mobilisation)</li><li>Participer au PAP du résident</li></ul></div>
+        <div class="trap"><b>💡 Clé de la rédaction du récit Bloc 1</b> — Vos deux situations doivent prouver que vous travaillez AVEC le résident (autonomie préservée) et pas À SA PLACE. Toute situation où vous écrivez « j'ai fait la toilette » sans mentionner la stimulation de l'autonomie sera cotée « à vérifier ».</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. BLOC 2 détaillé -->
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">11</div><h2>Bloc 2 — Évaluation clinique et soins adaptés<small>3 activités · 3 récits · 13 des 27 domaines de savoir</small></h2></div>
+    <div class="bloc-page">
+      <div class="bside">BLOC 2</div>
+      <div class="bmain">
+        <div><h3><span class="mi">3</span>Activité 3 — Évaluer l'état clinique</h3><ul><li>Prendre les constantes (TA, FC, T°)</li><li>Évaluer la douleur (EVA, EN)</li><li>Repérer les signes d'alerte</li><li>Observer avec les 5 sens</li></ul></div>
+        <div><h3><span class="mi">4</span>Activité 4 — Mettre en œuvre les soins</h3><ul><li>Soins d'hygiène et confort</li><li>Soins aigus (sur protocole)</li><li>Soins palliatifs et fin de vie</li><li>Soins post-mortem</li></ul></div>
+        <div><h3><span class="mi">5</span>Activité 5 — Installer, mobiliser</h3><ul><li>Positionnement (fauteuil, lit)</li><li>Transferts avec aides techniques</li><li>Prévention des escarres (changements 2-3h)</li><li>Ergonomie / manutention</li></ul></div>
+        <div class="trap"><b>⚠️ Bloc le plus lourd</b> — BC2 contient <b>13 des 27 domaines de savoir</b>. Prévoyez un temps d'accompagnement double pour ce bloc. La frontière avec le rôle IDE doit être cadrée dans chaque récit : « j'observe, je transmets, l'IDE décide. »</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14. BLOC 3 détaillé -->
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">12</div><h2>Bloc 3 — Information et accompagnement<small>2 activités · 2 récits · communication avec résident, famille, équipe</small></h2></div>
+    <div class="bloc-page">
+      <div class="bside">BLOC 3</div>
+      <div class="bmain">
+        <div><h3><span class="mi">6</span>Activité 6 — Communiquer</h3><p style="font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:8px">Avec la personne et son entourage</p><ul><li>Écoute active, reformulation</li><li>Communication adaptée (handicap sensoriel, démence)</li><li>Relation triangulaire : résident / famille / équipe</li><li>Gérer un refus de soins</li><li>Annoncer une mauvaise nouvelle (en appui IDE)</li></ul></div>
+        <div><h3><span class="mi">7</span>Activité 7 — Informer et former</h3><p style="font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:8px">Les pairs, stagiaires, nouveaux arrivants</p><ul><li>Accueillir un nouvel agent</li><li>Encadrer un stagiaire AS</li><li>Transmettre des gestes techniques</li><li>Participer à l'évaluation du stagiaire</li></ul></div>
+        <div class="trap"><b>💡 Astuce rédaction</b> — Ne confondez pas « informer » (donner une info au résident ou famille) et « former » (transmettre des compétences à un pair). L'activité 7 réclame une situation d'encadrement effective — pas juste de l'information.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15. BLOC 4 détaillé -->
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">13</div><h2>Bloc 4 — Entretien de l'environnement<small>2 activités · 3 récits · piège SORTIE DE PATIENT</small></h2></div>
+    <div class="bloc-page">
+      <div class="bside">BLOC 4</div>
+      <div class="bmain">
+        <div><h3><span class="mi">8</span>Activité 8 — Entretenir locaux/matériel</h3><ul><li>Bionettoyage selon protocole</li><li>Désinfection matériel médical</li><li>Gestion des DASRI</li><li>Précautions standard et complémentaires</li></ul></div>
+        <div><h3><span class="mi">9</span>Activité 9 — Signaler les anomalies</h3><p style="color:var(--oracle-pink);font-size:12.5px;font-weight:700;margin-bottom:8px">⚠ Compte DOUBLE — 2 récits à produire</p><ul><li>Dysfonctionnement d'un lève-personne</li><li>Anomalie d'un lit médicalisé</li><li>Alerte sur une chambre dégradée</li><li>Problème de traçabilité matériel</li></ul></div>
+        <div class="trap"><b>🚨 PIÈGE N° 1 du Bloc 4</b> — L'activité 8 réclame OBLIGATOIREMENT un contexte de <b>SORTIE DE PATIENT</b>. Une toilette de chambre « classique » ne compte pas. Le jury veut voir que vous avez bionettoyé la chambre APRÈS le départ d'un résident (sortie, décès, mutation).<br><br><b>🚨 PIÈGE N° 2 du Bloc 4</b> — L'activité 9 concerne UNIQUEMENT le matériel et les locaux. <b>JAMAIS le corps du patient</b>. Si vous écrivez « j'ai repéré une rougeur au sacrum » dans l'activité 9, c'est hors sujet — c'est l'activité 3.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16. BLOC 5 détaillé -->
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">14</div><h2>Bloc 5 — Équipe, qualité, transmissions<small>2 activités · 2 récits · activité 10 = INVENTAIRE</small></h2></div>
+    <div class="bloc-page">
+      <div class="bside">BLOC 5</div>
+      <div class="bmain">
+        <div><h3><span class="mi">10</span>Activité 10 — Transmettre</h3><p style="color:var(--oracle-pink);font-size:12.5px;font-weight:700;margin-bottom:8px">⚠ Spécificité : traitée par INVENTAIRE, pas par récit</p><ul><li>Transmissions DAR (Données, Actions, Résultats)</li><li>Dossier de soins (papier ou informatisé)</li><li>Transmissions orales (relève)</li><li>Signalement d'un événement indésirable</li></ul></div>
+        <div><h3><span class="mi">11</span>Activité 11 — Organiser équipe/qualité</h3><p style="color:var(--oracle-pink);font-size:12.5px;font-weight:700;margin-bottom:8px">⚠ Compte DOUBLE — 2 récits à produire</p><ul><li>Participer à une réunion d'équipe</li><li>Rédiger un signalement d'EI</li><li>Participer à un audit qualité</li><li>Proposer une amélioration des pratiques</li></ul></div>
+        <div class="trap"><b>🚨 PIÈGE Bloc 5</b> — L'activité 10 n'est <b>PAS un récit</b> : c'est un <b>INVENTAIRE</b> de vos pratiques de transmission (type / fréquence / support). Si vous rédigez un récit pour l'activité 10, le jury le refusera. Il attend un tableau structuré.<br><br>Au total : <b>Bloc 5 = 2 récits</b> (deux pour l'activité 11) + <b>1 inventaire</b> (pour l'activité 10). Stéphane a eu raison deux fois contre les déductions automatiques le 29/09/2026.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 17. 27 domaines savoir -->
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">15</div><h2>Les 27 domaines de savoir<small>Répartition par bloc — à consulter pour chaque récit</small></h2></div>
+    <div class="domaines">
+      <div class="dom-block"><h3>Bloc 1 <span>5 domaines</span></h3><ol><li>Accueil de la personne</li><li>Activités en lieu de vie</li><li>Toilette et change</li><li>Aide à l'élimination</li><li>Refus de soin</li></ol></div>
+      <div class="dom-block" style="border-color:var(--oracle-pink)"><h3>Bloc 2 <span style="background:var(--oracle-pink)">13 domaines</span></h3><ol start="6"><li>Aide au repas</li><li>Fin de vie et deuil</li><li>Risques et maltraitance</li><li>Paramètres vitaux</li><li>Évaluation de la douleur</li><li>Médicaments</li><li>Premiers secours (AFGSU2)</li><li>Chirurgie pré/post-op</li><li>Soin d'une plaie</li><li>Dispositifs médicaux</li><li>Prévention escarres</li><li>Bas de contention</li><li>Prélèvements non stériles</li></ol></div>
+      <div class="dom-block"><h3>Bloc 3 <span>3 domaines</span></h3><ol start="19"><li>Soins non médicamenteux</li><li>Soins post-mortem</li><li>Manutention / Ergonomie</li></ol></div>
+      <div class="dom-block"><h3>Bloc 4 <span>3 domaines</span></h3><ol start="22"><li>Communication résident/famille/équipe</li><li>Formation et encadrement</li><li>Entretien locaux et matériel</li></ol></div>
+      <div class="dom-block"><h3>Bloc 5 <span>3 domaines</span></h3><ol start="25"><li>Transmissions</li><li>Projet d'établissement et qualité</li><li>Évaluation de sa pratique</li></ol></div>
+    </div>
+  </div>
+</section>
+
+<!-- 18. MODULE 3 intro -->
+<section class="slide chapter" data-mod="Module 3">
+  <div class="wrap">
+    <div class="big">03<em>Module</em></div>
+    <h1>Mes actes, mes limites</h1>
+    <p>Ce que vous faites, ce que vous ne faites jamais, ce que vous faites en collaboration. 20 situations OUI/NON pour vous entraîner.</p>
+    <div class="dura">⏱ 25 minutes · 6 slides</div>
+  </div>
+</section>
+
+<!-- 19. Fait / fait pas -->
+<section class="slide std" data-mod="Module 3">
+  <div class="inner">
+    <div class="head"><div class="num">16</div><h2>Ce que l'AS fait vs ce qu'il ne fait JAMAIS<small>La question-piège favorite du jury</small></h2></div>
     <div class="vs">
       <div class="col yes">
-        <h3><span class="ico">✓</span>L'AS FAIT (rôle propre)</h3>
+        <h3><span class="ico">✓</span>L'AS FAIT (en rôle propre ou collaboration)</h3>
         <ul>
-          <li><b>Soins d'hygiène et de confort</b> — toilette, change, habillage, soins de bouche</li>
-          <li><b>Aide à l'alimentation</b> — installation, surveillance de la déglutition, hydratation</li>
-          <li><b>Mobilisation</b> — transferts lit-fauteuil, aide à la marche, prévention des chutes</li>
-          <li><b>Mesure des paramètres vitaux</b> selon le protocole du service</li>
-          <li><b>Observation et transmission</b> — 5 sens, DAR, alerte à l'IDE</li>
-          <li><b>Aide à la prise de médicaments</b> préparés par l'IDE, si formé et habilité</li>
-          <li><b>Retrait d'un pansement</b> et pose d'un pansement sec, sur consigne IDE</li>
-          <li><b>Participation à la démarche qualité</b> et à la prévention des risques</li>
+          <li><b>Soins d'hygiène et confort</b> — toilette, change, habillage</li>
+          <li><b>Aide à l'alimentation</b> — surveillance déglutition, hydratation</li>
+          <li><b>Mobilisation</b> — transferts, aide à la marche, prévention chutes</li>
+          <li><b>Mesure des paramètres vitaux</b> selon protocole du service</li>
+          <li><b>Observation et transmission</b> — 5 sens, DAR, alerte IDE</li>
+          <li><b>Aide à la prise de médicaments</b> préparés par l'IDE si formé</li>
+          <li><b>Retrait d'un pansement</b> et pose d'un pansement sec, consigne IDE</li>
+          <li><b>Participation à la démarche qualité</b> et à la prévention</li>
         </ul>
       </div>
       <div class="col no">
         <h3><span class="ico">✕</span>L'AS NE FAIT JAMAIS</h3>
         <ul>
-          <li><b>Aucune injection</b> (sous-cutanée, intramusculaire, intraveineuse)</li>
-          <li><b>Aucune perfusion</b> (pose, surveillance du débit, ablation)</li>
+          <li><b>Aucune injection</b> (sous-cutanée, IM, IV)</li>
+          <li><b>Aucune perfusion</b> (pose, débit, ablation)</li>
           <li><b>Aucun prélèvement sanguin</b> ni ECBU stérile</li>
           <li><b>Aucune réfection de pansement</b> complexe (acte IDE exclusif)</li>
           <li><b>Aucun sondage urinaire</b>, aucune ablation de sonde ou drain</li>
-          <li><b>Aucune distribution de médicaments</b> non préparés — c'est l'IDE</li>
-          <li><b>Aucun diagnostic ni interprétation</b> des résultats (rôle médecin/IDE)</li>
-          <li><b>Aucune décision de contention</b> — elle est prescrite par le médecin</li>
+          <li><b>Aucune distribution</b> de médicaments non préparés par l'IDE</li>
+          <li><b>Aucun diagnostic</b> ni interprétation (rôle médecin/IDE)</li>
+          <li><b>Aucune décision de contention</b> — prescrite par le médecin</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 6 — RÔLE AU QUOTIDIEN -->
-<section class="slide std">
+<!-- 20. Actes en collaboration (nuance) -->
+<section class="slide std" data-mod="Module 3">
   <div class="inner">
-    <div class="head"><div class="num">5</div><h2>Mon rôle au quotidien, en 8 engagements<small>Ce que l'AS incarne auprès du résident</small></h2></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:16px;flex:1;overflow:auto">
-      <div style="background:#fff;border-radius:14px;padding:0;box-shadow:var(--shadow-md);overflow:hidden">
-        <img src="assets/fiche-role-propre.webp" alt="Fiche Rôle Propre AS ORACLE" style="width:100%;height:auto;display:block">
+    <div class="head"><div class="num">17</div><h2>Les actes en COLLABORATION — la zone grise<small>Ni rôle propre AS, ni acte IDE exclusif</small></h2></div>
+    <div class="vs">
+      <div class="col collab">
+        <h3><span class="ico">◆</span>Actes réalisés en COLLABORATION avec l'IDE</h3>
+        <ul>
+          <li><b>Distribution des médicaments</b> préparés par l'IDE (si formé et habilité)</li>
+          <li><b>Surveillance post-soin</b> : T°, TA, pouls sur protocole écrit</li>
+          <li><b>Recueil de données</b> : glycémie capillaire, bandelette urinaire, poids</li>
+          <li><b>Aide à l'IDE</b> pour soins techniques (positionnement, maintien)</li>
+          <li><b>Surveillance alimentation entérale</b> (sans manipulation technique)</li>
+          <li><b>Signaler</b> tout effet secondaire ou anomalie observée</li>
+          <li><b>Alimentation parentérale</b> : SURVEILLER le débit, jamais régler</li>
+          <li><b>Oxygénothérapie</b> : SURVEILLER le patient, jamais régler le débit</li>
+        </ul>
       </div>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border-left:4px solid var(--oracle-teal-light)">
-          <h4 style="color:var(--oracle-teal-dark);margin-bottom:6px;font-size:15px">👁 L'observation est le cœur du rôle propre</h4>
-          <p style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">L'AS est le professionnel <strong>le plus proche</strong> du résident au quotidien. Observer avec les 5 sens pendant la toilette, les repas, détecter les changements, quantifier, transmettre en DAR.</p>
-        </div>
-        <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border-left:4px solid var(--oracle-pink)">
-          <h4 style="color:var(--oracle-teal-dark);margin-bottom:6px;font-size:15px">🛡 La prévention est la mission fondamentale</h4>
-          <p style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">Escarres (changement de position toutes les 2-3h), chutes (environnement sécurisé), déshydratation (proposer à boire régulièrement), dénutrition, infections (hygiène des mains).</p>
-        </div>
-        <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border-left:4px solid var(--oracle-gold)">
-          <h4 style="color:var(--oracle-teal-dark);margin-bottom:6px;font-size:15px">🤝 Faire AVEC, pas À LA PLACE</h4>
-          <p style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">Maintenir l'autonomie du résident, respecter ses choix, ses habitudes, sa dignité. C'est <strong>la différence</strong> entre un soignant et un exécutant.</p>
-        </div>
-        <div style="background:var(--oracle-cream);border-radius:12px;padding:16px;border:1px dashed var(--oracle-teal);font-size:13px;color:var(--ink-soft);line-height:1.55">
-          <strong style="color:var(--oracle-teal-dark)">💬 À dire au jury</strong><br>« L'observation que je transmets en DAR peut sauver des vies. C'est mon rôle propre : être là, voir, alerter. »
+      <div style="background:#fff;border-radius:14px;padding:22px;box-shadow:var(--shadow-md);border-top:5px solid var(--oracle-gold)">
+        <h3 style="color:#8a6a00;font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:10px"><span style="width:36px;height:36px;border-radius:50%;background:#fef2d0;color:#8a6a00;display:inline-flex;align-items:center;justify-content:center;font-weight:900">!</span>Les 3 règles de la collaboration</h3>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--oracle-cream);border-radius:10px;padding:14px"><strong style="color:var(--oracle-teal-dark)">1. Formation + habilitation</strong><br><span style="color:var(--ink-soft);font-size:13.5px;line-height:1.5">Le simple diplôme AS ne suffit pas. Il faut une formation spécifique (ex : glycémie capillaire) ET une habilitation écrite de votre employeur.</span></div>
+          <div style="background:var(--oracle-cream);border-radius:10px;padding:14px"><strong style="color:var(--oracle-teal-dark)">2. Protocole écrit</strong><br><span style="color:var(--ink-soft);font-size:13.5px;line-height:1.5">Chaque acte en collaboration s'inscrit dans un protocole du service, signé et daté. Jamais sur consigne orale isolée.</span></div>
+          <div style="background:var(--oracle-cream);border-radius:10px;padding:14px"><strong style="color:var(--oracle-teal-dark)">3. Traçabilité</strong><br><span style="color:var(--ink-soft);font-size:13.5px;line-height:1.5">Qui a confié ? Quand ? Résultat ? À tracer dans le dossier de soins. Sans trace, l'AS est seul responsable.</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 7 — SITUATIONS -->
-<section class="slide std">
+<!-- 21. Mon rôle au quotidien -->
+<section class="slide std" data-mod="Module 3">
   <div class="inner">
-    <div class="head"><div class="num">6</div><h2>Je peux faire / je ne peux pas faire<small>Testez-vous sur 8 situations concrètes</small></h2></div>
-    <div id="situs" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;flex:1;overflow:auto"></div>
+    <div class="head"><div class="num">18</div><h2>Mon rôle au quotidien, en 8 engagements<small>Fiche ORACLE Rôle Propre — ce que l'AS incarne auprès du résident</small></h2></div>
+    <div class="role-split">
+      <div class="pic"><img src="assets/fiche-role-propre.webp" alt="Fiche Rôle Propre AS ORACLE"></div>
+      <div class="list">
+        <div class="ch c1"><h4>👁 L'observation est le cœur du rôle propre</h4><p>L'AS est le professionnel le plus proche du résident. Observer avec les 5 sens pendant toilette et repas, détecter les changements, quantifier, transmettre en DAR.</p></div>
+        <div class="ch c2"><h4>🛡 La prévention est la mission fondamentale</h4><p>Escarres (changement 2-3h), chutes (environnement sécurisé), déshydratation (proposer à boire), dénutrition, infections (hygiène des mains).</p></div>
+        <div class="ch c3"><h4>🤝 Faire AVEC, pas À LA PLACE</h4><p>Maintenir l'autonomie du résident, respecter ses choix, habitudes, dignité. C'est la différence entre un soignant et un exécutant.</p></div>
+        <div class="ptip"><strong>💬 À dire au jury</strong><br>« L'observation que je transmets en DAR peut sauver des vies. C'est mon rôle propre : être là, voir, alerter. »</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- SLIDE 8 — RISQUES -->
-<section class="slide std">
+<!-- 22. 20 situations OUI/NON -->
+<section class="slide std" data-mod="Module 3">
   <div class="inner">
-    <div class="head"><div class="num">7</div><h2>Les risques en cas de dépassement<small>Trois responsabilités, trois tribunaux</small></h2></div>
+    <div class="head"><div class="num">19</div><h2>20 situations à cadrer — Je peux / je ne peux pas<small>Testez-vous — chaque réponse est argumentée</small></h2></div>
+    <div id="situs" class="situs"></div>
+  </div>
+</section>
+
+<!-- 23. Mini-quiz Module 3 -->
+<section class="slide std" data-mod="Module 3">
+  <div class="inner">
+    <div class="head"><div class="num">20</div><h2>Mini-quiz Module 3 — Mes actes<small>5 questions pour valider le module</small></h2></div>
+    <div class="qz" id="mq3"></div>
+  </div>
+</section>
+
+<!-- 24. MODULE 4 intro -->
+<section class="slide chapter" data-mod="Module 4">
+  <div class="wrap">
+    <div class="big">04<em>Module</em></div>
+    <h1>Risques & protection</h1>
+    <p>Les 3 responsabilités, les 3 critères éliminatoires du jury, comment refuser proprement un acte hors champ.</p>
+    <div class="dura">⏱ 15 minutes · 3 slides</div>
+  </div>
+</section>
+
+<!-- 25. 3 responsabilités -->
+<section class="slide std" data-mod="Module 4">
+  <div class="inner">
+    <div class="head"><div class="num">21</div><h2>Les 3 responsabilités en cas de dépassement<small>Trois tribunaux, trois sanctions possibles — à connaître pour s'en protéger</small></h2></div>
     <div class="risques">
-      <div class="risque penal">
-        <div class="icon">⚖</div>
-        <h3>Responsabilité pénale</h3>
-        <p>Fautes graves : maltraitance, négligence, <strong>exercice illégal de la profession IDE</strong>.</p>
-        <div class="ex"><b>Exemple réel</b>AS poursuivie après avoir fait une injection d'insuline « pour dépanner » : condamnation + interdiction d'exercer.</div>
-      </div>
-      <div class="risque civil">
-        <div class="icon">💰</div>
-        <h3>Responsabilité civile</h3>
-        <p>Obligation de <strong>réparer les dommages</strong> causés au résident ou à l'établissement (indemnisation).</p>
-        <div class="ex"><b>Exemple réel</b>Chute d'un résident lors d'un transfert mal exécuté : indemnisation à la charge de l'AS si faute reconnue.</div>
-      </div>
-      <div class="risque disc">
-        <div class="icon">📋</div>
-        <h3>Responsabilité disciplinaire</h3>
-        <p>Sanctions de l'<strong>employeur</strong> : avertissement, mise à pied, licenciement pour faute grave.</p>
-        <div class="ex"><b>Exemple réel</b>AS ayant modifié de son chef un dosage sur consigne orale non tracée : licenciement confirmé aux Prud'hommes.</div>
-      </div>
+      <div class="risque penal"><div class="icon">⚖</div><h3>Responsabilité pénale</h3><p>Fautes graves : maltraitance, négligence, <b>exercice illégal</b> de la profession IDE.</p><div class="ex"><b>Exemple réel</b>AS poursuivie après injection d'insuline « pour dépanner » : condamnation + interdiction d'exercer définitive.</div></div>
+      <div class="risque civil"><div class="icon">💰</div><h3>Responsabilité civile</h3><p>Obligation de <b>réparer les dommages</b> causés au résident ou à l'établissement.</p><div class="ex"><b>Exemple réel</b>Chute d'un résident lors d'un transfert mal exécuté : indemnisation à la charge de l'AS si faute reconnue.</div></div>
+      <div class="risque disc"><div class="icon">📋</div><h3>Responsabilité disciplinaire</h3><p>Sanctions de l'<b>employeur</b> : avertissement, mise à pied, licenciement.</p><div class="ex"><b>Exemple réel</b>AS ayant modifié un dosage sur consigne orale non tracée : licenciement confirmé aux Prud'hommes.</div></div>
     </div>
-    <div style="margin-top:22px;background:linear-gradient(135deg,var(--oracle-pink),#c62d6e);color:#fff;border-radius:14px;padding:22px 28px;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:20px">
-      <div style="font-size:48px;flex-shrink:0">🛡</div>
-      <div>
-        <h3 style="font-weight:800;margin-bottom:6px">Refuser un acte hors compétence est un DROIT et un DEVOIR</h3>
-        <p style="opacity:.95;font-size:14.5px;line-height:1.5">« Je ne fais pas cette injection, ce n'est pas dans mon rôle. Appelez l'IDE de garde. » — Cette phrase vous protège vous, votre résident, et votre carrière.</p>
+    <div style="margin-top:20px;background:linear-gradient(135deg,var(--oracle-pink),#c62d6e);color:#fff;border-radius:14px;padding:18px 24px;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:20px">
+      <div style="font-size:42px;flex-shrink:0">🛡</div>
+      <div><h3 style="font-weight:800;margin-bottom:4px">Refuser un acte hors compétence est un DROIT et un DEVOIR</h3><p style="opacity:.95;font-size:14px;line-height:1.5">« Je ne fais pas cette injection, ce n'est pas dans mon rôle. Appelez l'IDE de garde. » — Cette phrase vous protège, protège votre résident, et protège votre carrière.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 26. 3 critères éliminatoires -->
+<section class="slide std" data-mod="Module 4">
+  <div class="inner">
+    <div class="head"><div class="num">22</div><h2>Les 3 critères éliminatoires du jury VAE<small>Un seul suffit à faire tomber l'ensemble du Livret 2</small></h2></div>
+    <div class="elim">
+      <div class="card"><div class="num">1</div><h3>Acte HORS CHAMP décrit comme réalisé</h3><p>Si vous écrivez « j'ai fait une injection d'insuline », le jury élimine la totalité du dossier. Même en précisant que c'était en urgence. Même avec un IDE présent qui vous aurait dit « vas-y ».</p></div>
+      <div class="card"><div class="num">2</div><h3>Non-respect des protocoles d'hygiène</h3><p>Pas de lavage de mains décrit avant un soin, oubli des précautions standard, matériel contaminé réutilisé : critère éliminatoire. Chaque situation doit démontrer votre maîtrise des précautions standard.</p></div>
+      <div class="card"><div class="num">3</div><h3>Mise en danger du patient</h3><p>Soin réalisé sans surveillance adaptée, transfert sans aide technique quand elle était nécessaire, absence d'alerte sur un signe critique : critère éliminatoire. Le jury veut la preuve de votre vigilance.</p></div>
+    </div>
+    <div style="margin-top:22px;background:#fff;border-radius:12px;padding:18px 22px;box-shadow:var(--shadow-sm);border-left:5px solid var(--oracle-pink);font-size:14px;line-height:1.6;color:var(--ink-soft)">
+      <strong style="color:var(--oracle-teal-dark)">💡 Règle d'or ORACLE</strong> — Avant d'écrire chaque récit, relire les 3 critères ci-dessus. Si votre récit en déclenche un, c'est tout le bloc qui est perdu.
+    </div>
+  </div>
+</section>
+
+<!-- 27. Protection juridique -->
+<section class="slide std" data-mod="Module 4">
+  <div class="inner">
+    <div class="head"><div class="num">23</div><h2>Comment refuser proprement et se protéger<small>Les 5 réflexes qui sauvent une carrière</small></h2></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:16px;flex:1">
+      <div style="background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow-md);text-align:center;border-top:5px solid var(--oracle-teal)"><div style="font-size:32px;margin-bottom:10px">🛑</div><h3 style="color:var(--oracle-teal-dark);font-size:14px;font-weight:800;margin-bottom:8px">1. REFUSER poliment</h3><p style="font-size:12.5px;color:var(--ink-soft);line-height:1.5">« Je ne peux pas faire cet acte, ce n'est pas dans mon rôle. »</p></div>
+      <div style="background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow-md);text-align:center;border-top:5px solid var(--oracle-teal)"><div style="font-size:32px;margin-bottom:10px">📞</div><h3 style="color:var(--oracle-teal-dark);font-size:14px;font-weight:800;margin-bottom:8px">2. ALERTER</h3><p style="font-size:12.5px;color:var(--ink-soft);line-height:1.5">Appeler l'IDE de garde, le cadre, le médecin d'astreinte.</p></div>
+      <div style="background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow-md);text-align:center;border-top:5px solid var(--oracle-teal)"><div style="font-size:32px;margin-bottom:10px">📝</div><h3 style="color:var(--oracle-teal-dark);font-size:14px;font-weight:800;margin-bottom:8px">3. TRACER</h3><p style="font-size:12.5px;color:var(--ink-soft);line-height:1.5">Dans le dossier : date, heure, acte refusé, raison, à qui alerté.</p></div>
+      <div style="background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow-md);text-align:center;border-top:5px solid var(--oracle-teal)"><div style="font-size:32px;margin-bottom:10px">👁</div><h3 style="color:var(--oracle-teal-dark);font-size:14px;font-weight:800;margin-bottom:8px">4. SURVEILLER</h3><p style="font-size:12.5px;color:var(--ink-soft);line-height:1.5">Continuer à surveiller le résident pendant qu'arrive l'IDE.</p></div>
+      <div style="background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow-md);text-align:center;border-top:5px solid var(--oracle-gold)"><div style="font-size:32px;margin-bottom:10px">🛡</div><h3 style="color:var(--oracle-teal-dark);font-size:14px;font-weight:800;margin-bottom:8px">5. ASSURER</h3><p style="font-size:12.5px;color:var(--ink-soft);line-height:1.5">RC professionnelle recommandée : 50–120 €/an, à vie.</p></div>
+    </div>
+    <div style="margin-top:22px;background:var(--oracle-cream);border-radius:12px;padding:18px 22px;border:1px dashed var(--oracle-teal);font-size:14px;line-height:1.6;color:var(--ink-soft)">
+      <strong style="color:var(--oracle-teal-dark)">💬 Phrase à mémoriser pour le jury</strong><br>« Mon refus n'est jamais un abandon de poste. Je refuse l'acte hors champ, j'alerte, je trace, je reste au chevet. C'est la différence entre un professionnel et un exécutant. »
+    </div>
+  </div>
+</section>
+
+<!-- 28. MODULE 5 intro -->
+<section class="slide chapter" data-mod="Module 5">
+  <div class="wrap">
+    <div class="big">05<em>Module</em></div>
+    <h1>Préparation oral jury</h1>
+    <p>Composition du jury VAE DEAS, 3 temps de l'entretien, grille de cotation officielle, 3 piliers du raisonnement clinique évalués.</p>
+    <div class="dura">⏱ 20 minutes · 4 slides</div>
+  </div>
+</section>
+
+<!-- 29. Jury composition -->
+<section class="slide std" data-mod="Module 5">
+  <div class="inner">
+    <div class="head"><div class="num">24</div><h2>Le jury VAE DEAS — composition et rôle<small>Qui vous jugera et sur quoi</small></h2></div>
+    <div class="jury">
+      <div class="card">
+        <h3><span class="mi">👥</span>Composition du jury</h3>
+        <ul>
+          <li><b>Un président</b> — Cadre de santé ou formateur en IFAS</li>
+          <li><b>Deux professionnels AS</b> — Aides-soignants en exercice, souvent avec expérience de tutorat</li>
+          <li><b>Un formateur IFAS</b> — Enseignant du diplôme DEAS actuel</li>
+          <li><b>Parfois un employeur</b> — Directeur d'EHPAD ou de service hospitalier</li>
+          <li>Chaque jury est composé différemment selon la session</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="mi">🎯</span>Sur quoi s'appuie-t-il ?</h3>
+        <ul>
+          <li><b>Votre Livret 2</b> renseigné — lecture critique avant l'entretien</li>
+          <li><b>L'entretien avec vous</b> — 45 min à 1h, questions précises</li>
+          <li>Un manque d'informations, inexactitudes ou non-respect des bonnes pratiques diminue vos chances</li>
+          <li>Les hésitations, lenteurs à répondre, incapacité à expliquer un geste diminuent aussi vos chances</li>
+        </ul>
+      </div>
+      <div class="card" style="grid-column:1/-1">
+        <h3><span class="mi">⚡</span>Les 3 points d'attention du jury</h3>
+        <ul>
+          <li><b>Votre parcours</b> — Diversité des expériences, continuité, cohérence</li>
+          <li><b>La nature et la diversité de l'expérience</b> — Avez-vous travaillé en EHPAD, en service de soins, à domicile ? Les contextes variés rassurent.</li>
+          <li><b>La nature des activités réalisées</b> — Les 11 activités du référentiel sont-elles réellement couvertes par votre expérience ?</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 9 — POINTS CLÉS -->
-<section class="slide std">
+<!-- 30. 3 temps entretien -->
+<section class="slide std" data-mod="Module 5">
   <div class="inner">
-    <div class="head"><div class="num">8</div><h2>Les 10 points clés à retenir<small>Cochez chaque point que vous maîtrisez</small></h2></div>
+    <div class="head"><div class="num">25</div><h2>Les 3 temps de l'entretien jury<small>Déroulé précis pour ne pas être surpris</small></h2></div>
+    <div class="temps">
+      <div class="temp" data-t="Temps 1"><h3>Avant votre entrée</h3><div class="dur">15 à 30 minutes</div><ul><li>Hors de votre présence, les jurés débattent</li><li>Lecture critique de votre Livret 2</li><li>Repérage des points forts et des points faibles</li><li>Choix des compétences à faire creuser à l'entretien</li><li>Préparation des questions-piège</li></ul></div>
+      <div class="temp" data-t="Temps 2"><h3>L'entretien</h3><div class="dur">45 min à 1 h</div><ul><li>Présentation de votre parcours (5 min)</li><li>Questions sur chaque activité en difficulté</li><li>Questions sur le raisonnement clinique</li><li>Mises en situation : « que feriez-vous si… »</li><li>Zéro connaissance pure demandée — c'est VOTRE expérience</li></ul></div>
+      <div class="temp" data-t="Temps 3"><h3>La délibération</h3><div class="dur">30 min à 1 h</div><ul><li>Hors de votre présence</li><li>Le jury se prononce bloc par bloc</li><li>Décision <b>collégiale</b> et <b>souveraine</b></li><li>Préconisations si bloc non validé (stage, formation)</li><li>Décision notifiée par courrier dans les 15 jours</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 31. Grille cotation -->
+<section class="slide std" data-mod="Module 5">
+  <div class="inner">
+    <div class="head"><div class="num">26</div><h2>La grille de cotation à 3 niveaux<small>Comment le jury évalue chaque compétence</small></h2></div>
+    <div class="cotation">
+      <div class="cot acq"><div class="lbl">ACQUIS</div><p>La compétence est <b>démontrée</b> dans le Livret 2 et confirmée à l'entretien. Les gestes sont justes, le raisonnement clinique est présent, les protocoles sont respectés.</p><div class="ex"><b>Exemple</b>« L'AS décrit une toilette avec stimulation d'autonomie, surveillance cutanée, transmission DAR. Entretien : réponses précises sur les signes d'escarre. »</div></div>
+      <div class="cot ver"><div class="lbl">À VÉRIFIER</div><p>La compétence est <b>partielle ou ambiguë</b> dans le Livret 2. Le jury l'approfondit à l'entretien. Doit être levée en acquis ou non acquis après questions.</p><div class="ex"><b>Exemple</b>« L'AS cite une toilette mais sans détail sur la stimulation d'autonomie. Entretien : "Comment aidez-vous le résident à faire sa toilette seul ?" »</div></div>
+      <div class="cot non"><div class="lbl">NON ACQUIS</div><p>La compétence <b>n'est pas démontrée</b> ni dans le Livret 2 ni à l'entretien. Si la majorité des compétences du bloc est non acquise, le bloc est non validé.</p><div class="ex"><b>Exemple</b>« L'AS décrit une injection d'insuline comme son acte quotidien. À l'entretien : confirme avoir fait des injections. → Non acquis + critère éliminatoire. »</div></div>
+    </div>
+    <div style="margin-top:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:var(--shadow-sm);border-left:5px solid var(--oracle-teal);font-size:14px;line-height:1.5;color:var(--ink-soft)">
+      <strong style="color:var(--oracle-teal-dark)">📋 Deux colonnes à ORACLE</strong> — Analyse du Livret 2 (Acquis / À vérifier) + Entretien (confirmation en Acquis / Non acquis). C'est la cotation standard que nous utilisons dans nos entretiens de relecture.
+    </div>
+  </div>
+</section>
+
+<!-- 32. 3 piliers raisonnement -->
+<section class="slide std" data-mod="Module 5">
+  <div class="inner">
+    <div class="head"><div class="num">27</div><h2>Les 3 piliers du raisonnement clinique<small>Ce que le jury cherche vraiment derrière vos gestes</small></h2></div>
+    <div class="piliers">
+      <div class="pil"><div class="num">1</div><h3>POURQUOI ?</h3><div class="q"><em>Pourquoi</em> réalisez-vous ce geste <em>maintenant</em>, pour <em>ce</em> résident ?</div><p>Vous devez relier chaque acte à l'état clinique du résident, à son PAP, à un signe d'alerte. Le geste n'est jamais une routine : il répond à un besoin identifié.</p></div>
+      <div class="pil"><div class="num">2</div><h3>COMMENT ?</h3><div class="q"><em>Comment</em> adaptez-vous ce geste à <em>cette</em> personne, à <em>ce</em> moment ?</div><p>L'adaptation est la preuve de votre expertise. Le même geste réalisé différemment selon le résident, le contexte, les habitudes de vie. L'inverse de la routine mécanique.</p></div>
+      <div class="pil"><div class="num">3</div><h3>ET APRÈS ?</h3><div class="q"><em>Qu'avez-vous observé</em>, transmis, alerté, modifié <em>après</em> ce geste ?</div><p>Le rôle AS ne s'arrête pas au geste. L'observation, la transmission DAR, l'alerte, l'ajustement du PAP sont le prolongement obligatoire. Sans cette boucle, le geste n'est pas « soignant ».</p></div>
+    </div>
+    <div style="margin-top:16px;background:var(--oracle-cream);border-radius:12px;padding:18px 22px;border:1px dashed var(--oracle-teal);font-size:14px;line-height:1.6;color:var(--ink-soft);text-align:center">
+      <strong style="color:var(--oracle-teal-dark)">💡 Règle ORACLE</strong> — Chaque récit du Livret 2 doit répondre aux 3 questions. Pas de « pourquoi », pas d'« adaptation », pas de « boucle d'observation » → la compétence est « à vérifier » voire « non acquise ».
+    </div>
+  </div>
+</section>
+
+<!-- 33. MODULE 6 intro & 15 points clés -->
+<section class="slide std" data-mod="Module 6">
+  <div class="inner">
+    <div class="head"><div class="num">28</div><h2>Les 15 points clés à retenir<small>Cochez chaque point que vous maîtrisez — la liste de garantie avant jury</small></h2></div>
     <div class="cles" id="cles">
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je travaille sous la <strong>responsabilité de l'infirmier</strong>, pas sous ses ordres directs</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je n'ai pas de rôle propre : je <strong>collabore</strong> au rôle propre infirmier (art. R.4311-5)</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je connais les <strong>5 blocs de compétences</strong> et les <strong>11 activités</strong> du DEAS</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce que je fais : hygiène, confort, alimentation, élimination, mobilisation</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce que je ne fais JAMAIS : injections, pansements complexes, perfusions, diagnostic</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je <strong>respecte les protocoles</strong> et les prescriptions écrites</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'observe avec mes 5 sens, je transmets en <strong>DAR</strong>, j'alerte en cas de doute</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je <strong>contribue au PAP</strong> et je respecte les choix du résident (faire AVEC)</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>En cas de doute, je <strong>demande à l'IDE</strong> et je trace</p></div>
-      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Ma compétence, c'est un <strong>atout pour la qualité des soins</strong> et pour ma protection</p></div>
-      <div class="progress-m"><span>Progression</span><div class="pb"><i id="clesBar"></i></div><strong id="clesCnt">0 / 10</strong></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je travaille sous la <b>responsabilité de l'infirmier</b>, pas sous ses ordres directs</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je n'ai pas de rôle propre — je <b>collabore</b> au rôle propre infirmier (art. R.4311-5)</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Mon référentiel actuel = <b>arrêté du 28 mars 2022</b>, DEAS Niveau 4 CNCP</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je connais les <b>5 blocs · 11 activités · 12 récits · 18 éléments · 27 domaines</b></p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais que l'<b>activité 10 = inventaire</b>, les <b>activités 9 et 11 doublent</b></p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais que l'<b>activité 5 appartient au Bloc 2 clinique</b> (pas Bloc 1)</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais que l'<b>activité 8 réclame un contexte SORTIE DE PATIENT</b></p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais que l'<b>activité 9 ne concerne JAMAIS le corps du patient</b></p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce que je fais, ce que je ne fais JAMAIS, et ce que je fais en collaboration</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je respecte les protocoles et les prescriptions écrites — <b>jamais sur consigne orale</b></p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'observe avec mes 5 sens, je transmets en <b>DAR</b>, j'alerte en cas de doute</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je contribue au PAP et je respecte les choix du résident (<b>faire AVEC</b>)</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je connais les <b>3 responsabilités</b> et les <b>3 critères éliminatoires</b> du jury</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais <b>refuser proprement</b> (polis, alerter, tracer, surveiller, assurer)</p></div>
+      <div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Pour chaque récit, j'applique les <b>3 piliers</b> : POURQUOI, COMMENT, ET APRÈS</p></div>
+      <div class="progress-m"><span>Progression</span><div class="pb"><i id="clesBar"></i></div><strong id="clesCnt">0 / 15</strong></div>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 10 — QUIZ FINAL -->
-<section class="slide std">
+<!-- 34. Flashcards -->
+<section class="slide std" data-mod="Module 6">
   <div class="inner">
-    <div class="head"><div class="num">9</div><h2>Quiz final — 12 questions<small>Validez vos acquis sur le référentiel décodé</small></h2></div>
+    <div class="head"><div class="num">29</div><h2>12 flashcards à mémoriser<small>Cliquez sur la carte pour retourner. Utilisez les flèches ou les boutons.</small></h2></div>
+    <div class="flashwrap">
+      <div class="flashbar"><button onclick="prevFC()">← Précédente</button><span id="fcLbl">Carte 1 / 12</span><button onclick="nextFC()">Suivante →</button></div>
+      <div class="flashcard" id="flashcard" onclick="this.classList.toggle('turned')">
+        <div class="flip">
+          <div class="face front"><div class="hint">Question</div><h3 id="fcFront"></h3><div class="tap">Cliquez pour voir la réponse</div></div>
+          <div class="face back"><h3 id="fcTitle"></h3><p id="fcBack"></p><div class="tap">Cliquez pour revenir</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 35. QUIZ FINAL -->
+<section class="slide std" data-mod="Module 6">
+  <div class="inner">
+    <div class="head"><div class="num">30</div><h2>Quiz final — 20 questions<small>Validez vos acquis sur l'ensemble du référentiel décodé</small></h2></div>
     <div class="qz" id="qz"></div>
   </div>
 </section>
 
-<!-- SLIDE 11 — FIN -->
-<section class="slide end">
+<!-- 36. FIN -->
+<section class="slide end" data-mod="Fin">
   <div class="wrap">
     <div class="ok">🏆</div>
     <h1>Masterclass 01 terminée<em>Vous connaissez votre champ de compétence</em></h1>
-    <p>Vous savez maintenant ce qu'est votre rôle propre, ce que vous faites, ce que vous ne faites jamais, et pourquoi.<br>Prochaine étape : <strong>transformer tout cela en situation professionnelle écrite</strong> qui prouve au jury que vous êtes AS.</p>
+    <p>Vous savez maintenant ce qu'est votre rôle propre, les 5 blocs, les 12 récits à produire, les 27 domaines de savoir, les 3 responsabilités et les 3 critères éliminatoires du jury.<br><br>Prochaine étape : <strong>transformer tout cela en situation professionnelle écrite</strong> qui prouve au jury que vous êtes AS.</p>
     <button class="nxt" onclick="location.href='MC02.html'">Masterclass 02 : Écrire une situation qui prouve <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
     <div class="mini">
       <a href="index.html">📚 Toutes les masterclasses</a>
@@ -573,322 +1062,176 @@ a{color:inherit}
 
 </div>
 
-<!-- Nav -->
 <div class="nav">
   <button onclick="go(current-1)" id="prevB">←</button>
   <button class="menu" onclick="location.href='index.html'">☰ Catalogue</button>
   <button onclick="go(current+1)" id="nextB">→</button>
 </div>
 
-<!-- Modal -->
 <div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="mhead">
-      <div class="mnum" id="mnum">1</div>
-      <h3 id="mtitle">—</h3>
-      <button class="mclose" onclick="closeModal()">✕</button>
-    </div>
+    <div class="mhead"><div class="mnum" id="mnum">1</div><h3 id="mtitle">—</h3><button class="mclose" onclick="closeModal()">✕</button></div>
     <div class="mbody" id="mbody"></div>
   </div>
 </div>
 
 <script>
-// ===== Modal content for the 8 chapters =====
+// ===== Chapter modals (8 hotspots) =====
 const CHAPTERS = {
-  1:{title:"Le cadre légal",body:`
-    <h4>Deux articles à ne jamais confondre</h4>
-    <ul>
-      <li><strong>Article R.4311-4</strong> du Code de la santé publique → définit le champ d'intervention de l'<strong>aide-soignant</strong> : collabore aux soins infirmiers, exerce sous la responsabilité de l'IDE.</li>
-      <li><strong>Article R.4311-5</strong> → liste les actes du <strong>rôle propre infirmier</strong>. L'AS n'a pas ces actes en propre, il peut en collaborer selon décret du 10/06/2021.</li>
-      <li><strong>Arrêté du 28 mars 2022</strong> → fixe le référentiel d'activités et de compétences du DEAS actuel (formulaire ASP 0637 04 22, RNCP 40692, DEAS Niveau 4 CNCP).</li>
-      <li>Diplôme d'État d'aide-soignant → <strong>5 blocs de compétences, 11 activités</strong>.</li>
-    </ul>
-    <h4>⚠️ Piège classique en jury</h4>
-    <ul>
-      <li>« Est-ce que vous avez un rôle propre ? » → Réponse : <strong>Non, je collabore au rôle propre infirmier</strong>, je n'ai pas de rôle propre au sens juridique.</li>
-    </ul>
-    <div class="q">
-      <p>Sous quelle responsabilité l'AS exerce-t-il ?</p>
-      <div class="opts">
-        <button onclick="qa(this,false)">A. Sous les ordres directs du médecin</button>
-        <button onclick="qa(this,true)">B. Sous la responsabilité de l'IDE</button>
-        <button onclick="qa(this,false)">C. Sous l'autorité du cadre uniquement</button>
-      </div>
-      <div class="fb good">✓ Exact. L'AS exerce sous la <strong>responsabilité de l'IDE</strong>, qui lui confie certains soins. L'IDE ne lui donne pas d'ordres : elle lui confie des actes.</div>
-      <div class="fb bad">✗ Révisez : l'AS exerce sous la <strong>responsabilité de l'IDE</strong> (art. R.4311-4). Pas sous les ordres du médecin, pas uniquement sous le cadre.</div>
-    </div>
-  `},
-  2:{title:"Les 5 blocs du DEAS",body:`
-    <h4>Référentiel 2022 — 5 blocs, 11 activités</h4>
-    <ul>
-      <li><strong>Bloc 1</strong> → Activités 1 et 2 — <em>2 récits</em></li>
-      <li><strong>Bloc 2</strong> → Activités 3, 4 et 5 — <em>3 récits</em> (le plus lourd : 13 des 27 domaines de savoir)</li>
-      <li><strong>Bloc 3</strong> → Activités 6 et 7 — <em>2 récits</em></li>
-      <li><strong>Bloc 4</strong> → Activités 8 et 9 — <em>3 récits</em> (activité 9 compte DOUBLE)</li>
-      <li><strong>Bloc 5</strong> → Activités 10 et 11 — <em>2 récits</em> (activité 10 = INVENTAIRE ; activité 11 compte DOUBLE)</li>
-    </ul>
-    <h4>Les bons chiffres à retenir</h4>
-    <ul>
-      <li><strong>5 blocs · 11 activités · 12 récits · 18 éléments à produire · 27 domaines de savoir</strong></li>
-      <li>⚠️ Ne pas déduire le nombre de récits du nombre d'activités : <strong>11 activités ne font pas 11 récits</strong>.</li>
-      <li>Base légale : arrêté du 28 mars 2022 · formulaire ASP 0637 04 22 · RNCP 40692 · DEAS Niveau 4.</li>
-    </ul>
-    <div class="q">
-      <p>Combien de RÉCITS devez-vous produire dans le Livret 2 ?</p>
-      <div class="opts">
-        <button onclick="qa(this,false)">A. 11, un par activité</button>
-        <button onclick="qa(this,true)">B. 12 — activités 9 et 11 doublent, activité 10 = inventaire</button>
-        <button onclick="qa(this,false)">C. 18, un par élément à produire</button>
-      </div>
-      <div class="fb good">✓ Exact. <strong>12 récits</strong> : les activités 9 et 11 comptent chacune pour 2 récits, l'activité 10 se traite par un inventaire (pas un récit).</div>
-      <div class="fb bad">✗ Piège classique : <strong>12 récits</strong>, pas 11 ni 18. Les activités 9 et 11 doublent, l'activité 10 est un inventaire.</div>
-    </div>
-  `},
-  3:{title:"Ce que l'AS FAIT",body:`
-    <h4>Les gestes du quotidien, en autonomie encadrée</h4>
-    <ul>
-      <li>Soins d'hygiène : toilette complète ou partielle, change, soins de bouche, capillaires, ongles</li>
-      <li>Soins de confort : installation, mobilisation, prévention des escarres</li>
-      <li>Aide à l'alimentation : installation, vérification des textures, surveillance de la déglutition</li>
-      <li>Aide à l'élimination : accompagnement WC, change, pose de l'étui pénien</li>
-      <li>Mesure des paramètres vitaux selon le protocole du service</li>
-      <li>Aide à la prise de médicaments préparés par l'IDE, si <strong>formé et habilité</strong></li>
-      <li>Retrait de pansement et pose de pansement sec, sur consigne de l'IDE</li>
-      <li>Observation, transmission écrite et orale, alerte en cas de signe d'alerte</li>
-    </ul>
-    <h4>💡 Point jury</h4>
-    <ul>
-      <li>Chaque acte doit s'inscrire dans un <strong>protocole</strong> ou une <strong>consigne écrite</strong>. Jamais sur une consigne orale isolée sans traçabilité.</li>
-    </ul>
-    <div class="q">
-      <p>Un AS peut-il réaliser une mesure de glycémie capillaire ?</p>
-      <div class="opts">
-        <button onclick="qa(this,true)">A. Oui, s'il est formé et habilité, sur protocole du service</button>
-        <button onclick="qa(this,false)">B. Non, c'est un acte infirmier exclusif</button>
-        <button onclick="qa(this,false)">C. Oui, dans tous les cas sans aucune condition</button>
-      </div>
-      <div class="fb good">✓ Exact. La glycémie capillaire fait partie du <strong>recueil de données</strong> que l'AS peut faire s'il est formé et sur protocole écrit du service.</div>
-      <div class="fb bad">✗ L'AS peut faire une glycémie capillaire <strong>s'il est formé et habilité</strong>, sur protocole écrit du service. Mais ce n'est jamais automatique.</div>
-    </div>
-  `},
-  4:{title:"Ce que l'AS NE FAIT JAMAIS",body:`
-    <h4>Les actes exclusivement infirmiers ou médicaux</h4>
-    <ul>
-      <li><strong>Injections</strong> sous-cutanée, intramusculaire, intraveineuse — sans exception</li>
-      <li><strong>Perfusions</strong> : pose, surveillance active du débit, ablation</li>
-      <li><strong>Pansements complexes</strong> : pose, réfection, ablation</li>
-      <li><strong>Sondages urinaires</strong>, ablation de sonde ou de drain</li>
-      <li>Distribution de médicaments non préparés par l'IDE (préparation du pilulier = IDE)</li>
-      <li><strong>Diagnostic</strong> ou interprétation des résultats (rôle médecin/IDE)</li>
-      <li>Prescription de régime, de contention ou de traitement</li>
-      <li>Décisions médicales ou techniques dépassant le protocole du service</li>
-    </ul>
-    <h4>⚠️ Rappel</h4>
-    <ul>
-      <li><strong>Dépasser ses compétences = exercice illégal</strong> → sanctions pénales et perte du droit d'exercer.</li>
-      <li>Un acte demandé oralement, sans protocole ni prescription écrite, doit être refusé poliment et tracé.</li>
-    </ul>
-    <div class="q">
-      <p>L'IDE est débordée et vous demande de poser une perfusion. Que faites-vous ?</p>
-      <div class="opts">
-        <button onclick="qa(this,false)">A. J'accepte, c'est une urgence</button>
-        <button onclick="qa(this,true)">B. Je refuse, je trace, j'alerte le cadre</button>
-        <button onclick="qa(this,false)">C. Je demande à une collègue AS de le faire</button>
-      </div>
-      <div class="fb good">✓ Exact. <strong>Jamais de perfusion</strong>, même en urgence, même « pour dépanner ». Refuser = protéger le résident, votre carrière, et l'IDE elle-même.</div>
-      <div class="fb bad">✗ Jamais. La perfusion est un acte IDE exclusif. Même urgence, même pression, la bonne réponse est : <strong>refus poli + traçabilité + alerte hiérarchie</strong>.</div>
-    </div>
-  `},
-  5:{title:"Le rôle de l'AS au quotidien",body:`
-    <h4>Huit engagements qui définissent le métier</h4>
-    <ul>
-      <li>Observer et écouter au quotidien, dans une relation de confiance</li>
-      <li>Recueillir les attentes et les habitudes de vie du résident</li>
-      <li>Contribuer à l'élaboration et à la mise en œuvre du <strong>PAP</strong> (Projet d'Accompagnement Personnalisé)</li>
-      <li>Réaliser les soins confiés avec rigueur et bienveillance</li>
-      <li>Repérer les changements d'état et alerter l'IDE</li>
-      <li>Travailler en équipe, transmettre des informations fiables</li>
-      <li>Respecter les projets, les choix et la dignité du résident</li>
-      <li>Participer à la qualité et à la sécurité des soins</li>
-    </ul>
-    <h4>💬 Phrase jury parfaite</h4>
-    <ul>
-      <li>« Je suis le professionnel le plus proche du résident. Ce que j'observe et transmets peut sauver des vies — c'est ça, le cœur de mon rôle propre. »</li>
-    </ul>
-    <div class="q">
-      <p>Que signifie « faire AVEC le résident, pas À SA PLACE » ?</p>
-      <div class="opts">
-        <button onclick="qa(this,false)">A. Je lui demande de faire sa toilette seul</button>
-        <button onclick="qa(this,true)">B. Je stimule et accompagne son autonomie, je ne me substitue pas</button>
-        <button onclick="qa(this,false)">C. Je refuse de l'aider pour qu'il progresse</button>
-      </div>
-      <div class="fb good">✓ Exact. Maintenir l'autonomie = stimuler ce que la personne peut encore faire, l'accompagner sans la remplacer. C'est le socle du <strong>prendre soin</strong>.</div>
-      <div class="fb bad">✗ Nuance : il ne s'agit ni d'abandonner ni de refuser l'aide. On <strong>stimule ce qui est encore possible</strong>, on accompagne, on n'exécute pas à la place.</div>
-    </div>
-  `},
-  6:{title:"En situation : exemples concrets",body:`
-    <h4>Grille OUI / NON — à mémoriser</h4>
-    <ul>
-      <li>Prendre la tension selon le protocole → <strong>OUI</strong></li>
-      <li>Donner un comprimé préparé par l'IDE, si formé et habilité → <strong>OUI</strong></li>
-      <li>Faire une injection d'insuline → <strong>NON</strong> (acte IDE)</li>
-      <li>Réaliser une toilette complète → <strong>OUI</strong></li>
-      <li>Poser un pansement sec sur consigne IDE → <strong>OUI</strong></li>
-      <li>Faire une réfection de pansement complexe → <strong>NON</strong></li>
-      <li>Préparer un pilulier → <strong>NON</strong> (acte IDE)</li>
-      <li>Installer un résident au fauteuil avec un lève-personne → <strong>OUI</strong></li>
-      <li>Régler le débit d'oxygène → <strong>NON</strong> (prescription médicale)</li>
-      <li>Alerter l'IDE en cas de changement d'état → <strong>OUI</strong>, c'est un <strong>devoir</strong></li>
-    </ul>
-    <h4>Mémo</h4>
-    <ul>
-      <li>En cas de doute : je demande, je trace, j'alerte. Mieux vaut ne pas faire un geste que de faire un geste de trop.</li>
-    </ul>
-  `},
-  7:{title:"Les risques en cas de dépassement",body:`
-    <h4>Trois niveaux de responsabilité</h4>
-    <ul>
-      <li><strong>Responsabilité civile</strong> : réparer les dommages (indemnisation du résident ou de ses ayants-droit)</li>
-      <li><strong>Responsabilité pénale</strong> : fautes graves — maltraitance, négligence, exercice illégal → prison, amende, interdiction d'exercer</li>
-      <li><strong>Responsabilité disciplinaire</strong> : sanctions de l'employeur — avertissement, mise à pied, licenciement</li>
-    </ul>
-    <h4>Deux droits qui protègent</h4>
-    <ul>
-      <li><strong>Refuser</strong> un acte qui dépasse ses compétences est un DROIT et un DEVOIR</li>
-      <li><strong>Tracer</strong> ses actes dans le dossier est une PREUVE juridique</li>
-      <li>Souscrire une <strong>assurance RC professionnelle</strong> est recommandé</li>
-    </ul>
-    <div class="q">
-      <p>Un résident chute pendant une toilette. L'AS n'avait pas sécurisé l'environnement. Quelle responsabilité ?</p>
-      <div class="opts">
-        <button onclick="qa(this,false)">A. Aucune, c'est le résident qui a glissé</button>
-        <button onclick="qa(this,true)">B. Responsabilité civile et possiblement disciplinaire</button>
-        <button onclick="qa(this,false)">C. Responsabilité pénale uniquement</button>
-      </div>
-      <div class="fb good">✓ Exact. Une faute dans la sécurisation = <strong>responsabilité civile</strong> (réparation) et <strong>disciplinaire</strong> (sanction employeur). Pénale seulement si négligence caractérisée ou maltraitance.</div>
-      <div class="fb bad">✗ Révisez : la sécurisation de l'environnement fait partie du rôle AS. Un défaut = <strong>responsabilité civile + disciplinaire</strong>. Pénale si négligence grave caractérisée.</div>
-    </div>
-  `},
-  8:{title:"Points clés à retenir",body:`
-    <h4>Les 10 points à graver</h4>
-    <ul>
-      <li>Je travaille sous la responsabilité de l'infirmier</li>
-      <li>Je n'ai pas de rôle propre : je collabore au rôle propre infirmier</li>
-      <li>Je connais les 5 blocs et les 11 activités du DEAS</li>
-      <li>Je sais ce que je fais et ce que je ne fais pas</li>
-      <li>Je respecte les protocoles et les prescriptions écrites</li>
-      <li>J'observe, je transmets en DAR, j'alerte</li>
-      <li>Je contribue au PAP et je respecte les choix du résident</li>
-      <li>En cas de doute, je demande à l'IDE</li>
-      <li>Jamais : injections, pansements complexes, perfusions, diagnostic</li>
-      <li>Ma compétence, c'est un atout pour la qualité des soins</li>
-    </ul>
-    <h4>💡 Rituel avant d'écrire une situation Livret 2</h4>
-    <ul>
-      <li>Je me demande : « Quelle activité du DEAS cette situation prouve-t-elle ? »</li>
-      <li>Je me demande : « Est-ce que je reste dans mon champ de compétence ? »</li>
-      <li>Si oui, j'écris. Si non, je choisis une autre situation.</li>
-    </ul>
-  `}
+  1:{title:"Le cadre légal",body:`<h4>Deux articles à ne jamais confondre</h4><ul><li><b>Article R.4311-4</b> → définit le champ d'intervention de l'AS. Collabore aux soins IDE, exerce sous responsabilité IDE.</li><li><b>Article R.4311-5</b> → liste les actes du rôle propre IDE. L'AS n'a pas ces actes en propre, il collabore.</li><li><b>Arrêté du 28 mars 2022</b> → fixe le référentiel actuel (formulaire ASP 0637 04 22, RNCP 40692, DEAS Niveau 4).</li><li>DEAS : <b>5 blocs, 11 activités, 12 récits</b>.</li></ul><h4>⚠️ Piège jury classique</h4><ul><li>« Avez-vous un rôle propre ? » → <b>Non, je collabore au rôle propre infirmier</b>, je n'ai pas de rôle propre au sens juridique.</li></ul><div class="q"><p>Sous quelle responsabilité l'AS exerce-t-il ?</p><div class="opts"><button onclick="qa(this,false)">A. Sous les ordres directs du médecin</button><button onclick="qa(this,true)">B. Sous la responsabilité de l'IDE</button><button onclick="qa(this,false)">C. Sous l'autorité du cadre uniquement</button></div><div class="fb good">✓ Exact. L'AS exerce sous la <b>responsabilité de l'IDE</b>, qui lui confie certains soins. L'IDE ne lui donne pas d'ordres : elle lui confie des actes.</div><div class="fb bad">✗ L'AS exerce sous la <b>responsabilité de l'IDE</b> (art. R.4311-4).</div></div>`},
+  2:{title:"Les 5 blocs du DEAS",body:`<h4>Référentiel 2022 — 5 blocs, 11 activités, 12 récits</h4><ul><li><b>Bloc 1</b> → Activités 1-2 — <em>2 récits</em></li><li><b>Bloc 2</b> → Activités 3-4-5 — <em>3 récits</em> (13 des 27 domaines)</li><li><b>Bloc 3</b> → Activités 6-7 — <em>2 récits</em></li><li><b>Bloc 4</b> → Activités 8-9 — <em>3 récits</em> (activité 9 compte DOUBLE)</li><li><b>Bloc 5</b> → Activités 10-11 — <em>2 récits</em> (activité 10 = INVENTAIRE ; activité 11 compte DOUBLE)</li></ul><h4>Chiffres à mémoriser</h4><ul><li><b>5 blocs · 11 activités · 12 récits · 18 éléments · 27 domaines de savoir</b></li><li>⚠️ <b>11 activités ne font pas 11 récits</b>.</li></ul><div class="q"><p>Combien de RÉCITS pour le Livret 2 ?</p><div class="opts"><button onclick="qa(this,false)">A. 11, un par activité</button><button onclick="qa(this,true)">B. 12 — activités 9 et 11 doublent, 10 = inventaire</button><button onclick="qa(this,false)">C. 18, un par élément</button></div><div class="fb good">✓ Exact. <b>12 récits</b> : activités 9 et 11 doublent, activité 10 se traite par inventaire.</div><div class="fb bad">✗ Piège classique : <b>12 récits</b>, pas 11 ni 18.</div></div>`},
+  3:{title:"Ce que l'AS FAIT",body:`<h4>Les gestes du quotidien, en autonomie encadrée</h4><ul><li>Soins d'hygiène : toilette, change, soins de bouche, capillaires, ongles</li><li>Soins de confort : installation, mobilisation, prévention des escarres</li><li>Aide à l'alimentation : installation, textures, déglutition</li><li>Aide à l'élimination : accompagnement WC, change, étui pénien</li><li>Mesure des paramètres vitaux selon le protocole du service</li><li>Aide à la prise de médicaments préparés par l'IDE, si formé et habilité</li><li>Retrait pansement + pose pansement sec, sur consigne IDE</li><li>Observation, transmission écrite et orale, alerte si signe d'alerte</li></ul><div class="q"><p>Un AS peut-il réaliser une mesure de glycémie capillaire ?</p><div class="opts"><button onclick="qa(this,true)">A. Oui, s'il est formé et habilité, sur protocole</button><button onclick="qa(this,false)">B. Non, acte IDE exclusif</button><button onclick="qa(this,false)">C. Oui, dans tous les cas</button></div><div class="fb good">✓ Exact. Glycémie capillaire = recueil de données que l'AS peut faire si <b>formé, habilité</b>, sur protocole écrit.</div><div class="fb bad">✗ L'AS peut faire une glycémie capillaire <b>s'il est formé et habilité</b>, sur protocole.</div></div>`},
+  4:{title:"Ce que l'AS NE FAIT JAMAIS",body:`<h4>Actes exclusivement IDE ou médicaux</h4><ul><li><b>Injections</b> SC, IM, IV — sans exception</li><li><b>Perfusions</b> : pose, débit, ablation</li><li><b>Pansements complexes</b> : pose, réfection, ablation</li><li><b>Sondages urinaires</b>, ablation de sonde ou drain</li><li>Distribution médicaments non préparés par l'IDE</li><li><b>Diagnostic</b> ou interprétation des résultats</li><li>Prescription de régime, contention, traitement</li></ul><h4>⚠️ Rappel</h4><ul><li><b>Dépasser ses compétences = exercice illégal</b> → sanctions pénales + perte du droit d'exercer.</li></ul><div class="q"><p>L'IDE est débordée et vous demande de poser une perfusion. Que faites-vous ?</p><div class="opts"><button onclick="qa(this,false)">A. J'accepte, c'est une urgence</button><button onclick="qa(this,true)">B. Je refuse, je trace, j'alerte le cadre</button><button onclick="qa(this,false)">C. Je demande à une collègue AS</button></div><div class="fb good">✓ <b>Jamais de perfusion</b>, même urgence. Refuser protège résident, carrière, et IDE.</div><div class="fb bad">✗ Jamais. Refus poli + traçabilité + alerte hiérarchie.</div></div>`},
+  5:{title:"Le rôle de l'AS au quotidien",body:`<h4>Huit engagements qui définissent le métier</h4><ul><li>Observer et écouter au quotidien</li><li>Recueillir attentes et habitudes de vie</li><li>Contribuer au PAP (Projet d'Accompagnement Personnalisé)</li><li>Réaliser les soins confiés avec rigueur</li><li>Repérer les changements d'état et alerter l'IDE</li><li>Travailler en équipe, transmettre des infos fiables</li><li>Respecter projets, choix, dignité du résident</li><li>Participer à qualité et sécurité des soins</li></ul><div class="q"><p>Que signifie « faire AVEC le résident, pas À SA PLACE » ?</p><div class="opts"><button onclick="qa(this,false)">A. Lui demander de faire sa toilette seul</button><button onclick="qa(this,true)">B. Stimuler et accompagner son autonomie</button><button onclick="qa(this,false)">C. Refuser de l'aider pour qu'il progresse</button></div><div class="fb good">✓ Maintenir l'autonomie = stimuler ce qu'il peut encore faire, l'accompagner sans le remplacer.</div><div class="fb bad">✗ On <b>stimule ce qui est encore possible</b>, on accompagne, on n'exécute pas à la place.</div></div>`},
+  6:{title:"En situation : exemples concrets",body:`<h4>Grille OUI / NON — à mémoriser</h4><ul><li>Prendre la tension selon protocole → <b>OUI</b></li><li>Donner un comprimé préparé par l'IDE, si formé → <b>OUI</b></li><li>Faire une injection d'insuline → <b>NON</b></li><li>Réaliser une toilette complète → <b>OUI</b></li><li>Poser un pansement sec sur consigne IDE → <b>OUI</b></li><li>Réfection pansement complexe → <b>NON</b></li><li>Préparer un pilulier → <b>NON</b> (IDE)</li><li>Installer au fauteuil avec lève-personne → <b>OUI</b></li><li>Régler le débit d'oxygène → <b>NON</b></li><li>Alerter l'IDE en cas de changement d'état → <b>OUI</b>, devoir</li></ul><h4>Mémo</h4><ul><li>En cas de doute : je demande, je trace, j'alerte. <b>Mieux vaut ne pas faire un geste que de faire un geste de trop.</b></li></ul>`},
+  7:{title:"Les risques en cas de dépassement",body:`<h4>Trois niveaux de responsabilité</h4><ul><li><b>Civile</b> : réparer les dommages (indemnisation)</li><li><b>Pénale</b> : fautes graves — maltraitance, négligence, exercice illégal → prison, interdiction d'exercer</li><li><b>Disciplinaire</b> : sanctions employeur — avertissement, mise à pied, licenciement</li></ul><h4>Deux droits qui protègent</h4><ul><li><b>Refuser</b> un acte hors champ = DROIT et DEVOIR</li><li><b>Tracer</b> ses actes = PREUVE juridique</li><li>Souscrire une <b>assurance RC pro</b> est recommandé</li></ul><div class="q"><p>Un résident chute pendant une toilette. L'AS n'avait pas sécurisé l'environnement. Quelle responsabilité ?</p><div class="opts"><button onclick="qa(this,false)">A. Aucune, c'est le résident qui a glissé</button><button onclick="qa(this,true)">B. Responsabilité civile et possiblement disciplinaire</button><button onclick="qa(this,false)">C. Responsabilité pénale uniquement</button></div><div class="fb good">✓ Faute dans la sécurisation = <b>civile</b> (réparation) + <b>disciplinaire</b> (sanction employeur). Pénale si négligence caractérisée.</div><div class="fb bad">✗ La sécurisation fait partie du rôle AS. Un défaut = <b>civile + disciplinaire</b>.</div></div>`},
+  8:{title:"Points clés à retenir",body:`<h4>Les 10 points à graver</h4><ul><li>Sous responsabilité IDE</li><li>Pas de rôle propre — je collabore au rôle propre IDE</li><li>5 blocs, 11 activités, 12 récits, 18 éléments, 27 domaines</li><li>Je sais ce que je fais / ne fais pas</li><li>Je respecte les protocoles et prescriptions écrites</li><li>J'observe, je transmets en DAR, j'alerte</li><li>Je contribue au PAP et respecte les choix du résident</li><li>En cas de doute, je demande à l'IDE</li><li>Jamais : injections, pansements complexes, perfusions, diagnostic</li><li>Ma compétence, c'est un atout pour la qualité des soins</li></ul>`}
 };
 
-// ===== 8 situations OUI/NON =====
+// ===== 20 situations =====
 const SITUS = [
  {q:"Faire une toilette complète d'une résidente",ok:true,why:"Soins d'hygiène = rôle propre AS."},
  {q:"Poser une perfusion de glucose à la demande urgente de l'IDE",ok:false,why:"Pose de perfusion = acte IDE exclusif, aucune exception."},
- {q:"Prendre la tension artérielle selon le protocole du service",ok:true,why:"Mesure des paramètres vitaux sur protocole = rôle AS."},
- {q:"Préparer le pilulier du soir du résident 12",ok:false,why:"La préparation du pilulier est un acte IDE exclusif."},
+ {q:"Prendre la tension artérielle selon le protocole",ok:true,why:"Mesure paramètres vitaux sur protocole = rôle AS."},
+ {q:"Préparer le pilulier du soir du résident 12",ok:false,why:"Préparation du pilulier = acte IDE exclusif."},
  {q:"Alerter l'IDE sur un résident confus et agité",ok:true,why:"Observation + transmission + alerte = devoir AS."},
- {q:"Réaliser une injection d'insuline parce que l'IDE est en pause",ok:false,why:"Jamais d'injection AS, même en urgence. Appeler l'IDE de garde."},
- {q:"Installer un résident au fauteuil avec un lève-personne",ok:true,why:"Mobilisation sur protocole, en respectant l'ergonomie."},
- {q:"Décider de mettre en place une contention au lit",ok:false,why:"La contention est une prescription médicale, pas une décision AS."}
+ {q:"Réaliser une injection d'insuline parce que l'IDE est en pause",ok:false,why:"Jamais d'injection AS. Appeler l'IDE de garde."},
+ {q:"Installer un résident au fauteuil avec un lève-personne",ok:true,why:"Mobilisation sur protocole + ergonomie."},
+ {q:"Décider de mettre en place une contention au lit",ok:false,why:"Contention = prescription médicale."},
+ {q:"Mesurer la glycémie capillaire d'un résident diabétique si formé",ok:true,why:"Recueil de données AS si formé/habilité + protocole."},
+ {q:"Réfection d'un pansement d'escarre complexe",ok:false,why:"Pansement complexe = acte IDE exclusif."},
+ {q:"Donner un comprimé préparé par l'IDE si formé",ok:true,why:"Aide à la prise médicamenteuse si formé/habilité."},
+ {q:"Faire un sondage urinaire à un résident en rétention",ok:false,why:"Sondage urinaire = acte IDE exclusif."},
+ {q:"Changer un résident incontinent dans la nuit",ok:true,why:"Change = rôle propre AS."},
+ {q:"Régler le débit d'oxygène quand saturation baisse",ok:false,why:"Réglage O2 = prescription médicale, surveillance AS seulement."},
+ {q:"Signaler une rougeur sacrum pendant la toilette",ok:true,why:"Observation + transmission = cœur du rôle AS."},
+ {q:"Diagnostiquer une déshydratation chez un résident",ok:false,why:"Diagnostic = rôle médecin. AS repère, alerte, l'IDE analyse."},
+ {q:"Participer à une réunion d'équipe sur un cas",ok:true,why:"Travail en équipe = activité 11, rôle AS."},
+ {q:"Interpréter un résultat de bandelette urinaire",ok:false,why:"Interprétation = acte IDE. AS fait le prélèvement et transmet."},
+ {q:"Accompagner la famille au chevet d'un résident en fin de vie",ok:true,why:"Communication avec entourage = activité 6."},
+ {q:"Modifier le PAP sans avis de l'IDE référente",ok:false,why:"L'AS CONTRIBUE au PAP, l'IDE le valide. Jamais modifier seul."}
 ];
 
 function renderSitus(){
   const c=document.getElementById('situs');
-  c.innerHTML=SITUS.map((s,i)=>`
-    <div class="situ" style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px">
-      <p style="font-size:14.5px;color:var(--ink);line-height:1.4"><b style="color:var(--oracle-teal);margin-right:6px">${i+1}.</b>${s.q}</p>
-      <div style="display:flex;gap:8px">
-        <button class="sb y" style="flex:1;background:#dcf5e4;color:#0e5e2a;font-weight:700;padding:9px;border-radius:8px;border:2px solid transparent" onclick="situClick(${i},true,this)">✓ Je peux</button>
-        <button class="sb n" style="flex:1;background:#fde3e3;color:#8a1a1a;font-weight:700;padding:9px;border-radius:8px;border:2px solid transparent" onclick="situClick(${i},false,this)">✕ Je ne peux pas</button>
-      </div>
-      <div class="sfb" style="display:none;font-size:13px;padding:10px;border-radius:8px"></div>
-    </div>
-  `).join('');
+  c.innerHTML=SITUS.map((s,i)=>`<div class="situ"><p><b>${i+1}.</b>${s.q}</p><div class="btns"><button class="sb y" onclick="situClick(${i},true,this)">✓ Je peux</button><button class="sb n" onclick="situClick(${i},false,this)">✕ Je ne peux pas</button></div><div class="sfb"></div></div>`).join('');
 }
-
 function situClick(i,ans,btn){
   const parent=btn.parentElement.parentElement;
   const fb=parent.querySelector('.sfb');
   const s=SITUS[i];
   const good=ans===s.ok;
   parent.querySelectorAll('.sb').forEach(b=>b.disabled=true);
-  btn.style.borderColor=good?'#2ea84f':'#d65757';
-  btn.style.borderWidth='3px';
+  btn.style.borderColor=good?'#2ea84f':'#d65757';btn.style.borderWidth='3px';
   fb.style.display='block';
   fb.style.background=good?'#dcf5e4':'#fde3e3';
   fb.style.color=good?'#0e5e2a':'#8a1a1a';
-  fb.innerHTML=(good?'✓ ':'✗ ')+'<strong>'+(s.ok?'OUI':'NON')+'</strong> — '+s.why;
+  fb.innerHTML=(good?'✓ ':'✗ ')+'<b>'+(s.ok?'OUI':'NON')+'</b> — '+s.why;
 }
 
-// ===== Quiz final 10 questions =====
-const QUIZ = [
+// ===== Mini-quiz Module 1 (5 Q) =====
+const MINI1 = [
  {q:"Quel article définit le champ d'intervention de l'AS ?",opts:["R.4311-5","R.4311-4","L.4321-1"],ok:1,x:"R.4311-4 définit l'AS, R.4311-5 définit le rôle propre IDE. L'erreur classique."},
- {q:"Combien de blocs de compétences dans le DEAS (arrêté 28 mars 2022) ?",opts:["4","5","6"],ok:1,x:"5 blocs, 11 activités, 12 récits à produire. DEAS = Niveau 4 CNCP."},
- {q:"L'AS a-t-il un rôle propre ?",opts:["Oui, autonome","Non, il collabore au rôle propre IDE","Oui, sur prescription médicale"],ok:1,x:"L'AS collabore au rôle propre IDE (R.4311-5). Il n'en a pas en propre."},
- {q:"Un AS peut-il faire une injection sous-cutanée d'insuline ?",opts:["Oui, si formé","Non, jamais","Oui, en urgence"],ok:1,x:"Jamais d'injection AS. Même urgence, même formation, c'est acte IDE exclusif."},
- {q:"Qui peut préparer un pilulier ?",opts:["L'AS si formé","L'IDE uniquement","L'aide médico-psychologique"],ok:1,x:"Préparation du pilulier = IDE exclusivement. L'AS peut aider à la prise si formé et habilité."},
- {q:"Dans la DAR, le D signifie :",opts:["Diagnostic","Données","Détails"],ok:1,x:"DAR = Données (observables) + Actions (menées) + Résultats (observés)."},
- {q:"Dépasser son champ de compétence expose à :",opts:["Un simple rappel","Civil + pénal + disciplinaire","Sanction pénale uniquement"],ok:1,x:"Trois responsabilités : civile (indemnisation), pénale (exercice illégal), disciplinaire (sanction employeur)."},
- {q:"Qui prescrit une contention ?",opts:["L'AS si urgence","Le médecin","L'IDE sur protocole"],ok:1,x:"La contention est une prescription médicale, jamais une décision AS ou IDE isolée."},
- {q:"« Faire AVEC le résident, pas À SA PLACE » signifie :",opts:["L'abandonner","Stimuler et accompagner son autonomie","Refuser de l'aider"],ok:1,x:"Maintenir l'autonomie = aider à faire, pas se substituer. C'est le socle du prendre soin."},
- {q:"Un résident refuse sa toilette. Que faites-vous ?",opts:["Je passe outre, c'est important","J'écoute, je trace, je renégocie, j'alerte si refus persistant","Je ne fais rien et je reviens demain"],ok:1,x:"Respecter le refus, tracer, chercher à comprendre, alerter l'IDE si refus persistant. Jamais passer en force."},
- {q:"Combien de récits devez-vous rédiger dans le Livret 2 ?",opts:["11, un par activité","12 — activités 9 et 11 doublent, activité 10 = inventaire","18, un par élément à produire"],ok:1,x:"12 récits : les activités 9 et 11 valent 2 récits chacune, l'activité 10 se traite par un INVENTAIRE. Piège de méthode classique."},
- {q:"Quel est le niveau de qualification du DEAS ?",opts:["Niveau 3 (CAP/BEP)","Niveau 4 (Bac/BT/BP)","Niveau 5 (Bac+2)"],ok:1,x:"DEAS = Niveau 4 CNCP depuis la nomenclature 2019 (équivalent Bac/BT/BP/CAPA). Pas niveau 3."}
+ {q:"Quelle est la base légale actuelle du DEAS ?",opts:["Arrêté du 10 juin 2021","Arrêté du 28 mars 2022","Décret 2023-1275"],ok:1,x:"L'arrêté du 28 mars 2022 fixe le référentiel actuel. L'arrêté 2021 est antérieur, le décret 2023 concerne la VAE."},
+ {q:"Quel est le niveau de qualification du DEAS ?",opts:["Niveau 3 (CAP/BEP)","Niveau 4 (Bac/BT/BP)","Niveau 5 (Bac+2)"],ok:1,x:"DEAS = Niveau 4 CNCP depuis la nomenclature 2019. Pas niveau 3."},
+ {q:"L'AS a-t-il un rôle propre ?",opts:["Oui, autonome","Non, il collabore au rôle propre IDE","Oui, sur prescription médicale"],ok:1,x:"L'AS collabore au rôle propre IDE (R.4311-5). Pas de rôle propre AS au sens juridique."},
+ {q:"Dans la collaboration AS/IDE, quels sont les 3 impératifs ?",opts:["Formation + protocole + traçabilité","Diplôme AS + consigne orale","Expérience + confiance IDE"],ok:0,x:"Formation + habilitation, protocole écrit, traçabilité. Toujours ces trois piliers."}
 ];
 
-let qIdx=0, qScore=0, qAns=null;
-function renderQuiz(){
-  const el=document.getElementById('qz');
-  if(qIdx>=QUIZ.length){
-    const pct=Math.round(qScore/QUIZ.length*100);
-    let cls='ok', msg='Excellent — vous maîtrisez le référentiel. Prêt pour MC02 : écrire une situation qui prouve.';
-    if(pct<50){cls='ko';msg='Révisez les 8 chapitres avant de passer à MC02. Les fondamentaux doivent être solides pour écrire une situation convaincante.';}
-    else if(pct<80){cls='mid';msg='C\'est bien, quelques points à consolider. Relisez les chapitres où vous avez buté, puis passez à MC02.';}
-    el.innerHTML=`
-      <div class="score">
-        <div class="big">${qScore}<em>/${QUIZ.length}</em></div>
-        <div class="label ${cls}">${pct}% de bonnes réponses</div>
-        <p class="msg">${msg}</p>
-        <button class="again" onclick="qIdx=0;qScore=0;renderQuiz()">↺ Recommencer le quiz</button>
-      </div>`;
-    return;
-  }
-  const q=QUIZ[qIdx];
-  qAns=null;
-  el.innerHTML=`
-    <div class="count">Question ${qIdx+1} / ${QUIZ.length}</div>
-    <div class="question">${q.q}</div>
-    <div class="answers">${q.opts.map((o,i)=>`<button onclick="qPick(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div>
-    <div class="expl" id="qexpl"><strong>Explication</strong><br>${q.x}</div>
-    <button class="nextq" id="qnext" onclick="qIdx++;renderQuiz()">Question suivante →</button>
-  `;
-}
+// ===== Mini-quiz Module 3 (5 Q) =====
+const MINI3 = [
+ {q:"Un AS peut-il réaliser une injection d'insuline en urgence ?",opts:["Oui, si formé","Non, jamais","Oui, si IDE présente"],ok:1,x:"Jamais. Acte IDE exclusif, aucune exception."},
+ {q:"Qui peut préparer un pilulier ?",opts:["L'AS si formé","L'IDE uniquement","L'AS avec consigne orale"],ok:1,x:"IDE exclusivement. L'AS peut aider à la prise si formé."},
+ {q:"Un AS peut-il faire un prélèvement d'ECBU stérile ?",opts:["Oui, c'est un recueil de données","Non, c'est un acte IDE","Oui si protocole"],ok:1,x:"ECBU stérile = IDE. L'AS peut faire un recueil non stérile si formé."},
+ {q:"Alerter l'IDE en cas d'anomalie, c'est :",opts:["Une option","Un devoir du rôle AS","Une tâche administrative"],ok:1,x:"Observation + transmission + alerte = cœur du rôle AS."},
+ {q:"Qui prescrit une contention ?",opts:["L'AS si urgence","Le médecin","L'IDE sur protocole"],ok:1,x:"Contention = prescription médicale. Jamais une décision AS ou IDE isolée."}
+];
 
-function qPick(i,btn){
-  if(qAns!==null) return;
-  qAns=i;
-  const q=QUIZ[qIdx];
-  const btns=btn.parentElement.querySelectorAll('button');
-  btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
-  if(i===q.ok) qScore++;
-  document.getElementById('qexpl').classList.add('on');
-  document.getElementById('qnext').classList.add('on');
-  if(qIdx===QUIZ.length-1) document.getElementById('qnext').textContent='Voir mon score →';
-}
+// ===== Quiz final 20 Q =====
+const QUIZ = [
+ {q:"Quel article définit le champ d'intervention de l'AS ?",opts:["R.4311-5","R.4311-4","L.4321-1"],ok:1,x:"R.4311-4 définit l'AS, R.4311-5 définit le rôle propre IDE."},
+ {q:"Combien de blocs de compétences dans le DEAS (arrêté 28 mars 2022) ?",opts:["4","5","6"],ok:1,x:"5 blocs, 11 activités, 12 récits. DEAS = Niveau 4 CNCP."},
+ {q:"L'AS a-t-il un rôle propre ?",opts:["Oui, autonome","Non, il collabore au rôle propre IDE","Oui, sur prescription médicale"],ok:1,x:"L'AS collabore au rôle propre IDE (R.4311-5)."},
+ {q:"Un AS peut-il faire une injection sous-cutanée d'insuline ?",opts:["Oui, si formé","Non, jamais","Oui, en urgence"],ok:1,x:"Jamais d'injection AS. Acte IDE exclusif."},
+ {q:"Qui peut préparer un pilulier ?",opts:["L'AS si formé","L'IDE uniquement","L'AMP"],ok:1,x:"Préparation du pilulier = IDE. L'AS peut aider à la prise."},
+ {q:"Dans la DAR, le D signifie :",opts:["Diagnostic","Données","Détails"],ok:1,x:"DAR = Données + Actions + Résultats."},
+ {q:"Dépasser son champ expose à :",opts:["Un rappel","Civil + pénal + disciplinaire","Pénal uniquement"],ok:1,x:"Trois responsabilités : civile, pénale, disciplinaire."},
+ {q:"Qui prescrit une contention ?",opts:["L'AS en urgence","Le médecin","L'IDE sur protocole"],ok:1,x:"Prescription médicale toujours."},
+ {q:"« Faire AVEC le résident, pas À SA PLACE » signifie :",opts:["L'abandonner","Stimuler et accompagner son autonomie","Refuser de l'aider"],ok:1,x:"Maintenir l'autonomie = aider à faire, pas se substituer."},
+ {q:"Un résident refuse sa toilette. Que faites-vous ?",opts:["Je passe outre","J'écoute, je trace, je renégocie, j'alerte si refus persistant","Je ne fais rien et reviens demain"],ok:1,x:"Respecter le refus, tracer, chercher à comprendre, alerter l'IDE."},
+ {q:"Combien de récits à rédiger dans le Livret 2 ?",opts:["11","12 — activités 9 et 11 doublent, 10 = inventaire","18"],ok:1,x:"12 récits. Activités 9 et 11 doublent, activité 10 = inventaire."},
+ {q:"Quel est le niveau de qualification du DEAS ?",opts:["Niveau 3 (CAP/BEP)","Niveau 4 (Bac/BT/BP)","Niveau 5"],ok:1,x:"Niveau 4 CNCP depuis 2019."},
+ {q:"L'activité 8 (entretien locaux) exige quel contexte ?",opts:["N'importe quelle chambre","SORTIE DE PATIENT","Toilette du matin"],ok:1,x:"SORTIE DE PATIENT obligatoire. Sans cela, le récit est hors sujet."},
+ {q:"L'activité 9 peut-elle concerner le corps du patient ?",opts:["Oui","Non, uniquement matériel/locaux","Oui si urgence"],ok:1,x:"Activité 9 = matériel et locaux UNIQUEMENT. Jamais le corps."},
+ {q:"L'activité 5 appartient à quel bloc ?",opts:["Bloc 1 vie quotidienne","Bloc 2 clinique","Bloc 3 communication"],ok:1,x:"Activité 5 (installation/déplacements) appartient à BC2 CLINIQUE, pas BC1."},
+ {q:"Combien de domaines de savoir pour le Bloc 2 ?",opts:["5","13","3"],ok:1,x:"BC2 = 13 des 27 domaines. C'est le bloc le plus lourd."},
+ {q:"Le jury VAE DEAS prend sa décision :",opts:["À la majorité simple","Collégialement, souverainement","Président seul"],ok:1,x:"Décision collégiale et souveraine. Non contestable."},
+ {q:"La grille de cotation ORACLE comporte combien de niveaux ?",opts:["2","3","4"],ok:1,x:"3 niveaux : Acquis, À vérifier, Non acquis."},
+ {q:"Les 3 piliers du raisonnement clinique sont :",opts:["Observer-Agir-Transmettre","Pourquoi-Comment-Et après","Rôle propre-collaboration-exclusif"],ok:1,x:"Pourquoi (justification clinique) + Comment (adaptation) + Et après (observation, transmission)."},
+ {q:"Un critère éliminatoire du jury VAE DEAS est :",opts:["Fautes d'orthographe","Acte hors champ décrit comme réalisé","Récits trop courts"],ok:1,x:"3 critères éliminatoires : acte hors champ, non-respect hygiène, mise en danger."}
+];
 
-// ===== Mini quiz in modal =====
+// ===== 12 Flashcards =====
+const FLASHCARDS = [
+ {q:"Quels sont les 2 articles à ne jamais confondre ?",t:"CADRE LÉGAL",a:"R.4311-4 = champ de l'AS · R.4311-5 = rôle propre IDE auquel l'AS collabore."},
+ {q:"5 chiffres clés du référentiel DEAS 2022",t:"RÉFÉRENTIEL",a:"5 blocs · 11 activités · 12 récits · 18 éléments à produire · 27 domaines de savoir."},
+ {q:"Pourquoi 12 récits pour 11 activités ?",t:"RÉPARTITION",a:"Activités 9 et 11 comptent DOUBLE (2 récits chacune), activité 10 se traite par INVENTAIRE (pas récit)."},
+ {q:"Niveau de qualification du DEAS ?",t:"NIVEAU",a:"Niveau 4 CNCP (équivalent Bac/BT/BP/CAPA) depuis la nomenclature 2019. Pas niveau 3."},
+ {q:"Les 3 actes jamais réalisés par l'AS ?",t:"INTERDITS",a:"Injections (SC/IM/IV) · Perfusions (pose/débit/ablation) · Pansements complexes et sondages urinaires."},
+ {q:"Les 3 responsabilités en cas de dépassement ?",t:"RESPONSABILITÉS",a:"Civile (indemnisation) · Pénale (exercice illégal, prison) · Disciplinaire (sanction employeur)."},
+ {q:"Les 3 critères éliminatoires du jury ?",t:"ÉLIMINATION",a:"1) Acte hors champ décrit comme réalisé · 2) Non-respect protocoles hygiène · 3) Mise en danger du résident."},
+ {q:"Composition du jury VAE DEAS ?",t:"JURY",a:"Un président + 2 professionnels AS + un formateur IFAS + parfois un employeur. 4 à 5 membres au total."},
+ {q:"Les 3 temps de l'entretien jury ?",t:"ENTRETIEN",a:"T1 débat hors présence (15-30 min) · T2 entretien 45 min-1h · T3 délibération collégiale et souveraine."},
+ {q:"Les 3 niveaux de la grille de cotation ?",t:"COTATION",a:"ACQUIS (démontré) · À VÉRIFIER (ambigu, à creuser à l'entretien) · NON ACQUIS (pas démontré)."},
+ {q:"Les 3 piliers du raisonnement clinique ?",t:"RAISONNEMENT",a:"POURQUOI (justification clinique) · COMMENT (adaptation à cette personne) · ET APRÈS (observation, transmission, boucle)."},
+ {q:"Pièges activité 8 et 9 (Bloc 4) ?",t:"BLOC 4",a:"Activité 8 = contexte SORTIE DE PATIENT exigé · Activité 9 = matériel/locaux UNIQUEMENT, jamais le corps."}
+];
+
+let fcIdx=0;
+function renderFC(){
+  const c=FLASHCARDS[fcIdx];
+  document.getElementById('fcFront').textContent=c.q;
+  document.getElementById('fcTitle').textContent=c.t;
+  document.getElementById('fcBack').textContent=c.a;
+  document.getElementById('fcLbl').textContent='Carte '+(fcIdx+1)+' / '+FLASHCARDS.length;
+  document.getElementById('flashcard').classList.remove('turned');
+}
+function prevFC(){fcIdx=(fcIdx-1+FLASHCARDS.length)%FLASHCARDS.length;renderFC()}
+function nextFC(){fcIdx=(fcIdx+1)%FLASHCARDS.length;renderFC()}
+
+// ===== Generic quiz renderer =====
+function makeQuiz(containerId, data, nextOnEnd){
+  let qIdx=0, qScore=0, qAns=null;
+  const render=()=>{
+    const el=document.getElementById(containerId);
+    if(qIdx>=data.length){
+      const pct=Math.round(qScore/data.length*100);
+      let cls='ok', msg='Excellent — module validé.';
+      if(pct<50){cls='ko';msg='Révisez le module avant de passer à la suite.';}
+      else if(pct<80){cls='mid';msg='Bien, quelques points à consolider.';}
+      el.innerHTML=`<div class="score"><div class="big">${qScore}<em>/${data.length}</em></div><div class="label ${cls}">${pct}% de bonnes réponses</div><p class="msg">${msg}</p><button class="again" onclick="window._reset_${containerId}()">↺ Recommencer</button></div>`;
+      return;
+    }
+    const q=data[qIdx];
+    qAns=null;
+    el.innerHTML=`<div class="count">Question ${qIdx+1} / ${data.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="window._pick_${containerId}(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="${containerId}expl"><strong>Explication</strong><br>${q.x}</div><button class="nextq" id="${containerId}next" onclick="window._next_${containerId}()">Question suivante →</button>`;
+  };
+  window['_pick_'+containerId]=(i,btn)=>{
+    if(qAns!==null) return;
+    qAns=i; const q=data[qIdx];
+    const btns=btn.parentElement.querySelectorAll('button');
+    btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+    if(i===q.ok) qScore++;
+    document.getElementById(containerId+'expl').classList.add('on');
+    document.getElementById(containerId+'next').classList.add('on');
+    if(qIdx===data.length-1) document.getElementById(containerId+'next').textContent='Voir mon score →';
+  };
+  window['_next_'+containerId]=()=>{qIdx++;render()};
+  window['_reset_'+containerId]=()=>{qIdx=0;qScore=0;render()};
+  return render;
+}
+let renderMini1, renderMini3, renderQuiz;
+
 function qa(btn,good){
   const parent=btn.parentElement;
   parent.querySelectorAll('button').forEach(b=>{b.disabled=true;b.style.cursor='default'});
@@ -897,16 +1240,13 @@ function qa(btn,good){
   fbs[good?0:1].classList.add('on');
 }
 
-// ===== 5 blocs toggle =====
 function toggleBloc(el){
   const detail=el.nextElementSibling;
   if(detail&&detail.classList.contains('bloc-detail')){
-    const open=detail.classList.toggle('on');
-    el.classList.toggle('open',open);
+    detail.classList.toggle('on');
   }
 }
 
-// ===== Points clés =====
 function toggleCle(el){
   el.classList.toggle('ok');
   const items=document.querySelectorAll('.cles .item');
@@ -915,7 +1255,6 @@ function toggleCle(el){
   document.getElementById('clesCnt').textContent=done+' / '+items.length;
 }
 
-// ===== Modal =====
 function openModal(n){
   const ch=CHAPTERS[n];
   document.getElementById('mnum').textContent=n;
@@ -926,7 +1265,6 @@ function openModal(n){
 }
 function closeModal(){document.getElementById('modal').classList.remove('on')}
 
-// ===== Deck navigation =====
 const slides=document.querySelectorAll('.slide');
 const TOTAL=slides.length;
 let current=0;
@@ -940,23 +1278,21 @@ function go(n){
   document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
   document.getElementById('prevB').disabled=current===0;
   document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
   document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
-  // Lazy render
-  if(current===6&&!document.querySelector('.situ'))renderSitus();
-  if(current===9)renderQuiz();
+  if(current===8&&!renderMini1){renderMini1=makeQuiz('mq1',MINI1);renderMini1()}
+  if(current===21&&!document.querySelector('.situ'))renderSitus();
+  if(current===22&&!renderMini3){renderMini3=makeQuiz('mq3',MINI3);renderMini3()}
+  if(current===28)renderFC();
+  if(current===29&&!renderQuiz){renderQuiz=makeQuiz('qz',QUIZ);renderQuiz()}
   closeModal();
+  slides[current].querySelector('.inner')?.scrollTo(0,0);
 }
 
-// Dots
-const dotsHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
-document.getElementById('dots').innerHTML=dotsHTML;
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
 
-// Keyboard
 document.addEventListener('keydown',e=>{
-  if(document.getElementById('modal').classList.contains('on')){
-    if(e.key==='Escape')closeModal();
-    return;
-  }
+  if(document.getElementById('modal').classList.contains('on')){if(e.key==='Escape')closeModal();return}
   if(e.key==='ArrowRight'||e.key===' ')go(current+1);
   else if(e.key==='ArrowLeft')go(current-1);
   else if(e.key==='Escape')go(0);
@@ -964,7 +1300,6 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='End')go(TOTAL-1);
 });
 
-// Init
 go(0);
 </script>
 </body>
