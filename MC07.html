@@ -1,839 +1,488 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MC07 — Activité 4 — Soins aigus, chroniques, fin de vie · ORACLE VAE AS</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MC07 · Activité 4 — Soins aigus, chroniques, fin de vie — ORACLE VAE AS</title>
 <style>
-  :root {
-    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
-    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
-    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; height: 100%; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    color: var(--ink); background: var(--bg); overflow: hidden; }
-  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
-  .slides { position: relative; overflow: hidden; }
-  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
-    display: flex; flex-direction: column; justify-content: flex-start;
-    opacity: 0; transform: translateX(40px);
-    transition: opacity .45s ease, transform .45s ease;
-    pointer-events: none; overflow-y: auto; }
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-  .slide.leaving { opacity: 0; transform: translateX(-40px); }
-  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
-
-  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
-    text-transform: uppercase; color: var(--accent); font-weight: 800;
-    display: flex; align-items: center; gap: 10px; z-index: 20; }
-  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
-
-  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
-    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
-    display: grid; place-items: center; cursor: pointer; z-index: 10;
-    transition: background .15s, transform .15s; }
-  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
-  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
-  .nav-arrow svg { width: 20px; height: 20px; }
-  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
-
-  .progress-wrap { background: var(--bar); padding: 10px 20px;
-    display: flex; align-items: center; gap: 14px; color: #fff;
-    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
-  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
-    width: 0%; transition: width .4s ease; border-radius: 4px; }
-
-  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
-    letter-spacing: -.02em; font-weight: 800; }
-  h1.hero span.accent { color: var(--accent); }
-  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
-  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
-    font-weight: 700; margin: 0 0 14px; }
-
-  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
-  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
-  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
-  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
-  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
-  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
-  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
-
-  /* Contenu issu de la MC source : respecte les styles inline des sections */
-  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
-  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
-  .content-scroll table { max-width: 100%; }
-
-  /* Quiz */
-  .quiz-head { margin-bottom: 20px; }
-  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
-  .quiz-opts { display: grid; gap: 10px; }
-  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
-    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
-    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
-  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
-  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
-  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
-  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
-    font-size: 15px; line-height: 1.5; display: none; }
-  .quiz-feedback.show { display: block; }
-  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
-  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
-  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
-  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
-    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .quiz-next.show { display: inline-block; }
-
-  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
-    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
-    display: grid; place-items: center; position: relative; }
-  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
-  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+:root{--oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-teal-light:#14a098;--oracle-gold:#f5b700;--oracle-pink:#f06292;--oracle-cream:#fdf6e9;--oracle-paper:#f8f1e4;--ink:#1a2332;--ink-soft:#44546b;--card:#fff;--shadow-sm:0 2px 8px rgba(13,115,119,.08);--shadow-md:0 8px 24px rgba(13,115,119,.14);--shadow-lg:0 20px 60px rgba(13,115,119,.22);--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:#000}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent}
+.deck{position:fixed;inset:0;overflow:hidden;background:#07151a}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;opacity:0}
+.slide.on{display:flex;opacity:1;z-index:2;animation:fIn .4s ease}
+@keyframes fIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.bar{position:fixed;top:0;left:0;right:0;z-index:100;height:48px;background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0));display:flex;align-items:center;padding:0 18px;gap:14px;color:#fff;pointer-events:none}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;pointer-events:auto}
+.bar .brand img{width:28px;height:28px}
+.bar .ref{opacity:.75;font-size:12px}
+.bar .counter{margin-left:auto;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;pointer-events:auto;backdrop-filter:blur(6px)}
+.bar .mod{background:var(--oracle-gold);color:#1a2332;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;pointer-events:auto}
+.progress{position:fixed;top:48px;left:0;right:0;height:3px;background:rgba(255,255,255,.08);z-index:99}
+.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-pink));transition:width .4s ease;box-shadow:0 0 10px var(--oracle-gold)}
+.nav{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:100}
+.nav button{min-width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);color:#fff;font-size:18px;transition:all .25s;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.1)}
+.nav button:hover{background:var(--oracle-teal-light);transform:translateY(-2px)}
+.nav button:disabled{opacity:.35;cursor:not-allowed}
+.nav .menu{padding:0 18px;border-radius:46px;width:auto;font-size:13px;font-weight:600}
+.hero{background:#0a2a2f}
+.hero .bg{position:absolute;inset:0;background:url('assets/hero-cover.webp') center/cover no-repeat;filter:brightness(.5) saturate(1.1)}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,42,47,.75) 0%,rgba(13,115,119,.4) 50%,rgba(240,98,146,.3) 100%)}
+.hero .wrap{position:relative;z-index:2;margin:auto;max-width:980px;padding:40px 32px;color:#fff;text-align:center}
+.hero .kicker{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;background:rgba(0,0,0,.25);backdrop-filter:blur(6px)}
+.hero h1{font-size:clamp(32px,5.5vw,66px);font-weight:900;line-height:1.05;margin-bottom:18px;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hero h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.55em;font-weight:600;margin-top:14px;letter-spacing:.05em;line-height:1.3}
+.hero .sub{font-size:clamp(16px,2vw,20px);opacity:.92;max-width:720px;margin:0 auto 32px;line-height:1.5}
+.hero .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:36px}
+.hero .meta span{background:rgba(255,255,255,.12);border-radius:999px;padding:8px 18px;font-size:13px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.hero .cta{display:inline-flex;align-items:center;gap:12px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 36px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4);transition:all .3s}
+.hero .cta:hover{transform:translateY(-3px)}
+.hero .cta svg{width:18px;height:18px}
+.hero .signature{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#fff;opacity:.85;font-size:12px;z-index:3}
+.hero .signature strong{color:var(--oracle-gold)}
+.std{background:var(--oracle-cream)}
+.std .inner{display:flex;flex-direction:column;width:100%;height:100%;padding:70px 48px 90px;max-width:1600px;margin:0 auto;overflow:auto}
+.std .head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.std .num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:var(--oracle-teal);color:#fff;font-weight:800;font-size:22px;box-shadow:var(--shadow-md);flex-shrink:0}
+.std h2{font-size:clamp(22px,3.2vw,38px);font-weight:800;color:var(--oracle-teal-dark);letter-spacing:-.01em;line-height:1.15}
+.std h2 small{display:block;color:var(--ink-soft);font-size:.52em;font-weight:500;margin-top:4px;letter-spacing:0}
+.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark) 0%,var(--oracle-teal) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
+.chapter .wrap{max-width:720px}
+.chapter .big{font-size:140px;font-weight:900;color:var(--oracle-gold);line-height:.9;text-shadow:0 10px 40px rgba(0,0,0,.3)}
+.chapter .big em{font-style:normal;color:#fff;display:block;font-size:.2em;margin-top:12px;letter-spacing:.4em;text-transform:uppercase;opacity:.8}
+.chapter h1{font-size:clamp(28px,4.5vw,52px);font-weight:900;margin:28px 0 12px;line-height:1.1}
+.chapter p{font-size:18px;opacity:.95;line-height:1.5}
+.chapter .dura{margin-top:24px;background:rgba(255,255,255,.15);padding:10px 24px;border-radius:999px;display:inline-block;font-size:14px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2)}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
+.obj .card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-md);border:1px solid rgba(13,115,119,.08);position:relative;overflow:hidden}
+.obj .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-teal-light))}
+.obj .card .ico{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--oracle-cream),#fff);border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:28px}
+.obj .card h3{font-size:19px;color:var(--oracle-teal-dark);margin-bottom:10px;font-weight:700}
+.obj .card p{color:var(--ink-soft);line-height:1.55;font-size:15px}
+.duree{grid-column:1/-1;margin-top:26px;background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:var(--radius);padding:20px 24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center;box-shadow:var(--shadow-sm);border:1px dashed var(--oracle-teal-light)}
+.duree>div{text-align:center;min-width:90px}
+.duree strong{display:block;color:var(--oracle-teal);font-size:28px;font-weight:900;line-height:1}
+.duree span{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-top:6px}
+.fiche-wrap{display:grid;grid-template-columns:minmax(0,450px) 1fr;gap:28px;flex:1;margin-top:16px;min-height:0;align-items:start}
+.fiche-img{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;padding:12px;max-height:calc(100vh - 190px)}
+.fiche-img .ficheHolder{position:relative;max-height:100%;max-width:100%;display:inline-block}
+.fiche-img .ficheHolder img{max-height:calc(100vh - 220px);max-width:100%;width:auto;height:auto;display:block;object-fit:contain}
+.hot{position:absolute;width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;font-size:16px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25);transition:all .25s;z-index:2;animation:pulse 2s infinite;border:0}
+.hot:hover{transform:scale(1.18);background:var(--oracle-pink);color:#fff;z-index:3}
+@keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25)}50%{box-shadow:0 4px 16px rgba(245,183,0,.7),0 0 0 10px rgba(245,183,0,0)}}
+.fiche-side{display:flex;flex-direction:column;gap:16px;overflow:auto;padding-right:4px}
+.fiche-side h3{font-size:16px;color:var(--oracle-teal-dark);font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.fiche-side p{color:var(--ink-soft);line-height:1.55;font-size:14px}
+.fiche-side .ptip{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-left:4px solid var(--oracle-gold);padding:14px 16px;border-radius:8px;font-size:13px;line-height:1.5;color:var(--ink-soft);box-shadow:var(--shadow-sm)}
+.fiche-side .ptip strong{color:var(--oracle-teal-dark)}
+.chapters{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chapters button{background:#fff;border:1px solid rgba(13,115,119,.1);border-radius:10px;padding:10px;text-align:left;color:var(--ink);font-size:12px;font-weight:600;transition:all .2s;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:8px}
+.chapters button:hover{background:var(--oracle-teal);color:#fff}
+.chapters button b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--oracle-teal);color:#fff;font-size:11px;flex-shrink:0}
+.chapters button:hover b{background:var(--oracle-gold);color:#1a2332}
+.piliers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px;flex:1}
+.pil{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:16px;padding:28px 22px;box-shadow:var(--shadow-md);text-align:center;border-top:6px solid var(--oracle-pink)}
+.pil .num{font-size:60px;font-weight:900;color:var(--oracle-pink);line-height:.9;margin-bottom:12px;opacity:.3}
+.pil h3{color:var(--oracle-teal-dark);font-size:17px;font-weight:900;margin-bottom:14px}
+.pil .q{background:#fff;border-radius:10px;padding:14px;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:10px;border-left:4px solid var(--oracle-gold)}
+.pil .q em{font-style:normal;color:var(--oracle-pink)}
+.pil p{color:var(--ink-soft);font-size:13px;line-height:1.5}
+.situs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;flex:1;overflow:auto;align-content:start}
+.situ{background:#fff;border-radius:10px;padding:14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px}
+.situ p{font-size:13.5px;color:var(--ink);line-height:1.4}
+.situ p b{color:var(--oracle-teal);margin-right:6px}
+.situ .btns{display:flex;gap:6px}
+.situ .sb{flex:1;font-weight:700;padding:7px;border-radius:7px;border:2px solid transparent;font-size:12.5px;cursor:pointer;transition:all .2s}
+.situ .sb.y{background:#dcf5e4;color:#0e5e2a}
+.situ .sb.n{background:#fde3e3;color:#8a1a1a}
+.situ .sfb{display:none;font-size:12px;padding:8px;border-radius:7px;line-height:1.4}
+.cles{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-md);margin-top:16px;flex:1;overflow:auto}
+.cles .item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(13,115,119,.1);cursor:pointer}
+.cles .item:last-of-type{border-bottom:0}
+.cles .cb{width:24px;height:24px;border-radius:7px;border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0;transition:all .2s;margin-top:1px}
+.cles .item.ok .cb{background:var(--oracle-teal);border-color:var(--oracle-teal)}
+.cles .item p{font-size:14px;line-height:1.5;color:var(--ink)}
+.cles .item.ok p{color:var(--ink-soft);text-decoration:line-through}
+.cles .progress-m{margin-top:14px;background:var(--oracle-cream);border-radius:10px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--oracle-teal-dark)}
+.cles .pb{width:200px;height:8px;background:rgba(13,115,119,.15);border-radius:999px;overflow:hidden}
+.cles .pb i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-gold));width:0;transition:width .4s}
+.flashwrap{margin-top:16px;flex:1;display:flex;flex-direction:column;overflow:auto}
+.flashbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;background:#fff;padding:10px 18px;border-radius:10px;box-shadow:var(--shadow-sm)}
+.flashbar span{font-weight:700;color:var(--oracle-teal-dark);font-size:14px}
+.flashbar button{background:var(--oracle-teal);color:#fff;padding:6px 14px;border-radius:8px;font-weight:700;font-size:13px}
+.flashbar button:hover{background:var(--oracle-teal-dark)}
+.flashcard{perspective:1200px;flex:1;min-height:320px;max-height:480px;cursor:pointer}
+.flashcard .flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s}
+.flashcard.turned .flip{transform:rotateY(180deg)}
+.flashcard .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.flashcard .face.front{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff}
+.flashcard .face.back{background:#fff;color:var(--ink);transform:rotateY(180deg)}
+.flashcard .face .hint{font-size:11px;letter-spacing:3px;text-transform:uppercase;opacity:.65;margin-bottom:20px}
+.flashcard .face.front h3{font-size:26px;font-weight:800;line-height:1.3;max-width:640px}
+.flashcard .face.back h3{color:var(--oracle-teal-dark);font-size:18px;margin-bottom:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.flashcard .face.back p{color:var(--ink);font-size:16px;line-height:1.5;max-width:640px;font-weight:500}
+.flashcard .tap{position:absolute;bottom:12px;left:0;right:0;text-align:center;opacity:.65;font-size:12px}
+.qz{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);padding:28px;margin-top:16px;max-width:900px;margin-left:auto;margin-right:auto;flex:1;display:flex;flex-direction:column}
+.qz .count{color:var(--oracle-teal);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.qz .question{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35}
+.qz .answers{display:flex;flex-direction:column;gap:9px}
+.qz .answers button{background:#fff;border:2px solid rgba(13,115,119,.15);border-radius:12px;padding:12px 16px;text-align:left;font-size:14.5px;transition:all .2s;display:flex;align-items:center;gap:12px}
+.qz .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.qz .answers button.ok{background:#dcf5e4;border-color:#2ea84f;color:#0e5e2a;font-weight:700}
+.qz .answers button.ko{background:#fde3e3;border-color:#d65757;color:#8a1a1a;font-weight:700}
+.qz .answers button .letter{width:28px;height:28px;border-radius:8px;background:var(--oracle-cream);display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:13px}
+.qz .answers button.ok .letter{background:#2ea84f;color:#fff}
+.qz .answers button.ko .letter{background:#d65757;color:#fff}
+.qz .expl{display:none;margin-top:14px;padding:14px;background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);border-radius:8px;font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.qz .expl.on{display:block}
+.qz .nextq{display:none;margin-top:12px;background:var(--oracle-teal);color:#fff;padding:10px 22px;border-radius:999px;font-weight:700;align-self:flex-end;font-size:13.5px}
+.qz .nextq.on{display:inline-block}
+.qz .nextq:hover{background:var(--oracle-teal-dark)}
+.score{text-align:center;padding:30px}
+.score .big{font-size:88px;font-weight:900;color:var(--oracle-teal);line-height:1;margin-bottom:8px}
+.score .big em{font-style:normal;color:var(--ink-soft);font-size:.4em;font-weight:400}
+.score .label{font-size:20px;font-weight:700;margin-bottom:24px}
+.score .label.ok{color:#0e5e2a}
+.score .label.mid{color:#8a6a00}
+.score .label.ko{color:#8a1a1a}
+.score .msg{font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:500px;margin:0 auto 24px}
+.score .again{background:var(--oracle-teal);color:#fff;padding:10px 24px;border-radius:999px;font-weight:700}
+.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal) 50%,var(--oracle-pink) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
+.end .wrap{max-width:720px}
+.end .ok{width:92px;height:92px;border-radius:50%;background:rgba(255,255,255,.2);display:inline-flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:24px;backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.3)}
+.end h1{font-size:clamp(32px,5vw,52px);font-weight:900;margin-bottom:14px;line-height:1.1}
+.end h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.6em;margin-top:8px}
+.end p{font-size:17px;opacity:.95;line-height:1.5;margin-bottom:32px}
+.end .nxt{display:inline-flex;align-items:center;gap:14px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 32px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4)}
+.end .nxt:hover{transform:translateY(-3px)}
+.end .nxt svg{width:20px;height:20px}
+.end .mini{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.end .mini a{background:rgba(255,255,255,.14);padding:10px 20px;border-radius:999px;font-size:13px;color:#fff;text-decoration:none;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.end .mini a:hover{background:rgba(255,255,255,.25)}
+.modal-bg{position:fixed;inset:0;background:rgba(10,30,36,.72);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;animation:fIn .25s ease}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:720px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:mIn .35s cubic-bezier(.3,1.3,.5,1)}
+@keyframes mIn{from{transform:translateY(20px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.modal .mhead{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:22px 28px;display:flex;align-items:center;gap:14px;position:relative}
+.modal .mhead .mnum{width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
+.modal .mhead h3{font-size:19px;font-weight:800;flex:1}
+.modal .mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+.modal .mclose:hover{background:rgba(255,255,255,.35)}
+.modal .mbody{padding:24px 28px;overflow:auto;color:var(--ink)}
+.modal .mbody h4{color:var(--oracle-teal-dark);font-size:14px;margin:14px 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.modal .mbody h4:first-child{margin-top:0}
+.modal .mbody ul{margin:4px 0 12px 20px;line-height:1.6;font-size:14px;color:var(--ink-soft)}
+.modal .mbody ul li{margin-bottom:5px}
+.modal .mbody .tip{background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);padding:12px 16px;border-radius:8px;font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin-top:12px}
+.modal .mbody .tip strong{color:var(--oracle-teal-dark)}
+.dots{position:fixed;left:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:99;max-height:70vh;overflow:hidden}
+.dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s;cursor:pointer;display:block}
+.dots span.on{background:var(--oracle-gold);box-shadow:0 0 10px var(--oracle-gold);width:9px;height:9px}
+.std .dots span{background:rgba(13,115,119,.3)}
+.std .dots span.on{background:var(--oracle-teal)}
+@media(max-width:1024px){.obj,.piliers{grid-template-columns:1fr 1fr}.fiche-wrap{grid-template-columns:1fr}}
+@media(max-width:640px){.std .inner{padding:60px 20px 90px}.obj,.piliers{grid-template-columns:1fr}.chapters{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC07</div>
-
-<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-</button>
-<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-</button>
-
-<div class="stage">
-  <div class="slides" id="slides">
-
-    <section class="slide">
-      <div class="hero-band">
-        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
-        <div class="hero-tile"><div class="emoji">🩺</div></div>
-        <div class="hero-tile"><div class="emoji">🏥</div></div>
-        <div class="hero-tile"><div class="emoji">💙</div></div>
-        <div class="hero-tile"><div class="emoji">🤝</div></div>
-      </div>
-      <p class="eyebrow">MC07 · Bloc 2</p>
-      <h1 class="hero">Activité 4 — Soins aigus, chroniques, fin de vie</h1>
-      <p class="subtitle">Accompagner la maladie, la perte d'autonomie, les derniers moments</p>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Objectifs</p>
-      <div class="content-scroll"><div style="background:#ECEFF1;border-left:6px solid #263238;border-radius:10px;padding:18px 22px;margin:22px 0;">
-<p style="margin:0 0 10px 0;font-weight:bold;color:#263238;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
-<ol style="margin:0;padding-left:22px;">
-<li>qualifier un soin d'aigu ou de soin de la vie quotidienne à partir de ses critères cumulatifs, et en tirer les conséquences sur la façon d'écrire votre récit ;</li>
-<li>énoncer les conditions des actes de 2021 que vous rencontrez en situation aiguë ou chronique : oxygénothérapie, aspiration endotrachéale, glycémie ;</li>
-<li>conduire une surveillance post-opératoire dans votre champ, et observer, protéger et signaler autour des dispositifs médicaux sans jamais les manipuler ;</li>
-<li>relier chaque maladie chronique et chaque traitement de la personne à une surveillance ciblée, écrite dans votre récit ;</li>
-<li>évaluer la douleur avec une échelle adaptée, installer pour soulager, signaler un antalgique inefficace et surveiller un antalgique de palier 3 ;</li>
-<li>réaliser les soins de confort de fin de vie, accompagner la personne et ses proches, et situer votre place au regard de la loi du 2 février 2016 ;</li>
-<li>réaliser les soins après le décès selon le protocole, dans le respect des rites et des volontés, et prendre soin de vous-même ;</li>
-<li>repérer dans votre livret les formulations éliminatoires propres à ces situations et les réécrire.</li>
-</ol>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Déroulé</p>
-      <div class="content-scroll"><p style="font-weight:bold;color:#263238;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
-<table style="width:100%;border-collapse:collapse;font-size:14px;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:14%;">Durée</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;">0:00</td><td style="padding:9px;border:1px solid #CFD8DC;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #CFD8DC;">5&nbsp;min</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;">0:05</td><td style="padding:9px;border:1px solid #CFD8DC;">Partie 1 · Soin aigu, soin de la vie quotidienne : ce que « en collaboration » change</td><td style="padding:9px;border:1px solid #CFD8DC;">10&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;">0:15</td><td style="padding:9px;border:1px solid #CFD8DC;">Partie 2 · Les actes de 2021 et la surveillance en situation aiguë</td><td style="padding:9px;border:1px solid #CFD8DC;">25&nbsp;min</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;">0:40</td><td style="padding:9px;border:1px solid #CFD8DC;">Partie 3 · Maladie chronique, douleur et confort</td><td style="padding:9px;border:1px solid #CFD8DC;">20&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;">1:00</td><td style="padding:9px;border:1px solid #CFD8DC;">Partie 4 · La fin de vie et les soins après le décès</td><td style="padding:9px;border:1px solid #CFD8DC;">20&nbsp;min</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;">1:20</td><td style="padding:9px;border:1px solid #CFD8DC;">Partie 5 · Deux situations modèles décortiquées</td><td style="padding:9px;border:1px solid #CFD8DC;">15&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;">1:35</td><td style="padding:9px;border:1px solid #CFD8DC;">Partie 6 · Grille de détection et questions du jury</td><td style="padding:9px;border:1px solid #CFD8DC;">15&nbsp;min</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;">1:50</td><td style="padding:9px;border:1px solid #CFD8DC;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #CFD8DC;">10&nbsp;min</td></tr>
-</table>
-<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p>
-
-<div style="background:#ECEFF1;border-left:6px solid #37474F;border-radius:10px;padding:14px 20px;margin:14px 0;"><p style="margin:0;"><strong>🧭 Où se situe cette masterclass.</strong> C'est la seconde partie de l'activité 4. La masterclass 06 a posé le socle : les soins d'hygiène, de confort et d'élimination adaptés à l'état clinique, la toilette sous oxygène, les dispositifs pendant la toilette, les six critères de qualité et l'aide à la prise des médicaments. Nous ne les reprenons pas : nous nous en servons. Cette séance porte sur les situations où l'infirmier est le plus présent, et donc où la frontière est la plus fine : la phase aiguë, la maladie chronique et la fin de vie.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Ouverture</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
-
-<p>Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass.</p>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">1. Les soins que vous réalisez auprès d'un résident d'EHPAD en fin de vie sont, par définition, des soins aigus.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le soin aigu exige une unité à caractère sanitaire ; l'EHPAD est un établissement médico-social.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">2. Chez une personne sous oxygène au long cours, dont l'état est stable, vous pouvez poser et changer son masque à oxygène.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai</strong>, <strong>en situation stable et chronique</strong>.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">3. Au retour du bloc opératoire, vous pouvez remplacer le masque à oxygène d'un patient par des lunettes, puisqu'il dit être gêné.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le patient n'est ni stable ni chronique, et le choix du dispositif est une décision médicale. Vous mesurez la saturation, vous rassurez le patient et vous transmettez sa gêne à l'infirmier.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">4. Vous pouvez aspirer les sécrétions d'un patient trachéotomisé la veille, puisque l'aspiration endotrachéale fait partie des actes de 2021.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'aspiration ne vous revient que sur un orifice <strong>cicatrisé et non inflammatoire</strong>. Un orifice de la veille ne l'est pas.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">5. Si vous suspectez une hypoglycémie, vous pouvez réaliser une glycémie capillaire de votre propre initiative.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, tel que c'est formulé.</strong> La glycémie vous revient <strong>sur protocole ou à la demande de l'infirmier</strong>. Sans protocole, vous alertez l'infirmier immédiatement, sans quitter la personne.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">6. Après une opération, c'est l'aide-soignant qui juge du bon moment pour le premier lever, puisqu'il connaît le patient.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le premier lever se fait <strong>sur consigne</strong> de l'équipe médicale. Vous le sécurisez et vous observez sa tolérance.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">7. Un patient sous morphinique respire 10 fois par minute et se réveille difficilement : vous notez les valeurs et vous les transmettrez au prochain tour de surveillance.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, et c'est une mise en danger.</strong> Sous palier 3, une fréquence sous 12 /min avec somnolence fait craindre une dépression respiratoire : <strong>alerte immédiate</strong>, sans quitter le patient.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">8. Quand une fille vous demande « combien de temps il reste » à son père, vous pouvez lui répondre à partir de votre expérience, pour l'aider à se préparer.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Annoncer un pronostic est hors de votre champ, même approximativement. Vous accueillez la question et vous orientez vers le médecin ou l'infirmier, que vous prévenez.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">9. Les directives anticipées et la personne de confiance concernent le médecin : l'aide-soignant n'a pas besoin de savoir si elles existent.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Vous n'en décidez rien, mais vous devez savoir si elles existent et qui est la personne de confiance. Et vous transmettez toute parole de la personne sur ses volontés.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">10. La toilette mortuaire peut commencer dès que la personne ne respire plus, pour gagner du temps avant l'arrivée de la famille.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Elle commence après le <strong>constat du décès par le médecin</strong>. Elle suit le protocole, dans le respect des rites et des volontés.</p></details>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent. L'urgence et l'émotion poussent à « faire » : monter l'oxygène, rassurer la famille sur l'avenir, renforcer un pansement qui saigne. Ce sont précisément les gestes et les paroles que le jury repère, et qui font tomber un livret.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Partie 1</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · Soin aigu, soin de la vie quotidienne : ce que « en collaboration » change <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 10&nbsp;min</span></div>
-
-<p>La distinction posée en masterclass 01 détermine la façon dont l'infirmier apparaît dans votre récit.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">1.1 · Les critères cumulatifs, appliqués aux lieux d'exercice</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:28%;">Soin aigu : les trois critères, tous réunis</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Soin de la vie quotidienne : les deux critères, tous réunis</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">① réalisable exclusivement par un professionnel de santé ;<br>② dans une unité à caractère sanitaire, par une équipe pluridisciplinaire ;<br>③ pendant la phase aiguë.<br><br><strong>Votre position : en collaboration</strong> avec l'infirmier.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">① réalisable par la personne elle-même ou par un aidant ;<br>② lié à un état stabilisé ou à une pathologie chronique stabilisée.<br><br><strong>Votre position : sous le contrôle</strong> de l'infirmier.</td></tr>
-</table>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:24%;">Lieu</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:30%;">Ce qu'il faut vérifier</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Conséquence pour votre récit</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Service de médecine</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le patient est-il en phase aiguë (décompensation, infection, déséquilibre) ?</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le plus souvent, oui : soin aigu, valeurs transmises en temps réel.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Service de chirurgie</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le patient est-il dans les suites immédiates de son opération ?</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Soin aigu. La feuille de surveillance post-opératoire structure votre récit.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Soins de suite et de réadaptation (SSR, aujourd'hui appelés soins médicaux et de réadaptation, SMR)</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">L'état est-il encore instable, ou en voie de stabilisation ?</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La phase aiguë dépend de la personne : une complication se raconte comme un soin aigu, une rééducation stable comme un soin de la vie quotidienne.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Hospitalisation à domicile (HAD)</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La prise en soins relève-t-elle de l'établissement d'HAD, avec son équipe pluridisciplinaire ?</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">L'HAD est un établissement de santé : un soin en phase aiguë au domicile peut réunir les trois critères. Écrivez-le explicitement, car le jury peut s'en étonner.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">EHPAD, service de soins infirmiers à domicile</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Ce sont des structures médico-sociales, et non des unités sanitaires.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le critère ② manque : vous agissez sous le contrôle de l'infirmier, même quand l'état se dégrade, et la collaboration doit rester visible.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>⚠️ La fin de vie en EHPAD, un cas à part.</strong> Ni unité sanitaire, ni état stabilisé : elle n'entre dans aucune des deux cases. Retenez l'essentiel : l'infirmier et le médecin décident des soins et des traitements ; vous réalisez le confort, vous surveillez, vous signalez, vous accompagnez, et votre récit le montre à chaque étape. La situation reste recevable en activité 4 : vous y travaillez avec l'infirmier, dans son rôle propre, et c'est cette collaboration que le jury doit lire.</p></div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">1.2 · « En collaboration » : l'infirmier apparaît au moment où il intervient</p>
-
-<p style="margin:0 0 10px 0;background:#ECEFF1;border-radius:6px;padding:8px 12px;font-style:italic;">🔑 « Voilà comment je travaille <strong>avec</strong> l'infirmier, pas à sa place. »</p>
-
-<p>Dans un soin de la vie quotidienne, l'infirmier fixe le cadre en amont et contrôle. Dans un soin aigu, il est présent <strong>en temps réel</strong> : vous transmettez une valeur, il décide, vous appliquez, vous rendez compte. Votre récit suit ce va-et-vient.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:32%;">Récit qui cache la collaboration</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Récit qui la montre</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><em>« J'ai surveillé ses paramètres toute la matinée et j'ai fait les transmissions à midi. »</em></td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><em>« À 10 h 15, sa pression artérielle était à 92/55 mmHg, contre 128/76 mmHg à son retour de bloc. J'ai appelé l'infirmière et je lui ai transmis la valeur ; elle est venue l'examiner et m'a demandé de recontrôler toutes les quinze minutes. »</em></td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><em>« Nous l'avons levé pour la première fois. »</em></td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><em>« L'infirmière m'a indiqué que le chirurgien autorisait le premier lever. Je l'ai réalisé avec elle, en deux temps, en surveillant sa pression artérielle assis puis debout. »</em></td></tr>
-</table>
-
-<div style="background:#ECEFF1;border-left:6px solid #37474F;border-radius:10px;padding:14px 20px;margin:14px 0;"><p style="margin:0;"><strong>💡 Le test des trois questions.</strong> Dans chaque paragraphe, on doit lire <strong>qui a décidé</strong>, <strong>qui a réalisé</strong>, <strong>qui a été informé et quand</strong>. Une alerte sans heure ni valeur est une alerte que le jury ne peut pas vérifier.</p></div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">1.3 · Ce que la phase aiguë change dans votre façon de soigner</p>
-
-<p>La surveillance est <strong>rapprochée et prescrite</strong> : vous suivez la feuille de surveillance et vous écrivez chaque valeur avec l'heure, comparée à la précédente et à la norme. L'état peut <strong>basculer en quelques minutes</strong> : tout écart se transmet sans attendre la relève, et l'alerte passe avant la poursuite du soin. Les <strong>dispositifs</strong> sont récents et nombreux : vous les observez, vous les protégez, vous ne les manipulez pas. La <strong>sécurité passe avant le confort</strong> : si vous devez différer un soin important, l'infirmier arbitre. L'<strong>angoisse</strong> de la personne et des proches est forte : vous expliquez vos gestes et vous orientez les questions médicales.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">1.4 · Pourquoi ces situations font tomber tant de livrets</p>
-
-<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
-<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 Là où l'infirmier est partout, le geste de trop est partout</p>
-<p style="margin:0 0 8px 0;">Au retour de bloc ou en fin de vie, vos soins et ceux de l'infirmier se déroulent dans la même chambre, au même moment. Le candidat qui veut montrer qu'il « gère » raconte volontiers qu'il a renforcé un pansement qui saignait, monté l'oxygène ou rassuré la famille sur l'évolution.</p>
-<p style="margin:0;"><strong>La règle ORACLE :</strong> votre expertise se prouve par la <strong>précision de votre surveillance</strong>, la <strong>rapidité et la qualité de votre alerte</strong>, et la <strong>qualité du confort</strong> que vous apportez. Un acte hors champ décrit comme réalisé est éliminatoire, même en urgence, même à la demande de l'équipe. Dans ce cas, choisissez une autre situation.</p>
+<div class="deck" id="deck">
+<div class="bar">
+  <div class="brand"><img src="assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">MC07 · Activité 4</span>
+  <span class="mod" id="modLbl">Accueil</span>
+  <span class="counter" id="counter">1 / 14</span>
 </div>
-
-<p style="font-weight:bold;color:#263238;margin:24px 0 8px 0;">✍️ Exercice 1 (3&nbsp;min) · Soin aigu ou soin de la vie quotidienne, et où apparaît l'infirmier ?</p>
-<p>Pour chaque situation, qualifiez le soin avec les critères, puis dites à quel moment l'infirmier doit apparaître dans le récit.</p>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">a) Surveillance des paramètres de M. S., 66 ans, deux heures après une colectomie, en service de chirurgie.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Soin aigu.</strong> Unité sanitaire, équipe pluridisciplinaire, phase post-opératoire immédiate. L'infirmier apparaît à chaque valeur hors seuil : heure, valeur, consigne, recontrôle.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">b) Aide au repas de Mme E., 79 ans, diabétique de type 2 équilibrée depuis des années, en EHPAD.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Soin de la vie quotidienne</strong>, sous le contrôle de l'infirmier. L'infirmier apparaît en amont (plan de soins) et à la transmission d'une anomalie (repas non terminé sous insuline).</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">c) Surveillance de la saturation de M. G., 72 ans, pris en charge en hospitalisation à domicile pour une pneumopathie, sous oxygène depuis trois jours.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Soin aigu.</strong> L'HAD est un établissement de santé et la pneumopathie est en phase aiguë. L'infirmier apparaît à chaque transmission de valeur et décide de toute modification du traitement.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">d) Soins de confort de Mme H., 93 ans, en fin de vie dans l'EHPAD où elle réside.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Ni l'un ni l'autre au sens strict</strong> : l'EHPAD n'est pas une unité sanitaire, et l'état n'est plus stabilisé. La situation reste recevable en activité 4 : l'infirmier décide ; vous réalisez le confort, observez et signalez.</p></details>
-
-<div style="background:#ECEFF1;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> Soin aigu : trois critères cumulatifs, dont l'unité sanitaire ; vous agissez en collaboration. Soin de la vie quotidienne : deux critères ; vous agissez sous contrôle. L'HAD peut accueillir un soin aigu ; l'EHPAD et le domicile sans HAD, non. En collaboration, l'infirmier apparaît au moment où il intervient, avec l'heure, la valeur et la consigne. Votre expertise se prouve par la surveillance, l'alerte et le confort, jamais par le geste de l'infirmier.</p></div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Partie 2</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Les actes de 2021 et la surveillance en situation aiguë <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:15 · 25&nbsp;min</span></div>
-
-<p>Chacun des actes de 2021 n'est autorisé qu'<strong>à une condition</strong> ; hors de cette condition, il redevient hors champ. La masterclass 06 a traité l'oxygène pendant la toilette ; voici l'oxygénothérapie en tant que telle, puis l'aspiration, la glycémie, la surveillance post-opératoire et les dispositifs.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">2.1 · L'oxygénothérapie : ce qui vous revient, et ce qui ne vous revient jamais</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:32%;">Geste</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Condition, et ce que vous écrivez</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Changer les lunettes à oxygène</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Dans le champ, <strong>sans jamais intervenir sur le débitmètre</strong> : « j'ai changé ses lunettes souillées, sans toucher au débitmètre ».</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Poser et changer un masque à oxygène</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Uniquement <strong>en situation stable et chronique</strong>. En phase aiguë, au retour de bloc ou en détresse respiratoire, le masque relève de l'infirmier.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Monter et entretenir le matériel</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Selon le protocole du service : humidificateur si prescrit, tubulure, raccords, dates de changement.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Surveiller la personne</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Saturation, fréquence respiratoire, coloration, capacité à parler, conscience, points d'appui derrière les oreilles et sur les narines.</td></tr>
-</table>
-
-<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
-<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">⛔ Le débitmètre : vous n'y touchez jamais</p>
-<p style="margin:0 0 8px 0;">Ni pour l'augmenter, ni pour le baisser, ni pour le remettre à la valeur prescrite, ni pour le couper, <strong>même sur protocole ou sur consigne</strong>. Vous ne changez pas non plus de dispositif de votre propre initiative.</p>
-<p style="margin:0;"><strong>À la place :</strong> vous lisez le débit affiché et vous le comparez à la prescription ; s'il diffère, vous le signalez. Si la saturation baisse, vous installez la personne assise ou demi-assise, vous vérifiez que les lunettes sont en place et que la tubulure n'est ni coudée ni débranchée, vous restez auprès d'elle et vous appelez l'infirmier avec les valeurs.</p>
-</div>
-
-<p><strong>Les repères.</strong> Saturation normale de 95 à 100&nbsp;%, main chaude, affichage stable ; fréquence respiratoire de 12 à 20 /min. Chez une personne insuffisante respiratoire chronique, la saturation attendue est souvent plus basse : l'infirmier vous indique la valeur cible prescrite, qui sert de référence à votre alerte. Alertez sans attendre devant une saturation sous la valeur attendue, une fréquence hors de 12 à 20 /min, une cyanose, un tirage, une impossibilité de finir une phrase, une agitation ou une somnolence inhabituelle.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">2.2 · L'aspiration endotrachéale : uniquement sur orifice cicatrisé et non inflammatoire</p>
-
-<p>L'aspiration endotrachéale consiste à retirer les sécrétions de la trachée par l'orifice d'une trachéotomie, à l'aide d'une sonde reliée à un système d'aspiration. Elle entre dans votre champ <strong>seulement si l'orifice est cicatrisé et non inflammatoire</strong>. Les deux conditions sont cumulatives : un orifice ancien mais rouge ou suintant ne l'autorise pas.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:26%;">Étape</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Ce que vous observez et faites</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Vérifier la condition</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Orifice cicatrisé (trachéotomie ancienne, stabilisée, inscrite comme telle au plan de soins) ET non inflammatoire (ni rougeur, ni gonflement, ni écoulement, ni douleur). Une réponse négative ou un doute : vous n'aspirez pas, vous alertez l'infirmier.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Reconnaître le besoin</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Bruits de sécrétions, toux inefficace, saturation qui baisse.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Réaliser, si vous y avez été formé</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La condition légale reste l'état de l'orifice ; la formation et le protocole relèvent de la prudence. Selon le protocole du service : friction hydro-alcoolique, équipements de protection prévus, sonde à usage unique, aspiration brève en remontant, personne informée et installée demi-assise.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Observer, tracer, transmettre</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Saturation avant et après, tolérance, aspect des sécrétions (quantité, couleur, épaisseur, sang).</td></tr>
-</table>
-
-<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>🚨 Ce qui fait alerter immédiatement.</strong> Sécrétions sanglantes, purulentes ou malodorantes ; saturation qui ne remonte pas ; détresse respiratoire (tirage, cyanose, agitation) ; orifice rouge, gonflé ou suintant ; canule déplacée. Vous ne touchez pas à la canule : vous restez auprès de la personne et vous appelez.</p></div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">2.3 · La glycémie capillaire : sur protocole ou à la demande de l'infirmier</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:30%;">Point</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Ce qu'il faut savoir et écrire</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Le cadre</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><strong>Sur protocole ou à la demande de l'infirmier</strong>, écrit ainsi ; valeur transmise. <strong>Interpréter le résultat pour adapter un traitement revient à l'infirmier</strong> (dose d'insuline, resucrage hors protocole, appel au médecin).</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Les valeurs de référence</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">À jeun : 0,70 à 1,10 g/L. <strong>Hypoglycémie en dessous de 0,70 g/L.</strong></td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">L'hygiène du geste</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Mains de la personne lavées et séchées (un résidu sucré fausse le résultat) ; friction hydro-alcoolique et gants pour vous ; piqûre sur le côté de la pulpe ; lancette éliminée <strong>aussitôt dans le collecteur</strong> à objets piquants, coupants et perforants.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Les signes à reconnaître</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Hypoglycémie : sueurs, pâleur, tremblements, faim, confusion, somnolence (chez la personne âgée, une confusion isolée peut en être le seul signe). Hyperglycémie : soif intense, urines abondantes, fatigue. Vous transmettez.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Le chaînage</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Antidiabétique ou insuline cité dans le recueil : signes d'hypo et d'hyperglycémie, prises alimentaires (un repas non terminé sous insuline se transmet), état des pieds.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>⚠️ La glycémie transdermique.</strong> La lecture d'un capteur fait partie des actes de 2021, dans le même cadre : sur protocole ou à la demande de l'infirmier. Vous lisez la valeur et vous la transmettez ; vous ne posez pas et ne retirez pas le capteur.</p></div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">2.4 · La surveillance post-opératoire dans votre champ</p>
-
-<p>Au retour du bloc, l'infirmier accueille le patient et fixe avec vous la surveillance ; vous la réalisez au rythme prescrit et vous transmettez tout écart sans attendre.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:22%;">Paramètre</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:38%;">Ce que vous mesurez ou observez</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Ce qui fait alerter immédiatement</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Pression artérielle et pouls</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Au rythme prescrit, comparés aux valeurs précédentes.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Pression en dessous de 90/60 mmHg ou en baisse nette, pouls au-delà de 100 /min ou qui s'accélère : ce peut être un saignement.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Fréquence respiratoire et saturation</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Sur une minute ; saturation main chaude.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Fréquence en dessous de 12 ou au-delà de 20 /min, saturation qui baisse, respiration bruyante, cyanose.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Température</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Selon la prescription.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Fièvre à partir de 38&nbsp;°C ; hypothermie en dessous de 35&nbsp;°C, frissons.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Douleur</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">EVA ou EN, au repos et à la mobilisation, avant et après l'antalgique.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Douleur non soulagée, douleur nouvelle ou différente, douleur du mollet.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Conscience</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Réveil, orientation, réponses adaptées.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Somnolence qui s'accentue, confusion, agitation nouvelle.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Diurèse</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Première miction, ou volume de la poche si sonde ; aspect des urines.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Pas de miction dans le délai fixé, bas-ventre tendu (globe vésical), poche vide, urines rouges.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Pansement</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><strong>Observé, jamais touché</strong> : propre, taché (étendue), souillé, décollé.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Tache qui s'étend, saignement, pansement décollé ou mouillé. Vous ne le renforcez pas, vous ne le refaites pas : vous prévenez l'infirmier, qui intervient.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Premier lever</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><strong>Sur consigne</strong> de l'équipe médicale, relayée par l'infirmier ; en deux temps, en surveillant pression artérielle, pâleur, vertiges.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Malaise, pâleur, sueurs, vertiges : vous rasseyez ou recouchez aussitôt et vous alertez.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">2.5 · Les dispositifs en situation aiguë : observer, protéger, alerter</p>
-
-<p>La sonde urinaire et le pansement ont été traités en masterclass 06 et ci-dessus. En phase aiguë s'ajoutent d'autres dispositifs ; la règle ne change pas : <strong>vous observez, vous protégez, vous alertez</strong>.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:20%;">Dispositif</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:30%;">Observer</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:25%;">Protéger</th><th style="padding:9px;border:1px solid #263238;text-align:left;">⛔ Jamais</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Sonde nasogastrique</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Repère de fixation à la narine, lésion d'appui, liquide recueilli (aspect, quantité), nausées.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Position demi-assise, tubulure ni coudée ni tirée, soins de bouche.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La poser, la retirer, la replacer, la rincer, y administrer quoi que ce soit.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Perfusion</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Point de ponction (rougeur, gonflement, douleur), écoulement, reflux de sang, bras gonflé.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Mobilisations sans traction, poche en hauteur, habillage par le bras perfusé.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Régler, arrêter, relancer, changer une poche, toucher au cathéter, manipuler un pousse-seringue.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Drain de redon ou autre drain</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Quantité et aspect du liquide recueilli ; drain qui ne recueille plus rien.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Tubulure ni coudée ni tirée, flacon sous le niveau de la plaie.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le vider, le changer, le retirer, modifier le vide du flacon.</td></tr>
-</table>
-
-<p><strong>La formule de livret</strong>, en deux temps : « Je ne touche pas à la perfusion : voyant une rougeur de 2&nbsp;cm autour du cathéter, je préviens l'infirmière, qui vient l'examiner. »</p>
-
-<p style="font-weight:bold;color:#263238;margin:24px 0 8px 0;">✍️ Exercice 2 (6&nbsp;min) · Dans le champ, hors champ, ou sous conditions ?</p>
-<p>Classez chaque geste, puis ouvrez la correction.</p>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">a) Mettre en place, au coucher, le masque à oxygène de M. T., insuffisant respiratoire chronique stable, sous oxygène au long cours, comme le prévoit son plan de soins.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions, ici réunies.</strong> Situation stable et chronique. Vous lisez le débit sans y toucher et vous surveillez la tolérance.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">b) Aspirer les sécrétions de M. R., trachéotomisé depuis deux ans, orifice sec et sans rougeur, selon le protocole du service, auquel vous avez été formé.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions, ici réunies.</strong> Orifice cicatrisé et non inflammatoire : écrivez-le, avec la surveillance avant et après et l'aspect des sécrétions.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">c) Aspirer les sécrétions de M. L., trachéotomisé la veille, très encombré, parce que l'infirmière est occupée.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> L'orifice n'est pas cicatrisé. Vous installez M. L. demi-assis, vous mesurez sa saturation et vous faites venir l'infirmière sans attendre.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">d) Pendant la surveillance post-opératoire de Mme F., vous voyez une tache de sang de 5&nbsp;cm sur le pansement abdominal ; vous ajoutez des compresses par-dessus pour éviter que le drap ne soit taché.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ.</strong> Renforcer un pansement est un soin de pansement. Vous mesurez pression artérielle et pouls, vous notez l'heure et l'étendue de la tache, et vous appelez immédiatement l'infirmière.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">e) Au retour de bloc, M. K. a une saturation à 91&nbsp;% sous 3&nbsp;L/min ; vous augmentez à 4&nbsp;L/min, en attendant l'infirmière, pour qu'il ne désature pas davantage.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ, éliminatoire.</strong> Le débitmètre ne se touche jamais, même en attendant l'infirmier. Vous l'installez demi-assis, vous vérifiez le dispositif et la tubulure, et vous appelez avec les valeurs.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">f) Organiser le premier lever de M. N., au lendemain de sa colectomie, parce qu'il le demande et qu'il vous paraît en forme.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors champ tel que rédigé.</strong> Le premier lever se fait sur consigne de l'équipe médicale. Vous transmettez sa demande à l'infirmière.</p></details>
-
-<div style="background:#ECEFF1;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Oxygène : lunettes changées, masque posé en situation stable et chronique, matériel entretenu, personne surveillée ; débitmètre jamais touché. Aspiration : orifice cicatrisé ET non inflammatoire, sinon l'infirmier. Glycémie : sur protocole ou à la demande de l'infirmier, valeur transmise, hypoglycémie sous 0,70 g/L. Post-opératoire : paramètres, douleur, conscience, diurèse, pansement observé jamais touché, premier lever sur consigne. Dispositifs : observer, protéger, alerter.</p></div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Partie 3</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Maladie chronique, douleur et confort <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:40 · 20&nbsp;min</span></div>
-
-<p>Chez la personne atteinte de maladie chronique, votre soin s'adapte à la maladie, votre surveillance aux traitements, et votre alerte s'appuie sur son état habituel. C'est ici que le <strong>chaînage traitement-surveillance</strong> fait la différence.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">3.1 · Le chaînage traitement-surveillance, rappel de méthode</p>
-
-<div style="border:1px solid #CFD8DC;background:#F7F9FA;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0 0 8px 0;">Chaque pathologie citée dans la présentation de la personne reçoit une <strong>définition courte</strong>. Chaque traitement cité reçoit sa <strong>classe</strong>. Et chaque traitement appelle, plus loin dans le récit, une <strong>phrase de surveillance</strong> qui montre que vous savez ce qu'il vous fait observer.</p>
-<p style="margin:0;padding-top:10px;border-top:1px solid #CFD8DC;font-style:italic;">Recueil : « traitée par bisoprolol, un bêtabloquant » → Récit : « avant le lever, j'ai mesuré son pouls à 56 /min, sa valeur habituelle, et je l'ai levée en deux temps, son bêtabloquant l'exposant à une bradycardie et à une hypotension. »</p>
-</div>
-
-<p>Un traitement cité sans surveillance est une question du jury garantie.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">3.2 · Cinq maladies chroniques et leur surveillance ciblée</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:18%;">Maladie, définition courte</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:24%;">Traitements fréquents et leur surveillance</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:30%;">Ce que votre soin adapte</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Ce qui fait alerter</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Diabète : excès chronique de sucre dans le sang, par défaut d'insuline ou mauvaise action de celle-ci.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Antidiabétiques, insuline : hypo et hyperglycémie.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Repas à heure régulière ; glycémie sur protocole ; <strong>observation quotidienne des pieds</strong>, séchage entre les orteils, chaussage adapté.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Glycémie sous 0,70 g/L, repas non pris sous insuline, plaie du pied même indolore.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">BPCO (broncho-pneumopathie chronique obstructive) : rétrécissement chronique des bronches qui essouffle à l'effort.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Bronchodilatateurs : tremblements, palpitations. Corticoïdes inhalés : rinçage buccal, mycose. Oxygène : saturation attendue prescrite.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Position assise ou demi-assise, effort fractionné, toux encouragée, hydratation, repas fractionnés si manger essouffle.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Essoufflement inhabituel, crachats modifiés, fièvre, saturation sous la valeur attendue, somnolence.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Insuffisance cardiaque : le cœur ne pompe plus assez de sang pour les besoins de l'organisme.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Diurétiques : diurèse, déshydratation, hypotension, chutes. Bêtabloquants : bradycardie, hypotension. Antihypertenseurs : lever en deux temps.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;"><strong>Pesée</strong> dans les mêmes conditions selon la prescription ; œdèmes des chevilles observés ; position demi-assise la nuit si besoin ; sel et boissons selon la consigne.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Prise de poids rapide (seuil fixé par l'infirmier), œdèmes qui augmentent, essoufflement nouveau, pouls sous 60 /min avec malaise.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Maladie de Parkinson : maladie neurologique qui ralentit les mouvements, rigidifie les muscles et entraîne des tremblements.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Antiparkinsoniens : <strong>horaires stricts</strong> (un retard entraîne un blocage) ; hallucinations, hypotension au lever.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Soins aux moments où la personne est la plus mobile ; aide à la prise aux heures exactes, dans les conditions requises ; guidance verbale ; textures adaptées ; temps laissé pour agir.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Blocage prolongé, chute, fausse route, prise oubliée ou décalée, hallucinations nouvelles, confusion.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Troubles neurocognitifs (maladie d'Alzheimer et apparentées) : atteinte progressive de la mémoire, du langage, de l'orientation et du jugement.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Anticholinestérasiques : troubles digestifs, pouls lent. Antipsychotiques s'ils sont prescrits : raideur, troubles de la marche, somnolence. Anxiolytiques et hypnotiques : somnolence, chutes.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Communication simple, gestes annoncés, soin reporté en cas de refus ; <strong>douleur évaluée par hétéro-évaluation</strong> (Algoplus, ECPA) si besoin.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Changement brutal du comportement, qui peut traduire une douleur, une infection, une rétention ou un effet d'un traitement ; chute.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">3.3 · Évaluer la douleur : la bonne échelle pour la bonne personne</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:26%;">Situation de la personne</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:30%;">Échelle</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Ce qu'il faut écrire</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Elle peut s'exprimer et comprendre la consigne</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Auto-évaluation : <strong>EVA</strong> (échelle visuelle analogique, réglette de 0 à 10) ou <strong>EN</strong> (échelle numérique, « de 0 à 10 »), ou échelle verbale simple.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La valeur, au repos et à la mobilisation, avec l'heure.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Elle ne peut pas s'exprimer de façon fiable, douleur aiguë</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Hétéro-évaluation : <strong>Algoplus</strong>, 5 items observés (visage, regard, plaintes, attitudes corporelles, comportement) ; un score à partir de 2 sur 5 fait évoquer une douleur.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le score, les items relevés, l'heure.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Elle ne peut pas s'exprimer, douleur prolongée ou chronique</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Hétéro-évaluation : <strong>ECPA</strong> ou <strong>Doloplus</strong>, selon le protocole du service.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le score comparé au précédent.</td></tr>
-</table>
-
-<p>La douleur s'évalue <strong>avant</strong> le soin, <strong>pendant</strong> la mobilisation et <strong>après</strong> l'antalgique ou l'installation, toujours avec la même échelle. Une douleur mesurée une seule fois ne prouve pas l'effet de votre soin.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">3.4 · Installer pour soulager, et soulager par le confort</p>
-
-<p><strong>Installation antalgique</strong> : coussins qui soutiennent la zone douloureuse, décubitus latéral à 30° sans appui sur elle, position demi-assise si la personne est essoufflée, consignes de positionnement de l'équipe médicale respectées, puis douleur réévaluée. <strong>Mobilisation douce</strong> : gestes annoncés et lents, en monobloc à deux avec un drap de glisse si nécessaire, au moment convenu avec l'infirmier où l'antalgique agit. <strong>Environnement</strong> : calme, lumière tamisée, sonnette et objets personnels à portée. <strong>Moyens non médicamenteux</strong> : toucher de confort, doux et enveloppant, sur une peau saine selon le protocole du service (jamais sur une rougeur ni sur un point d'appui), musique, présence ; ils complètent l'antalgique, ils ne le remplacent pas.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">3.5 · Signaler l'inefficacité d'un antalgique</p>
-
-<p>L'antalgique est prescrit par le médecin et administré par l'infirmier ; votre rôle est de <strong>mesurer son effet</strong> et de <strong>le dire</strong>, au délai que l'infirmier vous indique, avec la même échelle.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:34%;">Ce que vous constatez</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Ce que vous transmettez à l'infirmier</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">EVA à 7 avant l'antalgique, à 6 une heure après.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">« L'antalgique donné à 8 h n'a pas soulagé Mme K. : EVA 7 à 8 h, 6 à 9 h, au repos. Elle ne peut pas se tourner. »</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Soulagement au repos, douleur forte à chaque mobilisation.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">« EVA 2 au repos, 7 lors des retournements. » L'infirmier peut adapter l'horaire de l'antalgique par rapport aux soins.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Douleur nouvelle, d'une autre localisation ou d'un autre type.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Transmission immédiate : ce n'est plus la même douleur, c'est un changement d'état clinique.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">3.6 · Surveiller un antalgique de palier 3</p>
-
-<p>Palier 1 (paracétamol), palier 2 (opioïdes faibles), palier 3 (<strong>morphiniques</strong>, stupéfiants). L'aide à la prise ne s'applique jamais à un stupéfiant ; la surveillance, elle, vous revient pleinement.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:24%;">Surveillance</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:38%;">Ce que vous observez</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Seuil et conduite à tenir</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Fréquence respiratoire</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Comptée sur une minute entière, sans prévenir la personne.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">En dessous de 12 /min, ou respiration irrégulière avec pauses : <strong>dépression respiratoire possible, alerte immédiate</strong>. Vous restez auprès de la personne, vous la stimulez par la voix, vous appelez l'infirmier.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Vigilance</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Éveil, réponse à la voix, somnolence, confusion.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Somnolence qui s'accentue, personne difficile à réveiller : alerte immédiate, souvent associée à la baisse de la fréquence respiratoire.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Transit</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Date des dernières selles, ballonnement, douleurs abdominales, nausées.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La constipation est attendue sous morphinique : l'absence de selles se transmet chaque jour, pour que l'infirmier et le médecin l'anticipent.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;margin:24px 0 8px 0;">✍️ Exercice 3 (5&nbsp;min) · Quelle surveillance ce traitement appelle-t-il ?</p>
-<p>Pour chaque traitement lu dans un recueil de données, écrivez la phrase de surveillance qui doit apparaître dans le récit.</p>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">a) « M. P., 74 ans, est traité par furosémide, un diurétique de l'anse, pour une insuffisance cardiaque. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Je l'ai pesé ce matin à jeun, sur la même balance que la veille : 71,2&nbsp;kg contre 70,9&nbsp;kg ; ses chevilles n'étaient pas gonflées. Je l'ai levé en deux temps, son diurétique l'exposant à une hypotension, et j'ai noté sa diurèse. »</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">b) « Mme L., 81 ans, est traitée par un morphinique à libération prolongée pour des douleurs osseuses. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« J'ai compté sa fréquence respiratoire sur une minute : 16 /min ; elle était bien éveillée et répondait normalement. Ses dernières selles datent d'avant-hier : je l'ai transmis à l'infirmière, son traitement exposant à la constipation. »</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">c) « M. D., 69 ans, atteint de la maladie de Parkinson, reçoit son antiparkinsonien à 8 h, 12 h, 16 h et 20 h. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« À 12 h précises, j'ai vérifié son identité et la concordance avec le pilulier préparé par l'infirmière, emballé individuellement et daté à son nom ; je l'ai aidé à prendre son traitement, j'ai observé la prise et je l'ai tracée, car un retard provoque chez lui un blocage. J'ai programmé sa douche à 10 h, moment où il est le plus mobile. »</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">d) « Mme R., 77 ans, BPCO, reçoit un corticoïde inhalé matin et soir. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">« Après son inhalation, je lui ai proposé un rinçage de bouche à l'eau ; je n'ai observé aucun dépôt blanchâtre. »</p></details>
-
-<div style="background:#ECEFF1;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Maladie chronique : une définition courte, un traitement avec sa classe, une surveillance ciblée écrite dans le récit, une alerte fondée sur l'état habituel. Douleur : la bonne échelle (EVA ou EN si la personne s'exprime, Algoplus, ECPA ou Doloplus sinon), avant, pendant, après. Antalgique inefficace : mesuré, chiffré, transmis. Palier 3 : fréquence respiratoire, vigilance et transit ; en dessous de 12 /min ou somnolence qui s'accentue, alerte immédiate.</p></div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Partie 4</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · La fin de vie et les soins après le décès <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:00 · 20&nbsp;min</span></div>
-
-<p>Une situation de fin de vie est l'une des plus fortes, et des plus exposées, qu'un livret puisse contenir. Le jury y cherche un soignant qui apporte le confort, accompagne la personne et ses proches, connaît le cadre légal et sait où s'arrête son rôle.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">4.1 · Les soins de confort : bouche, peau, position, environnement</p>
-
-<p>L'objectif du soin devient le <strong>confort</strong> et la <strong>dignité</strong>, jusqu'au bout. Chaque soin se discute avec l'infirmier et peut être allégé ou reporté.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:18%;">Soin</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:44%;">Ce que vous faites</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Pourquoi, et la limite</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Soins de bouche</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Fréquents, selon le protocole : bâtonnet mousse humidifié, bouche et lèvres humidifiées avec le produit prévu, prothèse retirée si elle gêne ; langue et muqueuses observées.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La bouche sèche est un inconfort majeur, la personne respirant souvent bouche ouverte. Un produit médicamenteux relève de l'infirmier ; vous transmettez tout dépôt ou lésion.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Soins de la peau</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Toilette allégée, zone par zone ; change dès que nécessaire ; séchage par tamponnement ; points d'appui observés.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Préserver le confort et la dignité. Une rougeur ne se masse jamais : vous supprimez l'appui si la position le permet et vous transmettez.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Position</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Changements de position doux, décidés avec l'infirmier, soutenus par des coussins, buste légèrement relevé ; drap de glisse.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Leur fréquence peut être espacée pour ne pas imposer une douleur : c'est une décision d'équipe, pas une initiative personnelle.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Respiration</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Installation sur le côté si la respiration devient encombrée ; fréquence, rythme et pauses respiratoires observés.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Les râles inquiètent les proches : vous transmettez, l'infirmier décide. L'aspiration ne vous revient que sur trachéotomie cicatrisée et non inflammatoire.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Alimentation et hydratation</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Petites quantités choisies par la personne, textures adaptées, installation assise ; vous n'insistez pas si elle refuse, et vous le transmettez.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le plaisir prime sur les quantités. Toute modification des apports est une décision médicale.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Environnement</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Lumière douce, calme, objets familiers, musique aimée ; visites facilitées.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Faire de la chambre un lieu de vie jusqu'au bout, selon les habitudes et les choix de la personne.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">4.2 · Accompagner la personne</p>
-
-<p>Accompagner, c'est <strong>être présent</strong>, <strong>écouter</strong> et <strong>respecter</strong>. Vous écoutez peurs, regrets et souhaits sans contredire ni rassurer faussement, vous acceptez les silences, vous respectez croyances et rituels, vous proposez ce qui fait du bien (une présence, une main tenue, un proche appelé). Si elle vous parle de ses volontés, de sa fin de vie, de ce qu'elle veut ou ne veut plus, vous le transmettez à l'infirmier, par écrit et par oral.</p>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>⚠️ Ce que vous ne dites pas.</strong> « Vous allez guérir », « c'est bientôt la fin » : faux espoir ou pronostic. Vous ne vous prononcez ni sur l'évolution, ni sur la durée, ni sur les traitements. Vous pouvez dire : « Je suis là. Voulez-vous que j'en parle à l'infirmière, pour qu'elle vienne vous voir ? »</p></div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">4.3 · Accompagner les proches</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:30%;">Ce que vous faites</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Comment, et ce qu'il faut écrire</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Accueillir et écouter</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Dans un lieu calme, à l'écart, pour respecter la confidentialité ; vous reformulez l'émotion (« vous avez peur qu'il souffre ») et vous acceptez colère ou larmes sans vous justifier.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Expliquer ce qui relève de vous</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Les soins de confort que vous réalisez, et pourquoi.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Associer, si les proches le souhaitent</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Humidifier les lèvres avec un bâtonnet trempé dans l'eau et bien essoré, après que vous leur avez montré le geste, tenir ou caresser les mains, parler, faire écouter une musique : les proches retrouvent une place. Aucun soin technique ne leur est délégué.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Orienter</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Toute question sur l'évolution, la durée, les traitements, la sédation ou l'alimentation se dirige vers le médecin ou l'infirmier, que vous prévenez. Vous signalez aussi leur besoin de soutien, pour que l'infirmier mobilise les ressources de l'établissement.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Transmettre</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Les questions posées, l'état émotionnel des proches, leurs souhaits (être appelés la nuit, par exemple).</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">4.4 · La loi du 2 février 2016, dite Claeys-Leonetti : ce que vous devez connaître</p>
-
-<p>Vous n'en décidez rien, mais vous en connaissez les notions, parce que c'est souvent à vous que la personne se confie.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:24%;">Notion</th><th style="padding:9px;border:1px solid #263238;text-align:left;width:40%;">Ce que c'est</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Votre rôle</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Directives anticipées</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Un écrit par lequel une personne majeure fait connaître ses volontés sur sa fin de vie (poursuivre, limiter, arrêter ou refuser des traitements), pour le cas où elle ne pourrait plus les exprimer. Révisables à tout moment, elles s'imposent au médecin, sauf exceptions prévues par la loi.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Savoir si elles existent ; transmettre toute parole de la personne sur ses volontés, et tout souhait de les rédiger ou de les modifier. Vous ne les rédigez pas et ne les interprétez pas.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Personne de confiance</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Une personne désignée par écrit par le patient pour l'accompagner et, s'il ne peut plus s'exprimer, témoigner de ses volontés ; en l'absence de directives anticipées, son témoignage prévaut sur celui des autres proches.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Savoir qui elle est et la distinguer des autres proches ; transmettre ses demandes. Vous ne lui donnez aucune information médicale.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Sédation profonde et continue jusqu'au décès</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Un droit ouvert dans des conditions précises fixées par la loi ; leur réunion est vérifiée par une procédure collégiale, et la sédation est mise en œuvre par l'équipe médicale.</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Aucune décision, aucune administration : soins de confort, observation, transmission.</td></tr>
-</table>
-
-<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>🚨 Deux erreurs fréquentes.</strong> Confondre la personne de confiance avec « la famille » ou « le référent ». Écrire « nous avons décidé d'arrêter l'alimentation » : vous ne prenez pas part à une décision médicale, vous y apportez vos observations. Écrivez : « le médecin a décidé, après une réunion d'équipe à laquelle j'ai transmis mes observations, de… ».</p></div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">4.5 · Votre place dans l'équipe</p>
-
-<p>La fin de vie est un travail d'équipe pluriprofessionnelle. Votre apport spécifique est la <strong>continuité de la présence</strong> : vous voyez la personne à chaque soin, vous entendez ce qu'elle dit dans l'intimité de la toilette, vous voyez l'inconfort au moment où il apparaît. Écrivez les observations transmises et le réajustement qui en est sorti.</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">4.6 · Les soins après le décès</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#263238;color:#FFFFFF;"><th style="padding:9px;border:1px solid #263238;text-align:left;width:24%;">Étape</th><th style="padding:9px;border:1px solid #263238;text-align:left;">Ce que vous faites, et pourquoi</th></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Le constat</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Vous prévenez l'infirmier. Le <strong>décès est constaté par le médecin</strong> ; les soins ne commencent qu'ensuite, selon le protocole.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Les volontés et les rites</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Avant tout soin, vous vérifiez avec l'infirmier les volontés de la personne et de ses proches, les rites religieux ou culturels (certains confient la toilette à un proche ou à la communauté) et le souhait des proches de participer. Ces volontés priment sur l'habitude du service.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">La toilette mortuaire</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Selon le protocole : hygiène des mains, gants et tablier ; dispositifs retirés par l'infirmier, sauf si le médecin signale un obstacle médico-légal (rien n'est alors retiré ni lavé) ; toilette complète, avec la même pudeur que du vivant de la personne ; corps installé à plat, tête légèrement surélevée, yeux et bouche fermés, prothèse dentaire remise si le protocole le prévoit ; habillage avec les vêtements choisis par la personne ou ses proches.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">La chambre et l'accueil des proches</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Chambre rangée, lumière douce, matériel retiré ; vous accueillez les proches, vous leur laissez le temps dont ils ont besoin et vous orientez leurs questions vers l'infirmier ou le cadre. Objets et bijoux sont inventoriés selon la procédure, puis tout est tracé.</td></tr>
-<tr style="background:#F7F9FA;"><td style="padding:9px;border:1px solid #CFD8DC;font-weight:bold;vertical-align:top;">Les déchets et le linge</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Juste tri : les déchets de la toilette vont en DAOM, sauf situation relevant des DASRI (contact avec un foyer infectieux avéré ou suspecté, imprégnation avec risque d'écoulement, objets piquants ou coupants en collecteur).</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">4.7 · Prendre soin de soi</p>
-
-<p>Accompagner la fin de vie laisse des traces. Le jury est sensible au soignant qui sait reconnaître ses émotions et les partager dans un cadre professionnel : temps d'échange d'équipe après un décès, analyse de pratique, échange avec le cadre ou le psychologue. Une phrase suffit dans votre livret : « Après son décès, j'ai participé au temps d'échange organisé par l'équipe, ce qui m'a permis de dire combien cet accompagnement m'avait touchée. » Elle montre que vous prenez soin de vous pour continuer à prendre soin des autres.</p>
-
-<p style="font-weight:bold;color:#263238;margin:24px 0 8px 0;">✍️ Exercice 4 (5&nbsp;min) · Dans votre rôle, hors de votre rôle, ou sous conditions ?</p>
-<p>Classez chaque action réalisée auprès d'une personne en fin de vie ou de ses proches.</p>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">a) Répondre au fils de M. B. que son père « en a encore pour quelques jours, d'après ce que vous avez vu chez d'autres ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors de votre rôle.</strong> C'est un pronostic. Vous écoutez sa question, vous restez présent et vous l'orientez vers le médecin ou l'infirmier, que vous prévenez.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">b) Mme J. vous dit pendant la toilette : « Je ne veux plus qu'on m'emmène à l'hôpital. » Vous le notez dans vos transmissions et vous le dites à l'infirmière.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Dans votre rôle.</strong> Vous transmettez une parole de la personne sur ses volontés. L'infirmière et le médecin vérifieront l'existence de directives anticipées et en tiendront compte.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">c) Appuyer sur le bouton du pousse-seringue de morphine parce que M. B. semble douloureux et que le dispositif le permet.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Hors de votre rôle, éliminatoire.</strong> C'est une administration de stupéfiant. Vous évaluez la douleur avec l'échelle adaptée et vous appelez l'infirmier immédiatement.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">d) Réaliser la toilette mortuaire de M. B. selon le protocole, après le constat du décès par le médecin, alors que la famille a demandé qu'un membre de sa communauté la réalise.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Non recevable tel que décrit.</strong> Le respect des rites et des volontés prime. Vous transmettez la demande à l'infirmier et au cadre, qui organisent sa mise en œuvre selon la procédure de l'établissement.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">e) Espacer les changements de position de Mme J. parce que chaque mobilisation la fait gémir.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Recevable si la décision a été prise avec l'infirmier, après évaluation de la douleur et de l'état cutané, et inscrite au plan de soins. De votre seule initiative, ce serait une décision qui ne vous revient pas.</p></details>
-
-<div style="background:#ECEFF1;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Fin de vie : bouche, peau, position, respiration, alimentation plaisir, environnement, avec l'infirmier et au rythme de la personne. Accompagner : présence, écoute, respect, transmission des volontés ; jamais de pronostic. Loi du 2 février 2016 : directives anticipées, personne de confiance, sédation ; vous n'en décidez rien, vous les connaissez et vous transmettez. Après le décès : constat médical d'abord, protocole, rites et volontés, accueil des proches, juste tri. Et prendre soin de soi.</p></div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Partie 5</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Deux situations modèles décortiquées <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:20 · 15&nbsp;min</span></div>
-
-<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; les initiales sont fictives. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots.</p>
-
-<!-- Situation A -->
-<div style="background:#37474F;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation A · Activité 4 (BC2) · Surveillance au retour du bloc opératoire, en service de chirurgie</div>
-
-<div style="background:#F7F9FA;border:1px solid #CFD8DC;border-radius:10px;padding:16px 20px;">
-<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. V., 67 ans, est hospitalisé en chirurgie digestive depuis la veille pour l'ablation d'une partie du côlon (colectomie). Il a une hypertension artérielle (pression trop élevée en permanence dans les artères) traitée par ramipril, un antihypertenseur (surveillance : hypotension, lever en deux temps), et un diabète de type 2 (excès chronique de sucre dans le sang) traité par metformine, un antidiabétique oral, suspendu autour de l'opération sur décision médicale (surveillance : glycémie sur protocole, signes d'hypo et d'hyperglycémie). Il pèse 84&nbsp;kg pour 1,76&nbsp;m, soit un IMC de 27, en surpoids. Au retour de bloc, il porte une perfusion au bras gauche, une sonde urinaire, un pansement abdominal et un drain de redon ; il reçoit de l'oxygène aux lunettes à 2&nbsp;L/min. Histoire de vie : ancien conducteur de bus, marié ; son épouse est présente à son retour. Autonome avant l'opération ; à son retour, alité, il a besoin de moi pour l'installation, l'hygiène et les changements de position. Au plan de soins : surveillance post-opératoire horaire pendant six heures, glycémie capillaire à 18 h selon le protocole, premier lever non autorisé avant le lendemain.</p>
-<p style="margin:0;"><strong>La situation.</strong> Un lundi de mars 2025, à 14 h, M. V. revient du bloc. L'infirmière l'accueille et m'indique la surveillance prescrite : pression artérielle, pouls, saturation, fréquence respiratoire, douleur et conscience toutes les heures, pansement et drain observés à chaque passage, diurèse horaire. À 14 h 05, après une friction hydro-alcoolique : pression artérielle 132/78&nbsp;mmHg, pouls 82 /min, saturation 97&nbsp;% sous 2&nbsp;L/min, fréquence respiratoire 16 /min, EVA à 3, il répond à mes questions de façon adaptée. Je lis le débit d'oxygène, conforme, sans y toucher. Pansement propre ; point de ponction de la perfusion sans rougeur ; le drain a recueilli 30&nbsp;mL de liquide rosé. À 16 h, il me dit avoir « de plus en plus mal » : EVA à 7 au repos. Je le signale immédiatement à l'infirmière, qui lui administre à 16 h 10 l'antalgique prescrit et me demande de réévaluer à 17 h. En attendant, je l'installe tête de lit relevée à 30°, jambes légèrement fléchies sur un coussin, ce qui détend la paroi abdominale ; il le confirme. À 17 h : EVA à 3. Je note alors sur le pansement une tache de sang de 3&nbsp;cm, absente à 16 h. Je ne touche pas au pansement. Je mesure aussitôt la pression artérielle, 126/74&nbsp;mmHg, et le pouls, 86 /min, stables, et je préviens l'infirmière en lui donnant l'étendue de la tache, l'heure et les valeurs. Elle vient l'examiner et me demande de surveiller la tache toutes les trente minutes : à 18 h, elle n'a pas changé. La diurèse est de 60&nbsp;mL par heure, urines claires ; le sac est en position déclive, accroché au lit, sans contact avec le sol. À 18 h, comme le prévoit le protocole, je réalise sa glycémie capillaire, après lui avoir lavé les mains à l'eau et au savon, puis une friction hydro-alcoolique et des gants pour moi : 1,42&nbsp;g/L. J'élimine la lancette dans le collecteur et je transmets la valeur à l'infirmière, qui en tire les conséquences. Son épouse me demande « si l'opération s'est bien passée et si c'était grave ». Je lui réponds que je ne peux pas lui donner ces informations, qui relèvent du chirurgien, et je préviens l'infirmière, qui organise un échange avec le médecin avant 19 h. À 20 h, je trace le tout en transmission ciblée. Le lendemain matin, sur consigne de l'infirmière, je l'aide à son premier lever, en deux temps : pression artérielle 128/76&nbsp;mmHg assis, 122/74&nbsp;mmHg debout, sans vertige ; il marche jusqu'au fauteuil.</p>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #CFD8DC;background:#ECEFF1;font-weight:bold;width:30%;vertical-align:top;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La personne est présentée avant le soin, avec ses dispositifs et ses traitements. La surveillance prescrite est énoncée, puis réalisée avec des valeurs horodatées et comparées. La collaboration se voit à chaque alerte (douleur, tache de sang, glycémie, épouse). L'installation antalgique est évaluée. Le chaînage est présent : antihypertenseur et lever en deux temps, diabète et glycémie. Les critères de qualité sont lisibles (valeurs, EVA 7 puis 3, hygiène). La boucle est fermée le lendemain.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;background:#ECEFF1;font-weight:bold;width:30%;vertical-align:top;">Où la limite est dite</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">« Je lis le débit, sans y toucher. » « Je ne touche pas au pansement. » L'antalgique est administré par l'infirmière. La glycémie est réalisée « comme le prévoit le protocole », et c'est l'infirmière qui « en tire les conséquences ». La question de l'épouse est orientée vers le médecin. Le premier lever se fait « sur consigne ».</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;background:#FFEBEE;font-weight:bold;width:30%;vertical-align:top;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">« J'ai ajouté des compresses sur la tache de sang » : soin de pansement, éliminatoire. « J'ai monté l'oxygène à 3&nbsp;L par précaution » : éliminatoire. « J'ai noté l'EVA à 7 et je l'ai transmise à la relève de 20 h » : absence d'alerte, mise en danger. « J'ai rassuré son épouse : tout s'est très bien passé » : information médicale donnée, hors champ. « Je l'ai levé dès 18 h, il en avait envie » : décision qui ne vous revient pas.</td></tr>
-</table>
-
-<!-- Situation B -->
-<div style="background:#37474F;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Activité 4 (BC2) · Soins de confort d'une résidente en fin de vie, en EHPAD, avec sa famille</div>
-
-<div style="background:#F7F9FA;border:1px solid #CFD8DC;border-radius:10px;padding:16px 20px;">
-<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme J., 92 ans, vit en EHPAD depuis six ans. Elle a une insuffisance cardiaque évoluée (le cœur ne pompe plus assez de sang pour les besoins de l'organisme) et des troubles neurocognitifs à un stade modéré. Depuis dix jours, elle ne se lève plus, mange et boit très peu. Le médecin a posé l'indication de soins palliatifs et a revu ses traitements : la morphine, antalgique de palier 3 et stupéfiant, lui est administrée par l'infirmière pour la douleur et l'essoufflement (surveillance : fréquence respiratoire, vigilance, transit), et son diurétique, le furosémide, a été arrêté sur décision médicale. Elle pèse 46&nbsp;kg pour 1,55&nbsp;m, soit un IMC de 19, sous le seuil de 22 retenu après 70 ans, avec une perte de 5&nbsp;kg en trois mois (51&nbsp;kg alors) : son état nutritionnel est très altéré. GIR 1 ; Braden 9, risque d'escarre très élevé, sur un matelas à air. Elle a rédigé des directives anticipées à son entrée ; sa fille, Mme C., est sa personne de confiance. Histoire de vie : ancienne fleuriste, veuve ; elle aimait les chansons de son époque et les fleurs. Autonomie actuelle : dépendante pour tous les soins, communication par quelques mots, regard et pression de la main ; douleur évaluée par Algoplus. Au plan de soins, décidé en réunion d'équipe par le médecin et l'infirmière : soins de bouche toutes les deux heures, toilette allégée, changements de position toutes les quatre heures, Algoplus à chaque soin.</p>
-<p style="margin:0;"><strong>La situation.</strong> Un samedi de novembre 2024, à 9 h, à la relève, l'infirmière me transmet que Mme J. a reçu son morphinique à 8 h et que sa fille arrivera dans la matinée. À 9 h 30, je lui explique ce que je vais faire. Je compte sa fréquence respiratoire sur une minute : 18 /min, régulière ; elle ouvre les yeux à ma voix. Algoplus à 1 sur 5 (visage crispé seulement). Bouche ouverte, lèvres sèches : après une friction hydro-alcoolique et avec des gants, je nettoie sa bouche avec un bâtonnet mousse humidifié et j'humidifie ses lèvres avec le produit prévu au protocole ; je n'observe ni dépôt ni saignement. Je lui propose une toilette du visage, des mains et du siège seulement, ce qu'elle accepte d'un signe de tête : la toilette complète de la veille l'avait épuisée. Au change, je note que ses dernières selles datent de trois jours, et j'observe les points d'appui : talons et sacrum sans rougeur. Pour le changement de position, avec ma collègue, je la tourne sur le côté droit, à 30°, avec un drap de glisse, en lui parlant : Algoplus à 3 pendant la mobilisation (grimace, gémissement, crispation), revenu à 1 une fois installée, tête légèrement relevée. Je transmets à l'infirmière l'Algoplus à la mobilisation et l'absence de selles depuis trois jours, en rappelant que son morphinique expose à la constipation. Elle me demande de réaliser les soins suivants vers 11 h, une demi-heure après la dose d'antalgique prescrite avant les soins. À 10 h 30, Mme C. arrive. Je l'accueille et je lui explique les soins de bouche, qui soulagent sa mère, car elle respire bouche ouverte. Elle me demande si elle peut « faire quelque chose ». Je lui propose de lui humidifier les lèvres ; je lui montre le geste avec un bâtonnet trempé dans l'eau et bien essoré, et je reste à ses côtés pendant qu'elle le fait, en pleurant doucement, puis de lui faire écouter les chansons qu'elle aimait. Elle me demande ensuite : « Est-ce que c'est pour aujourd'hui ? » Je lui réponds que je ne peux pas le dire, que c'est une question à poser au médecin, et je lui propose d'en parler à l'infirmière, que je préviens aussitôt ; celle-ci vient la voir et organise un appel avec le médecin. Mme C. me confie que sa mère avait demandé « de mourir ici, avec des fleurs » : je le transmets à l'infirmière, qui le retrouve dans ses directives anticipées. L'après-midi, j'installe un bouquet sur sa table. À 16 h, Algoplus à 0 ; Mme J. serre la main de sa fille. Je trace les soins, les scores, l'absence de selles et la demande de Mme C. d'être appelée à tout moment, que je transmets à l'équipe de nuit. Mme J. décède dans la nuit de dimanche à lundi, en présence de sa fille, appelée comme elle l'avait demandé. Le lundi, je participe au temps d'échange organisé par l'équipe.</p>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #CFD8DC;background:#ECEFF1;font-weight:bold;width:30%;vertical-align:top;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">La personne est présentée avant le soin ; son histoire de vie donne son sens au bouquet et à la musique. Les soins de confort sont adaptés, avec son accord. La douleur est évaluée par Algoplus avant, pendant et après la mobilisation. Le chaînage est présent : morphinique, donc fréquence respiratoire, vigilance et transit. La collaboration se voit : plan de soins d'équipe, alerte, horaire fixé par l'infirmière. Les critères de qualité sont lisibles : confort mesuré (Algoplus 3 puis 0), sécurité de la mobilisation, hygiène, accord de la personne. La fille est accueillie et associée au confort. Directives anticipées et personne de confiance sont connues, les volontés transmises, et le souhait d'être appelée respecté.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;background:#ECEFF1;font-weight:bold;width:30%;vertical-align:top;">Où la limite est dite</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">Le morphinique est administré par l'infirmière. L'arrêt du diurétique est une décision médicale. À la question « est-ce pour aujourd'hui ? », la réponse est orientée vers le médecin. La fille est associée au confort (lèvres, musique), sans qu'aucun soin technique lui soit délégué.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;background:#FFEBEE;font-weight:bold;width:30%;vertical-align:top;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #CFD8DC;vertical-align:top;">« Je lui ai dit qu'à mon avis, sa mère ne passerait pas la nuit » : pronostic, hors champ. « Nous avons décidé d'arrêter de la tourner » : décision qui ne vous revient pas. « Elle était très douloureuse, j'ai appelé l'infirmière à la fin de la toilette » : alerte tardive. « Sa fille a décidé pour elle » : confusion entre témoignage de la personne de confiance et décision.</td></tr>
-</table>
-
-<div style="background:#ECEFF1;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Une bonne situation d'activité 4 en contexte aigu, chronique ou de fin de vie présente la personne avec ses traitements et ses dispositifs, énonce la surveillance prescrite, chiffre et horodate chaque valeur, fait apparaître l'infirmier à chaque alerte, dit la limite à chaque dispositif et à chaque question des proches, et ferme la boucle à distance. Un seul geste de l'infirmier raconté comme le vôtre, ou une seule parole de pronostic, la fait tomber.</p></div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Partie 6</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Grille de détection et questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:35 · 15&nbsp;min</span></div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">6.1 · La grille de détection : situations aiguës, chroniques et de fin de vie</p>
-
-<p>Elle complète la grille de la masterclass 06, centrée sur l'hygiène et l'élimination.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« j'ai refait le pansement », « j'ai renforcé le pansement qui saignait », « j'ai ajouté des compresses »</em></td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire</strong>, même sur consigne, même en urgence. Écrivez : « j'ai constaté une tache de sang de 3&nbsp;cm, mesuré pression artérielle et pouls, et appelé l'infirmière ».</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« j'ai augmenté l'oxygène », « j'ai remis le débit à 2&nbsp;L », « j'ai coupé l'oxygène pendant le transfert »</em></td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> Le débitmètre ne se touche jamais, même sur protocole ou consigne.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« j'ai aspiré le patient trachéotomisé la veille », « j'ai aspiré malgré la rougeur de l'orifice »</em></td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> L'aspiration exige un orifice cicatrisé et non inflammatoire.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« j'ai rassuré la famille sur le pronostic », « je lui ai dit qu'il en avait encore pour quelques jours », « je lui ai dit que l'opération s'était bien passée »</em></td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> Pronostic ou information médicale : hors champ. Écrivez : « j'ai entendu sa question et je l'ai orientée vers le médecin ».</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« j'ai fermé la perfusion », « j'ai appuyé sur le bouton du pousse-seringue », « j'ai vidé le redon », « j'ai retiré la sonde nasogastrique qui gênait »</em></td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire.</strong> Vous observez, protégez et alertez ; vous ne manipulez aucun dispositif de l'infirmier.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« il respirait 9 fois par minute sous morphine, je l'ai noté sur la feuille »</em>, sans alerte</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (mise en danger).</strong> En dessous de 12 /min ou avec une somnolence qui s'accentue : alerte immédiate.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« je l'ai levé pour la première fois, il se sentait bien »</em>, sans consigne</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (mise en danger et décision hors champ).</strong> Le premier lever se fait sur consigne.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><em>« j'ai posé la lancette sur le plateau », « j'ai aspiré avec la sonde déjà utilisée le matin »</em></td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (hygiène).</strong> Lancette aussitôt dans le collecteur, sonde d'aspiration à usage unique. Écrivez l'hygiène des mains et l'élimination.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><em>« j'ai fait sa glycémie »</em></td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À clarifier.</strong> Précisez « sur protocole » ou « à la demande de l'infirmière ».</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><em>« je l'ai aspiré »</em>, sans autre précision</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À clarifier.</strong> Écrivez que l'orifice était cicatrisé et non inflammatoire, et que vous avez été formé au protocole.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><em>« je lui ai mis son masque à oxygène »</em></td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À clarifier.</strong> Recevable en situation stable et chronique uniquement : dites-le.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><em>« nous avons décidé de ne plus la tourner », « nous avons arrêté l'alimentation »</em></td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À réécrire.</strong> Une décision médicale ou d'équipe n'est pas la vôtre : écrivez qui a décidé et ce que vous y avez apporté.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><em>« je lui ai fait la toilette mortuaire »</em>, sans autre précision</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À réécrire.</strong> Constat médical, protocole, volontés et rites, accueil des proches.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><em>« l'infirmière était débordée, alors j'ai géré », « en fin de vie, on fait ce qu'on peut »</em></td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>Fragilisant.</strong> Preuve à charge d'un glissement de tâches. Supprimez ; si un geste hors champ est au cœur du récit, changez de situation.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">6.2 · Six questions du jury</p>
-
-<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Répondez à voix haute, avec la méthode RAPIDE, avant d'ouvrir l'attendu.</p>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">« Vous écrivez : « À 17 h, j'ai vu une tache de sang sur le pansement. » Qu'avez-vous fait, et dans quel ordre ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> je n'ai pas touché au pansement ; j'ai mesuré pression artérielle et pouls ; j'ai appelé l'infirmière avec l'heure, l'étendue de la tache et les valeurs ; j'ai appliqué sa consigne de surveillance. <strong>À éviter :</strong> « j'ai mis une compresse en attendant » ; « j'ai attendu le tour suivant pour voir si ça s'étendait ».</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">« Vous écrivez : « Je lui ai mis son masque à oxygène pour la nuit. » Dans quelles conditions ce geste vous revient-il ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> en situation stable et chronique, comme le prévoit son plan de soins ; sans jamais toucher au débitmètre ; avec une surveillance de la saturation et de la tolérance. En phase aiguë, le masque relève de l'infirmier. <strong>À éviter :</strong> « je le fais pour tous les patients sous oxygène ».</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">« Vous citez un morphinique dans votre présentation. Qu'est-ce qu'il vous a fait surveiller, concrètement ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la fréquence respiratoire comptée sur une minute, alerte immédiate en dessous de 12 /min ; la vigilance ; le transit, avec la date des dernières selles transmise. <strong>À éviter :</strong> « c'est l'infirmière qui s'en occupe » : l'administration est la sienne, la surveillance est aussi la vôtre.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">« Vous écrivez : « Sa fille m'a demandé si c'était pour bientôt. » Que lui avez-vous répondu ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> que je ne pouvais pas répondre à cette question, qui relève du médecin ; que j'ai accueilli son inquiétude, que je suis resté disponible, et que j'ai prévenu l'infirmière, qui a organisé un échange avec le médecin. <strong>À éviter :</strong> « je lui ai dit la vérité, qu'il restait peu de temps » ; « je l'ai rassurée, ça allait aller ».</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">« Vous écrivez : « Elle avait rédigé des directives anticipées. » Qu'est-ce que cela a changé pour vous ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> je savais qu'elles existaient ; je n'en décide rien, c'est le médecin qui en tient compte ; quand sa fille, sa personne de confiance, m'a rapporté un souhait de sa mère, je l'ai transmis à l'infirmière. Citez la loi du 2 février 2016 dite Claeys-Leonetti, sans la réciter. <strong>À éviter :</strong> « je ne sais pas trop ce que c'est, c'est le médecin qui voit ça ».</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">« Vous écrivez : « Je l'ai aidé pour son premier lever. » Qui l'avait décidé, et comment l'avez-vous sécurisé ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le chirurgien l'avait autorisé, l'infirmière me l'a transmis ; je l'ai réalisé en deux temps, en surveillant pression artérielle, pâleur et vertiges, dispositifs protégés ; son antihypertenseur le justifiait. <strong>À éviter :</strong> « il se sentait bien, alors on l'a levé ».</p></details>
-
-<div style="background:#ECEFF1;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Pansement touché, débit modifié, aspiration hors condition, pronostic annoncé, dispositif manipulé, valeur alarmante sans alerte, premier lever sans consigne : éliminatoires. Glycémie et masque : à clarifier par leurs conditions. Décision d'équipe racontée au « nous », toilette mortuaire sans protocole : à réécrire. Le jury part de vos phrases : préparez vos réponses avec la méthode RAPIDE.</p></div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC07 · Clôture</p>
-      <div class="content-scroll"><div style="background:#263238;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#263238;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
-
-<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Puis vérifiez dans votre situation que l'infirmier apparaît au moment où il intervient, que chaque dispositif et chaque traitement ont leur phrase de limite ou de surveillance, et qu'aucune question des proches n'a reçu de pronostic. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">1. Quels sont les trois critères cumulatifs d'un soin aigu ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Un soin <strong>réalisable exclusivement par un professionnel de santé</strong>, dispensé <strong>dans une unité à caractère sanitaire par une équipe pluridisciplinaire</strong>, <strong>pendant la phase aiguë</strong> d'un état de santé.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">2. Un soin réalisé en hospitalisation à domicile peut-il être un soin aigu ? A. Non, jamais à domicile · B. Oui, si les trois critères sont réunis · C. Seulement si un médecin est présent au domicile</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B.</strong> L'HAD est un établissement de santé : un soin en phase aiguë peut y réunir les trois critères.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">3. Dans quelle situation pouvez-vous poser et changer un masque à oxygène ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>En situation stable et chronique</strong>, sans jamais toucher au débitmètre.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">4. La saturation d'un patient sous oxygène baisse. Citez, dans l'ordre, ce que vous faites.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">J'installe la personne assise ou demi-assise, je vérifie le dispositif et la tubulure, je reste auprès d'elle et j'appelle l'infirmier avec les valeurs. <strong>Je ne touche jamais au débitmètre.</strong></p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">5. À quelles conditions l'aspiration endotrachéale entre-t-elle dans votre champ ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Sur un orifice trachéal <strong>cicatrisé et non inflammatoire</strong>, les deux conditions étant cumulatives.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">6. Dans quel cadre réalisez-vous une glycémie capillaire, et quel est le seuil de l'hypoglycémie ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Sur protocole ou à la demande de l'infirmier.</strong> Hypoglycémie en dessous de <strong>0,70 g/L</strong>. L'interprétation pour adapter un traitement revient à l'infirmier.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">7. Citez cinq éléments de la surveillance post-opératoire qui vous reviennent.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Au choix : pression artérielle, pouls, fréquence respiratoire, saturation, température, douleur, conscience, diurèse, pansement observé sans y toucher.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">8. Vous voyez une tache de sang qui s'étend sur un pansement post-opératoire. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Je ne touche pas au pansement. Je mesure pression artérielle et pouls, je note l'heure et l'étendue, et j'appelle immédiatement l'infirmier.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">9. Quelle surveillance appelle un traitement diurétique chez une personne insuffisante cardiaque ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Diurèse, déshydratation, hypotension et chute (lever en deux temps), poids, œdèmes.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">10. Quelle échelle utilisez-vous pour évaluer la douleur aiguë d'une personne qui ne peut pas s'exprimer ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Algoplus</strong> (5 items ; à partir de 2 sur 5, douleur probable). ECPA ou Doloplus pour une douleur prolongée.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">11. Quelles sont les trois surveillances majeures d'un antalgique de palier 3 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">La <strong>fréquence respiratoire</strong> (en dessous de 12 /min : alerte immédiate), la <strong>vigilance</strong> et le <strong>transit</strong> (constipation attendue).</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">12. Qu'est-ce que la personne de confiance, et quel est votre rôle à son égard ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Une personne désignée par écrit pour accompagner le patient et, s'il ne peut plus s'exprimer, témoigner de ses volontés. Vous savez qui elle est et vous transmettez ses demandes ; vous ne lui donnez aucune information médicale.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">13. Un proche vous demande « combien de temps il reste ». Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Je ne réponds pas : c'est un pronostic. J'accueille la question et j'oriente vers le médecin ou l'infirmier, que je préviens.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">14. Quand commencent les soins après le décès, et qu'est-ce qui doit être respecté ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Après le <strong>constat du décès par le médecin</strong>, selon le protocole de l'établissement, dans le respect des <strong>rites et des volontés</strong> de la personne et de ses proches, qui peuvent souhaiter être présents ou participer.</p></details>
-
-<details style="border:1px solid #CFD8DC;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#263238;">15. Pourquoi la fin de vie en EHPAD n'est-elle pas, au sens strict, un soin aigu ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Parce que l'EHPAD n'est pas une <strong>unité à caractère sanitaire</strong> : l'un des trois critères cumulatifs manque. La collaboration doit pourtant rester visible.</p></details>
-
-<div style="background:linear-gradient(135deg,#263238 0%,#546E7A 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
-<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 07</p>
-<ol style="margin:0;padding-left:22px;">
-<li>Soin aigu : trois critères cumulatifs, dont l'unité sanitaire ; en collaboration, l'infirmier apparaît au moment où il intervient, avec l'heure, la valeur et la consigne.</li>
-<li>Oxygène : lunettes changées, masque en situation stable et chronique, matériel entretenu, personne surveillée ; débitmètre jamais touché.</li>
-<li>Aspiration sur orifice cicatrisé et non inflammatoire ; glycémie sur protocole ou à la demande de l'infirmier, hypoglycémie sous 0,70 g/L.</li>
-<li>Post-opératoire et dispositifs : surveiller, observer, protéger, alerter ; aucun soin de pansement ; premier lever sur consigne.</li>
-<li>Maladie chronique : chaque traitement cité appelle sa surveillance ciblée dans le récit, rapportée à l'état habituel de la personne.</li>
-<li>Douleur : la bonne échelle, avant, pendant, après ; antalgique inefficace signalé ; palier 3 surveillé sur la fréquence respiratoire, la vigilance et le transit.</li>
-<li>Fin de vie : confort, présence, transmission des volontés ; directives anticipées et personne de confiance connues ; jamais de pronostic.</li>
-<li>Après le décès : constat médical, protocole, rites et volontés, accueil des proches ; et prendre soin de soi.</li>
-</ol>
-</div>
-
-<p style="font-weight:bold;color:#263238;font-size:17px;margin:22px 0 8px 0;">✅ Votre plan d'action avant la masterclass 08</p>
-<table style="width:100%;border-collapse:collapse;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #CFD8DC;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Choisir ma situation d'activité 4 (MC06 ou MC07), sans aucun geste hors champ, et vérifier que l'infirmier y apparaît au moment où il intervient.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Pour chaque acte de 2021 cité (oxygène, aspiration, glycémie), écrire sa condition en toutes lettres.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Pour chaque dispositif cité, écrire la limite en deux temps : ce que je ne fais pas, ce que je fais à la place.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Relier chaque traitement de mon recueil de données à une phrase de surveillance dans le récit.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Chiffrer et horodater : échelle de douleur nommée, paramètres comparés à la norme ou à la valeur prescrite.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Relire chaque échange avec les proches : aucune information médicale, aucun pronostic, une orientation vers l'infirmier ou le médecin.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Passer ma situation et ma rubrique A à la grille de détection de la partie 6, puis préparer à voix haute les six questions du jury avec la méthode RAPIDE.</td></tr>
-<tr><td style="padding:9px;border:1px solid #CFD8DC;text-align:center;">☐</td><td style="padding:9px;border:1px solid #CFD8DC;">Réviser avec les ressources ORACLE : le livre du livret 2 (chapitre 12), le Livre Bloc 2 et les fiches de révision B2.</td></tr>
-</table>
-
-<p style="margin:14px 0 0 0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 12 · Livre Bloc 2 · Fiches de révision B2</p></div>
-    </section>
-
-    <section class="slide">
-      <div class="hero-band" style="height: 160px;">
-        <div class="hero-tile"><div class="emoji">🎯</div></div>
-        <div class="hero-tile"><div class="emoji">✍️</div></div>
-        <div class="hero-tile"><div class="emoji">💡</div></div>
-        <div class="hero-tile"><div class="emoji">✅</div></div>
-        <div class="hero-tile"><div class="emoji">🏆</div></div>
-      </div>
-      <p class="eyebrow">Validation de la masterclass</p>
-      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
-      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
-    </section>
-
-    <section class="slide quiz-slide" data-q="0">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 1 / 4</p>
-        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">3 blocs</button>
-        <button class="quiz-opt" data-correct="false">4 blocs</button>
-        <button class="quiz-opt" data-correct="true">5 blocs</button>
-        <button class="quiz-opt" data-correct="false">8 blocs</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="1">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 2 / 4</p>
-        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
-        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
-        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
-        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="2">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 3 / 4</p>
-        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
-        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
-        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
-        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="3">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 4 / 4</p>
-        <p class="quiz-q">L'accompagnement d'une personne en fin de vie par l'aide-soignant inclut :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="true">Soins de confort, écoute, présence auprès de la personne et de ses proches</button>
-        <button class="quiz-opt" data-correct="false">Prescription des antalgiques</button>
-        <button class="quiz-opt" data-correct="false">Décision d'arrêt des traitements</button>
-        <button class="quiz-opt" data-correct="false">Annonce du décès à la famille</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Soins de confort, écoute et présence sont au cœur du rôle AS en fin de vie." data-ko="Non. Prescription, décision d'arrêt et annonce ne sont pas du champ AS."></div>
-      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
-    </section>
-
-    <section class="slide" id="finalSlide">
-      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
-      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
-      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
-      <div style="text-align:center; margin-top: 20px;">
-        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
-      </div>
-    </section>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+
+<section class="slide hero on" data-mod="Accueil">
+  <div class="bg"></div>
+  <div class="wrap">
+    <span class="kicker">Masterclass 07</span>
+    <h1>Activité 4 — Soins aigus, chroniques, fin de vie<em>Bloc 2 · récit 2b · soins palliatifs et post-mortem</em></h1>
+    <p class="sub">Les soins les plus humains et les plus techniques : fin de vie, post-mortem, accompagnement.</p>
+    <div class="meta"><span>⏱ 1h30 à 2h</span><span>📚 5 modules</span><span>🎯 Quiz final 15 Q</span><span>🏆 DEAS Niveau 4</span></div>
+    <button class="cta" onclick="go(1)">Commencer la masterclass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-  <div class="progress-wrap">
-    <span id="progressLabel">1 / 1</span>
-    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-    <span id="progressPct">0%</span>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · Stéphane Forman — Architecte accompagnateur de parcours VAE</div>
+</section>
+
+<section class="slide std" data-mod="Accueil">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Objectifs & cadre<small>Ce que vous saurez à l'issue de cette masterclass</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">📋</div><h3>Décoder la fiche</h3><p>Les 8 sections de la fiche ORACLE Activité 4 point par point.</p></div><div class="card"><div class="ico">✍</div><h3>Rédiger la bonne situation</h3><p>Choisir le résident, le contexte, l'adaptation. Éviter les erreurs qui coûtent le Bloc 2.</p></div><div class="card"><div class="ico">🎯</div><h3>Préparer l'oral</h3><p>Les 3 piliers appliqués à cette activité. Les phrases qui portent face au jury.</p></div><div class="duree">
+        <div><strong>5</strong><span>Blocs DEAS</span></div>
+        <div><strong>11</strong><span>Activités</span></div>
+        <div><strong>12</strong><span>Récits</span></div>
+        <div><strong>18</strong><span>Éléments</span></div>
+        <div><strong>27</strong><span>Domaines</span></div>
+      </div></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 1">
+  <div class="wrap">
+    <div class="big">01<em>Module</em></div>
+    <h1>L'activité au référentiel</h1>
+    <p>La fiche ORACLE Activité 4 décomposée en 8 sections — tout ce qu'il faut savoir sur cette activité.</p>
+    <div class="dura">⏱ 25 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 1">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>La fiche ORACLE Activité 4<small>Cliquez sur chaque pastille dorée pour explorer</small></h2></div>
+    <div class="fiche-wrap">
+      <div class="fiche-img">
+        <div class="ficheHolder">
+          <img src="assets/fiche-liv2-a04_collaborer_soins.webp" alt="Fiche ORACLE Activité 4 — Soins aigus, chroniques, fin de vie">
+          <button class="hot" style="top:14%;left:7%" onclick="openModal(1)">1</button>
+          <button class="hot" style="top:14%;left:57%" onclick="openModal(2)">2</button>
+          <button class="hot" style="top:33%;left:7%" onclick="openModal(3)">3</button>
+          <button class="hot" style="top:33%;left:57%" onclick="openModal(4)">4</button>
+          <button class="hot" style="top:52%;left:7%" onclick="openModal(5)">5</button>
+          <button class="hot" style="top:52%;left:57%" onclick="openModal(6)">6</button>
+          <button class="hot" style="top:71%;left:7%" onclick="openModal(7)">7</button>
+          <button class="hot" style="top:71%;left:57%" onclick="openModal(8)">8</button>
+        </div>
+      </div>
+      <div class="fiche-side">
+        <h3>Fiche de révision ORACLE</h3>
+        <p>Cette fiche condense les 8 points cruciaux de l'activité. Explorez chaque section pour comprendre les attentes du jury.</p>
+        <div class="ptip"><strong>💡 Méthode</strong><br>Explorez les 8 hotspots puis cochez les points clés plus loin. Le quiz final valide votre maîtrise.</div>
+        <div class="chapters"><button onclick="openModal(1)"><b>1</b>L'activité 4 au référentiel</button><button onclick="openModal(2)"><b>2</b>La partie A — ce qui est demandé</button><button onclick="openModal(3)"><b>3</b>La partie B — ce qui est demandé</button><button onclick="openModal(4)"><b>4</b>Les questions auxquelles répondre</button><button onclick="openModal(5)"><b>5</b>La situation qui convient</button><button onclick="openModal(6)"><b>6</b>Ce que le jury cherche</button><button onclick="openModal(7)"><b>7</b>Les erreurs qui coûtent le bloc</button><button onclick="openModal(8)"><b>8</b>Ce qui relève d'une autre activité</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Jury">
+  <div class="inner">
+    <div class="head"><div class="num">P</div><h2>Les 3 piliers du raisonnement clinique<small>Ce que le jury cherche derrière chaque geste</small></h2></div>
+    <div class="piliers">
+      <div class="pil"><div class="num">1</div><h3>POURQUOI ?</h3><div class="q"><em>Pourquoi</em> ce geste, <em>maintenant</em>, pour <em>cette</em> personne ?</div><p>Relier l'acte à l'état clinique, au PAP, à un signe d'alerte. Le geste n'est jamais une routine : il répond à un besoin identifié.</p></div>
+      <div class="pil"><div class="num">2</div><h3>COMMENT ?</h3><div class="q"><em>Comment</em> adaptez-vous à <em>cette</em> personne, à <em>ce</em> moment ?</div><p>L'adaptation est la preuve de votre expertise. Même geste réalisé différemment selon résident, contexte, habitudes.</p></div>
+      <div class="pil"><div class="num">3</div><h3>ET APRÈS ?</h3><div class="q"><em>Qu'avez-vous observé</em>, transmis, alerté <em>après</em> ?</div><p>Le rôle AS ne s'arrête pas au geste. Observation, DAR, alerte, ajustement PAP sont le prolongement obligatoire.</p></div>
+    </div>
+    <div style="margin-top:16px;background:var(--oracle-cream);border-radius:12px;padding:18px 22px;border:1px dashed var(--oracle-teal);font-size:14px;line-height:1.6;color:var(--ink-soft);text-align:center"><strong style="color:var(--oracle-teal-dark)">💡 Règle ORACLE</strong> — Chaque récit doit répondre aux 3 questions. L'absence d'une seule = compétence « à vérifier ».</div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 2">
+  <div class="wrap">
+    <div class="big">02<em>Module</em></div>
+    <h1>Rédiger la bonne situation</h1>
+    <p>Testez vos réflexes sur 12 situations de rédaction concrètes.</p>
+    <div class="dura">⏱ 25 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>12 situations à cadrer<small>Testez-vous — chaque réponse est argumentée</small></h2></div>
+    <div id="situs" class="situs"></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 3">
+  <div class="wrap">
+    <div class="big">03<em>Module</em></div>
+    <h1>Préparer l'oral</h1>
+    <p>Ancrage mémoire avec points clés et flashcards.</p>
+    <div class="dura">⏱ 20 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 3">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Les 15 points clés à retenir<small>Cochez chaque point que vous maîtrisez</small></h2></div>
+    <div class="cles" id="cles"><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>L'activité 4 appartient au <b>Bloc 2</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je connais le <b>libellé exact</b> de l'activité 4 au référentiel 2022</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce qu'est demandé en <b>Rubrique A</b> (relevé d'exemples)</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce qu'est demandé en <b>Rubrique B</b> (situation analysée)</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je choisis <b>UNE situation</b>, datée, située</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je rédige la <b>présentation exhaustive</b> du résident</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je montre une <b>adaptation visible</b> pour ce résident</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'applique les <b>3 piliers</b> : POURQUOI, COMMENT, ET APRÈS</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je ne décris <b>aucun acte hors champ</b> comme réalisé</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je respecte les <b>protocoles d'hygiène</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je ne confonds pas cette activité avec les <b>activités voisines</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'écris <b>JE</b>, jamais 'on' ou 'nous'</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je transmets en <b>DAR</b> ce que j'ai observé</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je me prépare à <b>défendre à l'oral</b> ce que j'ai écrit</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais que <b>le bloc se valide en entier</b>, pas par moyenne</p></div><div class="progress-m"><span>Progression</span><div class="pb"><i id="clesBar"></i></div><strong id="clesCnt">0 / 15</strong></div></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 4">
+  <div class="wrap">
+    <div class="big">04<em>Module</em></div>
+    <h1>Mémorisation</h1>
+    <p>Flashcards pour ancrer les points durables en mémoire longue.</p>
+    <div class="dura">⏱ 15 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 4">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>10 flashcards à mémoriser<small>Cliquez sur la carte pour retourner</small></h2></div>
+    <div class="flashwrap">
+      <div class="flashbar"><button onclick="prevFC()">← Précédente</button><span id="fcLbl">Carte 1 / 10</span><button onclick="nextFC()">Suivante →</button></div>
+      <div class="flashcard" id="flashcard" onclick="this.classList.toggle('turned')">
+        <div class="flip">
+          <div class="face front"><div class="hint">Question</div><h3 id="fcFront"></h3><div class="tap">Cliquez pour la réponse</div></div>
+          <div class="face back"><h3 id="fcTitle"></h3><p id="fcBack"></p><div class="tap">Cliquez pour revenir</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 5">
+  <div class="wrap">
+    <div class="big">05<em>Module</em></div>
+    <h1>Évaluation</h1>
+    <p>Quiz final de 15 questions pour valider votre maîtrise de cette masterclass.</p>
+    <div class="dura">⏱ 10 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 5">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>Quiz final — 15 questions<small>Validez vos acquis sur l'ensemble de MC07</small></h2></div>
+    <div class="qz" id="qz"></div>
+  </div>
+</section>
+
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <div class="ok">🏆</div>
+    <h1>Masterclass 07 terminée<em>Activité 4 — Soins aigus, chroniques, fin de vie</em></h1>
+    <p>Vous savez maintenant comment aborder l'Activité 4. Appliquez la méthode à votre récit, puis passez à l'activité suivante.</p>
+    <button class="nxt" onclick="location.href='MC08.html'">Activité 5 — Installation, mobilisation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+    <div class="mini">
+      <a href="index.html">📚 Toutes les masterclasses</a>
+      <a href="#" onclick="go(0);return false">↺ Revoir MC07</a>
+    </div>
+  </div>
+</section>
+
+</div>
+<div class="nav">
+  <button onclick="go(current-1)" id="prevB">←</button>
+  <button class="menu" onclick="location.href='index.html'">☰ Catalogue</button>
+  <button onclick="go(current+1)" id="nextB">→</button>
+</div>
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mhead"><div class="mnum" id="mnum">1</div><h3 id="mtitle">—</h3><button class="mclose" onclick="closeModal()">✕</button></div>
+    <div class="mbody" id="mbody"></div>
   </div>
 </div>
-
 <script>
-(function(){
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const total = slides.length;
-  const fill = document.getElementById('progressFill');
-  const label = document.getElementById('progressLabel');
-  const pct = document.getElementById('progressPct');
-  const prevBtn = document.querySelector('.nav-arrow.prev');
-  const nextBtn = document.querySelector('.nav-arrow.next');
-  let idx = 0, score = 0;
-  const answered = new Set();
-  const QUIZ_LEN = 4;
+const CHAPTERS = {"1": {"title": "L'activité 4 au référentiel", "body": ["Activité 4 sur 11 · Bloc 2 · Formulaire ASP 0637 04 22", "Arrêté du 28 mars 2022 — le formulaire fait foi.", "Le libellé officiel diffère souvent de ce qu'on retient : relisez-le avant d'écrire."], "tip": "Avant toute rédaction, relire l'intitulé exact du référentiel pour l'activité 4."}, "2": {"title": "La partie A — ce qui est demandé", "body": ["Donnez des exemples de ce que vous avez réalisé dans votre pratique.", "C'est un RELEVÉ d'exemples, pas un récit linéaire.", "La partie A ouvre sur l'activité : elle montre que vous l'avez bien pratiquée."], "tip": "Partie A = exemples concrets avec contextes et fréquences. Pas de narration."}, "3": {"title": "La partie B — ce qui est demandé", "body": ["Décrivez UNE situation, précise, datée, située.", "Comment avez-vous fait ? Comment avez-vous adapté à CETTE personne ?", "L'adaptation est le cœur de l'évaluation."], "tip": "Partie B = une situation, un résident, une adaptation visible."}, "4": {"title": "Les questions auxquelles répondre", "body": ["Qui est le résident ? (présentation exhaustive)", "Quelle est la situation précise ?", "Qu'avez-vous fait, dans l'ordre ?", "Qu'avez-vous observé, transmis, modifié ?"], "tip": "Avant d'écrire : noter les 4 réponses sur un papier. Si incomplètes, choisir une autre situation."}, "5": {"title": "La situation qui convient", "body": ["Un résident dont l'autonomie bouge (c'est ce qui rend l'adaptation visible).", "Un soin du quotidien suffit : la plus simple est souvent la meilleure.", "Un contexte clair : lieu, heure, qui est présent, matériel utilisé.", "Évitez le soin parfait : le jury cherche l'ajustement."], "tip": "Préférez le soin ordinaire bien analysé au geste exceptionnel mal décrit."}, "6": {"title": "Ce que le jury cherche", "body": ["Que vous OBSERVIEZ avant d'agir.", "Que vous sachiez NOMMER ce que vous observez.", "Que vous ADAPTIEZ à cette personne précise.", "Que vous TRANSMETTIEZ ce que vous avez vu."], "tip": "Le jury évalue le raisonnement clinique, pas la technique seule."}, "7": {"title": "Les erreurs qui coûtent le bloc", "body": ["Décrire une journée type au lieu d'une situation.", "Décrire le geste sans dire pourquoi ce geste.", "Employer « on » ou « nous » : seul VOTRE geste compte.", "Les 3 éliminatoires : hors champ, hygiène, mise en danger."], "tip": "Règle d'or : JE, ici et maintenant, pour cette personne."}, "8": {"title": "Ce qui relève d'une autre activité", "body": ["Vérifiez que votre récit reste dans le périmètre de l'activité 4.", "Si vous débordez sur une autre activité, resserrez.", "Chaque élément de contenu doit être au bon endroit du Livret 2."], "tip": "Un récit qui déborde dilue la preuve. Resserrez sur l'activité ciblée."}};
+const SITUS = [{"q": "Un soin du quotidien suffit pour l'activité 4.", "ok": true, "why": "La situation simple bien analysée bat le soin exceptionnel mal décrit."}, {"q": "Décrire ce qui est habituel sans adaptation visible.", "ok": false, "why": "Le jury cherche l'adaptation. Sans elle, compétence 'à vérifier'."}, {"q": "Employer « on » dans le récit Partie B.", "ok": false, "why": "Seul VOTRE geste compte. 'Je' obligatoire."}, {"q": "Dater et situer précisément la situation choisie.", "ok": true, "why": "Date + lieu + heure = situation ancrée dans votre expérience."}, {"q": "Décrire la présentation exhaustive du résident.", "ok": true, "why": "État civil + anthropométrie + histoire de vie + autonomie : incontournable."}, {"q": "Raconter une journée type au lieu d'une situation.", "ok": false, "why": "La partie B exige UNE situation, pas une journée."}, {"q": "Nommer ce que vous avez observé avec vos 5 sens.", "ok": true, "why": "L'observation est le cœur du rôle AS évalué."}, {"q": "Décrire un acte hors champ comme réalisé.", "ok": false, "why": "CRITÈRE ÉLIMINATOIRE — tout le dossier tombe."}, {"q": "Transmettre ce qui a été observé en DAR.", "ok": true, "why": "La transmission ferme la boucle du rôle AS."}, {"q": "Oublier d'expliquer POURQUOI vous avez agi ainsi.", "ok": false, "why": "Sans POURQUOI, le raisonnement clinique n'est pas démontré."}, {"q": "Faire AVEC le résident, pas À sa place.", "ok": true, "why": "Maintien d'autonomie = socle du rôle propre."}, {"q": "Oublier la boucle d'observation après le geste.", "ok": false, "why": "Sans ET APRÈS, le geste n'est pas 'soignant'."}];
+const CLES = ["L'activité 4 appartient au <b>Bloc 2</b>", "Je connais le <b>libellé exact</b> de l'activité 4 au référentiel 2022", "Je sais ce qu'est demandé en <b>Rubrique A</b> (relevé d'exemples)", "Je sais ce qu'est demandé en <b>Rubrique B</b> (situation analysée)", "Je choisis <b>UNE situation</b>, datée, située", "Je rédige la <b>présentation exhaustive</b> du résident", "Je montre une <b>adaptation visible</b> pour ce résident", "J'applique les <b>3 piliers</b> : POURQUOI, COMMENT, ET APRÈS", "Je ne décris <b>aucun acte hors champ</b> comme réalisé", "Je respecte les <b>protocoles d'hygiène</b>", "Je ne confonds pas cette activité avec les <b>activités voisines</b>", "J'écris <b>JE</b>, jamais 'on' ou 'nous'", "Je transmets en <b>DAR</b> ce que j'ai observé", "Je me prépare à <b>défendre à l'oral</b> ce que j'ai écrit", "Je sais que <b>le bloc se valide en entier</b>, pas par moyenne"];
+const FLASHCARDS = [{"q": "À quel bloc appartient l'activité 4 ?", "t": "BLOC", "a": "Bloc 2. Le libellé officiel est fixé par l'arrêté du 28 mars 2022."}, {"q": "Qu'exige la Partie A ?", "t": "PARTIE A", "a": "Un relevé d'exemples de ce que vous avez réalisé. Pas une narration — des exemples avec fréquence et contexte."}, {"q": "Qu'exige la Partie B ?", "t": "PARTIE B", "a": "UNE situation, datée, située, avec un résident précis et une adaptation visible."}, {"q": "Les 4 questions avant d'écrire ?", "t": "MÉTHODE", "a": "Qui ? (résident) · Quelle situation ? · Qu'avez-vous fait dans l'ordre ? · Qu'avez-vous observé/transmis ?"}, {"q": "Les 3 piliers du raisonnement ?", "t": "RAISONNEMENT", "a": "POURQUOI (justification clinique) + COMMENT (adaptation) + ET APRÈS (observation, transmission)."}, {"q": "Pourquoi écrire 'je' et pas 'on' ?", "t": "RÉDACTION", "a": "Seul VOTRE geste est évalué. 'On' = compétence non attribuée = non validable."}, {"q": "Les 3 critères éliminatoires ?", "t": "ÉLIMINATION", "a": "Acte hors champ + non-respect hygiène + mise en danger. Un seul = tout le bloc tombe."}, {"q": "DAR : définition ?", "t": "TRANSMISSION", "a": "Données (observables) + Actions (menées) + Résultats (observés)."}, {"q": "Un bloc se valide-t-il à la moyenne ?", "t": "VALIDATION", "a": "Non. En entier ou pas. Pas de compensation entre les blocs."}, {"q": "Mon mémo pour l'activité 4 ?", "t": "MÉMO", "a": "Résident précis · Partie A relevé · Partie B situation + adaptation · 3 piliers · DAR · Pas de 'on'."}];
+const QUIZ = [{"q": "À quel bloc appartient l'activité 4 ?", "opts": ["Bloc 1", "Bloc 2", "Bloc 3"], "ok": 1, "x": "Activité 4 = Bloc 2."}, {"q": "Quelle est la fonction de la Partie A ?", "opts": ["Situation analysée", "Relevé d'exemples", "Présentation du résident"], "ok": 1, "x": "Partie A = relevé d'exemples. Partie B = situation analysée."}, {"q": "Que demande la Partie B ?", "opts": ["Journée type", "UNE situation analysée", "Liste de soins"], "ok": 1, "x": "B = UNE situation précise, datée, située, avec adaptation visible."}, {"q": "Les 3 piliers du raisonnement sont :", "opts": ["Voir-Agir-Dire", "Pourquoi-Comment-Et après", "Hygiène-Confort-Transmettre"], "ok": 1, "x": "POURQUOI + COMMENT + ET APRÈS. Grille universelle ORACLE."}, {"q": "Dans votre récit, vous écrivez :", "opts": ["« On »", "« Je »", "« Nous »"], "ok": 1, "x": "Toujours 'je'. Jamais 'on' ni 'nous'."}, {"q": "Un critère éliminatoire :", "opts": ["Récit trop court", "Acte hors champ réalisé", "Mauvaise orthographe"], "ok": 1, "x": "3 éliminatoires : hors champ + hygiène + mise en danger."}, {"q": "La présentation du résident contient :", "opts": ["Nom et âge", "9 éléments obligatoires", "Juste le GIR"], "ok": 1, "x": "9 éléments : état civil + anthropométrie + motif + antécédents + traitements + histoire + autonomie + nutritionnel + cutané."}, {"q": "Faire 'avec' le résident signifie :", "opts": ["Faire tout seul", "Stimuler et accompagner son autonomie", "Lui dire de faire seul"], "ok": 1, "x": "Stimuler ce qu'il peut encore faire, accompagner sans se substituer."}, {"q": "L'AS peut-il faire une injection ?", "opts": ["Oui si formé", "Non jamais", "Oui en urgence"], "ok": 1, "x": "Jamais d'injection AS. Acte IDE exclusif."}, {"q": "La transmission se fait en :", "opts": ["Texte libre", "DAR", "Vidéo"], "ok": 1, "x": "DAR = Données + Actions + Résultats."}, {"q": "Combien de récits pour 11 activités ?", "opts": ["11", "12", "18"], "ok": 1, "x": "12 récits : activités 9 et 11 doublent, 10 = inventaire."}, {"q": "L'arrêté actuel du DEAS :", "opts": ["2021", "28 mars 2022", "2023"], "ok": 1, "x": "28 mars 2022."}, {"q": "Niveau du DEAS :", "opts": ["3", "4", "5"], "ok": 1, "x": "Niveau 4 CNCP."}, {"q": "Un bloc se valide :", "opts": ["À la moyenne", "Par activité", "En entier ou pas"], "ok": 2, "x": "Un bloc = tout validé ou rien. Pas de compensation."}, {"q": "Pour l'activité 4, le mot clé est :", "opts": ["Rapidité", "Adaptation", "Technique"], "ok": 1, "x": "L'adaptation à la personne précise est le cœur de l'évaluation."}];
+const LAZY_IDX = {"situs": 6, "fc": 10, "quiz": 12};
 
-  function render() {
-    slides.forEach((s, i) => {
-      s.classList.remove('active', 'leaving');
-      if (i === idx) s.classList.add('active');
-      else if (i < idx) s.classList.add('leaving');
-    });
-    const p = Math.round(((idx + 1) / total) * 100);
-    fill.style.width = p + '%';
-    label.textContent = (idx + 1) + ' / ' + total;
-    pct.textContent = p + '%';
-    prevBtn.disabled = (idx === 0);
-    nextBtn.disabled = (idx === total - 1);
-    if (idx === total - 1) renderFinal();
+let fcIdx=0;
+function renderFC(){
+  if(!FLASHCARDS.length)return;
+  const c=FLASHCARDS[fcIdx];
+  document.getElementById('fcFront').textContent=c.q;
+  document.getElementById('fcTitle').textContent=c.t;
+  document.getElementById('fcBack').textContent=c.a;
+  document.getElementById('fcLbl').textContent='Carte '+(fcIdx+1)+' / '+FLASHCARDS.length;
+  document.getElementById('flashcard').classList.remove('turned');
+}
+function prevFC(){fcIdx=(fcIdx-1+FLASHCARDS.length)%FLASHCARDS.length;renderFC()}
+function nextFC(){fcIdx=(fcIdx+1)%FLASHCARDS.length;renderFC()}
+
+function renderSitus(){
+  const c=document.getElementById('situs');
+  if(!c)return;
+  c.innerHTML=SITUS.map((s,i)=>`<div class="situ"><p><b>${i+1}.</b>${s.q}</p><div class="btns"><button class="sb y" onclick="situClick(${i},true,this)">✓ Oui</button><button class="sb n" onclick="situClick(${i},false,this)">✕ Non</button></div><div class="sfb"></div></div>`).join('');
+}
+function situClick(i,ans,btn){
+  const parent=btn.parentElement.parentElement;
+  const fb=parent.querySelector('.sfb');
+  const s=SITUS[i];
+  const good=ans===s.ok;
+  parent.querySelectorAll('.sb').forEach(b=>b.disabled=true);
+  btn.style.borderColor=good?'#2ea84f':'#d65757';btn.style.borderWidth='3px';
+  fb.style.display='block';
+  fb.style.background=good?'#dcf5e4':'#fde3e3';
+  fb.style.color=good?'#0e5e2a':'#8a1a1a';
+  fb.innerHTML=(good?'✓ ':'✗ ')+'<b>'+(s.ok?'OUI':'NON')+'</b> — '+s.why;
+}
+
+let qIdx=0, qScore=0, qAns=null;
+function renderQuiz(){
+  const el=document.getElementById('qz');
+  if(!el||!QUIZ.length)return;
+  if(qIdx>=QUIZ.length){
+    const pct=Math.round(qScore/QUIZ.length*100);
+    let cls='ok', msg='Excellent — module validé.';
+    if(pct<50){cls='ko';msg='Révisez avant de passer à la suite.';}
+    else if(pct<80){cls='mid';msg='Bien, quelques points à consolider.';}
+    el.innerHTML=`<div class="score"><div class="big">${qScore}<em>/${QUIZ.length}</em></div><div class="label ${cls}">${pct}% de bonnes réponses</div><p class="msg">${msg}</p><button class="again" onclick="qIdx=0;qScore=0;renderQuiz()">↺ Recommencer</button></div>`;
+    return;
   }
-  window.go = function(delta) {
-    const next = idx + delta;
-    if (next < 0 || next >= total) return;
-    idx = next; render();
-  };
-  window.restart = function(){
-    idx = 0; score = 0; answered.clear();
-    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
-    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
-    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
-    render();
-  };
-  function renderFinal() {
-    const txt = document.getElementById('scoreTxt');
-    const msg = document.getElementById('scoreMsg');
-    const title = document.getElementById('scoreTitle');
-    const circle = document.getElementById('resultCircle');
-    if (!txt) return;
-    txt.textContent = score + '/' + QUIZ_LEN;
-    const ratio = (score / QUIZ_LEN) * 100;
-    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
-    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
-    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
-    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
-  }
-  document.querySelectorAll('.quiz-slide').forEach(slide => {
-    const opts = slide.querySelectorAll('.quiz-opt');
-    const feedback = slide.querySelector('.quiz-feedback');
-    const nxt = slide.querySelector('.quiz-next');
-    opts.forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (answered.has(slide)) return;
-        answered.add(slide);
-        const isCorrect = btn.dataset.correct === 'true';
-        opts.forEach(b => {
-          b.disabled = true;
-          if (b.dataset.correct === 'true') b.classList.add('correct');
-          else if (b === btn) b.classList.add('wrong');
-        });
-        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
-        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
-        nxt.classList.add('show');
-      });
-    });
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
-  });
-  render();
-})();
+  const q=QUIZ[qIdx];
+  qAns=null;
+  el.innerHTML=`<div class="count">Question ${qIdx+1} / ${QUIZ.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="qPick(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="qexpl"><strong>Explication</strong><br>${q.x}</div><button class="nextq" id="qnext" onclick="qIdx++;renderQuiz()">Question suivante →</button>`;
+}
+function qPick(i,btn){
+  if(qAns!==null) return;
+  qAns=i; const q=QUIZ[qIdx];
+  const btns=btn.parentElement.querySelectorAll('button');
+  btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+  if(i===q.ok) qScore++;
+  document.getElementById('qexpl').classList.add('on');
+  document.getElementById('qnext').classList.add('on');
+  if(qIdx===QUIZ.length-1) document.getElementById('qnext').textContent='Voir mon score →';
+}
+
+function toggleCle(el){
+  el.classList.toggle('ok');
+  const items=document.querySelectorAll('.cles .item');
+  const done=document.querySelectorAll('.cles .item.ok').length;
+  document.getElementById('clesBar').style.width=(done/items.length*100)+'%';
+  document.getElementById('clesCnt').textContent=done+' / '+items.length;
+}
+
+function openModal(n){
+  const ch=CHAPTERS[n];
+  if(!ch)return;
+  document.getElementById('mnum').textContent=n;
+  document.getElementById('mtitle').textContent=ch.title;
+  let html='<ul>'+ch.body.map(b=>`<li>${b}</li>`).join('')+'</ul>';
+  if(ch.tip) html+='<div class="tip"><strong>💡 Astuce</strong> '+ch.tip+'</div>';
+  document.getElementById('mbody').innerHTML=html;
+  document.getElementById('mbody').scrollTop=0;
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){document.getElementById('modal').classList.remove('on')}
+
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(LAZY_IDX.situs===current)renderSitus();
+  if(LAZY_IDX.fc===current)renderFC();
+  if(LAZY_IDX.quiz===current){qIdx=0;qScore=0;renderQuiz()}
+  closeModal();
+  slides[current].querySelector('.inner')?.scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('modal').classList.contains('on')){if(e.key==='Escape')closeModal();return}
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Escape')go(0);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
 </body>
 </html>

@@ -1,965 +1,488 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MC14 — Activité 11 — Organisation équipe & qualité · ORACLE VAE AS</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MC14 · Activité 11 — Organisation équipe & qualité — ORACLE VAE AS</title>
 <style>
-  :root {
-    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
-    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
-    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; height: 100%; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    color: var(--ink); background: var(--bg); overflow: hidden; }
-  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
-  .slides { position: relative; overflow: hidden; }
-  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
-    display: flex; flex-direction: column; justify-content: flex-start;
-    opacity: 0; transform: translateX(40px);
-    transition: opacity .45s ease, transform .45s ease;
-    pointer-events: none; overflow-y: auto; }
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-  .slide.leaving { opacity: 0; transform: translateX(-40px); }
-  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
-
-  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
-    text-transform: uppercase; color: var(--accent); font-weight: 800;
-    display: flex; align-items: center; gap: 10px; z-index: 20; }
-  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
-
-  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
-    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
-    display: grid; place-items: center; cursor: pointer; z-index: 10;
-    transition: background .15s, transform .15s; }
-  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
-  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
-  .nav-arrow svg { width: 20px; height: 20px; }
-  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
-
-  .progress-wrap { background: var(--bar); padding: 10px 20px;
-    display: flex; align-items: center; gap: 14px; color: #fff;
-    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
-  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
-    width: 0%; transition: width .4s ease; border-radius: 4px; }
-
-  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
-    letter-spacing: -.02em; font-weight: 800; }
-  h1.hero span.accent { color: var(--accent); }
-  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
-  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
-    font-weight: 700; margin: 0 0 14px; }
-
-  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
-  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
-  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
-  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
-  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
-  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
-  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
-
-  /* Contenu issu de la MC source : respecte les styles inline des sections */
-  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
-  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
-  .content-scroll table { max-width: 100%; }
-
-  /* Quiz */
-  .quiz-head { margin-bottom: 20px; }
-  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
-  .quiz-opts { display: grid; gap: 10px; }
-  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
-    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
-    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
-  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
-  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
-  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
-  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
-    font-size: 15px; line-height: 1.5; display: none; }
-  .quiz-feedback.show { display: block; }
-  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
-  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
-  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
-  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
-    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .quiz-next.show { display: inline-block; }
-
-  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
-    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
-    display: grid; place-items: center; position: relative; }
-  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
-  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+:root{--oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-teal-light:#14a098;--oracle-gold:#f5b700;--oracle-pink:#f06292;--oracle-cream:#fdf6e9;--oracle-paper:#f8f1e4;--ink:#1a2332;--ink-soft:#44546b;--card:#fff;--shadow-sm:0 2px 8px rgba(13,115,119,.08);--shadow-md:0 8px 24px rgba(13,115,119,.14);--shadow-lg:0 20px 60px rgba(13,115,119,.22);--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:#000}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent}
+.deck{position:fixed;inset:0;overflow:hidden;background:#07151a}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;opacity:0}
+.slide.on{display:flex;opacity:1;z-index:2;animation:fIn .4s ease}
+@keyframes fIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.bar{position:fixed;top:0;left:0;right:0;z-index:100;height:48px;background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0));display:flex;align-items:center;padding:0 18px;gap:14px;color:#fff;pointer-events:none}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;pointer-events:auto}
+.bar .brand img{width:28px;height:28px}
+.bar .ref{opacity:.75;font-size:12px}
+.bar .counter{margin-left:auto;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;pointer-events:auto;backdrop-filter:blur(6px)}
+.bar .mod{background:var(--oracle-gold);color:#1a2332;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;pointer-events:auto}
+.progress{position:fixed;top:48px;left:0;right:0;height:3px;background:rgba(255,255,255,.08);z-index:99}
+.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-pink));transition:width .4s ease;box-shadow:0 0 10px var(--oracle-gold)}
+.nav{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:100}
+.nav button{min-width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);color:#fff;font-size:18px;transition:all .25s;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.1)}
+.nav button:hover{background:var(--oracle-teal-light);transform:translateY(-2px)}
+.nav button:disabled{opacity:.35;cursor:not-allowed}
+.nav .menu{padding:0 18px;border-radius:46px;width:auto;font-size:13px;font-weight:600}
+.hero{background:#0a2a2f}
+.hero .bg{position:absolute;inset:0;background:url('assets/hero-cover.webp') center/cover no-repeat;filter:brightness(.5) saturate(1.1)}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,42,47,.75) 0%,rgba(13,115,119,.4) 50%,rgba(240,98,146,.3) 100%)}
+.hero .wrap{position:relative;z-index:2;margin:auto;max-width:980px;padding:40px 32px;color:#fff;text-align:center}
+.hero .kicker{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;background:rgba(0,0,0,.25);backdrop-filter:blur(6px)}
+.hero h1{font-size:clamp(32px,5.5vw,66px);font-weight:900;line-height:1.05;margin-bottom:18px;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hero h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.55em;font-weight:600;margin-top:14px;letter-spacing:.05em;line-height:1.3}
+.hero .sub{font-size:clamp(16px,2vw,20px);opacity:.92;max-width:720px;margin:0 auto 32px;line-height:1.5}
+.hero .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:36px}
+.hero .meta span{background:rgba(255,255,255,.12);border-radius:999px;padding:8px 18px;font-size:13px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.hero .cta{display:inline-flex;align-items:center;gap:12px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 36px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4);transition:all .3s}
+.hero .cta:hover{transform:translateY(-3px)}
+.hero .cta svg{width:18px;height:18px}
+.hero .signature{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#fff;opacity:.85;font-size:12px;z-index:3}
+.hero .signature strong{color:var(--oracle-gold)}
+.std{background:var(--oracle-cream)}
+.std .inner{display:flex;flex-direction:column;width:100%;height:100%;padding:70px 48px 90px;max-width:1600px;margin:0 auto;overflow:auto}
+.std .head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.std .num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:var(--oracle-teal);color:#fff;font-weight:800;font-size:22px;box-shadow:var(--shadow-md);flex-shrink:0}
+.std h2{font-size:clamp(22px,3.2vw,38px);font-weight:800;color:var(--oracle-teal-dark);letter-spacing:-.01em;line-height:1.15}
+.std h2 small{display:block;color:var(--ink-soft);font-size:.52em;font-weight:500;margin-top:4px;letter-spacing:0}
+.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark) 0%,var(--oracle-teal) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
+.chapter .wrap{max-width:720px}
+.chapter .big{font-size:140px;font-weight:900;color:var(--oracle-gold);line-height:.9;text-shadow:0 10px 40px rgba(0,0,0,.3)}
+.chapter .big em{font-style:normal;color:#fff;display:block;font-size:.2em;margin-top:12px;letter-spacing:.4em;text-transform:uppercase;opacity:.8}
+.chapter h1{font-size:clamp(28px,4.5vw,52px);font-weight:900;margin:28px 0 12px;line-height:1.1}
+.chapter p{font-size:18px;opacity:.95;line-height:1.5}
+.chapter .dura{margin-top:24px;background:rgba(255,255,255,.15);padding:10px 24px;border-radius:999px;display:inline-block;font-size:14px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2)}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
+.obj .card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-md);border:1px solid rgba(13,115,119,.08);position:relative;overflow:hidden}
+.obj .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-teal-light))}
+.obj .card .ico{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--oracle-cream),#fff);border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:28px}
+.obj .card h3{font-size:19px;color:var(--oracle-teal-dark);margin-bottom:10px;font-weight:700}
+.obj .card p{color:var(--ink-soft);line-height:1.55;font-size:15px}
+.duree{grid-column:1/-1;margin-top:26px;background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:var(--radius);padding:20px 24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center;box-shadow:var(--shadow-sm);border:1px dashed var(--oracle-teal-light)}
+.duree>div{text-align:center;min-width:90px}
+.duree strong{display:block;color:var(--oracle-teal);font-size:28px;font-weight:900;line-height:1}
+.duree span{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-top:6px}
+.fiche-wrap{display:grid;grid-template-columns:minmax(0,450px) 1fr;gap:28px;flex:1;margin-top:16px;min-height:0;align-items:start}
+.fiche-img{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;padding:12px;max-height:calc(100vh - 190px)}
+.fiche-img .ficheHolder{position:relative;max-height:100%;max-width:100%;display:inline-block}
+.fiche-img .ficheHolder img{max-height:calc(100vh - 220px);max-width:100%;width:auto;height:auto;display:block;object-fit:contain}
+.hot{position:absolute;width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;font-size:16px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25);transition:all .25s;z-index:2;animation:pulse 2s infinite;border:0}
+.hot:hover{transform:scale(1.18);background:var(--oracle-pink);color:#fff;z-index:3}
+@keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25)}50%{box-shadow:0 4px 16px rgba(245,183,0,.7),0 0 0 10px rgba(245,183,0,0)}}
+.fiche-side{display:flex;flex-direction:column;gap:16px;overflow:auto;padding-right:4px}
+.fiche-side h3{font-size:16px;color:var(--oracle-teal-dark);font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.fiche-side p{color:var(--ink-soft);line-height:1.55;font-size:14px}
+.fiche-side .ptip{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-left:4px solid var(--oracle-gold);padding:14px 16px;border-radius:8px;font-size:13px;line-height:1.5;color:var(--ink-soft);box-shadow:var(--shadow-sm)}
+.fiche-side .ptip strong{color:var(--oracle-teal-dark)}
+.chapters{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chapters button{background:#fff;border:1px solid rgba(13,115,119,.1);border-radius:10px;padding:10px;text-align:left;color:var(--ink);font-size:12px;font-weight:600;transition:all .2s;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:8px}
+.chapters button:hover{background:var(--oracle-teal);color:#fff}
+.chapters button b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--oracle-teal);color:#fff;font-size:11px;flex-shrink:0}
+.chapters button:hover b{background:var(--oracle-gold);color:#1a2332}
+.piliers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px;flex:1}
+.pil{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:16px;padding:28px 22px;box-shadow:var(--shadow-md);text-align:center;border-top:6px solid var(--oracle-pink)}
+.pil .num{font-size:60px;font-weight:900;color:var(--oracle-pink);line-height:.9;margin-bottom:12px;opacity:.3}
+.pil h3{color:var(--oracle-teal-dark);font-size:17px;font-weight:900;margin-bottom:14px}
+.pil .q{background:#fff;border-radius:10px;padding:14px;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:10px;border-left:4px solid var(--oracle-gold)}
+.pil .q em{font-style:normal;color:var(--oracle-pink)}
+.pil p{color:var(--ink-soft);font-size:13px;line-height:1.5}
+.situs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;flex:1;overflow:auto;align-content:start}
+.situ{background:#fff;border-radius:10px;padding:14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px}
+.situ p{font-size:13.5px;color:var(--ink);line-height:1.4}
+.situ p b{color:var(--oracle-teal);margin-right:6px}
+.situ .btns{display:flex;gap:6px}
+.situ .sb{flex:1;font-weight:700;padding:7px;border-radius:7px;border:2px solid transparent;font-size:12.5px;cursor:pointer;transition:all .2s}
+.situ .sb.y{background:#dcf5e4;color:#0e5e2a}
+.situ .sb.n{background:#fde3e3;color:#8a1a1a}
+.situ .sfb{display:none;font-size:12px;padding:8px;border-radius:7px;line-height:1.4}
+.cles{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-md);margin-top:16px;flex:1;overflow:auto}
+.cles .item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(13,115,119,.1);cursor:pointer}
+.cles .item:last-of-type{border-bottom:0}
+.cles .cb{width:24px;height:24px;border-radius:7px;border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0;transition:all .2s;margin-top:1px}
+.cles .item.ok .cb{background:var(--oracle-teal);border-color:var(--oracle-teal)}
+.cles .item p{font-size:14px;line-height:1.5;color:var(--ink)}
+.cles .item.ok p{color:var(--ink-soft);text-decoration:line-through}
+.cles .progress-m{margin-top:14px;background:var(--oracle-cream);border-radius:10px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--oracle-teal-dark)}
+.cles .pb{width:200px;height:8px;background:rgba(13,115,119,.15);border-radius:999px;overflow:hidden}
+.cles .pb i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-gold));width:0;transition:width .4s}
+.flashwrap{margin-top:16px;flex:1;display:flex;flex-direction:column;overflow:auto}
+.flashbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;background:#fff;padding:10px 18px;border-radius:10px;box-shadow:var(--shadow-sm)}
+.flashbar span{font-weight:700;color:var(--oracle-teal-dark);font-size:14px}
+.flashbar button{background:var(--oracle-teal);color:#fff;padding:6px 14px;border-radius:8px;font-weight:700;font-size:13px}
+.flashbar button:hover{background:var(--oracle-teal-dark)}
+.flashcard{perspective:1200px;flex:1;min-height:320px;max-height:480px;cursor:pointer}
+.flashcard .flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s}
+.flashcard.turned .flip{transform:rotateY(180deg)}
+.flashcard .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.flashcard .face.front{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff}
+.flashcard .face.back{background:#fff;color:var(--ink);transform:rotateY(180deg)}
+.flashcard .face .hint{font-size:11px;letter-spacing:3px;text-transform:uppercase;opacity:.65;margin-bottom:20px}
+.flashcard .face.front h3{font-size:26px;font-weight:800;line-height:1.3;max-width:640px}
+.flashcard .face.back h3{color:var(--oracle-teal-dark);font-size:18px;margin-bottom:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.flashcard .face.back p{color:var(--ink);font-size:16px;line-height:1.5;max-width:640px;font-weight:500}
+.flashcard .tap{position:absolute;bottom:12px;left:0;right:0;text-align:center;opacity:.65;font-size:12px}
+.qz{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);padding:28px;margin-top:16px;max-width:900px;margin-left:auto;margin-right:auto;flex:1;display:flex;flex-direction:column}
+.qz .count{color:var(--oracle-teal);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.qz .question{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35}
+.qz .answers{display:flex;flex-direction:column;gap:9px}
+.qz .answers button{background:#fff;border:2px solid rgba(13,115,119,.15);border-radius:12px;padding:12px 16px;text-align:left;font-size:14.5px;transition:all .2s;display:flex;align-items:center;gap:12px}
+.qz .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.qz .answers button.ok{background:#dcf5e4;border-color:#2ea84f;color:#0e5e2a;font-weight:700}
+.qz .answers button.ko{background:#fde3e3;border-color:#d65757;color:#8a1a1a;font-weight:700}
+.qz .answers button .letter{width:28px;height:28px;border-radius:8px;background:var(--oracle-cream);display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:13px}
+.qz .answers button.ok .letter{background:#2ea84f;color:#fff}
+.qz .answers button.ko .letter{background:#d65757;color:#fff}
+.qz .expl{display:none;margin-top:14px;padding:14px;background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);border-radius:8px;font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.qz .expl.on{display:block}
+.qz .nextq{display:none;margin-top:12px;background:var(--oracle-teal);color:#fff;padding:10px 22px;border-radius:999px;font-weight:700;align-self:flex-end;font-size:13.5px}
+.qz .nextq.on{display:inline-block}
+.qz .nextq:hover{background:var(--oracle-teal-dark)}
+.score{text-align:center;padding:30px}
+.score .big{font-size:88px;font-weight:900;color:var(--oracle-teal);line-height:1;margin-bottom:8px}
+.score .big em{font-style:normal;color:var(--ink-soft);font-size:.4em;font-weight:400}
+.score .label{font-size:20px;font-weight:700;margin-bottom:24px}
+.score .label.ok{color:#0e5e2a}
+.score .label.mid{color:#8a6a00}
+.score .label.ko{color:#8a1a1a}
+.score .msg{font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:500px;margin:0 auto 24px}
+.score .again{background:var(--oracle-teal);color:#fff;padding:10px 24px;border-radius:999px;font-weight:700}
+.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal) 50%,var(--oracle-pink) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
+.end .wrap{max-width:720px}
+.end .ok{width:92px;height:92px;border-radius:50%;background:rgba(255,255,255,.2);display:inline-flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:24px;backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.3)}
+.end h1{font-size:clamp(32px,5vw,52px);font-weight:900;margin-bottom:14px;line-height:1.1}
+.end h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.6em;margin-top:8px}
+.end p{font-size:17px;opacity:.95;line-height:1.5;margin-bottom:32px}
+.end .nxt{display:inline-flex;align-items:center;gap:14px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 32px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4)}
+.end .nxt:hover{transform:translateY(-3px)}
+.end .nxt svg{width:20px;height:20px}
+.end .mini{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.end .mini a{background:rgba(255,255,255,.14);padding:10px 20px;border-radius:999px;font-size:13px;color:#fff;text-decoration:none;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.end .mini a:hover{background:rgba(255,255,255,.25)}
+.modal-bg{position:fixed;inset:0;background:rgba(10,30,36,.72);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;animation:fIn .25s ease}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:720px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:mIn .35s cubic-bezier(.3,1.3,.5,1)}
+@keyframes mIn{from{transform:translateY(20px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.modal .mhead{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:22px 28px;display:flex;align-items:center;gap:14px;position:relative}
+.modal .mhead .mnum{width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
+.modal .mhead h3{font-size:19px;font-weight:800;flex:1}
+.modal .mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+.modal .mclose:hover{background:rgba(255,255,255,.35)}
+.modal .mbody{padding:24px 28px;overflow:auto;color:var(--ink)}
+.modal .mbody h4{color:var(--oracle-teal-dark);font-size:14px;margin:14px 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.modal .mbody h4:first-child{margin-top:0}
+.modal .mbody ul{margin:4px 0 12px 20px;line-height:1.6;font-size:14px;color:var(--ink-soft)}
+.modal .mbody ul li{margin-bottom:5px}
+.modal .mbody .tip{background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);padding:12px 16px;border-radius:8px;font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin-top:12px}
+.modal .mbody .tip strong{color:var(--oracle-teal-dark)}
+.dots{position:fixed;left:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:99;max-height:70vh;overflow:hidden}
+.dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s;cursor:pointer;display:block}
+.dots span.on{background:var(--oracle-gold);box-shadow:0 0 10px var(--oracle-gold);width:9px;height:9px}
+.std .dots span{background:rgba(13,115,119,.3)}
+.std .dots span.on{background:var(--oracle-teal)}
+@media(max-width:1024px){.obj,.piliers{grid-template-columns:1fr 1fr}.fiche-wrap{grid-template-columns:1fr}}
+@media(max-width:640px){.std .inner{padding:60px 20px 90px}.obj,.piliers{grid-template-columns:1fr}.chapters{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC14</div>
-
-<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-</button>
-<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-</button>
-
-<div class="stage">
-  <div class="slides" id="slides">
-
-    <section class="slide">
-      <div class="hero-band">
-        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
-        <div class="hero-tile"><div class="emoji">🩺</div></div>
-        <div class="hero-tile"><div class="emoji">🏥</div></div>
-        <div class="hero-tile"><div class="emoji">💙</div></div>
-        <div class="hero-tile"><div class="emoji">🤝</div></div>
-      </div>
-      <p class="eyebrow">MC14 · Bloc 5</p>
-      <h1 class="hero">Activité 11 — Organisation équipe & qualité</h1>
-      <p class="subtitle">Travail d'équipe, démarche qualité, projets de service</p>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Objectifs</p>
-      <div class="content-scroll"><div style="background:#F5F5F5;border-left:6px solid #212121;border-radius:10px;padding:18px 22px;margin:22px 0;">
-<p style="margin:0 0 10px 0;font-weight:bold;color:#212121;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
-<ol style="margin:0;padding-left:22px;">
-<li>énoncer les trois éléments attendus de l'activité 11 et les répartir en deux situations et une action d'amélioration ;</li>
-<li>distinguer l'activité 11 de l'activité 10 (faire circuler l'information) et de l'activité 7 (transmettre un savoir-faire) ;</li>
-<li>planifier une journée de travail en justifiant chaque priorité par un critère explicite : sécurité, besoin de la personne, horaire contraint, charge du binôme ;</li>
-<li>réorganiser une journée bousculée par un imprévu en alertant d'abord, en réévaluant les priorités avec l'infirmier et en traçant tout ce qui est reporté ;</li>
-<li>situer votre rôle dans l'équipe pluriprofessionnelle, collaborer et confier une tâche sans sortir de votre champ ni faire sortir un collègue du sien ;</li>
-<li>expliquer la démarche qualité (roue PDCA, événement indésirable, analyse des causes sans recherche de coupable, évaluation des pratiques) avec vos mots ;</li>
-<li>rédiger une action d'amélioration recevable : constat objectivé, proposition, mise en œuvre avec l'équipe et l'encadrement, mesure avant/après, pérennisation ;</li>
-<li>répondre aux questions du jury sur votre organisation, vos choix de priorité et le résultat réel de votre action.</li>
-</ol>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Déroulé</p>
-      <div class="content-scroll"><p style="font-weight:bold;color:#212121;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
-<table style="width:100%;border-collapse:collapse;font-size:14px;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:14%;">Durée</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;">0:00</td><td style="padding:9px;border:1px solid #E0E0E0;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #E0E0E0;">5&nbsp;min</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;">0:05</td><td style="padding:9px;border:1px solid #E0E0E0;">Partie 1 · L'activité 11 décodée</td><td style="padding:9px;border:1px solid #E0E0E0;">15&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;">0:20</td><td style="padding:9px;border:1px solid #E0E0E0;">Partie 2 · S'organiser et prioriser : la journée habituelle</td><td style="padding:9px;border:1px solid #E0E0E0;">20&nbsp;min</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;">0:40</td><td style="padding:9px;border:1px solid #E0E0E0;">Partie 3 · S'adapter aux imprévus</td><td style="padding:9px;border:1px solid #E0E0E0;">15&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;">0:55</td><td style="padding:9px;border:1px solid #E0E0E0;">Partie 4 · Le travail en équipe pluriprofessionnelle</td><td style="padding:9px;border:1px solid #E0E0E0;">15&nbsp;min</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;">1:10</td><td style="padding:9px;border:1px solid #E0E0E0;">Partie 5 · La démarche qualité, la gestion des risques et l'action d'amélioration</td><td style="padding:9px;border:1px solid #E0E0E0;">20&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;">1:30</td><td style="padding:9px;border:1px solid #E0E0E0;">Partie 6 · Trois situations modèles décortiquées, grille de détection et questions du jury</td><td style="padding:9px;border:1px solid #E0E0E0;">20&nbsp;min</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;">1:50</td><td style="padding:9px;border:1px solid #E0E0E0;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #E0E0E0;">10&nbsp;min</td></tr>
-</table>
-<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Ouverture</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
-
-<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">1. L'activité 11 demande une seule situation : une journée de travail bien racontée.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Elle demande <strong>trois éléments</strong> : une journée habituelle, une journée avec imprévus et une action d'amélioration. Chez ORACLE : deux situations et l'action d'amélioration.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">2. La journée habituelle est trop banale pour intéresser le jury : mieux vaut la résumer en quelques lignes.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> C'est l'élément le plus souvent bâclé. Elle prouve votre méthode : ce que vous regardez en premier, comment vous hiérarchisez, pourquoi.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">3. Face à une chute, l'aide-soignant commence par réorganiser les soins en retard, puis prévient l'infirmier.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> On sécurise et on alerte <strong>d'abord</strong> : l'infirmier évalue et décide. La réorganisation vient ensuite. L'inverse décrit une mise en danger.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">4. Quand une collègue est absente, l'aide-soignant peut demander à l'agent de service de faire les toilettes simples.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Vous confiez à l'agent de service ce qui relève de sa fonction (entretien, service hôtelier). Un soin ne se confie pas à qui n'a pas la qualification. Vous réorganisez avec l'infirmier et vous signalez le sous-effectif à l'encadrement.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">5. Reporter un soin de confort est acceptable, à condition de le tracer et de le transmettre.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai</strong>, s'il est décidé en lien avec l'infirmier et ne compromet pas la sécurité : une douche devient une toilette au lavabo et est reprise le lendemain. Un soin reporté sans trace est un soin abandonné.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">6. Déclarer un événement indésirable, c'est dénoncer le collègue qui a commis l'erreur.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> La déclaration sert à comprendre ce qui, dans l'organisation, a rendu l'événement possible. L'analyse se fait <strong>sans recherche de coupable</strong>.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">7. « J'ai proposé à ma cadre une nouvelle fiche de suivi » suffit à prouver une action d'amélioration.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le jury attend un constat chiffré, une mise en œuvre réelle avec l'équipe et l'encadrement, une mesure avant et après, et une pérennisation.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">8. La roue PDCA signifie : Planifier, Faire, Vérifier, Agir.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> C'est la roue de l'amélioration continue : elle repart après chaque ajustement.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">9. Une situation de relève bien faite, avec ses outils et ses interlocuteurs, prouve l'activité 11.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, en général.</strong> Les outils et les personnes ressources relèvent de l'activité 10, en inventaire raisonné. En activité 11, la relève n'est qu'un <em>moment</em> de l'organisation, qui fixe vos priorités.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">10. Dans la journée avec imprévus, un bon aide-soignant « s'arrange pour tout faire quand même ».</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Tout faire, c'est souvent aller trop vite ou sortir de son champ. Le jury attend des priorités réévaluées, des reports tracés, une limite dite et une équipe informée.</p></details>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;">
-<p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent. Les aides-soignants expérimentés savent par quoi commencer, rarement expliquer pourquoi : c'est ce pourquoi que le jury lit.</p>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Partie 1</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 11 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
-
-<p>L'activité 11 ferme le bloc 5 avec l'activité 10. Le bloc se valide en entier : une activité 11 laissée « à vérifier » le fragilise, même avec une activité 10 impeccable.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:18px 0 8px 0;">1.1 · La compétence 11 reformulée</p>
-
-<p>La fiche RNCP 40692 décrit la compétence 11 en plusieurs éléments, reformulés ici.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:38%;">Élément de la compétence (reformulé)</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce que cela devient dans votre écrit</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Situer son champ au regard des autres professionnels</td><td style="padding:9px;border:1px solid #E0E0E0;">Dans chaque récit, on sait qui décide, ce que vous faites et ce que vous confiez à qui.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Organiser son travail dans la planification de l'équipe</td><td style="padding:9px;border:1px solid #E0E0E0;">Votre journée s'inscrit dans une répartition collective : binôme, secteur, planning, plan de soins.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Prioriser dans un contexte qui change</td><td style="padding:9px;border:1px solid #E0E0E0;">Chaque priorité porte un critère nommé ; quand le contexte change, vous montrez comment l'ordre change.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Contribuer aux projets de l'équipe et de la structure</td><td style="padding:9px;border:1px solid #E0E0E0;">Groupe de travail, révision d'un protocole, démarche de bientraitance : votre part exacte.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Repérer, signaler et déclarer les événements indésirables et les non-conformités</td><td style="padding:9px;border:1px solid #E0E0E0;">Un événement décrit factuellement, déclaré selon la procédure, dont vous connaissez les suites.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Évaluer sa pratique et ses besoins de formation</td><td style="padding:9px;border:1px solid #E0E0E0;">Ce que vous avez modifié dans votre façon de faire, la formation demandée ou suivie, et ce qu'elle a changé.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Proposer des améliorations : qualité, gestion des risques, risques professionnels</td><td style="padding:9px;border:1px solid #E0E0E0;">L'action d'amélioration complète, de la mesure initiale à la pérennisation.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel : trois éléments, rédigés chez ORACLE en deux situations et une action</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:26%;">Élément</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:37%;">Ce qu'il doit prouver</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Forme ORACLE</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">① Une journée habituelle</td><td style="padding:9px;border:1px solid #E0E0E0;">Votre méthode, de la prise de poste à la fin de poste.</td><td style="padding:9px;border:1px solid #E0E0E0;"><strong>Situation 1</strong>, au « je », chronologique, avec le pourquoi de chaque choix d'ordre.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">② Une journée avec imprévus</td><td style="padding:9px;border:1px solid #E0E0E0;">Votre adaptation : alerte, priorités réévaluées avec l'infirmier, reports tracés.</td><td style="padding:9px;border:1px solid #E0E0E0;"><strong>Situation 2</strong>, dans le même service si possible, pour que le contraste avec la journée habituelle soit lisible.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">③ Une action d'amélioration</td><td style="padding:9px;border:1px solid #E0E0E0;">Votre contribution à la qualité, mesurée.</td><td style="padding:9px;border:1px solid #E0E0E0;"><strong>L'action d'amélioration</strong>, rédigée à part, en suivant la roue PDCA.</td></tr>
-</table>
-
-<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;">
-<p style="margin:0;"><strong>🚨 Le contrôle en trois secondes.</strong> S'il manque un des trois éléments, l'attendu n'est pas honoré, quelle que soit la qualité du reste. Vérifiez aussi que <strong>chaque sous-question du formulaire</strong> a reçu une réponse explicite : un « voir ci-dessus » ne compte pas.</p>
+<div class="deck" id="deck">
+<div class="bar">
+  <div class="brand"><img src="assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">MC14 · Activité 11</span>
+  <span class="mod" id="modLbl">Accueil</span>
+  <span class="counter" id="counter">1 / 14</span>
 </div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">1.3 · La phrase-clé</p>
-
-<div style="border:1px solid #E0E0E0;background:#FAFAFA;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0 0 10px 0;font-style:italic;font-size:16px;color:#212121;">🔑 « Voilà comment je m'organise, je priorise et je m'adapte dans une équipe. »</p>
-<p style="margin:0 0 6px 0;">Chaque mot compte :</p>
-<ul style="margin:0;padding-left:20px;">
-<li><strong>je m'organise</strong> : une méthode, pas une liste d'horaires ;</li>
-<li><strong>je priorise</strong> : un ordre justifié par des critères, que vous savez nommer ;</li>
-<li><strong>je m'adapte</strong> : un ordre qui change quand la situation change, sans sacrifier la sécurité ;</li>
-<li><strong>dans une équipe</strong> : l'infirmier, le binôme, l'agent de service, le cadre apparaissent, avec leur rôle.</li>
-</ul>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">1.4 · Les frontières avec l'activité 10 et l'activité 7</p>
-
-<p>L'activité 11 touche à tout. Le critère : <strong>qu'est-ce que votre texte prouve ?</strong></p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:20%;">Activité</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:40%;">Ce qu'elle prouve</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Le même sujet, vu depuis l'activité 11</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">10 · Transmettre</td><td style="padding:9px;border:1px solid #E0E0E0;">« Voilà comment je fais circuler l'information, avec quels outils et auprès de qui. » Un <strong>inventaire raisonné</strong> des outils et des personnes ressources, sans récit.</td><td style="padding:9px;border:1px solid #E0E0E0;">La relève est un <strong>moment de l'organisation</strong> : vous montrez la décision qu'elle vous a permis de prendre, pas l'outil.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">7 · Informer et former</td><td style="padding:9px;border:1px solid #E0E0E0;">« Voilà comment j'ai transmis mon savoir-faire, tout en restant garant du soin. » Une démarche pédagogique : besoin, démonstration, mise en pratique, évaluation.</td><td style="padding:9px;border:1px solid #E0E0E0;">L'arrivée d'un nouveau collègue est une <strong>donnée d'organisation</strong> : répartition de la charge, ce que vous lui confiez ou non.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">3 · Évaluer l'état clinique</td><td style="padding:9px;border:1px solid #E0E0E0;">Un changement d'état repéré, objectivé, signalé.</td><td style="padding:9px;border:1px solid #E0E0E0;">Le malaise ou la chute est un <strong>imprévu</strong> : vous l'alertez, puis vous racontez surtout la réorganisation qui suit.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">9 · Anomalies des matériels</td><td style="padding:9px;border:1px solid #E0E0E0;">Une anomalie repérée, évaluée, traitée et suivie jusqu'à la réparation vérifiée.</td><td style="padding:9px;border:1px solid #E0E0E0;">La panne est un <strong>imprévu</strong> : vous la signalez, puis vous réorganisez les transferts en sécurité.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
-<p style="margin:0;"><strong>⚠️ Une situation n'appartient qu'à une seule activité.</strong> Ne reprenez pas en activité 11 la chute déjà racontée en activité 3 : le jury lirait deux fois la même preuve. En activité 11, l'événement n'est qu'un point de départ ; le cœur du récit est la réorganisation.</p>
-</div>
-
-<p style="font-weight:bold;color:#212121;margin:24px 0 8px 0;">✍️ Exercice 1 (5&nbsp;min) · Activité 11, ou une autre ?</p>
-<p>À quelle activité se rattache chaque extrait, et quel élément prouve-t-il ?</p>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">a) « À la prise de poste, je lis le plan de soins et je repère les trois résidents qui ont un rendez-vous extérieur ou un examen à jeun : je commence par eux, puis j'organise les toilettes avec ma collègue selon les habitudes de lever de chacun. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 11, journée habituelle.</strong> Priorités repérées, horaires contraints d'abord, répartition en binôme, habitudes respectées.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">b) « J'utilise les transmissions ciblées du dossier de soins informatisé pour tracer les observations importantes, et je sollicite l'ergothérapeute quand l'installation au fauteuil pose problème. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 10.</strong> Un outil et une personne ressource, avec leur usage : c'est l'inventaire raisonné.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">c) « Ma collègue de binôme est arrêtée et n'est pas remplacée avant 10 h. Avec l'infirmière, je reprends la feuille de répartition : les personnes à jeun et les levers pour rendez-vous passent d'abord, les douches deviennent des toilettes au lavabo, reportées au lendemain, ce que je trace. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 11, journée avec imprévus.</strong> Imprévu, priorités réévaluées avec l'infirmière, report assumé et tracé.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">d) « Sur un mois, j'ai relevé que les pesées mensuelles n'étaient faites que pour la moitié des résidents. J'ai proposé à la cadre et à l'infirmière un planning de pesée, présenté en réunion d'équipe. Le mois suivant, toutes les pesées étaient faites. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 11, action d'amélioration.</strong> Constat chiffré, mise en œuvre, mesure après. Il manque la pérennisation : qu'est-ce qui garantit que le planning perdure ?</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">e) « Le verticalisateur ne monte plus. Je le mets hors service, je fais la demande d'intervention que je trace, et je vérifie le lendemain qu'il a été réparé. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 9</strong>, matériel traité. En imprévu de l'activité 11, le cœur du récit serait la réorganisation sûre des transferts de la matinée.</p></details>
-
-<div style="background:#F5F5F5;border-radius:10px;padding:14px 20px;margin:18px 0;">
-<p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> Trois éléments : une journée habituelle, une journée avec imprévus, une action d'amélioration. La phrase-clé : je m'organise, je priorise, je m'adapte, dans une équipe. L'activité 10 inventorie les outils, l'activité 7 transmet un savoir-faire, l'activité 11 montre une organisation qui tient, change et s'améliore.</p>
-</div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 19 · Livre Bloc 5 · Fiches de révision B5</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Partie 2</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · S'organiser et prioriser : la journée habituelle <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 20&nbsp;min</span></div>
-
-<p>Une journée habituelle bien rédigée ne raconte pas tout ce que vous avez fait. Elle montre <strong>comment vous décidez de l'ordre</strong> dans lequel vous le faites.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:18px 0 8px 0;">2.1 · La prise de poste : relève, plan de soins, repérage des priorités</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:26%;">Temps</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce que vous faites, et pourquoi c'est une preuve</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">La relève</td><td style="padding:9px;border:1px solid #E0E0E0;">Vous écoutez, vous notez, vous questionnez : qui a mal dormi, chuté, eu de la fièvre, refusé un soin. Vos priorités partent de l'état réel des personnes ce jour-là : une information de nuit peut inverser l'ordre de votre matinée.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Le plan de soins</td><td style="padding:9px;border:1px solid #E0E0E0;">Soins programmés du jour, consignes de l'infirmier, précautions particulières (transfert à deux, texture modifiée, précautions complémentaires). Une consigne ignorée à 6 h 45 devient une erreur à 10 h.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Le repérage des priorités</td><td style="padding:9px;border:1px solid #E0E0E0;">Personnes à voir en premier (état instable, douleur, risque), horaires contraints, soins à deux. C'est ici que se prouve le mot « prioriser » : nommez les critères qui ont fixé l'ordre.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">La répartition</td><td style="padding:9px;border:1px solid #E0E0E0;">Avec votre binôme, en lien avec l'infirmier, vous répartissez personnes et soins, en équilibrant la charge et en regroupant ce qui se fait à deux. Vous vous organisez <em>dans</em> l'équipe.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">2.2 · Les horaires contraints : ce qui fixe l'ordre avant vous</p>
-
-<p>Certaines contraintes ne se négocient pas : les repérer en premier est la base de toute organisation.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:24%;">Contrainte</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:40%;">Ce qu'elle impose</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Où se trouve votre limite</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Examen à jeun</td><td style="padding:9px;border:1px solid #E0E0E0;">Prévenir la personne la veille, ne pas servir le petit-déjeuner avant le prélèvement, puis le servir aussitôt. Chez une personne diabétique, le jeûne prolongé expose à l'hypoglycémie.</td><td style="padding:9px;border:1px solid #E0E0E0;">Le prélèvement et l'adaptation du traitement relèvent de l'infirmier. Vous coordonnez l'horaire et vous surveillez.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Traitements préparés par l'infirmier</td><td style="padding:9px;border:1px solid #E0E0E0;">Certains se prennent à heure fixe (un antiparkinsonien, par exemple), d'autres pendant ou hors du repas. Toilette et repas s'organisent autour.</td><td style="padding:9px;border:1px solid #E0E0E0;">Aide à la prise seulement si <strong>toutes</strong> les conditions sont réunies (non injectable, non stupéfiant, préparé par l'infirmier ou la pharmacie, emballé individuellement, identifiable, daté), avec vérification de l'identité et de la concordance, prise observée et tracée. Vous ne décalez jamais une prise : vous prévenez l'infirmier.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Rendez-vous et transports</td><td style="padding:9px;border:1px solid #E0E0E0;">La personne doit être prête, habillée, avec son dossier de liaison, à l'heure du transport.</td><td style="padding:9px;border:1px solid #E0E0E0;">Le dossier de liaison est préparé par l'infirmier ; vous vérifiez avec lui qu'il est prêt.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Toilettes et douches planifiées</td><td style="padding:9px;border:1px solid #E0E0E0;">Douches programmées, soins à deux, repas (horaires fixes, personnes à risque de fausse route accompagnées), levers tôt ou tard : l'ordre suit ces données, pas le numéro des chambres.</td><td style="padding:9px;border:1px solid #E0E0E0;">Le rythme de la personne passe avant le confort de l'organisation, tant que la sécurité et les horaires contraints sont respectés.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">2.3 · Les critères de priorisation, dans l'ordre</p>
-
-<p>Quand deux soins se disputent le même moment, un critère tranche. Voici l'ordre ORACLE, à nommer dans votre récit.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:6%;">Rang</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:28%;">Critère</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Exemples et formulation</th></tr>
-<tr style="background:#FFEBEE;"><td style="padding:9px;border:1px solid #FFCDD2;font-weight:bold;text-align:center;">1</td><td style="padding:9px;border:1px solid #FFCDD2;font-weight:bold;">Urgence vitale et sécurité</td><td style="padding:9px;border:1px solid #FFCDD2;">Malaise, chute, détresse respiratoire, douleur intense. <em>« Je suis d'abord allée voir M. T., signalé par la nuit pour une gêne respiratoire : saturation à 90 %, j'ai prévenu l'infirmière avant de commencer les toilettes. »</em></td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-weight:bold;text-align:center;">2</td><td style="padding:9px;border:1px solid #FFE082;font-weight:bold;">Besoins de la personne</td><td style="padding:9px;border:1px solid #FFE082;">Élimination, hydratation, douleur, angoisse, fin de vie. <em>« J'ai accompagné Mme R. aux toilettes dès son réveil : son diurétique lui donne des envies pressantes, et attendre l'exposerait à une chute en se levant seule. »</em></td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;text-align:center;">3</td><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Soins programmés et horaires contraints</td><td style="padding:9px;border:1px solid #E0E0E0;">Examen à jeun, rendez-vous, traitement à heure fixe, douche planifiée. <em>« J'ai commencé par Mme D., dont l'ambulance était prévue à 9 h 30 pour une consultation. »</em></td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;text-align:center;">4</td><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Rythme et habitudes</td><td style="padding:9px;border:1px solid #E0E0E0;">Heure de lever, préférence pour la toilette du soir, rituels. <em>« Je laisse dormir M. G. jusqu'à 9 h, comme le prévoit son projet personnalisé. »</em></td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;text-align:center;">5</td><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Charge en binôme</td><td style="padding:9px;border:1px solid #E0E0E0;">Regrouper les soins à deux, équilibrer les personnes très dépendantes. <em>« J'ai proposé à ma collègue de regrouper les trois transferts au lève-personne entre 8 h et 8 h 45. »</em></td></tr>
-</table>
-
-<div style="background:#F5F5F5;border-left:6px solid #424242;border-radius:10px;padding:14px 20px;margin:14px 0;">
-<p style="margin:0;"><strong>💡 Habitudes et contraintes ne s'opposent pas.</strong> Les rangs 3 et 4 se combinent souvent : la personne qui se lève tard mais a un rendez-vous à 9 h 30 sera réveillée plus tôt, prévenue la veille : c'est ce raisonnement que le jury veut lire. La sécurité, elle, passe toujours en premier.</p>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">2.4 · Les outils de l'organisation</p>
-
-<p>En activité 11, les outils ne s'inventorient pas (c'est l'objet de l'activité 10) : ils apparaissent quand ils vous servent à décider. La <strong>feuille de répartition</strong> (qui prend en charge qui, ce qui se fait à deux) se reprend avec l'infirmier à chaque imprévu ; le <strong>plan de soins</strong> porte soins programmés, consignes et surveillances ; le <strong>projet personnalisé</strong> fonde le respect du rythme, engagement de l'équipe et non confort d'organisation.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">2.5 · Travailler en binôme : collaborer et confier, dans le respect du champ de chacun</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:22%;">Binôme</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:39%;">Ce qui circule entre vous</th><th style="padding:9px;border:1px solid #212121;text-align:left;">La limite à écrire</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Aide-soignant et infirmier</td><td style="padding:9px;border:1px solid #E0E0E0;">Il vous confie des soins de son rôle propre et en contrôle la réalisation ; vous lui transmettez observations et mesures dès qu'une donnée sort de l'habituel.</td><td style="padding:9px;border:1px solid #E0E0E0;">Vous ne recevez que des soins de son rôle propre, dans les limites de votre formation (l'aide à la prise des médicaments y figure, dans ses conditions strictes), jamais un soin sur prescription. Vous ne décidez pas d'un report de traitement, d'une conduite à tenir clinique, d'une contention.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Aide-soignant et aide-soignant</td><td style="padding:9px;border:1px solid #E0E0E0;">Répartition des personnes, soins à deux, relais pendant une pause ou une urgence, entraide sur les personnes les plus dépendantes.</td><td style="padding:9px;border:1px solid #E0E0E0;">Chacun trace ce qu'il a fait. Un relais se transmet précisément : ce qui reste à faire, ce qui a été observé.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Aide-soignant et agent de service</td><td style="padding:9px;border:1px solid #E0E0E0;">Entretien, service hôtelier, distribution des plateaux selon l'organisation de l'établissement. L'agent vous signale ce qu'il observe.</td><td style="padding:9px;border:1px solid #E0E0E0;">Vous lui confiez ce qui relève de sa fonction. Vous ne lui confiez pas un soin (toilette, aide au repas d'une personne à risque de fausse route, transfert), même simple et même en cas de sous-effectif.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
-<p style="margin:0;"><strong>⚠️ Confier n'est pas se décharger.</strong> L'infirmier reste responsable du soin qu'il vous confie ; vous répondez de sa réalisation et de vos signalements. Dans votre livret, chaque « j'ai demandé à… » doit laisser voir que la demande était dans le champ de celui qui l'a reçue.</p>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">2.6 · La fin de poste et la relève</p>
-
-<ul style="padding-left:20px;">
-<li><strong>Vérifier</strong> : chaque personne installée en sécurité, sonnette à portée de main, lit en position basse si c'est la consigne, boisson accessible.</li>
-<li><strong>Tracer</strong> : soins, observations, surveillances, refus, soins reportés et leur raison.</li>
-<li><strong>Transmettre</strong> : en commençant par ce qui est prioritaire pour l'équipe suivante (personne instable, soin reporté, rendez-vous).</li>
-<li><strong>Signaler</strong> : à l'encadrement, ce qui doit remonter (manque de matériel, événement indésirable).</li>
-</ul>
-
-<p>La fin de poste ferme la boucle : la continuité des soins est assurée après votre départ.</p>
-
-<p style="font-weight:bold;color:#212121;margin:24px 0 8px 0;">✍️ Exercice 2 (5&nbsp;min) · Je peux confier, je ne peux pas, ou sous conditions ?</p>
-<p>Vous êtes en sous-effectif ce matin. Pour chaque demande, dites si elle respecte le champ de chacun.</p>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">a) Demander à l'agent de service de distribuer les plateaux du petit-déjeuner aux résidents autonomes, pendant que vous commencez les toilettes.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Dans le champ</strong>, si la distribution des repas relève de sa fonction dans votre établissement. Vous gardez les personnes qui ont besoin d'aide ou de surveillance au repas.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">b) Demander à l'agent de service de faire la toilette au lavabo d'une résidente « qui fait presque tout seule ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Non.</strong> La toilette est un soin, qui suppose une observation et une adaptation. Vous réorganisez avec l'infirmier et vous signalez le sous-effectif.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">c) Aider un résident à prendre son traitement du matin, préparé par l'infirmière dans un sachet individuel à son nom, daté.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Possible si <strong>toutes</strong> sont réunies : non injectable, non stupéfiant, préparé par l'infirmier ou la pharmacie, emballé individuellement, identifiable, daté. Vous vérifiez identité et concordance, vous observez la prise, vous tracez.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">d) Demander à l'élève aide-soignante en première semaine de stage de réaliser seule les levers de quatre résidents, « pour gagner du temps ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Non.</strong> L'élève n'est pas un renfort d'effectif ; son autonomie est progressive, fixée avec son tuteur, et vous restez garant du soin.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">e) Demander à l'agent de service de relever un résident qui vient de glisser de son fauteuil, pendant que vous terminez une toilette.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Non, et doublement.</strong> Le relevage n'est pas de sa fonction, et personne ne relève avant l'évaluation infirmière. La chute interrompt votre soin : vous mettez la personne en cours de toilette en sécurité, vous allez auprès du résident et vous prévenez l'infirmière, qui évalue avant tout relevage.</p></details>
-
-<div style="background:#F5F5F5;border-radius:10px;padding:14px 20px;margin:18px 0;">
-<p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Une journée habituelle prouve une méthode, de la relève à la fin de poste. Cinq critères dans l'ordre : sécurité, besoins de la personne, soins programmés et horaires contraints, rythme et habitudes, charge en binôme. Chaque priorité s'écrit avec son pourquoi. Jamais un soin confié à qui n'a pas la qualification.</p>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Partie 3</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · S'adapter aux imprévus <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:40 · 15&nbsp;min</span></div>
-
-<p>La journée avec imprévus n'est pas le récit d'une matinée héroïque : elle démontre que votre organisation <strong>sait se réorganiser</strong> sans sacrifier la sécurité, le champ de compétence ni la continuité des soins.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:18px 0 8px 0;">3.1 · Les imprévus les plus fréquents, et le premier réflexe</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:20%;">Imprévu</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:40%;">Premier réflexe (dans votre champ)</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce qui ne vous revient pas</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Chute</td><td style="padding:9px;border:1px solid #E0E0E0;">Rester auprès de la personne, ne pas la relever avant l'évaluation, la couvrir, la rassurer, appeler l'infirmier, mesurer les paramètres à sa demande, tracer. Sous anticoagulant, toute chute se transmet, même sans lésion visible.</td><td style="padding:9px;border:1px solid #E0E0E0;">L'évaluation des lésions, la décision de relevage et d'appel médical reviennent à l'infirmier et au médecin.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Malaise</td><td style="padding:9px;border:1px solid #E0E0E0;">Interrompre le soin, installer en sécurité, ne pas laisser seul, appeler l'infirmier, gestes de l'AFGSU si nécessaire, paramètres, transmission.</td><td style="padding:9px;border:1px solid #E0E0E0;">L'interprétation et la conduite à tenir clinique.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Entrée ou sortie non prévue</td><td style="padding:9px;border:1px solid #E0E0E0;">Entrée : préparer la chambre avec l'agent de service, accueillir la personne et son entourage, recueillir ses habitudes. Sortie : préparer la personne et ses affaires, vérifier avec l'infirmier que le dossier de liaison est prêt.</td><td style="padding:9px;border:1px solid #E0E0E0;">Le recueil clinique, le projet de soins, les documents médicaux et les informations sur les traitements.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Décès</td><td style="padding:9px;border:1px solid #E0E0E0;">Prévenir l'infirmier, respecter les souhaits connus, accueillir la famille avec l'équipe, réaliser les soins après le décès selon le protocole, une fois celui-ci constaté, puis réorganiser la matinée.</td><td style="padding:9px;border:1px solid #E0E0E0;">Le constat du décès relève du médecin ; l'annonce à la famille, de l'équipe médicale et infirmière selon l'organisation.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Absence d'un collègue</td><td style="padding:9px;border:1px solid #E0E0E0;">Prévenir l'infirmier et l'encadrement, reprendre la répartition avec l'infirmier, reporter ce qui peut l'être en le traçant.</td><td style="padding:9px;border:1px solid #E0E0E0;">Le remplacement relève de l'encadrement. Vous ne comblez pas l'absence en confiant des soins à qui n'a pas la qualification.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Refus de soin</td><td style="padding:9px;border:1px solid #E0E0E0;">Respecter le refus (loi du 4 mars 2002), chercher la cause, reproposer plus tard ou autrement, tracer, transmettre à l'infirmier.</td><td style="padding:9px;border:1px solid #E0E0E0;">Si le refus porte sur un soin essentiel ou se répète, l'infirmier et le médecin en évaluent les conséquences.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Famille en difficulté</td><td style="padding:9px;border:1px solid #E0E0E0;">Accueillir, écouter à l'écart pour la confidentialité, reformuler, orienter vers l'infirmier ou le cadre, que vous prévenez.</td><td style="padding:9px;border:1px solid #E0E0E0;">Toute information médicale, tout résultat, tout pronostic.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Panne de matériel</td><td style="padding:9px;border:1px solid #E0E0E0;">Mettre le matériel hors service, signaler selon la procédure, organiser une solution de remplacement sûre (autre appareil, aide d'un collègue, report du lever).</td><td style="padding:9px;border:1px solid #E0E0E0;">La réparation. Et jamais un transfert « à la force des bras » pour compenser l'absence d'aide technique.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">3.2 · La méthode ORACLE en cinq temps</p>
-
-<div style="border:1px solid #E0E0E0;background:#FAFAFA;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0 0 8px 0;"><strong style="color:#C62828;">1 · Alerter et sécuriser.</strong> La personne d'abord : vous restez auprès d'elle, vous la mettez en sécurité, vous appelez l'infirmier. <strong>L'infirmier évalue et décide.</strong></p>
-<p style="margin:0 0 8px 0;"><strong style="color:#E65100;">2 · Réévaluer les priorités.</strong> Vous reprenez la feuille de répartition avec l'infirmier : ce qui reste urgent, ce qui garde un horaire contraint, ce qui peut attendre.</p>
-<p style="margin:0 0 8px 0;"><strong style="color:#424242;">3 · Informer l'équipe.</strong> Votre binôme, l'agent de service, l'encadrement si l'effectif ou la sécurité est en jeu.</p>
-<p style="margin:0 0 8px 0;"><strong style="color:#2E7D32;">4 · Reporter ce qui peut l'être, le tracer, le transmettre.</strong> Une douche devient une toilette au lavabo, une animation est décalée, un rangement attend. Chaque report est tracé et transmis, avec sa raison et le moment où il sera repris.</p>
-<p style="margin:0;"><strong style="color:#6A1B9A;">5 · Vérifier et fermer la boucle.</strong> En fin de poste, vous vérifiez que l'équipe suivante sait ce qui reste à faire ; le lendemain, que le soin reporté a été réalisé.</p>
-</div>
-
-<div style="background:#FFEBEE;border:2px solid #C62828;border-radius:10px;padding:16px 20px;margin:12px 0;">
-<p style="margin:0 0 8px 0;font-weight:bold;color:#C62828;font-size:16px;">🚨 Deux lignes rouges, même quand tout déborde</p>
-<p style="margin:0 0 8px 0;"><strong>Jamais au détriment de la sécurité.</strong> Un transfert prévu à deux ne se fait pas seul ; une personne à risque de fausse route ne mange pas seule ; une surveillance prescrite ne saute pas.</p>
-<p style="margin:0;"><strong>Jamais hors du champ.</strong> Si l'infirmier est injoignable, vous suivez la procédure d'urgence du service (15, médecin d'astreinte, cadre), vous restez auprès de la personne et vous tracez. Vous ne sortez pas de votre champ pour « rendre service ».</p>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">3.3 · Ce qui peut se reporter, et ce qui ne se reporte pas</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr><th style="padding:10px;background:#2E7D32;color:#FFFFFF;border:1px solid #2E7D32;text-align:left;width:50%;">Peut se reporter, en lien avec l'infirmier, tracé et transmis</th><th style="padding:10px;background:#C62828;color:#FFFFFF;border:1px solid #C62828;text-align:left;">Ne se reporte pas</th></tr>
-<tr>
-<td style="padding:12px;border:1px solid #C8E6C9;background:#F1F8E9;vertical-align:top;">Une douche programmée, remplacée par une toilette au lavabo.<br>Un shampoing, un soin des ongles sans risque.<br>Un rangement, un réassort non urgent.<br>Une animation, si elle peut être reproposée.<br>Un lever tardif, si la personne est installée confortablement et en sécurité au lit.</td>
-<td style="padding:12px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;">Une alerte, une surveillance prescrite.<br>L'aide à l'élimination, l'hydratation, le repas.<br>Les changements de position prévus pour prévenir une escarre.<br>L'aide à la prise d'un traitement préparé : c'est l'infirmier qui décide de tout décalage.<br>L'hygiène des mains et les précautions complémentaires.</td>
-</tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">3.4 · Dire la limite en deux temps, dans une journée bousculée</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:50%;">Ce que je ne fais pas</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce que je fais à la place</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;">Je ne relève pas M. V. avant que l'infirmière l'ait examiné.</td><td style="padding:9px;border:1px solid #E0E0E0;">Je reste auprès de lui, je le couvre, j'appelle l'infirmière par l'appel malade et je mesure sa pression artérielle à sa demande.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;">Je ne décale pas moi-même le traitement de Mme F., dont la toilette a pris du retard.</td><td style="padding:9px;border:1px solid #E0E0E0;">Je préviens l'infirmière du retard, qui décide de l'horaire de prise.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;">Je ne fais pas le transfert de Mme K. seule, alors que son plan de soins prévoit deux soignants.</td><td style="padding:9px;border:1px solid #E0E0E0;">Je la laisse installée au lit en sécurité, je préviens l'infirmière et je fais le transfert à 10 h, à l'arrivée du renfort.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;margin:24px 0 8px 0;">✍️ Exercice 3 (6&nbsp;min) · Prioriser une liste de tâches quand l'imprévu arrive</p>
-<div style="background:#FAFAFA;border:1px solid #E0E0E0;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0 0 8px 0;"><strong>Le contexte.</strong> EHPAD, secteur de 14 résidents, poste du matin, en binôme avec une autre aide-soignante ; une infirmière pour deux secteurs ; un agent de service. À 7 h 15, votre liste :</p>
-<ol style="margin:0 0 8px 0;padding-left:22px;">
-<li>Mme A., diabétique sous insuline : prise de sang à jeun prévue à 7 h 30.</li>
-<li>M. B., maladie de Parkinson, lévodopa à 8 h, à heure fixe : lever avant la prise.</li>
-<li>Mme C., ambulance à 9 h 30 pour une consultation.</li>
-<li>Mme D., douche programmée ce matin.</li>
-<li>M. E., levé habituellement à 9 h 30, par choix inscrit dans son projet personnalisé.</li>
-<li>Trois transferts au lève-personne, à faire à deux.</li>
-<li>Réassort du chariot de linge.</li>
-</ol>
-<p style="margin:0;"><strong>L'imprévu.</strong> À 7 h 40, vous trouvez M. F., 88 ans, traité par apixaban (anticoagulant oral), assis au sol au pied de son lit, conscient, se plaignant de la hanche droite.</p>
-</div>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">1. Quel est votre premier geste à 7 h 40 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Sécuriser et alerter.</strong> Vous restez auprès de M. F. sans le relever, vous appelez l'infirmière et vous prévenez votre collègue. Sous anticoagulant, la chute doit être évaluée, même s'il « a l'air d'aller bien ».</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">2. L'infirmière est retenue dix minutes auprès de M. F. Que devient Mme A., à jeun ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous vous coordonnez.</strong> Sous insuline, un jeûne prolongé l'expose à l'hypoglycémie : vous le rappelez à l'infirmière, qui décide de l'ordre. Votre collègue surveille Mme A. (sueurs, pâleur, confusion) et sert son petit-déjeuner dès le prélèvement fait.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">3. Et M. B., dont la lévodopa est prévue à 8 h ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Horaire contraint.</strong> Un retard l'expose à des blocages et à des chutes : votre collègue le lève en priorité. Si l'horaire ne peut être tenu, l'infirmière décide.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">4. Dans quel ordre reprenez-vous Mme C. et les trois transferts ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Mme C. d'abord</strong> (horaire non négociable, dossier de liaison vérifié par l'infirmière), <strong>puis les transferts regroupés</strong> sur un créneau convenu avec votre collègue.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">5. Que devient la douche de Mme D. ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Report possible</strong> : vous en parlez à Mme D. et à l'infirmière, vous proposez une toilette au lavabo, vous tracez le report et sa raison, et vous le transmettez pour qu'il soit repris.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">6. Et M. E., le réassort, la chute de M. F. en fin de matinée ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>M. E. se lève à son heure</strong> : l'imprévu ne justifie pas de le réveiller. <strong>Le réassort passe en dernier.</strong> <strong>La chute se trace</strong> en transmission ciblée <strong>et se déclare</strong> selon la procédure, avec l'infirmière : c'est le lien avec la démarche qualité. La surveillance qu'elle a demandée se poursuit et se transmet.</p></details>
-
-<div style="background:#F5F5F5;border-radius:10px;padding:14px 20px;margin:18px 0;">
-<p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Cinq temps : alerter et sécuriser, réévaluer avec l'infirmier, informer, reporter en traçant, vérifier. Deux lignes rouges : jamais au détriment de la sécurité, jamais hors du champ. La limite se dit en deux temps : ce que je ne fais pas, ce que je fais à la place.</p>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Partie 4</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · Le travail en équipe pluriprofessionnelle <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:55 · 15&nbsp;min</span></div>
-
-<p>La phrase-clé se termine par « dans une équipe » : le jury évalue un professionnel qui connaît le rôle de chacun, sait à qui s'adresser et communique de façon factuelle.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:18px 0 8px 0;">4.1 · Qui fait quoi : rôles et fonctions</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:30%;">Professionnel</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce que vous lui apportez, ce que vous en attendez</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Médecin traitant, médecin coordonnateur en EHPAD</td><td style="padding:9px;border:1px solid #E0E0E0;">Le médecin traitant pose le diagnostic et prescrit ; le médecin coordonnateur coordonne le projet de soins de l'établissement. Vos observations éclairent leurs décisions.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Infirmier (et infirmier coordinateur)</td><td style="padding:9px;border:1px solid #E0E0E0;">Il vous confie des soins de son rôle propre, en contrôle la réalisation et décide de la conduite à tenir : votre interlocuteur premier.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Cadre de santé, responsable d'unité</td><td style="padding:9px;border:1px solid #E0E0E0;">Il organise plannings et effectifs, pilote les projets et la démarche qualité, arbitre les conflits. Vous lui signalez un manque d'effectif, un problème récurrent, une proposition d'amélioration.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Aides-soignants, accompagnants éducatifs et sociaux</td><td style="padding:9px;border:1px solid #E0E0E0;">Répartition, entraide, soins à deux, relais.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Agents de service</td><td style="padding:9px;border:1px solid #E0E0E0;">Entretien des locaux, service hôtelier ; leurs observations comptent.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Rééducateurs, diététicien, psychologue, animateur, assistant social</td><td style="padding:9px;border:1px solid #E0E0E0;">Chacun sur son domaine. Vous appliquez leurs consignes et vous relayez ce que vous observez : mobilité, appétit, humeur, isolement, difficultés de l'entourage.</td></tr>
-</table>
-
-<div style="background:#F5F5F5;border-left:6px solid #424242;border-radius:10px;padding:14px 20px;margin:14px 0;">
-<p style="margin:0;"><strong>💡 Votre valeur ajoutée dans l'équipe.</strong> Vous êtes le professionnel qui passe le plus de temps auprès de la personne. Dans votre livret, montrez que cette observation <strong>circule</strong> et qu'elle <strong>change</strong> une décision d'équipe.</p>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">4.2 · Communiquer dans l'équipe : transmissions, réunions d'équipe, réunions de synthèse</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:26%;">Moment</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Votre contribution attendue</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Transmissions</td><td style="padding:9px;border:1px solid #E0E0E0;">Des faits, des chiffres, comparés à l'habituel, l'urgent d'abord. En activité 11, montrez ce que la transmission a changé à l'organisation.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Réunion d'équipe</td><td style="padding:9px;border:1px solid #E0E0E0;">Faire remonter une difficulté, proposer un ajustement, présenter une action d'amélioration et son bilan.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Réunion de synthèse, élaboration du projet personnalisé</td><td style="padding:9px;border:1px solid #E0E0E0;">Apporter votre connaissance fine de la personne : habitudes, capacités réelles, souhaits exprimés pendant les soins.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">4.3 · Désaccords et conflits : factuel, au bon interlocuteur, au bon moment</p>
-
-<p>C'est la gestion du désaccord qui dit votre professionnalisme. Trois règles :</p>
-<ul style="padding-left:20px;">
-<li><strong>Factuel</strong> : vous décrivez un fait observable et sa conséquence pour la personne, pas un jugement sur un collègue. « Mme B. a été levée seule ce matin alors que son plan de soins prévoit deux soignants » plutôt que « elle ne respecte jamais rien ».</li>
-<li><strong>Au bon interlocuteur</strong> : d'abord la personne concernée, en privé ; si le problème touche la sécurité d'une personne ou persiste, l'infirmier ou le cadre. Jamais devant les résidents ou les familles, jamais dans le couloir.</li>
-<li><strong>Au bon moment</strong> : une urgence de sécurité se traite tout de suite ; un désaccord d'organisation se traite à distance, à tête reposée, éventuellement en réunion d'équipe.</li>
-</ul>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:14px 0;">
-<p style="margin:0;"><strong>⚠️ Ce qui ne se garde jamais pour soi.</strong> Un geste qui met une personne en danger, une situation qui vous fait penser à de la maltraitance, une pratique hors champ demandée ou observée : vous le signalez à l'infirmier ou à l'encadrement, selon la procédure.</p>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">4.4 · Entraide, posture, prévention de l'épuisement, accueil des nouveaux</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:26%;">Dimension</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce qui la prouve dans un récit</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Entraide</td><td style="padding:9px;border:1px solid #E0E0E0;">Proposer son aide, répondre à un appel pour un soin à deux, prendre le relais pendant une urgence, en le disant à l'infirmier pour que la répartition reste claire.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Prévention de l'épuisement et des risques professionnels</td><td style="padding:9px;border:1px solid #E0E0E0;">Utiliser les aides techniques, respecter ses pauses, signaler une surcharge répétée à l'encadrement, parler d'une situation difficile (un décès, une agressivité), être attentif à un collègue qui s'épuise. La posture (discrétion, secret, aucune remarque sur un collègue devant une personne soignée) en fait partie.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Accueil des nouveaux</td><td style="padding:9px;border:1px solid #E0E0E0;">Sous l'angle de l'organisation : résidents prioritaires, horaires contraints, charge du binôme adaptée les premiers jours. La démarche pédagogique relève de l'activité 7.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;margin:24px 0 8px 0;">✍️ Exercice 4 (4&nbsp;min) · Quelle réaction professionnelle ?</p>
-<p>Pour chaque situation d'équipe, formulez votre réaction, puis comparez.</p>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">a) Votre collègue de binôme laisse systématiquement les deux résidents les plus lourds pour la fin de matinée, et vous les récupérez à chaque fois.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Vous lui en parlez en privé, avec le fait et sa conséquence : « M. H. a manqué l'animation deux fois cette semaine. » Si rien ne change, vous en parlez à l'infirmière ou au cadre.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">b) Une collègue vous reproche vivement, dans le couloir et devant une famille, d'avoir « oublié » une toilette.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Vous gardez votre calme et vous proposez de poursuivre à l'écart. Vous y reprenez les faits : la toilette a été reportée avec l'accord de l'infirmière, et le report est tracé. Si le conflit se répète, vous le portez au cadre.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">c) Une infirmière intérimaire, débordée, vous demande de « faire l'insuline de la chambre 12 ».</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Vous refusez, en disant la limite en deux temps :</strong> « Je ne peux pas faire d'injection. Je prépare et j'installe Mme L., et je vous préviens dès qu'elle est prête. » Si la surcharge met les soins en danger, vous le signalez au cadre.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">d) Un nouveau collègue arrive le jour où vous êtes en sous-effectif.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Vous lui présentez d'abord ce qui touche à la sécurité (risques de chute ou de fausse route, transferts à deux, appel de l'infirmière) et, avec l'infirmière, vous lui confiez des résidents plus autonomes.</p></details>
-
-<div style="background:#F5F5F5;border-radius:10px;padding:14px 20px;margin:18px 0;">
-<p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> Connaître le rôle de chacun, c'est savoir à qui s'adresser. Vos observations doivent circuler et changer une décision. Un désaccord se traite de façon factuelle, au bon interlocuteur, au bon moment, jamais devant les personnes soignées. Ce qui met une personne en danger ne se garde jamais pour soi.</p>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Partie 5</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · La démarche qualité, la gestion des risques et l'action d'amélioration <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:10 · 20&nbsp;min</span></div>
-
-<p>La démarche qualité repose sur ce que chaque professionnel observe, signale et accepte de faire évoluer. Elle fournit le cadre de l'<strong>action d'amélioration</strong>, troisième élément de l'activité 11.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:18px 0 8px 0;">5.1 · L'amélioration continue : la roue PDCA</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:18%;">Étape</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:40%;">Ce qu'on y fait</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Votre part, en tant qu'aide-soignant</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;color:#424242;">P · Planifier</td><td style="padding:9px;border:1px solid #E0E0E0;">Partir d'un constat objectivé, en rechercher les causes, choisir une action et la faire valider.</td><td style="padding:9px;border:1px solid #E0E0E0;">Vous mesurez sur une période définie, puis vous proposez à l'infirmier et au cadre.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;color:#E65100;">D · Faire</td><td style="padding:9px;border:1px solid #E0E0E0;">Mettre en œuvre l'action en associant l'équipe.</td><td style="padding:9px;border:1px solid #E0E0E0;">Vous présentez l'action en réunion et vous l'appliquez.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;color:#2E7D32;">C · Vérifier</td><td style="padding:9px;border:1px solid #E0E0E0;">Mesurer avec le même indicateur qu'au départ, comparer avant et après.</td><td style="padding:9px;border:1px solid #E0E0E0;">Vous refaites le même comptage, sur la même durée, dans les mêmes conditions.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;color:#6A1B9A;">A · Agir</td><td style="padding:9px;border:1px solid #E0E0E0;">Ajuster, pérenniser (protocole, outil d'accueil), puis relancer la roue.</td><td style="padding:9px;border:1px solid #E0E0E0;">Vous proposez les ajustements ; l'encadrement valide l'outil.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">5.2 · L'événement indésirable et sa déclaration</p>
-
-<p>Un <strong>événement indésirable</strong> est un événement non souhaité, survenu à l'occasion des soins ou de l'accompagnement, qui a eu ou aurait pu avoir des conséquences pour la personne, pour les professionnels ou pour l'établissement. L'événement évité de justesse, parfois appelé « presque-accident », se déclare aussi : c'est souvent lui qui permet d'agir avant le dommage.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:30%;">Exemples dans votre quotidien</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce que vous faites</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;">Une chute, une fugue, une erreur d'identité, un repas de texture non adaptée servi à une personne à risque de fausse route, un matériel défaillant pendant un soin, une agression, une erreur de circuit du linge.</td><td style="padding:9px;border:1px solid #E0E0E0;"><strong>1.</strong> Sécuriser et alerter. <strong>2.</strong> Tracer dans le dossier de soins. <strong>3.</strong> Déclarer selon la procédure de l'établissement, seul ou avec l'infirmier : des faits datés, sans jugement ni accusation. <strong>4.</strong> Participer à l'analyse si on vous le demande. <strong>5.</strong> S'informer des suites.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">5.3 · Analyser les causes sans rechercher de coupable</p>
-
-<p>L'analyse d'un événement indésirable cherche <strong>ce qui l'a rendu possible</strong> : l'organisation, le matériel, l'environnement, la communication, la charge de travail, la formation. Chercher un coupable fait taire les déclarations suivantes ; chercher les causes permet de corriger l'organisation.</p>
-
-<p>Le <strong>retour d'expérience</strong> réunit les professionnels concernés pour reconstituer les faits, identifier les causes et décider d'actions correctives. Vous y racontez précisément ce que vous avez vu, en sachant que l'analyse n'est pas punitive.</p>
-
-<div style="background:#F5F5F5;border-left:6px solid #424242;border-radius:10px;padding:14px 20px;margin:14px 0;">
-<p style="margin:0;"><strong>💡 Devant le jury.</strong> Reconnaître une erreur que vous avez vous-même commise, l'avoir déclarée et expliquer ce qui a changé ensuite est une preuve de maturité professionnelle. Le jury valorise la prise de conscience ; il se méfie davantage du candidat à qui « rien n'arrive jamais ».</p>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">5.4 · Protocoles, procédures et évaluation des pratiques professionnelles</p>
-
-<ul style="padding-left:20px;">
-<li><strong>Un protocole</strong> décrit comment réaliser un soin ou une conduite à tenir. <strong>Une procédure</strong> décrit qui fait quoi et dans quel ordre. Vous les appliquez et vous signalez ceux qui sont inapplicables ou dépassés.</li>
-<li><strong>L'évaluation des pratiques professionnelles</strong> compare ce que l'équipe fait réellement à ce qu'elle devrait faire (hygiène des mains, traçabilité des changements de position). Elle peut nourrir votre action d'amélioration.</li>
-<li><strong>L'évaluation de votre propre pratique</strong> fait aussi partie de la compétence 11 : repérer un écart dans votre façon de faire, demander ou suivre une formation, et montrer ce qu'elle a changé.</li>
-</ul>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">5.5 · Certification, évaluation, bientraitance, satisfaction des usagers</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:30%;">Dispositif</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Ce qu'il faut en savoir, et votre part</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Certification des établissements de santé par la HAS</td><td style="padding:9px;border:1px solid #E0E0E0;">Les hôpitaux et cliniques sont certifiés par la Haute Autorité de santé, qui évalue la qualité et la sécurité des soins. Les professionnels de terrain peuvent être interrogés sur leurs pratiques.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Évaluation des établissements et services sociaux et médico-sociaux (ESSMS)</td><td style="padding:9px;border:1px solid #E0E0E0;">Les EHPAD, services de soins à domicile et autres ESSMS sont évalués régulièrement selon un référentiel national élaboré par la HAS.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Bientraitance</td><td style="padding:9px;border:1px solid #E0E0E0;">Une culture de respect de la personne, de ses choix, de son rythme et de sa dignité, qui se questionne en équipe ; repérer et signaler la maltraitance en est le versant protecteur.</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">Satisfaction des usagers</td><td style="padding:9px;border:1px solid #E0E0E0;">Questionnaires de satisfaction, plaintes et réclamations, instances d'expression comme le conseil de la vie sociale en établissement médico-social (loi du 2 janvier 2002). Vous recueillez la parole des personnes et de leur entourage pendant les soins, et vous la transmettez.</td></tr>
-</table>
-
-<p><strong>⚠️ Ne récitez pas la réglementation :</strong> le jury attend que vous sachiez à quoi servent ces dispositifs et comment votre pratique y contribue.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">5.6 · L'action d'amélioration recevable : cinq composantes</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#212121;color:#FFFFFF;"><th style="padding:9px;border:1px solid #212121;text-align:left;width:24%;">Composante</th><th style="padding:9px;border:1px solid #212121;text-align:left;width:38%;">Ce que le jury lit</th><th style="padding:9px;border:1px solid #212121;text-align:left;">Exemple de formulation</th></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">① Un constat objectivé</td><td style="padding:9px;border:1px solid #E0E0E0;">Un problème réel, mesuré sur une période définie. Pas une impression.</td><td style="padding:9px;border:1px solid #E0E0E0;font-style:italic;">« Pendant deux semaines, j'ai noté à chaque tour de 14 h le nombre de résidents dont la sonnette était hors de portée : 9 sur 30 en moyenne. »</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">② Une proposition</td><td style="padding:9px;border:1px solid #E0E0E0;">Une action précise, qui répond aux causes, dans votre champ, soumise à l'encadrement.</td><td style="padding:9px;border:1px solid #E0E0E0;font-style:italic;">« J'ai proposé à la cadre et à l'infirmière coordinatrice une vérification en quatre points à chaque sortie de chambre. »</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">③ Une mise en œuvre avec l'équipe et l'encadrement</td><td style="padding:9px;border:1px solid #E0E0E0;">Validation, présentation à l'équipe, outil, date, votre part exacte.</td><td style="padding:9px;border:1px solid #E0E0E0;font-style:italic;">« Après validation, je l'ai présentée en réunion d'équipe le 13 mars, avec un aide-mémoire plastifié affiché sur chaque chariot. »</td></tr>
-<tr style="background:#FAFAFA;"><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">④ Une évaluation mesurée, avant et après</td><td style="padding:9px;border:1px solid #E0E0E0;">Le même indicateur, dans les mêmes conditions, interprété honnêtement.</td><td style="padding:9px;border:1px solid #E0E0E0;font-style:italic;">« Un mois après, avec le même relevé sur deux semaines : 2 sonnettes hors de portée sur 30 en moyenne. »</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;font-weight:bold;">⑤ Une pérennisation</td><td style="padding:9px;border:1px solid #E0E0E0;">Ce qui la fait durer : protocole, livret d'accueil, mesure programmée.</td><td style="padding:9px;border:1px solid #E0E0E0;font-style:italic;">« La cadre a intégré la vérification au livret d'accueil des nouveaux, et un relevé est prévu chaque trimestre. »</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:22px 0 8px 0;">5.7 · Les trois pièges qui font tomber l'action d'amélioration</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:30%;">Piège</th><th style="padding:9px;border:1px solid #C62828;text-align:left;width:35%;">Ce qu'on lit</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Comment le corriger</th></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">L'idée jamais mise en œuvre</td><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« J'ai proposé à ma cadre de… Elle a trouvé que c'était une bonne idée. »</td><td style="padding:9px;border:1px solid #FFCDD2;">Choisir une action qui a réellement été appliquée. Si votre idée n'a pas abouti, vous pouvez l'évoquer à l'oral comme une réflexion, pas comme votre action d'amélioration.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">L'action décidée seul, hors de votre champ</td><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« J'ai décidé de mettre les barrières à tous les résidents qui chutent la nuit. » « J'ai modifié les textures des repas. »</td><td style="padding:9px;border:1px solid #FFCDD2;">La contention est une décision médicale ; la texture relève d'une évaluation de l'équipe soignante et médicale. Une action d'amélioration se propose, se valide et se met en œuvre avec l'encadrement. Décrite comme décidée par vous, elle devient un acte hors champ.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;font-weight:bold;">L'amélioration non mesurée</td><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« Depuis, cela se passe beaucoup mieux. » « L'équipe est satisfaite. »</td><td style="padding:9px;border:1px solid #FFCDD2;">Refaire la même mesure qu'au départ. Sans chiffre avant et après, le jury ne peut pas coter « acquis ».</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;margin:24px 0 8px 0;">✍️ Exercice 5 (6&nbsp;min) · Construire une action d'amélioration en PDCA</p>
-<div style="background:#FAFAFA;border:1px solid #E0E0E0;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0;"><strong>Le point de départ.</strong> En EHPAD, vous avez l'impression que plusieurs résidents passent la matinée sans leurs appareils auditifs ou leurs lunettes après la toilette ; l'un a failli chuter en cherchant ses lunettes. Construisez l'action étape par étape.</p>
-</div>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">P1 · Comment transformez-vous « une impression » en constat objectivé ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Avec un indicateur, une période et un moment de relevé : pendant dix jours, à 10 h 30, je note pour les 11 résidents appareillés si lunettes et appareils auditifs sont portés. Dans cet exemple construit : 5 sur 11 en moyenne sans au moins une aide. Le presque-accident est déclaré.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">P2 · Quelles causes recherchez-vous, et avec qui ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Avec vos collègues, sans chercher de coupable : aides laissées sur la table de nuit après la toilette, information absente de la feuille de répartition, piles non vérifiées.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">P3 · Quelle proposition, et à qui la soumettez-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Un pictogramme « lunettes » et « appareils auditifs » sur la feuille de répartition, et la remise des aides comme dernière étape de chaque toilette. Vous la soumettez à l'infirmière coordinatrice et à la cadre, qui valident.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">D · Comment se passe la mise en œuvre ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Présentation en réunion d'équipe, mise à jour de la feuille de répartition avec l'accord de la cadre, information des équipes d'après-midi et de nuit, signalement à l'infirmière des appareils défectueux.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">C · Comment vérifiez-vous le résultat ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Avec le même relevé : 1 sur 11 en moyenne, contre 5 avant. Le résident restant refuse ses appareils : refus respecté et transmis.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">A · Comment pérennisez-vous, et si le résultat avait déçu ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;">Pictogrammes maintenus, étape inscrite au livret d'accueil, relevé reprogrammé. Sinon, vous auriez cherché pourquoi avec l'équipe et relancé la roue : c'est cela, l'amélioration continue.</p></details>
-
-<p style="font-weight:bold;color:#212121;margin:24px 0 8px 0;">✍️ Exercice 6 (4&nbsp;min) · Action d'amélioration recevable, ou non ?</p>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">a) « J'ai remarqué que les résidents buvaient peu l'après-midi. J'en ai parlé en réunion, tout le monde était d'accord. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Non recevable en l'état.</strong> Ni constat chiffré, ni mise en œuvre, ni mesure : c'est un point de départ.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">b) « Après trois chutes nocturnes en un mois, j'ai décidé de relever les barrières de lit de tous les résidents du couloir. »</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Éliminatoire.</strong> Les barrières de lit sont une contention, décision médicale encadrée par le protocole de l'établissement. L'action passerait par une analyse des causes et une proposition dans votre champ, validée par l'encadrement.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">c) « J'ai relevé pendant quinze jours les changements de position tracés pour les 6 résidents à risque d'escarre : 58 % des passages prévus étaient tracés. Avec l'infirmière et la cadre, nous avons mis en place une feuille de suivi en chambre. Un mois après, avec le même relevé, 91 % étaient tracés. La feuille est intégrée au protocole de prévention. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Recevable.</strong> Constat chiffré, mise en œuvre avec l'encadrement, même indicateur avant et après, pérennisation. Précisez votre part au « je ».</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">d) « J'ai proposé que les résidents qui toussent pendant le repas aient une texture mixée. »</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Repérer et signaler une toux au repas est dans votre champ ; décider d'une texture ne l'est pas. L'action est recevable si elle est rédigée comme un circuit de repérage et de signalement, mis en œuvre avec l'infirmière et le médecin, et mesuré.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">e) « Après une formation à la manutention que j'ai demandée, j'ai proposé de regrouper les transferts au lève-personne sur deux créneaux fixes. Sur deux semaines, les appels de binôme en urgence pour un transfert sont passés de 14 à 3. »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Recevable, à compléter.</strong> Elle touche aux risques professionnels, que cite la compétence 11, et elle est mesurée. Précisez la validation par l'encadrement et la pérennisation.</p></details>
-
-<div style="background:#F5F5F5;border-radius:10px;padding:14px 20px;margin:18px 0;">
-<p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> PDCA : Planifier, Faire, Vérifier, Agir. Un événement indésirable se déclare et s'analyse sans recherche de coupable. Une action d'amélioration recevable va du constat objectivé à la pérennisation, mesure avant/après comprise. Trois pièges : l'idée jamais appliquée, l'action décidée seul hors du champ, l'amélioration non mesurée.</p>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Partie 6</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Trois situations modèles décortiquées, grille de détection et questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:30 · 20&nbsp;min</span></div>
-
-<p style="font-size:13px;color:#546E7A;font-style:italic;">Les trois situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; seules des initiales sont utilisées. Elles montrent un niveau de rédaction, pas un texte à reprendre. Lisez-les avant la séance : les 20&nbsp;min portent sur leur analyse et sur les questions du jury.</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:18px 0 8px 0;">6.1 · Les trois situations</p>
-
-<!-- Situation A -->
-<div style="background:#424242;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:20px 0 10px 0;font-weight:bold;">Situation A · Activité 11 (BC5) · Élément ① · Une journée habituelle au poste du matin, en EHPAD</div>
-
-<div style="background:#FAFAFA;border:1px solid #E0E0E0;border-radius:10px;padding:16px 20px;">
-<p style="margin:0 0 8px 0;"><strong>Le contexte et les personnes.</strong> Unité d'EHPAD de 28 résidents, poste du matin (6 h 45 – 14 h 15) : deux aides-soignantes pour un secteur de 14 résidents, une infirmière pour les deux secteurs, un agent de service. Quatre résidents structurent ma matinée :</p>
-<ul style="margin:0 0 8px 0;padding-left:20px;">
-<li><strong>Mme A.</strong>, 84 ans, diabète de type 2 traité par insuline (surveillance : hypoglycémie). GIR 3. Bilan sanguin à jeun ce matin.</li>
-<li><strong>M. B.</strong>, 79 ans, maladie de Parkinson, qui ralentit et raidit les mouvements, traitée par lévodopa, antiparkinsonien pris à 8 h, 12 h et 16 h (surveillance : blocages, hypotension au lever, chutes). GIR 2. Marche au déambulateur.</li>
-<li><strong>Mme C.</strong>, 91 ans, insuffisance cardiaque, c'est-à-dire un cœur qui ne pompe plus assez efficacement, traitée par furosémide, diurétique de l'anse (surveillance : envies pressantes d'uriner, hypotension au lever, déshydratation, chutes). GIR 3. Ambulance à 9 h 30 pour une consultation.</li>
-<li><strong>M. D.</strong>, 86 ans, troubles neurocognitifs sévères, GIR 1. Braden à 11, risque élevé d'escarre : changements de position toutes les trois heures, transferts au lève-personne à deux. Ancien boulanger, il se rendort après 4 h : son projet personnalisé prévoit sa toilette en fin de matinée.</li>
-</ul>
-<p style="margin:0;"><strong>La situation.</strong> <em>Prise de poste.</em> Le mardi 14 mars, à 6 h 45, à la relève, j'apprends que Mme C. s'est levée trois fois pour uriner et a eu un vertige à 5 h, sans chute : son diurétique l'exposant à l'hypotension, ce vertige augmente son risque de chute ce matin, et j'en fais une priorité. Je relis le plan de soins pour repérer les horaires contraints. <em>Répartition.</em> Avec ma collègue, nous reprenons la feuille de répartition, que je présente à l'infirmière : je prends sept résidents, dont ces quatre, et nous regroupons les trois transferts au lève-personne du secteur entre 10 h 30 et 11 h 15, après le départ de l'ambulance, pour ne pas nous interrompre l'une l'autre. <em>Priorités.</em> À 6 h 55, j'accompagne Mme C. aux toilettes, son diurétique lui donnant des envies pressantes, puis, à la demande de l'infirmière, je mesure sa pression artérielle couchée puis debout : 128/74 puis 122/70 mmHg, sans vertige. Je transmets ces valeurs. À 7 h, avec ma collègue, j'installe M. D. en décubitus latéral 30°, talons en décharge, parce que son score de Braden ne permet pas d'attendre. À 7 h 10, je rappelle à l'infirmière que Mme A. est à jeun depuis 19 h la veille, pour que son prélèvement passe en premier : sous insuline, un jeûne prolongé l'expose à l'hypoglycémie. Prélevée à 7 h 20, elle déjeune à 7 h 25, sans signe d'hypoglycémie à 7 h 50. À 7 h 30, je lève M. B. en le laissant assis une minute au bord du lit, à cause du risque d'hypotension au lever. À 8 h, je l'aide à prendre sa lévodopa, préparée par l'infirmière dans un sachet individuel à son nom et daté : je vérifie son identité et la concordance, j'observe la prise et je la trace. Je fais la toilette de M. B. à 8 h 45, quand son traitement fait effet : il lave seul son visage et son buste. À 9 h 20, Mme C. est prête, dossier de liaison vérifié par l'infirmière. <em>Rythme.</em> Je fais la toilette de M. D. à 11 h, comme le prévoit son projet personnalisé. <em>Fin de poste.</em> À 13 h 30, je vérifie dans mes sept chambres la sonnette à portée de main et la boisson accessible, puis je trace mes soins et mes mesures. À la relève de 14 h, je transmets en premier le retour de consultation de Mme C., prévu à 15 h, et le prochain changement de position de M. D., à 16 h.</p>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#F5F5F5;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #E0E0E0;">La méthode est visible, de la relève à la fin de poste. Chaque choix d'ordre porte son critère : sécurité (Braden, vertige de la nuit), besoin de la personne (diurétique, donc toilettes d'abord), horaires contraints (jeûne, lévodopa, ambulance), habitudes (toilette tardive de M. D.), charge du binôme (transferts regroupés). Le <strong>chaînage traitement-surveillance</strong> est présent pour les trois traitements cités. La relève modifie une priorité.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#F5F5F5;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #E0E0E0;">Prélèvement et dossier de liaison relèvent de l'infirmière ; l'aide à la prise est décrite avec ses conditions ; les pressions artérielles sont mesurées et transmises, pas interprétées.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #E0E0E0;">Une <strong>liste horaire sans priorisation ni pourquoi</strong> (« 7 h : toilettes. 8 h : petits-déjeuners. ») : un emploi du temps, pas une organisation. « On s'organise entre nous » : votre part disparaît. « J'ai donné les traitements du matin » : aide à la prise sans ses conditions. Réveiller M. D. à 7 h « pour avancer » : le rythme sacrifié à l'organisation.</td></tr>
-</table>
-
-<!-- Situation B -->
-<div style="background:#424242;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Activité 11 (BC5) · Élément ② · Une journée avec imprévus : collègue absente et chute d'un résident</div>
-
-<div style="background:#FAFAFA;border:1px solid #E0E0E0;border-radius:10px;padding:16px 20px;">
-<p style="margin:0 0 8px 0;"><strong>Le contexte et les personnes.</strong> Même unité, même poste du matin, trois semaines plus tard. Je retrouve M. B. et M. D., dont la situation est inchangée. Deux autres résidents sont concernés :</p>
-<ul style="margin:0 0 8px 0;padding-left:20px;">
-<li><strong>M. F.</strong>, 88 ans, fibrillation atriale, trouble du rythme cardiaque traité par apixaban, anticoagulant oral (surveillance : saignements, hématomes ; toute chute se transmet). GIR 3. Marche avec une canne.</li>
-<li><strong>Mme E.</strong>, 82 ans, arthrose des hanches traitée par paracétamol, antalgique de palier 1 (surveillance : douleur cotée par l'EVA, habituellement à 2 sur 10). GIR 4. Douche programmée le jeudi.</li>
-</ul>
-<p style="margin:0;"><strong>La situation.</strong> <em>Premier imprévu.</em> Le jeudi 6 avril, à 6 h 20, ma collègue de binôme prévient qu'elle est malade ; la cadre d'astreinte annonce un renfort à 10 h. Je suis seule pour 14 résidents pendant trois heures. <em>Réévaluation.</em> À 6 h 50, avec l'infirmière, je reprends la feuille de répartition : d'abord les résidents signalés par l'équipe de nuit, puis les horaires contraints (lévodopa de M. B. à 8 h), le changement de position de M. D. à 7 h, que l'infirmière fait avec moi, enfin les levers des plus autonomes. Les trois transferts au lève-personne, impossibles seule, sont décalés à 10 h ; les résidents concernés prennent leur petit-déjeuner au lit, installés en position demi-assise. Je demande à l'agent de service de distribuer les plateaux aux six résidents qui mangent seuls, sans risque de fausse route ni texture modifiée, ce qui relève de sa fonction dans notre établissement ; je garde les deux qui ont besoin d'une aide au repas. <em>Second imprévu.</em> À 7 h 45, je trouve M. F. assis au sol au pied de son lit, conscient, se plaignant de la hanche droite, douleur cotée à 6 sur 10 sur l'EVA. Je ne le relève pas : son anticoagulant l'expose à un saignement, et l'infirmière doit l'évaluer avant toute mobilisation. Je le couvre, je le rassure et j'appelle l'infirmière, en restant auprès de lui. Arrivée à 7 h 50, elle l'examine et me demande sa pression artérielle et son pouls : 132/78 mmHg, 84 par minute. Après son appel au médecin, elle décide du relevage, que nous faisons à deux au lève-personne selon le protocole, et me confie une surveillance horaire : douleur, hématome, vigilance, pression artérielle. Je lui signale que M. B. attend sa lévodopa : elle la lui donne à 8 h 05. <em>Reports.</em> À 8 h 20, j'explique la situation à Mme E. et je lui propose une toilette au lavabo ce matin et sa douche le lendemain. Déçue, elle accepte ; sa douleur est cotée à 2, son niveau habituel. Je trace le report et sa raison, je l'inscris sur la répartition du vendredi et je préviens l'infirmière. Le réassort du linge attendra. <em>Information de l'équipe.</em> À 10 h, je présente d'abord au renfort les transferts à deux et la surveillance horaire de M. F. <em>Fin de poste.</em> Je trace la chute en transmission ciblée (heure, circonstances, position, douleur, paramètres, personnes prévenues) et je déclare l'événement indésirable avec l'infirmière, selon la procédure de l'établissement. À la relève, je transmets en premier la surveillance de M. F., puis la douche reportée. <em>Suivi.</em> Le vendredi, je vérifie que Mme E. a eu sa douche à 9 h 30 ; elle me dit avoir « récupéré son jeudi ».</p>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#F5F5F5;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #E0E0E0;">Les cinq temps sont présents : alerter et sécuriser, réévaluer avec l'infirmière, informer l'équipe, reporter en traçant et en transmettant, vérifier le lendemain. Les horaires contraints sont tenus. Le <strong>chaînage traitement-surveillance</strong> justifie le non-relevage et la surveillance horaire (anticoagulant). La chute est tracée et déclarée.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#F5F5F5;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #E0E0E0;">« Je ne le relève pas » : l'évaluation revient à l'infirmière. Les transferts à deux sont décalés, pas faits seule. La lévodopa en retard est signalée et donnée par l'infirmière. L'agent de service reçoit une tâche de sa fonction, pas un soin.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #E0E0E0;"><strong>Un imprévu géré hors champ</strong> : « je l'ai relevé et remis au lit, puis j'ai prévenu l'infirmière » (mise en danger), « j'ai décalé sa lévodopa à 9 h » (décision de traitement). <strong>Un soin abandonné sans transmission</strong> : « la douche n'a pas pu être faite », sans trace ni reprise. « On s'est débrouillées comme on a pu » : ni méthode, ni « je ».</td></tr>
-</table>
-
-<!-- Situation C -->
-<div style="background:#424242;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation C · Activité 11 (BC5) · Élément ③ · Une action d'amélioration : les sonnettes à portée de main</div>
-
-<div style="background:#FAFAFA;border:1px solid #E0E0E0;border-radius:10px;padding:16px 20px;">
-<p style="margin:0 0 8px 0;"><strong>Le contexte et la personne.</strong> Même unité, qui compte alors 30 résidents avec deux places d'hébergement temporaire. En janvier, Mme G., 89 ans, traitée par apixaban, anticoagulant oral (surveillance : saignements, hématomes ; toute chute se transmet), GIR 3, marchant avec un déambulateur, a été retrouvée au sol à 15 h : elle avait voulu attraper sa sonnette, restée accrochée à la tête de lit alors qu'elle était au fauteuil. La chute a été déclarée comme événement indésirable et analysée avec la cadre en retour d'expérience, auquel j'ai participé.</p>
-<p style="margin:0;"><strong>La situation.</strong> <em>Planifier.</em> Pendant ce retour d'expérience, plusieurs collègues ont dit que les sonnettes restaient souvent hors de portée, sans en connaître la fréquence. J'ai proposé de la mesurer. Avec l'accord de la cadre, du 1<sup>er</sup> au 14 février, j'ai noté à chaque tour de 14 h le nombre de résidents présents en chambre dont la sonnette n'était pas à portée de main : 9 sur 30 en moyenne. Avec l'équipe, sans chercher de responsable, nous avons identifié trois causes : la sonnette reste accrochée au lit quand la personne passe au fauteuil, six cordons sont trop courts, et aucune vérification n'est prévue à la sortie de chambre. J'ai proposé à la cadre et à l'infirmière coordinatrice une vérification en quatre points à chaque sortie de chambre : sonnette à portée de main, lit en position basse si c'est la consigne, fauteuil freiné, boisson accessible. Pour les cordons, j'ai fait une demande d'intervention au service technique. <em>Faire.</em> Après validation, j'ai présenté le constat et la vérification en réunion d'équipe le 13 mars, puis à l'équipe de nuit lors d'une relève. J'ai conçu avec l'infirmière coordinatrice un aide-mémoire plastifié, fixé sur chaque chariot ; les cordons ont été remplacés le 20 mars. <em>Vérifier.</em> Du 10 au 23 avril, j'ai refait le même relevé au même tour : 2 sonnettes sur 30 hors de portée en moyenne. Je l'ai présenté en réunion le 27 avril, en précisant que la mesure portait sur les sonnettes et ne permettait pas de conclure sur les chutes, trop peu nombreuses sur deux mois. <em>Agir.</em> La plupart des oublis restants concernant des résidents revenus de l'animation, nous avons ajouté la vérification à ce moment-là. La cadre a intégré les quatre points au livret d'accueil des nouveaux professionnels, et un relevé est programmé chaque trimestre ; je réalise le prochain en juillet.</p>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#F5F5F5;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #E0E0E0;">Les cinq composantes sont présentes : constat objectivé (indicateur, période, moment), proposition répondant aux causes, mise en œuvre avec l'encadrement et l'équipe, même indicateur avant et après, pérennisation. La roue PDCA tourne jusqu'à l'ajustement. Le résultat est interprété honnêtement, sans prétendre avoir réduit les chutes.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#F5F5F5;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #E0E0E0;">La mesure est faite « avec l'accord de la cadre », la proposition est soumise et validée par l'encadrement, la réparation relève du service technique. « Lit en position basse si c'est la consigne » : la vérification n'installe aucune contention.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #E0E0E0;">« <strong>J'ai proposé</strong> à ma cadre une vérification, elle a trouvé l'idée intéressante » : ni mise en œuvre, ni mesure. « Depuis, les résidents chutent moins » : conclusion non mesurée. « <strong>On</strong> a mis en place une fiche » : votre part disparaît.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:24px 0 8px 0;">6.2 · La grille de détection de l'activité 11</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« je l'ai relevé(e), puis j'ai prévenu l'infirmière », « j'ai fait le transfert seule, faute de collègue »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Mise en danger : l'alerte passe avant tout, et la sécurité ne se sacrifie pas à l'organisation.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai décalé son traitement », « j'ai donné les traitements plus tard »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Décider d'une administration est hors champ. Vous signalez le retard ; l'infirmière décide.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai demandé à l'agent de service de faire les toilettes simples »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Un soin confié à qui n'a pas la qualification : glissement de tâches.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;">« j'ai décidé de mettre les barrières », « j'ai modifié les textures »</td><td style="padding:9px;border:1px solid #FFCDD2;"><strong>Éliminatoire.</strong> Une contention ou une texture ne se décide pas seul, même au nom d'une amélioration.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai reporté la douche »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Avec qui ? Tracé où ? Transmis à qui ? Repris quand, et l'avez-vous vérifié ?</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai aidé à la prise des traitements »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Nommez les conditions : préparé par l'infirmier ou la pharmacie, emballé individuellement, identifiable, daté ; identité et concordance vérifiées, prise observée, tracée.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« j'ai déclaré l'événement indésirable »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À clarifier.</strong> Selon quelle procédure, avec qui, et qu'est-il devenu ensuite ?</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« 7 h : levers. 8 h : petits-déjeuners. 9 h : toilettes. 11 h 30 : repas. »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Une liste horaire sans priorisation ni pourquoi. Chaque étape doit porter son critère.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on s'organise », « nous avons mis en place », « j'ai proposé à ma cadre… » sans suite</td><td style="padding:9px;border:1px solid #FFE082;"><strong>À réécrire.</strong> Le jury évalue votre part : ce que <em>vous</em> avez proposé, mis en œuvre, mesuré.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« on a fait comme on a pu », « on n'a pas eu le temps de tracer », « on ne l'a pas déclaré, ce n'était pas grave »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Preuve à charge : absence de méthode, défaut de traçabilité, événement non déclaré. Se corrige par suppression ou réécriture, jamais par ajout.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;">« c'est la faute de ma collègue qui… », « ici, c'est toujours comme ça »</td><td style="padding:9px;border:1px solid #FFE082;"><strong>Fragilisant.</strong> Recherche de coupable et usage du service invoqué à la place des bonnes pratiques : l'inverse de la démarche qualité.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:24px 0 8px 0;">6.3 · Six questions du jury, telles qu'elles tombent</p>
-<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Répondez à voix haute, avec la méthode RAPIDE, avant d'ouvrir l'attendu.</p>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">« Vous écrivez : "J'ai commencé par Mme C., qui avait une ambulance à 9 h 30." Et si M. B. avait eu besoin de vous au même moment ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> vos critères, dans l'ordre : la sécurité d'abord (une chute, un malaise passent avant l'ambulance), puis les besoins de la personne, puis les horaires contraints. <strong>À éviter :</strong> « je me serais débrouillée ».</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">« Vous écrivez : "J'ai reporté la douche de Mme E. au lendemain." Qui l'a décidé, et comment vous êtes-vous assurée qu'elle serait faite ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> un report discuté avec Mme E. et l'infirmière, tracé avec sa raison, inscrit sur la répartition du lendemain, transmis, puis vérifié le lendemain. <strong>À éviter :</strong> « ma collègue du lendemain s'en est occupée », sans trace de votre part.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">« Vous écrivez : "Je ne le relève pas." Il se plaignait d'être au sol, pourquoi ne pas l'avoir aidé tout de suite ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> une fracture ou un saignement ne peuvent pas être exclus, d'autant plus sous anticoagulant ; le relevage suit l'évaluation de l'infirmière et la décision prise avec le médecin. <strong>À éviter :</strong> « c'est le protocole », sans savoir l'expliquer.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">« Vous écrivez : "J'ai demandé à l'agent de service de distribuer les plateaux." Qu'est-ce que vous ne lui auriez pas demandé ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> tout ce qui relève de sa fonction, jamais un soin : ni toilette, ni aide au repas d'une personne à risque de fausse route, ni transfert. Le sous-effectif se signale à l'encadrement. <strong>À éviter :</strong> « dans mon service, les agents aident pour les toilettes quand on manque de monde ».</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">« Vous écrivez : "Avec l'infirmière, je déclare l'événement indésirable." Qu'est devenue cette déclaration ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> la suite concrète (analyse en retour d'expérience, action décidée, équipe informée) et l'objectif : comprendre les causes dans l'organisation, sans chercher de coupable. <strong>À éviter :</strong> « je ne sais pas, c'est la cadre qui gère », ou présenter la déclaration comme une sanction.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">« Vous écrivez : "En moyenne 9 sonnettes sur 30 hors de portée, puis 2 sur 30." Comment savez-vous que c'est votre action qui a produit ce résultat ? Et les chutes ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le même indicateur, relevé dans les mêmes conditions avant et après. Puis l'honnêteté sur la limite : la mesure porte sur les sonnettes, pas sur les chutes, trop peu nombreuses pour conclure. <strong>À éviter :</strong> « depuis, il n'y a plus de chutes grâce à moi ».</p></details>
-
-<div style="background:#F5F5F5;border-left:6px solid #424242;border-radius:10px;padding:14px 20px;margin:14px 0;">
-<p style="margin:0;"><strong>💡 La question qui revient toujours : « Si c'était à refaire ? »</strong> Préparez une réponse sincère pour chacun des trois éléments (par exemple : associer l'équipe de nuit dès le constat). Ce regard critique sur votre pratique est l'élément « évaluer sa pratique » de la compétence 11, et le jury le valorise.</p>
-</div>
-
-<div style="background:#F5F5F5;border-radius:10px;padding:14px 20px;margin:18px 0;">
-<p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Chaque priorité porte son critère, chaque imprévu déroule les cinq temps, chaque action d'amélioration est mesurée avant et après. Une liste horaire, un imprévu géré hors champ, un soin abandonné sans trace, un « j'ai proposé » sans suite ou un « on » font tomber l'élément.</p>
-</div>
-<p style="margin:0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 19 · Livre Bloc 5 · Fiches de révision B5</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC14 · Clôture</p>
-      <div class="content-scroll"><div style="background:#212121;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#212121;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
-
-<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">1. Quels sont les trois éléments attendus de l'activité 11 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Une journée habituelle, une journée avec imprévus et une action d'amélioration.</strong></p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">2. Quelle est la phrase-clé de l'activité 11 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà comment je m'organise, je priorise et je m'adapte dans une équipe. »</strong></p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">3. Une situation qui décrit vos outils de transmission et les personnes que vous sollicitez relève de quelle activité ? A. 7 · B. 10 · C. 11</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B. L'activité 10</strong>, en inventaire raisonné.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">4. Citez, dans l'ordre, les cinq critères de priorisation ORACLE.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Sécurité, besoins de la personne, soins programmés et horaires contraints, rythme et habitudes, charge en binôme.</strong></p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">5. Pourquoi coordonner étroitement le prélèvement à jeun et le petit-déjeuner d'une personne diabétique sous insuline ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Un jeûne prolongé l'expose à l'hypoglycémie</strong> (en dessous de 0,70 g/L).</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">6. Quelles sont les cinq étapes de la méthode ORACLE face à un imprévu ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Alerter et sécuriser ; réévaluer avec l'infirmier ; informer l'équipe ; reporter en traçant et en transmettant ; vérifier.</strong></p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">7. Un résident sous anticoagulant est au sol et vous demande de l'aider à se relever. Que faites-vous ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vous ne le relevez pas avant l'évaluation de l'infirmière</strong>, que vous appelez en restant auprès de lui. Toute chute sous anticoagulant se transmet.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">8. Lequel peut être reporté ? A. Un changement de position prévu contre l'escarre · B. Une douche programmée · C. L'aide au repas d'une personne à risque de fausse route</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>B</strong>, en lien avec l'infirmier, tracée, transmise et reprise. Les deux autres touchent à la sécurité.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">9. En sous-effectif, pouvez-vous confier une toilette simple à l'agent de service ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> La toilette est un soin. Vous lui confiez ce qui relève de sa fonction.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">10. Un désaccord d'organisation avec une collègue : quelles sont les trois règles ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Factuel, au bon interlocuteur, au bon moment</strong>, jamais devant les résidents.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">11. Que signifient les quatre lettres de la roue PDCA ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Planifier, Faire, Vérifier, Agir.</strong></p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">12. Un événement évité de justesse, sans conséquence, doit-il être déclaré ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Oui</strong> : il permet de corriger l'organisation avant un dommage.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">13. Quel est le but de l'analyse d'un événement indésirable ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Comprendre ce qui, dans l'organisation, l'a rendu possible</strong>, sans recherche de coupable.</p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">14. Quelles sont les cinq composantes d'une action d'amélioration recevable ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Constat objectivé, proposition, mise en œuvre avec l'équipe et l'encadrement, mesure avant et après, pérennisation.</strong></p></details>
-
-<details style="border:1px solid #E0E0E0;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#212121;">15. « Après plusieurs chutes, j'ai décidé de relever les barrières de lit. » Recevable comme action d'amélioration ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non, c'est une éliminatoire</strong> : une contention relève d'une décision médicale.</p></details>
-
-<div style="background:linear-gradient(135deg,#212121 0%,#616161 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
-<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 14</p>
-<ol style="margin:0;padding-left:22px;">
-<li>L'activité 11 demande trois éléments : une journée habituelle, une journée avec imprévus, une action d'amélioration. </li>
-<li>La journée habituelle prouve une méthode : chaque priorité s'écrit avec son critère, jamais en liste horaire.</li>
-<li>Cinq critères dans l'ordre : sécurité, besoins de la personne, soins programmés et horaires contraints, rythme et habitudes, charge en binôme.</li>
-<li>Face à l'imprévu : alerter et sécuriser d'abord, l'infirmier décide ; puis réévaluer, informer, reporter en traçant, vérifier.</li>
-<li>Jamais au détriment de la sécurité, jamais hors du champ, jamais un soin confié à qui n'a pas la qualification.</li>
-<li>Un événement indésirable se déclare et s'analyse sans recherche de coupable.</li>
-<li>Une action d'amélioration recevable fait tourner la roue PDCA : constat chiffré, proposition, mise en œuvre collective, mesure avant/après, pérennisation.</li>
-<li>Votre part s'écrit au « je » ; le « on » efface votre rôle dans l'équipe.</li>
-</ol>
-</div>
-
-<p style="font-weight:bold;color:#212121;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 15</p>
-<table style="width:100%;border-collapse:collapse;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #E0E0E0;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Vérifier les trois éléments et une réponse explicite à chaque sous-question.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Choisir mes deux journées dans le même service.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Ajouter à chaque choix d'ordre de ma journée habituelle son critère et son pourquoi.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Relire ma journée avec imprévus avec les cinq temps : alerte en premier, reports tracés, transmis, repris.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Contrôler mon action d'amélioration avec les cinq composantes, mesure avant et après comprise.</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Passer mes trois éléments à la grille de détection de la partie 6 et chasser les « on ».</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Répondre à voix haute aux six questions du jury et à « si c'était à refaire ? ».</td></tr>
-<tr><td style="padding:9px;border:1px solid #E0E0E0;text-align:center;">☐</td><td style="padding:9px;border:1px solid #E0E0E0;">Réviser avec les ressources ORACLE : Livre du livret 2, chapitre 19 · Livre Bloc 5 · Fiches de révision B5.</td></tr>
-</table></div>
-    </section>
-
-    <section class="slide">
-      <div class="hero-band" style="height: 160px;">
-        <div class="hero-tile"><div class="emoji">🎯</div></div>
-        <div class="hero-tile"><div class="emoji">✍️</div></div>
-        <div class="hero-tile"><div class="emoji">💡</div></div>
-        <div class="hero-tile"><div class="emoji">✅</div></div>
-        <div class="hero-tile"><div class="emoji">🏆</div></div>
-      </div>
-      <p class="eyebrow">Validation de la masterclass</p>
-      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
-      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
-    </section>
-
-    <section class="slide quiz-slide" data-q="0">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 1 / 4</p>
-        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">3 blocs</button>
-        <button class="quiz-opt" data-correct="false">4 blocs</button>
-        <button class="quiz-opt" data-correct="true">5 blocs</button>
-        <button class="quiz-opt" data-correct="false">8 blocs</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="1">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 2 / 4</p>
-        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
-        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
-        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
-        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="2">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 3 / 4</p>
-        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
-        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
-        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
-        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="3">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 4 / 4</p>
-        <p class="quiz-q">La démarche qualité en service de soins repose sur :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="true">L'amélioration continue : plan, do, check, act</button>
-        <button class="quiz-opt" data-correct="false">Le contrôle hiérarchique strict</button>
-        <button class="quiz-opt" data-correct="false">La standardisation complète des pratiques</button>
-        <button class="quiz-opt" data-correct="false">La sanction des erreurs individuelles</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Roue de Deming (PDCA) = amélioration continue, basée sur retour d'expérience collectif." data-ko="Non. La démarche qualité est une amélioration continue (PDCA), pas du contrôle sanction."></div>
-      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
-    </section>
-
-    <section class="slide" id="finalSlide">
-      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
-      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
-      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
-      <div style="text-align:center; margin-top: 20px;">
-        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
-      </div>
-    </section>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+
+<section class="slide hero on" data-mod="Accueil">
+  <div class="bg"></div>
+  <div class="wrap">
+    <span class="kicker">Masterclass 14</span>
+    <h1>Activité 11 — Organisation équipe & qualité<em>Bloc 5 · 2 récits (double) · DEUX journées : une ordinaire, une avec imprévus</em></h1>
+    <p class="sub">La seule activité qui demande deux journées. Et l'amélioration continue en bonus.</p>
+    <div class="meta"><span>⏱ 1h30 à 2h</span><span>📚 5 modules</span><span>🎯 Quiz final 15 Q</span><span>🏆 DEAS Niveau 4</span></div>
+    <button class="cta" onclick="go(1)">Commencer la masterclass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-  <div class="progress-wrap">
-    <span id="progressLabel">1 / 1</span>
-    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-    <span id="progressPct">0%</span>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · Stéphane Forman — Architecte accompagnateur de parcours VAE</div>
+</section>
+
+<section class="slide std" data-mod="Accueil">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Objectifs & cadre<small>Ce que vous saurez à l'issue de cette masterclass</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">📋</div><h3>Décoder la fiche</h3><p>Les 8 sections de la fiche ORACLE Activité 11 point par point.</p></div><div class="card"><div class="ico">✍</div><h3>Rédiger la bonne situation</h3><p>Choisir le résident, le contexte, l'adaptation. Éviter les erreurs qui coûtent le Bloc 5.</p></div><div class="card"><div class="ico">🎯</div><h3>Préparer l'oral</h3><p>Les 3 piliers appliqués à cette activité. Les phrases qui portent face au jury.</p></div><div class="duree">
+        <div><strong>5</strong><span>Blocs DEAS</span></div>
+        <div><strong>11</strong><span>Activités</span></div>
+        <div><strong>12</strong><span>Récits</span></div>
+        <div><strong>18</strong><span>Éléments</span></div>
+        <div><strong>27</strong><span>Domaines</span></div>
+      </div></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 1">
+  <div class="wrap">
+    <div class="big">01<em>Module</em></div>
+    <h1>L'activité au référentiel</h1>
+    <p>La fiche ORACLE Activité 11 décomposée en 8 sections — tout ce qu'il faut savoir sur cette activité.</p>
+    <div class="dura">⏱ 25 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 1">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>La fiche ORACLE Activité 11<small>Cliquez sur chaque pastille dorée pour explorer</small></h2></div>
+    <div class="fiche-wrap">
+      <div class="fiche-img">
+        <div class="ficheHolder">
+          <img src="assets/fiche-liv2-a11_organiser_en_equipe.webp" alt="Fiche ORACLE Activité 11 — Organisation équipe & qualité">
+          <button class="hot" style="top:14%;left:7%" onclick="openModal(1)">1</button>
+          <button class="hot" style="top:14%;left:57%" onclick="openModal(2)">2</button>
+          <button class="hot" style="top:33%;left:7%" onclick="openModal(3)">3</button>
+          <button class="hot" style="top:33%;left:57%" onclick="openModal(4)">4</button>
+          <button class="hot" style="top:52%;left:7%" onclick="openModal(5)">5</button>
+          <button class="hot" style="top:52%;left:57%" onclick="openModal(6)">6</button>
+          <button class="hot" style="top:71%;left:7%" onclick="openModal(7)">7</button>
+          <button class="hot" style="top:71%;left:57%" onclick="openModal(8)">8</button>
+        </div>
+      </div>
+      <div class="fiche-side">
+        <h3>Fiche de révision ORACLE</h3>
+        <p>Cette fiche condense les 8 points cruciaux de l'activité. Explorez chaque section pour comprendre les attentes du jury.</p>
+        <div class="ptip"><strong>💡 Méthode</strong><br>Explorez les 8 hotspots puis cochez les points clés plus loin. Le quiz final valide votre maîtrise.</div>
+        <div class="chapters"><button onclick="openModal(1)"><b>1</b>L'activité 11 au référentiel</button><button onclick="openModal(2)"><b>2</b>La partie A — ce qui est demandé</button><button onclick="openModal(3)"><b>3</b>La partie B — ce qui est demandé</button><button onclick="openModal(4)"><b>4</b>Les questions auxquelles répondre</button><button onclick="openModal(5)"><b>5</b>La situation qui convient</button><button onclick="openModal(6)"><b>6</b>Ce que le jury cherche</button><button onclick="openModal(7)"><b>7</b>Les erreurs qui coûtent le bloc</button><button onclick="openModal(8)"><b>8</b>Ce qui relève d'une autre activité</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Jury">
+  <div class="inner">
+    <div class="head"><div class="num">P</div><h2>Les 3 piliers du raisonnement clinique<small>Ce que le jury cherche derrière chaque geste</small></h2></div>
+    <div class="piliers">
+      <div class="pil"><div class="num">1</div><h3>POURQUOI ?</h3><div class="q"><em>Pourquoi</em> ce geste, <em>maintenant</em>, pour <em>cette</em> personne ?</div><p>Relier l'acte à l'état clinique, au PAP, à un signe d'alerte. Le geste n'est jamais une routine : il répond à un besoin identifié.</p></div>
+      <div class="pil"><div class="num">2</div><h3>COMMENT ?</h3><div class="q"><em>Comment</em> adaptez-vous à <em>cette</em> personne, à <em>ce</em> moment ?</div><p>L'adaptation est la preuve de votre expertise. Même geste réalisé différemment selon résident, contexte, habitudes.</p></div>
+      <div class="pil"><div class="num">3</div><h3>ET APRÈS ?</h3><div class="q"><em>Qu'avez-vous observé</em>, transmis, alerté <em>après</em> ?</div><p>Le rôle AS ne s'arrête pas au geste. Observation, DAR, alerte, ajustement PAP sont le prolongement obligatoire.</p></div>
+    </div>
+    <div style="margin-top:16px;background:var(--oracle-cream);border-radius:12px;padding:18px 22px;border:1px dashed var(--oracle-teal);font-size:14px;line-height:1.6;color:var(--ink-soft);text-align:center"><strong style="color:var(--oracle-teal-dark)">💡 Règle ORACLE</strong> — Chaque récit doit répondre aux 3 questions. L'absence d'une seule = compétence « à vérifier ».</div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 2">
+  <div class="wrap">
+    <div class="big">02<em>Module</em></div>
+    <h1>Rédiger la bonne situation</h1>
+    <p>Testez vos réflexes sur 12 situations de rédaction concrètes.</p>
+    <div class="dura">⏱ 25 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>12 situations à cadrer<small>Testez-vous — chaque réponse est argumentée</small></h2></div>
+    <div id="situs" class="situs"></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 3">
+  <div class="wrap">
+    <div class="big">03<em>Module</em></div>
+    <h1>Préparer l'oral</h1>
+    <p>Ancrage mémoire avec points clés et flashcards.</p>
+    <div class="dura">⏱ 20 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 3">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Les 15 points clés à retenir<small>Cochez chaque point que vous maîtrisez</small></h2></div>
+    <div class="cles" id="cles"><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>L'activité 11 appartient au <b>Bloc 5</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je connais le <b>libellé exact</b> de l'activité 11 au référentiel 2022</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce qu'est demandé en <b>Rubrique A</b> (relevé d'exemples)</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce qu'est demandé en <b>Rubrique B</b> (situation analysée)</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je choisis <b>UNE situation</b>, datée, située</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je rédige la <b>présentation exhaustive</b> du résident</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je montre une <b>adaptation visible</b> pour ce résident</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'applique les <b>3 piliers</b> : POURQUOI, COMMENT, ET APRÈS</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je ne décris <b>aucun acte hors champ</b> comme réalisé</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je respecte les <b>protocoles d'hygiène</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je ne confonds pas cette activité avec les <b>activités voisines</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'écris <b>JE</b>, jamais 'on' ou 'nous'</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je transmets en <b>DAR</b> ce que j'ai observé</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je me prépare à <b>défendre à l'oral</b> ce que j'ai écrit</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais que <b>le bloc se valide en entier</b>, pas par moyenne</p></div><div class="progress-m"><span>Progression</span><div class="pb"><i id="clesBar"></i></div><strong id="clesCnt">0 / 15</strong></div></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 4">
+  <div class="wrap">
+    <div class="big">04<em>Module</em></div>
+    <h1>Mémorisation</h1>
+    <p>Flashcards pour ancrer les points durables en mémoire longue.</p>
+    <div class="dura">⏱ 15 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 4">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>10 flashcards à mémoriser<small>Cliquez sur la carte pour retourner</small></h2></div>
+    <div class="flashwrap">
+      <div class="flashbar"><button onclick="prevFC()">← Précédente</button><span id="fcLbl">Carte 1 / 10</span><button onclick="nextFC()">Suivante →</button></div>
+      <div class="flashcard" id="flashcard" onclick="this.classList.toggle('turned')">
+        <div class="flip">
+          <div class="face front"><div class="hint">Question</div><h3 id="fcFront"></h3><div class="tap">Cliquez pour la réponse</div></div>
+          <div class="face back"><h3 id="fcTitle"></h3><p id="fcBack"></p><div class="tap">Cliquez pour revenir</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 5">
+  <div class="wrap">
+    <div class="big">05<em>Module</em></div>
+    <h1>Évaluation</h1>
+    <p>Quiz final de 15 questions pour valider votre maîtrise de cette masterclass.</p>
+    <div class="dura">⏱ 10 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 5">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>Quiz final — 15 questions<small>Validez vos acquis sur l'ensemble de MC14</small></h2></div>
+    <div class="qz" id="qz"></div>
+  </div>
+</section>
+
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <div class="ok">🏆</div>
+    <h1>Masterclass 14 terminée<em>Activité 11 — Organisation équipe & qualité</em></h1>
+    <p>Vous savez maintenant comment aborder l'Activité 11. Appliquez la méthode à votre récit, puis passez à l'activité suivante.</p>
+    <button class="nxt" onclick="location.href='MC15.html'">Présenter et défendre son Livret 2 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+    <div class="mini">
+      <a href="index.html">📚 Toutes les masterclasses</a>
+      <a href="#" onclick="go(0);return false">↺ Revoir MC14</a>
+    </div>
+  </div>
+</section>
+
+</div>
+<div class="nav">
+  <button onclick="go(current-1)" id="prevB">←</button>
+  <button class="menu" onclick="location.href='index.html'">☰ Catalogue</button>
+  <button onclick="go(current+1)" id="nextB">→</button>
+</div>
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mhead"><div class="mnum" id="mnum">1</div><h3 id="mtitle">—</h3><button class="mclose" onclick="closeModal()">✕</button></div>
+    <div class="mbody" id="mbody"></div>
   </div>
 </div>
-
 <script>
-(function(){
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const total = slides.length;
-  const fill = document.getElementById('progressFill');
-  const label = document.getElementById('progressLabel');
-  const pct = document.getElementById('progressPct');
-  const prevBtn = document.querySelector('.nav-arrow.prev');
-  const nextBtn = document.querySelector('.nav-arrow.next');
-  let idx = 0, score = 0;
-  const answered = new Set();
-  const QUIZ_LEN = 4;
+const CHAPTERS = {"1": {"title": "L'activité 11 au référentiel", "body": ["Activité 11 sur 11 · Bloc 5 · Formulaire ASP 0637 04 22", "Arrêté du 28 mars 2022 — le formulaire fait foi.", "Le libellé officiel diffère souvent de ce qu'on retient : relisez-le avant d'écrire."], "tip": "Avant toute rédaction, relire l'intitulé exact du référentiel pour l'activité 11."}, "2": {"title": "La partie A — ce qui est demandé", "body": ["Donnez des exemples de ce que vous avez réalisé dans votre pratique.", "C'est un RELEVÉ d'exemples, pas un récit linéaire.", "La partie A ouvre sur l'activité : elle montre que vous l'avez bien pratiquée."], "tip": "Partie A = exemples concrets avec contextes et fréquences. Pas de narration."}, "3": {"title": "La partie B — ce qui est demandé", "body": ["Décrivez UNE situation, précise, datée, située.", "Comment avez-vous fait ? Comment avez-vous adapté à CETTE personne ?", "L'adaptation est le cœur de l'évaluation."], "tip": "Partie B = une situation, un résident, une adaptation visible."}, "4": {"title": "Les questions auxquelles répondre", "body": ["Qui est le résident ? (présentation exhaustive)", "Quelle est la situation précise ?", "Qu'avez-vous fait, dans l'ordre ?", "Qu'avez-vous observé, transmis, modifié ?"], "tip": "Avant d'écrire : noter les 4 réponses sur un papier. Si incomplètes, choisir une autre situation."}, "5": {"title": "La situation qui convient", "body": ["Un résident dont l'autonomie bouge (c'est ce qui rend l'adaptation visible).", "Un soin du quotidien suffit : la plus simple est souvent la meilleure.", "Un contexte clair : lieu, heure, qui est présent, matériel utilisé.", "Évitez le soin parfait : le jury cherche l'ajustement."], "tip": "Préférez le soin ordinaire bien analysé au geste exceptionnel mal décrit."}, "6": {"title": "Ce que le jury cherche", "body": ["Que vous OBSERVIEZ avant d'agir.", "Que vous sachiez NOMMER ce que vous observez.", "Que vous ADAPTIEZ à cette personne précise.", "Que vous TRANSMETTIEZ ce que vous avez vu."], "tip": "Le jury évalue le raisonnement clinique, pas la technique seule."}, "7": {"title": "Les erreurs qui coûtent le bloc", "body": ["Décrire une journée type au lieu d'une situation.", "Décrire le geste sans dire pourquoi ce geste.", "Employer « on » ou « nous » : seul VOTRE geste compte.", "Les 3 éliminatoires : hors champ, hygiène, mise en danger."], "tip": "Règle d'or : JE, ici et maintenant, pour cette personne."}, "8": {"title": "Ce qui relève d'une autre activité", "body": ["Vérifiez que votre récit reste dans le périmètre de l'activité 11.", "Si vous débordez sur une autre activité, resserrez.", "Chaque élément de contenu doit être au bon endroit du Livret 2."], "tip": "Un récit qui déborde dilue la preuve. Resserrez sur l'activité ciblée."}};
+const SITUS = [{"q": "Un soin du quotidien suffit pour l'activité 11.", "ok": true, "why": "La situation simple bien analysée bat le soin exceptionnel mal décrit."}, {"q": "Décrire ce qui est habituel sans adaptation visible.", "ok": false, "why": "Le jury cherche l'adaptation. Sans elle, compétence 'à vérifier'."}, {"q": "Employer « on » dans le récit Partie B.", "ok": false, "why": "Seul VOTRE geste compte. 'Je' obligatoire."}, {"q": "Dater et situer précisément la situation choisie.", "ok": true, "why": "Date + lieu + heure = situation ancrée dans votre expérience."}, {"q": "Décrire la présentation exhaustive du résident.", "ok": true, "why": "État civil + anthropométrie + histoire de vie + autonomie : incontournable."}, {"q": "Raconter une journée type au lieu d'une situation.", "ok": false, "why": "La partie B exige UNE situation, pas une journée."}, {"q": "Nommer ce que vous avez observé avec vos 5 sens.", "ok": true, "why": "L'observation est le cœur du rôle AS évalué."}, {"q": "Décrire un acte hors champ comme réalisé.", "ok": false, "why": "CRITÈRE ÉLIMINATOIRE — tout le dossier tombe."}, {"q": "Transmettre ce qui a été observé en DAR.", "ok": true, "why": "La transmission ferme la boucle du rôle AS."}, {"q": "Oublier d'expliquer POURQUOI vous avez agi ainsi.", "ok": false, "why": "Sans POURQUOI, le raisonnement clinique n'est pas démontré."}, {"q": "Faire AVEC le résident, pas À sa place.", "ok": true, "why": "Maintien d'autonomie = socle du rôle propre."}, {"q": "Oublier la boucle d'observation après le geste.", "ok": false, "why": "Sans ET APRÈS, le geste n'est pas 'soignant'."}];
+const CLES = ["L'activité 11 appartient au <b>Bloc 5</b>", "Je connais le <b>libellé exact</b> de l'activité 11 au référentiel 2022", "Je sais ce qu'est demandé en <b>Rubrique A</b> (relevé d'exemples)", "Je sais ce qu'est demandé en <b>Rubrique B</b> (situation analysée)", "Je choisis <b>UNE situation</b>, datée, située", "Je rédige la <b>présentation exhaustive</b> du résident", "Je montre une <b>adaptation visible</b> pour ce résident", "J'applique les <b>3 piliers</b> : POURQUOI, COMMENT, ET APRÈS", "Je ne décris <b>aucun acte hors champ</b> comme réalisé", "Je respecte les <b>protocoles d'hygiène</b>", "Je ne confonds pas cette activité avec les <b>activités voisines</b>", "J'écris <b>JE</b>, jamais 'on' ou 'nous'", "Je transmets en <b>DAR</b> ce que j'ai observé", "Je me prépare à <b>défendre à l'oral</b> ce que j'ai écrit", "Je sais que <b>le bloc se valide en entier</b>, pas par moyenne"];
+const FLASHCARDS = [{"q": "À quel bloc appartient l'activité 11 ?", "t": "BLOC", "a": "Bloc 5. Le libellé officiel est fixé par l'arrêté du 28 mars 2022."}, {"q": "Qu'exige la Partie A ?", "t": "PARTIE A", "a": "Un relevé d'exemples de ce que vous avez réalisé. Pas une narration — des exemples avec fréquence et contexte."}, {"q": "Qu'exige la Partie B ?", "t": "PARTIE B", "a": "UNE situation, datée, située, avec un résident précis et une adaptation visible."}, {"q": "Les 4 questions avant d'écrire ?", "t": "MÉTHODE", "a": "Qui ? (résident) · Quelle situation ? · Qu'avez-vous fait dans l'ordre ? · Qu'avez-vous observé/transmis ?"}, {"q": "Les 3 piliers du raisonnement ?", "t": "RAISONNEMENT", "a": "POURQUOI (justification clinique) + COMMENT (adaptation) + ET APRÈS (observation, transmission)."}, {"q": "Pourquoi écrire 'je' et pas 'on' ?", "t": "RÉDACTION", "a": "Seul VOTRE geste est évalué. 'On' = compétence non attribuée = non validable."}, {"q": "Les 3 critères éliminatoires ?", "t": "ÉLIMINATION", "a": "Acte hors champ + non-respect hygiène + mise en danger. Un seul = tout le bloc tombe."}, {"q": "DAR : définition ?", "t": "TRANSMISSION", "a": "Données (observables) + Actions (menées) + Résultats (observés)."}, {"q": "Un bloc se valide-t-il à la moyenne ?", "t": "VALIDATION", "a": "Non. En entier ou pas. Pas de compensation entre les blocs."}, {"q": "Mon mémo pour l'activité 11 ?", "t": "MÉMO", "a": "Résident précis · Partie A relevé · Partie B situation + adaptation · 3 piliers · DAR · Pas de 'on'."}];
+const QUIZ = [{"q": "À quel bloc appartient l'activité 11 ?", "opts": ["Bloc 4", "Bloc 5", "Bloc 1"], "ok": 1, "x": "Activité 11 = Bloc 5."}, {"q": "Quelle est la fonction de la Partie A ?", "opts": ["Situation analysée", "Relevé d'exemples", "Présentation du résident"], "ok": 1, "x": "Partie A = relevé d'exemples. Partie B = situation analysée."}, {"q": "Que demande la Partie B ?", "opts": ["Journée type", "UNE situation analysée", "Liste de soins"], "ok": 1, "x": "B = UNE situation précise, datée, située, avec adaptation visible."}, {"q": "Les 3 piliers du raisonnement sont :", "opts": ["Voir-Agir-Dire", "Pourquoi-Comment-Et après", "Hygiène-Confort-Transmettre"], "ok": 1, "x": "POURQUOI + COMMENT + ET APRÈS. Grille universelle ORACLE."}, {"q": "Dans votre récit, vous écrivez :", "opts": ["« On »", "« Je »", "« Nous »"], "ok": 1, "x": "Toujours 'je'. Jamais 'on' ni 'nous'."}, {"q": "Un critère éliminatoire :", "opts": ["Récit trop court", "Acte hors champ réalisé", "Mauvaise orthographe"], "ok": 1, "x": "3 éliminatoires : hors champ + hygiène + mise en danger."}, {"q": "La présentation du résident contient :", "opts": ["Nom et âge", "9 éléments obligatoires", "Juste le GIR"], "ok": 1, "x": "9 éléments : état civil + anthropométrie + motif + antécédents + traitements + histoire + autonomie + nutritionnel + cutané."}, {"q": "Faire 'avec' le résident signifie :", "opts": ["Faire tout seul", "Stimuler et accompagner son autonomie", "Lui dire de faire seul"], "ok": 1, "x": "Stimuler ce qu'il peut encore faire, accompagner sans se substituer."}, {"q": "L'AS peut-il faire une injection ?", "opts": ["Oui si formé", "Non jamais", "Oui en urgence"], "ok": 1, "x": "Jamais d'injection AS. Acte IDE exclusif."}, {"q": "La transmission se fait en :", "opts": ["Texte libre", "DAR", "Vidéo"], "ok": 1, "x": "DAR = Données + Actions + Résultats."}, {"q": "Combien de récits pour 11 activités ?", "opts": ["11", "12", "18"], "ok": 1, "x": "12 récits : activités 9 et 11 doublent, 10 = inventaire."}, {"q": "L'arrêté actuel du DEAS :", "opts": ["2021", "28 mars 2022", "2023"], "ok": 1, "x": "28 mars 2022."}, {"q": "Niveau du DEAS :", "opts": ["3", "4", "5"], "ok": 1, "x": "Niveau 4 CNCP."}, {"q": "Un bloc se valide :", "opts": ["À la moyenne", "Par activité", "En entier ou pas"], "ok": 2, "x": "Un bloc = tout validé ou rien. Pas de compensation."}, {"q": "Pour l'activité 11, le mot clé est :", "opts": ["Rapidité", "Adaptation", "Technique"], "ok": 1, "x": "L'adaptation à la personne précise est le cœur de l'évaluation."}];
+const LAZY_IDX = {"situs": 6, "fc": 10, "quiz": 12};
 
-  function render() {
-    slides.forEach((s, i) => {
-      s.classList.remove('active', 'leaving');
-      if (i === idx) s.classList.add('active');
-      else if (i < idx) s.classList.add('leaving');
-    });
-    const p = Math.round(((idx + 1) / total) * 100);
-    fill.style.width = p + '%';
-    label.textContent = (idx + 1) + ' / ' + total;
-    pct.textContent = p + '%';
-    prevBtn.disabled = (idx === 0);
-    nextBtn.disabled = (idx === total - 1);
-    if (idx === total - 1) renderFinal();
+let fcIdx=0;
+function renderFC(){
+  if(!FLASHCARDS.length)return;
+  const c=FLASHCARDS[fcIdx];
+  document.getElementById('fcFront').textContent=c.q;
+  document.getElementById('fcTitle').textContent=c.t;
+  document.getElementById('fcBack').textContent=c.a;
+  document.getElementById('fcLbl').textContent='Carte '+(fcIdx+1)+' / '+FLASHCARDS.length;
+  document.getElementById('flashcard').classList.remove('turned');
+}
+function prevFC(){fcIdx=(fcIdx-1+FLASHCARDS.length)%FLASHCARDS.length;renderFC()}
+function nextFC(){fcIdx=(fcIdx+1)%FLASHCARDS.length;renderFC()}
+
+function renderSitus(){
+  const c=document.getElementById('situs');
+  if(!c)return;
+  c.innerHTML=SITUS.map((s,i)=>`<div class="situ"><p><b>${i+1}.</b>${s.q}</p><div class="btns"><button class="sb y" onclick="situClick(${i},true,this)">✓ Oui</button><button class="sb n" onclick="situClick(${i},false,this)">✕ Non</button></div><div class="sfb"></div></div>`).join('');
+}
+function situClick(i,ans,btn){
+  const parent=btn.parentElement.parentElement;
+  const fb=parent.querySelector('.sfb');
+  const s=SITUS[i];
+  const good=ans===s.ok;
+  parent.querySelectorAll('.sb').forEach(b=>b.disabled=true);
+  btn.style.borderColor=good?'#2ea84f':'#d65757';btn.style.borderWidth='3px';
+  fb.style.display='block';
+  fb.style.background=good?'#dcf5e4':'#fde3e3';
+  fb.style.color=good?'#0e5e2a':'#8a1a1a';
+  fb.innerHTML=(good?'✓ ':'✗ ')+'<b>'+(s.ok?'OUI':'NON')+'</b> — '+s.why;
+}
+
+let qIdx=0, qScore=0, qAns=null;
+function renderQuiz(){
+  const el=document.getElementById('qz');
+  if(!el||!QUIZ.length)return;
+  if(qIdx>=QUIZ.length){
+    const pct=Math.round(qScore/QUIZ.length*100);
+    let cls='ok', msg='Excellent — module validé.';
+    if(pct<50){cls='ko';msg='Révisez avant de passer à la suite.';}
+    else if(pct<80){cls='mid';msg='Bien, quelques points à consolider.';}
+    el.innerHTML=`<div class="score"><div class="big">${qScore}<em>/${QUIZ.length}</em></div><div class="label ${cls}">${pct}% de bonnes réponses</div><p class="msg">${msg}</p><button class="again" onclick="qIdx=0;qScore=0;renderQuiz()">↺ Recommencer</button></div>`;
+    return;
   }
-  window.go = function(delta) {
-    const next = idx + delta;
-    if (next < 0 || next >= total) return;
-    idx = next; render();
-  };
-  window.restart = function(){
-    idx = 0; score = 0; answered.clear();
-    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
-    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
-    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
-    render();
-  };
-  function renderFinal() {
-    const txt = document.getElementById('scoreTxt');
-    const msg = document.getElementById('scoreMsg');
-    const title = document.getElementById('scoreTitle');
-    const circle = document.getElementById('resultCircle');
-    if (!txt) return;
-    txt.textContent = score + '/' + QUIZ_LEN;
-    const ratio = (score / QUIZ_LEN) * 100;
-    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
-    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
-    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
-    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
-  }
-  document.querySelectorAll('.quiz-slide').forEach(slide => {
-    const opts = slide.querySelectorAll('.quiz-opt');
-    const feedback = slide.querySelector('.quiz-feedback');
-    const nxt = slide.querySelector('.quiz-next');
-    opts.forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (answered.has(slide)) return;
-        answered.add(slide);
-        const isCorrect = btn.dataset.correct === 'true';
-        opts.forEach(b => {
-          b.disabled = true;
-          if (b.dataset.correct === 'true') b.classList.add('correct');
-          else if (b === btn) b.classList.add('wrong');
-        });
-        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
-        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
-        nxt.classList.add('show');
-      });
-    });
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
-  });
-  render();
-})();
+  const q=QUIZ[qIdx];
+  qAns=null;
+  el.innerHTML=`<div class="count">Question ${qIdx+1} / ${QUIZ.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="qPick(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="qexpl"><strong>Explication</strong><br>${q.x}</div><button class="nextq" id="qnext" onclick="qIdx++;renderQuiz()">Question suivante →</button>`;
+}
+function qPick(i,btn){
+  if(qAns!==null) return;
+  qAns=i; const q=QUIZ[qIdx];
+  const btns=btn.parentElement.querySelectorAll('button');
+  btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+  if(i===q.ok) qScore++;
+  document.getElementById('qexpl').classList.add('on');
+  document.getElementById('qnext').classList.add('on');
+  if(qIdx===QUIZ.length-1) document.getElementById('qnext').textContent='Voir mon score →';
+}
+
+function toggleCle(el){
+  el.classList.toggle('ok');
+  const items=document.querySelectorAll('.cles .item');
+  const done=document.querySelectorAll('.cles .item.ok').length;
+  document.getElementById('clesBar').style.width=(done/items.length*100)+'%';
+  document.getElementById('clesCnt').textContent=done+' / '+items.length;
+}
+
+function openModal(n){
+  const ch=CHAPTERS[n];
+  if(!ch)return;
+  document.getElementById('mnum').textContent=n;
+  document.getElementById('mtitle').textContent=ch.title;
+  let html='<ul>'+ch.body.map(b=>`<li>${b}</li>`).join('')+'</ul>';
+  if(ch.tip) html+='<div class="tip"><strong>💡 Astuce</strong> '+ch.tip+'</div>';
+  document.getElementById('mbody').innerHTML=html;
+  document.getElementById('mbody').scrollTop=0;
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){document.getElementById('modal').classList.remove('on')}
+
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(LAZY_IDX.situs===current)renderSitus();
+  if(LAZY_IDX.fc===current)renderFC();
+  if(LAZY_IDX.quiz===current){qIdx=0;qScore=0;renderQuiz()}
+  closeModal();
+  slides[current].querySelector('.inner')?.scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('modal').classList.contains('on')){if(e.key==='Escape')closeModal();return}
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Escape')go(0);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
 </body>
 </html>

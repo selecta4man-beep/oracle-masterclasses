@@ -1,858 +1,488 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MC11 — Activité 8 — Entretien locaux & matériel · ORACLE VAE AS</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MC11 · Activité 8 — Entretien locaux & matériel — ORACLE VAE AS</title>
 <style>
-  :root {
-    --ink:#0F172A; --accent:#0D47A1; --accent-2:#1E88E5;
-    --bg:#FFFFFF; --muted:#64748B; --surface:#F8FAFC;
-    --ok:#10B981; --warn:#F59E0B; --bar:#1E293B;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; height: 100%; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    color: var(--ink); background: var(--bg); overflow: hidden; }
-  .stage { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; }
-  .slides { position: relative; overflow: hidden; }
-  .slide { position: absolute; inset: 0; padding: 48px 72px 24px;
-    display: flex; flex-direction: column; justify-content: flex-start;
-    opacity: 0; transform: translateX(40px);
-    transition: opacity .45s ease, transform .45s ease;
-    pointer-events: none; overflow-y: auto; }
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-  .slide.leaving { opacity: 0; transform: translateX(-40px); }
-  .slide:first-of-type, .slide:nth-of-type(2), .slide:last-of-type { justify-content: center; }
-
-  .brand { position: fixed; top: 20px; right: 24px; font-size: 11px; letter-spacing: .22em;
-    text-transform: uppercase; color: var(--accent); font-weight: 800;
-    display: flex; align-items: center; gap: 10px; z-index: 20; }
-  .brand .dot { width: 10px; height: 10px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-    box-shadow: 0 0 0 3px rgba(13,71,161,.1); }
-
-  .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
-    border: none; border-radius: 50%; background: rgba(15,23,42,.08); color: var(--ink);
-    display: grid; place-items: center; cursor: pointer; z-index: 10;
-    transition: background .15s, transform .15s; }
-  .nav-arrow:hover { background: rgba(13,71,161,.15); transform: translateY(-50%) scale(1.08); }
-  .nav-arrow.prev { left: 16px; } .nav-arrow.next { right: 16px; }
-  .nav-arrow svg { width: 20px; height: 20px; }
-  .nav-arrow:disabled { opacity: .25; cursor: not-allowed; }
-
-  .progress-wrap { background: var(--bar); padding: 10px 20px;
-    display: flex; align-items: center; gap: 14px; color: #fff;
-    font-size: 12px; font-weight: 600; letter-spacing: .05em; }
-  .progress { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent));
-    width: 0%; transition: width .4s ease; border-radius: 4px; }
-
-  h1.hero { font-size: clamp(28px, 3.5vw, 48px); line-height: 1.1; margin: 0 0 12px;
-    letter-spacing: -.02em; font-weight: 800; }
-  h1.hero span.accent { color: var(--accent); }
-  .subtitle { font-size: clamp(16px, 1.5vw, 20px); color: var(--muted); margin: 0 0 8px; font-weight: 500; }
-  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
-    font-weight: 700; margin: 0 0 14px; }
-
-  .hero-band { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: 200px; margin-bottom: 24px; }
-  .hero-tile { border-radius: 12px; overflow: hidden; position: relative;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
-  .hero-tile:nth-child(2) { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
-  .hero-tile:nth-child(3) { background: linear-gradient(135deg, #42A5F5, #90CAF9); }
-  .hero-tile:nth-child(4) { background: linear-gradient(135deg, #1565C0, #0D47A1); }
-  .hero-tile:nth-child(5) { background: linear-gradient(135deg, #0D47A1, #002171); }
-  .hero-tile .emoji { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; opacity: .9; }
-
-  /* Contenu issu de la MC source : respecte les styles inline des sections */
-  .content-scroll { font-size: 15px; line-height: 1.6; max-height: 100%; }
-  .content-scroll img { max-width: 100%; height: auto; border-radius: 10px; }
-  .content-scroll table { max-width: 100%; }
-
-  /* Quiz */
-  .quiz-head { margin-bottom: 20px; }
-  .quiz-q { font-size: 22px; font-weight: 700; margin: 0 0 18px; line-height: 1.3; }
-  .quiz-opts { display: grid; gap: 10px; }
-  .quiz-opt { display: block; padding: 16px 20px; background: var(--surface);
-    border: 2px solid transparent; border-radius: 12px; cursor: pointer;
-    font-size: 16px; text-align: left; transition: all .15s; font-family: inherit; width: 100%; }
-  .quiz-opt:hover { border-color: var(--accent-2); background: #fff; }
-  .quiz-opt.correct { background: #ECFDF5; border-color: var(--ok); color: #065F46; }
-  .quiz-opt.wrong { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
-  .quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: 10px;
-    font-size: 15px; line-height: 1.5; display: none; }
-  .quiz-feedback.show { display: block; }
-  .quiz-feedback.ok { background: #ECFDF5; color: #065F46; border-left: 4px solid var(--ok); }
-  .quiz-feedback.ko { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
-  .quiz-progress { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
-  .quiz-next { margin-top: 20px; display: none; padding: 12px 24px; background: var(--accent);
-    color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .quiz-next.show { display: inline-block; }
-
-  .result-circle { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
-    background: conic-gradient(var(--accent) 0%, var(--surface) 0%);
-    display: grid; place-items: center; position: relative; }
-  .result-circle::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: #fff; }
-  .result-circle span { position: relative; z-index: 2; font-size: 48px; font-weight: 800; color: var(--accent); }
+:root{--oracle-teal:#0d7377;--oracle-teal-dark:#064e51;--oracle-teal-light:#14a098;--oracle-gold:#f5b700;--oracle-pink:#f06292;--oracle-cream:#fdf6e9;--oracle-paper:#f8f1e4;--ink:#1a2332;--ink-soft:#44546b;--card:#fff;--shadow-sm:0 2px 8px rgba(13,115,119,.08);--shadow-md:0 8px 24px rgba(13,115,119,.14);--shadow-lg:0 20px 60px rgba(13,115,119,.22);--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:#000}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent}
+.deck{position:fixed;inset:0;overflow:hidden;background:#07151a}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;opacity:0}
+.slide.on{display:flex;opacity:1;z-index:2;animation:fIn .4s ease}
+@keyframes fIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.bar{position:fixed;top:0;left:0;right:0;z-index:100;height:48px;background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0));display:flex;align-items:center;padding:0 18px;gap:14px;color:#fff;pointer-events:none}
+.bar .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;pointer-events:auto}
+.bar .brand img{width:28px;height:28px}
+.bar .ref{opacity:.75;font-size:12px}
+.bar .counter{margin-left:auto;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;pointer-events:auto;backdrop-filter:blur(6px)}
+.bar .mod{background:var(--oracle-gold);color:#1a2332;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;pointer-events:auto}
+.progress{position:fixed;top:48px;left:0;right:0;height:3px;background:rgba(255,255,255,.08);z-index:99}
+.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--oracle-gold),var(--oracle-pink));transition:width .4s ease;box-shadow:0 0 10px var(--oracle-gold)}
+.nav{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:100}
+.nav button{min-width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);color:#fff;font-size:18px;transition:all .25s;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.1)}
+.nav button:hover{background:var(--oracle-teal-light);transform:translateY(-2px)}
+.nav button:disabled{opacity:.35;cursor:not-allowed}
+.nav .menu{padding:0 18px;border-radius:46px;width:auto;font-size:13px;font-weight:600}
+.hero{background:#0a2a2f}
+.hero .bg{position:absolute;inset:0;background:url('assets/hero-cover.webp') center/cover no-repeat;filter:brightness(.5) saturate(1.1)}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,42,47,.75) 0%,rgba(13,115,119,.4) 50%,rgba(240,98,146,.3) 100%)}
+.hero .wrap{position:relative;z-index:2;margin:auto;max-width:980px;padding:40px 32px;color:#fff;text-align:center}
+.hero .kicker{display:inline-block;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;background:rgba(0,0,0,.25);backdrop-filter:blur(6px)}
+.hero h1{font-size:clamp(32px,5.5vw,66px);font-weight:900;line-height:1.05;margin-bottom:18px;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hero h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.55em;font-weight:600;margin-top:14px;letter-spacing:.05em;line-height:1.3}
+.hero .sub{font-size:clamp(16px,2vw,20px);opacity:.92;max-width:720px;margin:0 auto 32px;line-height:1.5}
+.hero .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:36px}
+.hero .meta span{background:rgba(255,255,255,.12);border-radius:999px;padding:8px 18px;font-size:13px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.hero .cta{display:inline-flex;align-items:center;gap:12px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 36px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4);transition:all .3s}
+.hero .cta:hover{transform:translateY(-3px)}
+.hero .cta svg{width:18px;height:18px}
+.hero .signature{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#fff;opacity:.85;font-size:12px;z-index:3}
+.hero .signature strong{color:var(--oracle-gold)}
+.std{background:var(--oracle-cream)}
+.std .inner{display:flex;flex-direction:column;width:100%;height:100%;padding:70px 48px 90px;max-width:1600px;margin:0 auto;overflow:auto}
+.std .head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.std .num{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:var(--oracle-teal);color:#fff;font-weight:800;font-size:22px;box-shadow:var(--shadow-md);flex-shrink:0}
+.std h2{font-size:clamp(22px,3.2vw,38px);font-weight:800;color:var(--oracle-teal-dark);letter-spacing:-.01em;line-height:1.15}
+.std h2 small{display:block;color:var(--ink-soft);font-size:.52em;font-weight:500;margin-top:4px;letter-spacing:0}
+.chapter{background:linear-gradient(135deg,var(--oracle-teal-dark) 0%,var(--oracle-teal) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
+.chapter .wrap{max-width:720px}
+.chapter .big{font-size:140px;font-weight:900;color:var(--oracle-gold);line-height:.9;text-shadow:0 10px 40px rgba(0,0,0,.3)}
+.chapter .big em{font-style:normal;color:#fff;display:block;font-size:.2em;margin-top:12px;letter-spacing:.4em;text-transform:uppercase;opacity:.8}
+.chapter h1{font-size:clamp(28px,4.5vw,52px);font-weight:900;margin:28px 0 12px;line-height:1.1}
+.chapter p{font-size:18px;opacity:.95;line-height:1.5}
+.chapter .dura{margin-top:24px;background:rgba(255,255,255,.15);padding:10px 24px;border-radius:999px;display:inline-block;font-size:14px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2)}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
+.obj .card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-md);border:1px solid rgba(13,115,119,.08);position:relative;overflow:hidden}
+.obj .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-teal-light))}
+.obj .card .ico{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--oracle-cream),#fff);border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:28px}
+.obj .card h3{font-size:19px;color:var(--oracle-teal-dark);margin-bottom:10px;font-weight:700}
+.obj .card p{color:var(--ink-soft);line-height:1.55;font-size:15px}
+.duree{grid-column:1/-1;margin-top:26px;background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:var(--radius);padding:20px 24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center;box-shadow:var(--shadow-sm);border:1px dashed var(--oracle-teal-light)}
+.duree>div{text-align:center;min-width:90px}
+.duree strong{display:block;color:var(--oracle-teal);font-size:28px;font-weight:900;line-height:1}
+.duree span{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-top:6px}
+.fiche-wrap{display:grid;grid-template-columns:minmax(0,450px) 1fr;gap:28px;flex:1;margin-top:16px;min-height:0;align-items:start}
+.fiche-img{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;padding:12px;max-height:calc(100vh - 190px)}
+.fiche-img .ficheHolder{position:relative;max-height:100%;max-width:100%;display:inline-block}
+.fiche-img .ficheHolder img{max-height:calc(100vh - 220px);max-width:100%;width:auto;height:auto;display:block;object-fit:contain}
+.hot{position:absolute;width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;font-size:16px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25);transition:all .25s;z-index:2;animation:pulse 2s infinite;border:0}
+.hot:hover{transform:scale(1.18);background:var(--oracle-pink);color:#fff;z-index:3}
+@keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(245,183,0,.6),0 0 0 4px rgba(245,183,0,.25)}50%{box-shadow:0 4px 16px rgba(245,183,0,.7),0 0 0 10px rgba(245,183,0,0)}}
+.fiche-side{display:flex;flex-direction:column;gap:16px;overflow:auto;padding-right:4px}
+.fiche-side h3{font-size:16px;color:var(--oracle-teal-dark);font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.fiche-side p{color:var(--ink-soft);line-height:1.55;font-size:14px}
+.fiche-side .ptip{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-left:4px solid var(--oracle-gold);padding:14px 16px;border-radius:8px;font-size:13px;line-height:1.5;color:var(--ink-soft);box-shadow:var(--shadow-sm)}
+.fiche-side .ptip strong{color:var(--oracle-teal-dark)}
+.chapters{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chapters button{background:#fff;border:1px solid rgba(13,115,119,.1);border-radius:10px;padding:10px;text-align:left;color:var(--ink);font-size:12px;font-weight:600;transition:all .2s;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:8px}
+.chapters button:hover{background:var(--oracle-teal);color:#fff}
+.chapters button b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--oracle-teal);color:#fff;font-size:11px;flex-shrink:0}
+.chapters button:hover b{background:var(--oracle-gold);color:#1a2332}
+.piliers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px;flex:1}
+.pil{background:linear-gradient(135deg,#fff,var(--oracle-cream));border-radius:16px;padding:28px 22px;box-shadow:var(--shadow-md);text-align:center;border-top:6px solid var(--oracle-pink)}
+.pil .num{font-size:60px;font-weight:900;color:var(--oracle-pink);line-height:.9;margin-bottom:12px;opacity:.3}
+.pil h3{color:var(--oracle-teal-dark);font-size:17px;font-weight:900;margin-bottom:14px}
+.pil .q{background:#fff;border-radius:10px;padding:14px;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:10px;border-left:4px solid var(--oracle-gold)}
+.pil .q em{font-style:normal;color:var(--oracle-pink)}
+.pil p{color:var(--ink-soft);font-size:13px;line-height:1.5}
+.situs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;flex:1;overflow:auto;align-content:start}
+.situ{background:#fff;border-radius:10px;padding:14px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px}
+.situ p{font-size:13.5px;color:var(--ink);line-height:1.4}
+.situ p b{color:var(--oracle-teal);margin-right:6px}
+.situ .btns{display:flex;gap:6px}
+.situ .sb{flex:1;font-weight:700;padding:7px;border-radius:7px;border:2px solid transparent;font-size:12.5px;cursor:pointer;transition:all .2s}
+.situ .sb.y{background:#dcf5e4;color:#0e5e2a}
+.situ .sb.n{background:#fde3e3;color:#8a1a1a}
+.situ .sfb{display:none;font-size:12px;padding:8px;border-radius:7px;line-height:1.4}
+.cles{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-md);margin-top:16px;flex:1;overflow:auto}
+.cles .item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(13,115,119,.1);cursor:pointer}
+.cles .item:last-of-type{border-bottom:0}
+.cles .cb{width:24px;height:24px;border-radius:7px;border:2px solid var(--oracle-teal-light);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0;transition:all .2s;margin-top:1px}
+.cles .item.ok .cb{background:var(--oracle-teal);border-color:var(--oracle-teal)}
+.cles .item p{font-size:14px;line-height:1.5;color:var(--ink)}
+.cles .item.ok p{color:var(--ink-soft);text-decoration:line-through}
+.cles .progress-m{margin-top:14px;background:var(--oracle-cream);border-radius:10px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--oracle-teal-dark)}
+.cles .pb{width:200px;height:8px;background:rgba(13,115,119,.15);border-radius:999px;overflow:hidden}
+.cles .pb i{display:block;height:100%;background:linear-gradient(90deg,var(--oracle-teal),var(--oracle-gold));width:0;transition:width .4s}
+.flashwrap{margin-top:16px;flex:1;display:flex;flex-direction:column;overflow:auto}
+.flashbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;background:#fff;padding:10px 18px;border-radius:10px;box-shadow:var(--shadow-sm)}
+.flashbar span{font-weight:700;color:var(--oracle-teal-dark);font-size:14px}
+.flashbar button{background:var(--oracle-teal);color:#fff;padding:6px 14px;border-radius:8px;font-weight:700;font-size:13px}
+.flashbar button:hover{background:var(--oracle-teal-dark)}
+.flashcard{perspective:1200px;flex:1;min-height:320px;max-height:480px;cursor:pointer}
+.flashcard .flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s}
+.flashcard.turned .flip{transform:rotateY(180deg)}
+.flashcard .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.flashcard .face.front{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff}
+.flashcard .face.back{background:#fff;color:var(--ink);transform:rotateY(180deg)}
+.flashcard .face .hint{font-size:11px;letter-spacing:3px;text-transform:uppercase;opacity:.65;margin-bottom:20px}
+.flashcard .face.front h3{font-size:26px;font-weight:800;line-height:1.3;max-width:640px}
+.flashcard .face.back h3{color:var(--oracle-teal-dark);font-size:18px;margin-bottom:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.flashcard .face.back p{color:var(--ink);font-size:16px;line-height:1.5;max-width:640px;font-weight:500}
+.flashcard .tap{position:absolute;bottom:12px;left:0;right:0;text-align:center;opacity:.65;font-size:12px}
+.qz{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-md);padding:28px;margin-top:16px;max-width:900px;margin-left:auto;margin-right:auto;flex:1;display:flex;flex-direction:column}
+.qz .count{color:var(--oracle-teal);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.qz .question{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35}
+.qz .answers{display:flex;flex-direction:column;gap:9px}
+.qz .answers button{background:#fff;border:2px solid rgba(13,115,119,.15);border-radius:12px;padding:12px 16px;text-align:left;font-size:14.5px;transition:all .2s;display:flex;align-items:center;gap:12px}
+.qz .answers button:hover:not(.disabled){border-color:var(--oracle-teal);background:var(--oracle-cream)}
+.qz .answers button.ok{background:#dcf5e4;border-color:#2ea84f;color:#0e5e2a;font-weight:700}
+.qz .answers button.ko{background:#fde3e3;border-color:#d65757;color:#8a1a1a;font-weight:700}
+.qz .answers button .letter{width:28px;height:28px;border-radius:8px;background:var(--oracle-cream);display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:13px}
+.qz .answers button.ok .letter{background:#2ea84f;color:#fff}
+.qz .answers button.ko .letter{background:#d65757;color:#fff}
+.qz .expl{display:none;margin-top:14px;padding:14px;background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);border-radius:8px;font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.qz .expl.on{display:block}
+.qz .nextq{display:none;margin-top:12px;background:var(--oracle-teal);color:#fff;padding:10px 22px;border-radius:999px;font-weight:700;align-self:flex-end;font-size:13.5px}
+.qz .nextq.on{display:inline-block}
+.qz .nextq:hover{background:var(--oracle-teal-dark)}
+.score{text-align:center;padding:30px}
+.score .big{font-size:88px;font-weight:900;color:var(--oracle-teal);line-height:1;margin-bottom:8px}
+.score .big em{font-style:normal;color:var(--ink-soft);font-size:.4em;font-weight:400}
+.score .label{font-size:20px;font-weight:700;margin-bottom:24px}
+.score .label.ok{color:#0e5e2a}
+.score .label.mid{color:#8a6a00}
+.score .label.ko{color:#8a1a1a}
+.score .msg{font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:500px;margin:0 auto 24px}
+.score .again{background:var(--oracle-teal);color:#fff;padding:10px 24px;border-radius:999px;font-weight:700}
+.end{background:linear-gradient(135deg,var(--oracle-teal-dark),var(--oracle-teal) 50%,var(--oracle-pink) 100%);color:#fff;align-items:center;justify-content:center;text-align:center;padding:40px}
+.end .wrap{max-width:720px}
+.end .ok{width:92px;height:92px;border-radius:50%;background:rgba(255,255,255,.2);display:inline-flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:24px;backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.3)}
+.end h1{font-size:clamp(32px,5vw,52px);font-weight:900;margin-bottom:14px;line-height:1.1}
+.end h1 em{font-style:normal;color:var(--oracle-gold);display:block;font-size:.6em;margin-top:8px}
+.end p{font-size:17px;opacity:.95;line-height:1.5;margin-bottom:32px}
+.end .nxt{display:inline-flex;align-items:center;gap:14px;background:var(--oracle-gold);color:#1a2332;font-weight:800;padding:16px 32px;border-radius:999px;font-size:16px;box-shadow:0 10px 40px rgba(245,183,0,.4)}
+.end .nxt:hover{transform:translateY(-3px)}
+.end .nxt svg{width:20px;height:20px}
+.end .mini{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.end .mini a{background:rgba(255,255,255,.14);padding:10px 20px;border-radius:999px;font-size:13px;color:#fff;text-decoration:none;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.end .mini a:hover{background:rgba(255,255,255,.25)}
+.modal-bg{position:fixed;inset:0;background:rgba(10,30,36,.72);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;animation:fIn .25s ease}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:720px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:mIn .35s cubic-bezier(.3,1.3,.5,1)}
+@keyframes mIn{from{transform:translateY(20px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.modal .mhead{background:linear-gradient(135deg,var(--oracle-teal),var(--oracle-teal-dark));color:#fff;padding:22px 28px;display:flex;align-items:center;gap:14px;position:relative}
+.modal .mhead .mnum{width:40px;height:40px;border-radius:50%;background:var(--oracle-gold);color:#1a2332;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
+.modal .mhead h3{font-size:19px;font-weight:800;flex:1}
+.modal .mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+.modal .mclose:hover{background:rgba(255,255,255,.35)}
+.modal .mbody{padding:24px 28px;overflow:auto;color:var(--ink)}
+.modal .mbody h4{color:var(--oracle-teal-dark);font-size:14px;margin:14px 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.modal .mbody h4:first-child{margin-top:0}
+.modal .mbody ul{margin:4px 0 12px 20px;line-height:1.6;font-size:14px;color:var(--ink-soft)}
+.modal .mbody ul li{margin-bottom:5px}
+.modal .mbody .tip{background:var(--oracle-cream);border-left:4px solid var(--oracle-gold);padding:12px 16px;border-radius:8px;font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin-top:12px}
+.modal .mbody .tip strong{color:var(--oracle-teal-dark)}
+.dots{position:fixed;left:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:99;max-height:70vh;overflow:hidden}
+.dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s;cursor:pointer;display:block}
+.dots span.on{background:var(--oracle-gold);box-shadow:0 0 10px var(--oracle-gold);width:9px;height:9px}
+.std .dots span{background:rgba(13,115,119,.3)}
+.std .dots span.on{background:var(--oracle-teal)}
+@media(max-width:1024px){.obj,.piliers{grid-template-columns:1fr 1fr}.fiche-wrap{grid-template-columns:1fr}}
+@media(max-width:640px){.std .inner{padding:60px 20px 90px}.obj,.piliers{grid-template-columns:1fr}.chapters{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="brand"><span class="dot"></span>ORACLE VAE AS · MC11</div>
-
-<button class="nav-arrow prev" onclick="go(-1)" aria-label="Précédent">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-</button>
-<button class="nav-arrow next" onclick="go(1)" aria-label="Suivant">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-</button>
-
-<div class="stage">
-  <div class="slides" id="slides">
-
-    <section class="slide">
-      <div class="hero-band">
-        <div class="hero-tile"><div class="emoji">👩‍⚕️</div></div>
-        <div class="hero-tile"><div class="emoji">🩺</div></div>
-        <div class="hero-tile"><div class="emoji">🏥</div></div>
-        <div class="hero-tile"><div class="emoji">💙</div></div>
-        <div class="hero-tile"><div class="emoji">🤝</div></div>
-      </div>
-      <p class="eyebrow">MC11 · Bloc 4</p>
-      <h1 class="hero">Activité 8 — Entretien locaux & matériel</h1>
-      <p class="subtitle">Nettoyage, désinfection, prévention des infections</p>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Objectifs</p>
-      <div class="content-scroll"><div style="background:#E3F1F4;border-left:6px solid #0E4D5C;border-radius:10px;padding:18px 22px;margin:22px 0;">
-<p style="margin:0 0 10px 0;font-weight:bold;color:#0E4D5C;font-size:17px;">🎯 À la fin de cette masterclass, vous serez capable de</p>
-<ol style="margin:0;padding-left:22px;">
-<li>énoncer l'attendu officiel de l'activité 8 (un volet locaux, un volet matériel, dans le contexte imposé d'une sortie de patient) et le distinguer de l'activité 9 ;</li>
-<li>expliquer la chaîne de transmission d'une infection associée aux soins et montrer, dans votre récit, à quel maillon chacun de vos gestes la coupe ;</li>
-<li>appliquer et justifier les précautions standard : hygiène des mains et ses 5 indications, port raisonné des gants, du tablier, du masque et de la protection oculaire, tenue professionnelle ;</li>
-<li>situer votre rôle face aux précautions complémentaires (contact, gouttelettes, air) et au cas particulier du Clostridium difficile ;</li>
-<li>décrire un bionettoyage de sortie dans l'ordre, en justifiant chaque principe (produit sur la lavette, propre vers sale, haut vers bas, fond vers sortie, temps de contact, aucun mélange) ;</li>
-<li>respecter les circuits du linge, de la vaisselle, des matériels et des déchets, et pratiquer le juste tri entre DAOM et DASRI ;</li>
-<li>repérer dans votre livret les formulations qui déclenchent l'éliminatoire « hygiène » et les réécrire ;</li>
-<li>répondre aux questions du jury sur vos choix de produits, votre ordre de travail et votre tri des déchets.</li>
-</ol>
-</div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Déroulé</p>
-      <div class="content-scroll"><p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:26px 0 8px 0;">⏱️ Déroulé de la masterclass</p>
-<table style="width:100%;border-collapse:collapse;font-size:14px;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:16%;">Horaire</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Séquence</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:14%;">Durée</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;">0:00</td><td style="padding:9px;border:1px solid #B9DCE4;">Ouverture et auto-positionnement</td><td style="padding:9px;border:1px solid #B9DCE4;">5&nbsp;min</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;">0:05</td><td style="padding:9px;border:1px solid #B9DCE4;">Partie 1 · L'activité 8 décodée</td><td style="padding:9px;border:1px solid #B9DCE4;">15&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;">0:20</td><td style="padding:9px;border:1px solid #B9DCE4;">Partie 2 · Les bases de la prévention des infections associées aux soins</td><td style="padding:9px;border:1px solid #B9DCE4;">20&nbsp;min</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;">0:40</td><td style="padding:9px;border:1px solid #B9DCE4;">Partie 3 · Le bionettoyage : principes, matériel, traçabilité</td><td style="padding:9px;border:1px solid #B9DCE4;">20&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;">1:00</td><td style="padding:9px;border:1px solid #B9DCE4;">Partie 4 · La sortie de patient, le contexte imposé</td><td style="padding:9px;border:1px solid #B9DCE4;">15&nbsp;min</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;">1:15</td><td style="padding:9px;border:1px solid #B9DCE4;">Partie 5 · Circuits et juste tri des déchets</td><td style="padding:9px;border:1px solid #B9DCE4;">15&nbsp;min</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;">1:30</td><td style="padding:9px;border:1px solid #B9DCE4;">Partie 6 · Deux situations modèles décortiquées, grille de détection et questions du jury</td><td style="padding:9px;border:1px solid #B9DCE4;">20&nbsp;min</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;">1:50</td><td style="padding:9px;border:1px solid #B9DCE4;">Clôture · Auto-positionnement, l'essentiel, plan d'action</td><td style="padding:9px;border:1px solid #B9DCE4;">10&nbsp;min</td></tr>
-</table>
-<p style="font-size:13px;color:#546E7A;margin:6px 0 0 0;">Le quiz final de 15 questions se fait en travail personnel, après la masterclass (environ 15&nbsp;min).</p></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Ouverture</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">OUVERTURE · Où en êtes-vous ? <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:00 · 5&nbsp;min</span></div>
-
-<p>Avant de commencer, testez vos représentations. Pour chaque affirmation, répondez <strong>vrai</strong> ou <strong>faux</strong> sur une feuille, <em>sans ouvrir la réponse</em>. Vous comparerez à la fin de la masterclass : c'est votre point de départ.</p>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">1. Pour l'activité 8, l'entretien quotidien d'une chambre occupée suffit, s'il est bien décrit.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> L'activité 8 impose un <strong>contexte : la sortie de patient</strong>. Un entretien quotidien, même parfaitement rédigé, n'honore pas l'attendu officiel.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">2. Pour gagner du temps, je peux pulvériser le détergent-désinfectant directement sur l'adaptable.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Le produit se met <strong>sur la lavette, jamais sur la surface</strong>. La pulvérisation sur la surface met des gouttelettes de produit en suspension dans l'air, que vous respirez, et répartit mal le produit.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">3. Un tablier et des gants souillés de sang vont systématiquement dans les DASRI.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Gants, tabliers, masques et protections souillés de liquide biologique relèvent des <strong>DAOM</strong>. Ils ne vont en DASRI que s'ils proviennent d'un foyer infectieux avéré ou suspecté, ou s'ils sont imprégnés au point de présenter un risque d'écoulement.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">4. La friction hydro-alcoolique est la technique de référence de l'hygiène des mains.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Sur des mains visiblement propres et sèches, elle est plus efficace et mieux tolérée que le lavage. L'exception à connaître : le <strong>Clostridium difficile</strong>, dont les spores résistent à l'alcool, impose un lavage au savon puis une friction.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">5. Porter des gants en permanence protège mieux la personne et le soignant.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Les gants se portent <strong>seulement s'il existe un risque de contact avec un liquide biologique ou une muqueuse</strong>. Portés en continu, ils se contaminent et transportent les germes d'une surface à l'autre, et ils font oublier l'hygiène des mains.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">6. C'est l'aide-soignant qui décide de mettre une personne en précautions complémentaires contact.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Les précautions complémentaires sont <strong>décidées par l'équipe</strong> (médecin, infirmier, équipe d'hygiène selon l'organisation). Vous pouvez repérer et signaler un signe qui fait craindre une transmission (une diarrhée brutale, par exemple), puis vous appliquez les mesures décidées.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">7. Mélanger de l'eau de Javel et un détergent renforce l'efficacité du nettoyage.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux, et dangereux.</strong> On ne mélange <strong>jamais</strong> deux produits. Certains mélanges dégagent des gaz toxiques, et tous exposent à une perte d'efficacité. Chaque produit s'emploie seul, à la dilution prévue par le protocole.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">8. Pour le bionettoyage d'une chambre, on commence par le sol.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> On va <strong>du haut vers le bas</strong> et du <strong>propre vers le sale</strong> : le mobilier et les surfaces d'abord, les sanitaires ensuite, le sol en dernier, <strong>du fond de la chambre vers la sortie</strong>.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">9. Une personne porteuse d'une bactérie multirésistante sans infection produit des déchets DASRI.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Faux.</strong> Une colonisation, y compris par une BMR ou une BHRe, n'est pas une infection. Sans foyer infectieux avéré ou suspecté, les déchets suivent le tri habituel : <strong>DAOM</strong>, sauf objet piquant, coupant ou perforant, qui va toujours dans un collecteur.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">10. Si mon livret montre que je passe d'une chambre à l'autre avec les mêmes gants, le jury peut le considérer comme éliminatoire.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Vrai.</strong> Le non-respect d'une règle d'hygiène est l'une des <strong>3 éliminatoires</strong>. Des gants gardés d'une chambre à l'autre, une lavette unique pour toute la chambre ou un linge sale plaqué contre la tenue en sont des exemples typiques.</p></details>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>📝 Votre score :</strong> notez-le en haut de votre feuille. Moins de 7 bonnes réponses ? C'est fréquent. L'entretien des locaux s'apprend souvent par imitation, et les habitudes d'un service (le produit pulvérisé, les gants « pour tout ») passent pour des règles. Le jury, lui, lit votre récit avec les bonnes pratiques en tête.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Partie 1</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 1 · L'activité 8 décodée <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:05 · 15&nbsp;min</span></div>
-
-<p>L'activité 8 porte sur l'entretien des locaux et des matériels et sur la prévention des risques associés. Elle appartient au <strong>bloc 4</strong>, avec l'activité 9. Un bloc se valide en entier ou pas du tout : une faute d'hygiène dans l'activité 8 fait tomber le bloc 4, même avec une excellente activité 9.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">1.1 · Ce que recouvre la compétence 8, reformulée</p>
-
-<p>Les six éléments de la fiche RNCP 40692, et la preuve que le jury cherche pour chacun.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:30%;">Élément de la compétence</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce que le jury doit lire dans votre situation</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Choisir le matériel et les produits</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le nom de la catégorie de produit (détergent, désinfectant, détergent-désinfectant, produit sporicide) et la <strong>raison</strong> du choix : le protocole de sortie, le type de surface, les précautions en cours. Pas de marque commerciale.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Nettoyer et désinfecter pour prévenir les infections associées aux soins</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Un ordre de travail logique et justifié, les principes du bionettoyage nommés au moment où vous les appliquez, le temps de contact respecté.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Appliquer les règles d'hygiène en collectivité et à domicile</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">L'hygiène des mains aux moments clés, les équipements de protection justifiés, la tenue professionnelle. Si vous travaillez à domicile, l'adaptation aux ressources de la personne.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Respecter les circuits du linge, des matériels, des dispositifs médicaux et des déchets</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le sale qui ne croise jamais le propre, le linge en sac sans être plaqué contre vous, le juste tri des déchets, justifié.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Respecter les circuits liés à l'alimentation</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le plateau et la vaisselle évacués par le bon circuit, le réfrigérateur de la chambre vidé et nettoyé, les denrées entamées éliminées selon la règle du service.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Adapter sa pratique au lieu d'intervention</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Ce qui change entre une chambre de médecine, une chambre d'EHPAD, un logement : produits, matériel, filière des déchets, organisation.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">1.2 · L'attendu officiel et la phrase-clé</p>
-
-<div style="border:1px solid #B9DCE4;background:#F4FAFB;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0 0 8px 0;"><strong>Attendu du livret 2 pour l'activité 8 :</strong> décrire un volet <strong>locaux</strong> ET un volet <strong>matériel</strong>, dans le <strong>contexte imposé d'une sortie de patient</strong>. Ce sont deux éléments du livret. Chez ORACLE, ils se rédigent dans <strong>une seule situation</strong> de sortie, qui porte les deux volets, à condition que chacun soit réellement développé.</p>
-<p style="margin:0;padding-top:10px;border-top:1px solid #B9DCE4;font-style:italic;">🔑 « Voilà comment j'entretiens l'environnement de soin selon un protocole raisonné. »</p>
+<div class="deck" id="deck">
+<div class="bar">
+  <div class="brand"><img src="assets/oracle-logo.webp" alt="" onerror="this.style.display='none'">ORACLE VAE AS</div>
+  <span class="ref">MC11 · Activité 8</span>
+  <span class="mod" id="modLbl">Accueil</span>
+  <span class="counter" id="counter">1 / 14</span>
 </div>
-
-<p>« <strong>J'entretiens</strong> » : vous agissez, au « je ». « <strong>L'environnement de soin</strong> » : la chambre et le matériel, pas la personne. « <strong>Selon un protocole</strong> » : vous appliquez la méthode de l'établissement. « <strong>Raisonné</strong> » : vous savez pourquoi chaque étape existe, et vous l'écrivez. C'est ce mot qui distingue un mode opératoire recopié d'une compétence prouvée.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:30%;">Volet</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce qu'il doit contenir, au minimum</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Locaux</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">La chambre et ses annexes : mobilier fixe, points de contact (poignées, interrupteurs, sonnette, télécommande), cabinet de toilette, sanitaires, sol. L'ordre de travail et sa justification.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Matériel</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Au moins un équipement nommé et traité en détail : lit et matelas, adaptable, fauteuil garde-robe, chaise de douche, matériel de mesure dédié, chariot de soins ou de ménage. Son circuit, son entretien, sa remise en service.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Contexte de sortie</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le départ définitif de la personne (retour à domicile, transfert vers un autre service ou un autre établissement). C'est ce départ qui déclenche l'entretien approfondi de la chambre avant l'accueil d'une autre personne.</td></tr>
-</table>
-
-<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>🚨 L'activité où l'éliminatoire « hygiène » se joue le plus.</strong> Ailleurs, l'hygiène est l'arrière-plan du soin ; ici, elle <em>est</em> le sujet. Un produit pulvérisé sur une surface, une lavette qui passe des sanitaires à l'adaptable, des gants conservés en sortant de la chambre : une seule de ces phrases suffit à rendre le bloc 4 non acquis.</p></div>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">1.3 · Activité 8 ou activité 9 ?</p>
-
-<p>C'est le couple le plus souvent confondu du bloc 4. Les deux activités parlent de locaux et de matériel ; la différence tient à ce que la situation prouve.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr><th style="padding:10px;background:#0E4D5C;color:#FFFFFF;border:1px solid #0E4D5C;text-align:left;width:50%;">Activité 8 · entretenir</th><th style="padding:10px;background:#13657A;color:#FFFFFF;border:1px solid #13657A;text-align:left;">Activité 9 · repérer et traiter une anomalie</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">🔑 « Voilà comment j'entretiens l'environnement de soin selon un protocole raisonné. »<br><br>Le déclencheur est <strong>prévu</strong> : une sortie de patient.<br><br>Le cœur du récit est une <strong>méthode</strong> : produits, ordre, circuits, tri, traçabilité.<br><br>Le résultat est un environnement propre, désinfecté et remis en service.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">🔑 « Voilà une anomalie de matériel ou de local que j'ai repérée, évaluée, traitée et suivie. »<br><br>Le déclencheur est une <strong>vérification</strong> ou un <strong>dysfonctionnement</strong>.<br><br>Le cœur du récit est une <strong>séquence</strong> : anomalie, mise en sécurité, signalement, traçabilité, suivi.<br><br>Le résultat est un matériel réparé ou remplacé, et vérifié.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>⚠️ La zone de recouvrement.</strong> Pendant un entretien de sortie, vous découvrez souvent une anomalie (housse de matelas fissurée, roulette bloquée). Dans votre activité 8, <strong>mentionnez-la en une phrase</strong> : « j'ai constaté que la housse était fendue, j'ai retiré le matelas du circuit et je l'ai signalé ». Si elle mérite un développement complet, elle devient une situation de l'activité 9.</p></div>
-
-<p style="font-weight:bold;color:#0E4D5C;margin:24px 0 8px 0;">✍️ Exercice 1 (4&nbsp;min) · Activité 8, activité 9, ou ni l'une ni l'autre ?</p>
-<p>Pour chaque situation candidate, décidez à quelle activité elle se rattache, et si elle honore l'attendu. Ouvrez ensuite la correction.</p>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">a) Chaque matin, je réalise l'entretien des chambres de mon secteur : adaptable, chevet, sanitaires, puis le sol.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Activité 8, mais attendu non honoré.</strong> Il manque le contexte imposé de la sortie de patient. Un entretien quotidien de chambre occupée ne suffit pas, même bien rédigé.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">b) Après le retour à domicile de M. V., je réalise le bionettoyage de sa chambre et de son cabinet de toilette, puis j'entretiens son fauteuil garde-robe au local de désinfection.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 8, attendu honoré.</strong> Le contexte de sortie est posé, le volet locaux (chambre et cabinet de toilette) et le volet matériel (fauteuil garde-robe) sont présents. Reste à les développer et à les justifier.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">c) En réalisant l'entretien de sortie, je découvre que le moteur du lit électrique ne répond plus. Je mets le lit hors service, j'appose une étiquette, je fais la demande d'intervention et je vérifie trois jours plus tard la réparation.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>Activité 9.</strong> Le cœur du récit est un dysfonctionnement traité et suivi. Dans une activité 8, cette panne ne tiendrait qu'en une phrase ; ici, elle constitue toute la situation.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">d) Après le départ de Mme T., placée en précautions complémentaires contact, j'entretiens sa chambre et le matériel de mesure qui lui était dédié.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 8, attendu honoré</strong>, avec un niveau d'exigence supérieur : le jury attendra que vous montriez ce que les précautions complémentaires changent dans votre entretien (matériel dédié, consommables, équipements de protection, circuits).</p></details>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">1.4 · Ce que vous inscrivez en rubrique A</p>
-
-<p>La rubrique A de l'activité 8 recense les techniques d'entretien que vous avez <strong>réellement</strong> pratiquées. Elle est souvent bâclée, alors qu'elle prépare les questions du jury.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#2E7D32;color:#FFFFFF;"><th style="padding:9px;border:1px solid #2E7D32;text-align:left;">Exemples recevables, s'ils sont réellement pratiqués</th></tr>
-<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;vertical-align:top;">Bionettoyage de chambre à la sortie du patient, y compris en précautions complémentaires contact ; entretien quotidien des chambres et des sanitaires ; balayage humide et lavage des sols ; entretien du lit, du matelas, de l'adaptable et du fauteuil garde-robe ; bassins et urinaux au lave-bassin ; matériel de mesure entre deux personnes ; préparation et datation d'une dilution selon le protocole ; circuits du linge, des déchets et de l'alimentation ; juste tri DAOM et DASRI ; traçabilité du bionettoyage ; entretien au domicile d'une personne accompagnée.</td></tr>
-</table>
-
-<p>Deux interdits : recopier le protocole de votre établissement, et lister des techniques jamais pratiquées. Tout ce que vous inscrivez en A peut faire l'objet d'une question à l'oral.</p>
-
-<div style="background:#E3F1F4;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 1.</strong> L'activité 8 demande un volet locaux et un volet matériel, dans le contexte imposé d'une sortie de patient. La phrase-clé tient en un mot : <em>raisonné</em>. L'activité 8 entretient, l'activité 9 traite une anomalie. C'est l'activité où l'éliminatoire « hygiène » guette chaque phrase.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Partie 2</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 2 · Les bases de la prévention des infections associées aux soins <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:20 · 20&nbsp;min</span></div>
-
-<p>Une infection associée aux soins survient au cours ou au décours d'une prise en charge, sans avoir été présente ni en incubation au début. L'entretien des locaux et du matériel est l'une des barrières qui l'empêchent : pour le prouver, vous devez savoir à quoi sert chacun de vos gestes.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">2.1 · La chaîne de transmission : six maillons, un seul à couper</p>
-
-<p>Une infection ne se transmet que si les six maillons sont réunis. Chaque geste d'hygiène en coupe au moins un.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:24%;">Maillon</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce que c'est</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Comment votre geste le coupe</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">1 · L'agent infectieux</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Bactérie, virus, champignon, parasite.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le nettoyage élimine les salissures qui le protègent ; la désinfection le détruit, si le temps de contact est respecté.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">2 · Le réservoir</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Là où il vit et se multiplie : la personne, le soignant, une surface humide, un matériel mal séché, un sanitaire.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le bionettoyage des surfaces et des sanitaires, le séchage du matériel, l'élimination des eaux stagnantes.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">3 · La porte de sortie</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Par où il quitte le réservoir : selles, urines, sang, sécrétions respiratoires, peau.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">La gestion des excreta au lave-bassin, le linge souillé enfermé dans son sac, les déchets évacués sans délai.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">4 · Le mode de transmission</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Contact direct (les mains) ou indirect (surfaces, matériel), gouttelettes, air.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;"><strong>L'hygiène des mains, geste principal</strong>, le matériel dédié ou désinfecté entre deux personnes, le masque, les circuits qui ne se croisent pas.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">5 · La porte d'entrée</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Par où il pénètre chez l'hôte : plaie, muqueuse, dispositif invasif (sonde, cathéter), voies respiratoires.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">La protection des dispositifs pendant l'entretien, la propreté de l'environnement proche des soins.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">6 · L'hôte réceptif</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">La personne qui peut être infectée : âgée, dénutrie, immunodéprimée, porteuse de dispositifs.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Un environnement propre accueille la <em>prochaine</em> personne. C'est tout le sens de l'entretien de sortie.</td></tr>
-</table>
-
-<div style="background:#E3F1F4;border-left:6px solid #13657A;border-radius:10px;padding:14px 20px;margin:14px 0;"><p style="margin:0;"><strong>💡 Pour votre livret.</strong> Inutile de réciter la chaîne : il suffit qu'un « pourquoi » s'y rattache. « J'ai nettoyé la sonnette et la télécommande, car ce sont les surfaces les plus touchées, qui transmettent les germes de mains en mains. »</p></div>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">2.2 · Les précautions standard : pour toute personne, en tout lieu, par tout soignant</p>
-
-<p>Elles s'appliquent <strong>à toutes les personnes, quel que soit leur statut infectieux connu</strong> : vous ne savez pas qui est porteur, alors vous protégez tout le monde.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;margin:16px 0 6px 0;">L'hygiène des mains</p>
-
-<p>La <strong>friction hydro-alcoolique</strong> est la technique de référence, sur des mains visiblement propres et sèches. Le <strong>lavage au savon doux</strong> s'impose quand les mains sont visiblement souillées, et dans le cas du Clostridium difficile (voir 2.4). Pour que l'hygiène des mains soit efficace, il faut des avant-bras dégagés, des ongles courts et sans vernis ni faux ongles, et aucun bijou (ni bague, ni alliance, ni montre, ni bracelet). La friction se poursuit, selon la technique enseignée dans votre établissement, jusqu'à ce que les mains soient complètement sèches.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:34%;">Les 5 indications (OMS)</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce que cela donne pendant un entretien de sortie</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">1 · Avant le contact avec la personne</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Au moment où vous aidez la personne qui part à s'installer au fauteuil ou à rassembler ses affaires.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">2 · Avant un geste aseptique</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Rarement concerné par l'entretien de sortie : cette indication relève surtout de vos autres soins.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">3 · Après un risque d'exposition à un liquide biologique</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Après avoir retiré les gants qui ont servi à vider le bassin, à retirer le linge souillé, à nettoyer les sanitaires.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">4 · Après le contact avec la personne</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Après l'avoir accompagnée jusqu'à la sortie, avant de revenir vers le chariot.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">5 · Après le contact avec l'environnement de la personne</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;"><strong>L'indication clé de l'activité 8</strong> : après avoir touché le lit, l'adaptable, la sonnette, les poignées, même sans avoir touché la personne. Et en sortant de la chambre, avant de toucher le chariot propre.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#0E4D5C;margin:16px 0 6px 0;">Les équipements de protection, portés à bon escient</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:24%;">Équipement</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Quand le porter</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Les règles qui comptent</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Gants à usage unique</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;"><strong>Seulement s'il existe un risque de contact avec un liquide biologique ou une muqueuse</strong>, ou avec une peau lésée ; lors de la manipulation de linge, de matériel ou de surfaces souillés.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Hygiène des mains avant de les enfiler et après les avoir retirés. Un soin, une paire. <strong>Retirés avant de toucher une surface propre</strong> (poignée de porte, chariot, dossier informatisé). Jamais gardés d'une chambre à l'autre.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Gants de ménage</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Pour le bionettoyage, en particulier avec un produit chimique, selon le protocole et la fiche du produit.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Ils protègent vos mains du produit et ne servent jamais aux soins.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Tablier plastique à usage unique</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Soin mouillant ou souillant, risque de projection sur la tenue, entretien des sanitaires ou d'un matériel souillé.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Un tablier pour un soin ou une chambre. Retiré en sortant, jeté immédiatement. Une surblouse à manches longues quand l'exposition est plus importante, selon le protocole.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Masque chirurgical</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Risque de projection de liquide biologique ; soignant qui tousse ; précautions gouttelettes.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Nez, bouche et menton couverts, jamais gardé autour du cou.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Protection oculaire</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Risque de projection vers le visage : vidange, nettoyage d'un sanitaire très souillé, rinçage manuel d'un matériel souillé.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Lunettes de protection ou masque à visière ; les lunettes de vue ne suffisent pas.</td></tr>
-</table>
-
-<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>🚨 Le piège des gants « pour tout ».</strong> Beaucoup de candidats écrivent « j'ai mis mes gants » au début du récit et ne les enlèvent plus : le jury lit des gants qui ont touché le bassin, puis la sonnette, la poignée, le chariot. C'est une faute d'hygiène. Écrivez à quel moment vous les enfilez, <strong>pourquoi</strong> (risque de contact avec un liquide biologique), et à quel moment vous les retirez, suivis d'une friction.</p></div>
-
-<p><strong>Les autres précautions standard</strong> complètent ce socle : ne jamais recapuchonner une aiguille et éliminer immédiatement tout objet piquant, coupant ou perforant en collecteur (en cas d'accident d'exposition au sang, appliquer la conduite à tenir du service et le déclarer) ; vider et désinfecter bassins et urinaux au lave-bassin, jamais à la douchette, qui projette ; faire porter un masque à la personne qui tousse, si elle le tolère.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">2.3 · Les précautions complémentaires : décidées par l'équipe, appliquées par vous</p>
-
-<p>Certains agents justifient des mesures <strong>en plus</strong> des précautions standard, jamais à leur place. Ces précautions complémentaires sont <strong>décidées par l'équipe</strong> (médecin, infirmier, équipe d'hygiène selon l'organisation) et signalées sur la porte et dans le dossier de soins. Vous les appliquez, et vous signalez tout signe qui pourrait en justifier (diarrhée brutale, toux fébrile, éruption).</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:20%;">Type</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Exemples d'agents</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce que vous appliquez, en plus des précautions standard</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Contact</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Bactéries multirésistantes (BMR), bactéries hautement résistantes émergentes (BHRe), Clostridium difficile, gale.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Chambre individuelle si possible, matériel <strong>dédié</strong> laissé dans la chambre (tensiomètre, thermomètre, stéthoscope), tablier ou surblouse pour tout contact avec la personne ou son environnement, hygiène des mains renforcée, entretien renforcé selon le protocole.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Gouttelettes</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Grippe, certaines infections respiratoires virales, coqueluche.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Masque chirurgical pour le soignant dès l'entrée dans la chambre, masque pour la personne lors de ses déplacements, hygiène des mains.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Air</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Tuberculose pulmonaire contagieuse, rougeole, varicelle.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Chambre individuelle porte fermée, <strong>appareil de protection respiratoire (FFP2)</strong> mis avant d'entrer et retiré après être sorti, déplacements de la personne limités et masqués.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>⚠️ Dites qui décide.</strong> « J'ai mis M. B. en isolement contact » est une formulation fautive : vous n'avez pas ce pouvoir de décision. Écrivez : « M. B. était en précautions complémentaires contact, décidées par le médecin pour une BMR identifiée sur un prélèvement ; j'ai appliqué le protocole du service ». Si vous avez repéré le signe qui a conduit à la décision, dites-le aussi : c'est votre part de raisonnement clinique.</p></div>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">2.4 · Le cas du Clostridium difficile</p>
-
-<div style="border:1px solid #B9DCE4;background:#F4FAFB;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0 0 8px 0;">Le <strong>Clostridium difficile</strong> est une bactérie responsable de diarrhées, souvent après un traitement antibiotique. Il forme des <strong>spores</strong> : des formes de résistance qui survivent longtemps sur les surfaces et que l'alcool ne détruit pas. D'où trois conséquences pratiques :</p>
-<ul style="margin:6px 0 8px 0;padding-left:20px;">
-<li><strong>Hygiène des mains</strong> : lavage au savon doux, qui élimine les spores mécaniquement, rinçage, séchage soigneux, <strong>puis</strong> friction hydro-alcoolique, qui agit sur les autres germes. La friction seule ne suffit pas.</li>
-<li><strong>Entretien</strong> : un produit adapté, souvent <strong>sporicide</strong>, choisi et dilué selon le protocole de l'établissement. Vous ne le choisissez pas « au jugé » : vous appliquez la procédure prévue pour ce germe.</li>
-<li><strong>Précautions complémentaires contact</strong>, avec matériel dédié et gestion rigoureuse des excreta.</li>
-</ul>
-<p style="margin:0;">Orthographe : écrivez toujours <strong>« Clostridium difficile »</strong>, en entier, avec une majuscule à Clostridium. Une orthographe hésitante sur le germe central de votre situation fragilise tout le récit.</p>
-</div>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">2.5 · La tenue professionnelle</p>
-
-<p>La tenue professionnelle est la première barrière, et elle se voit dans votre livret dès que vous la mentionnez correctement.</p>
-<ul style="margin:6px 0 8px 0;padding-left:20px;">
-<li>tenue à <strong>manches courtes</strong>, fournie et entretenue par l'établissement, changée chaque jour et <strong>dès qu'elle est souillée</strong> ;</li>
-<li>cheveux attachés, ongles courts, sans vernis ni faux ongles, aucun bijou aux mains et aux poignets ;</li>
-<li>pas de gilet personnel pendant les soins ;</li>
-<li>chaussures fermées, réservées au travail et faciles à nettoyer.</li>
-</ul>
-<p>Pourquoi ? Manches longues, bijoux et ongles longs empêchent une hygiène des mains efficace et transportent les germes d'une chambre à l'autre.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;margin:24px 0 8px 0;">✍️ Exercice 2 (5&nbsp;min) · Gants, tablier, masque : justifié ou non ?</p>
-<p>Pour chaque geste, dites si l'équipement est justifié, puis ouvrez la correction.</p>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">a) Je porte des gants à usage unique pour retirer les draps d'un lit souillé d'urine.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>✅ Justifié.</strong> Risque de contact avec un liquide biologique. Vous les retirez dès que le linge est dans son sac, puis vous réalisez une friction.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">b) Je garde mes gants pour pousser le chariot de ménage dans le couloir jusqu'à la chambre suivante.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Faute d'hygiène.</strong> Les gants contaminés transportent les germes de la chambre vers le chariot, puis vers la chambre suivante. Retrait des gants dans la chambre, friction, puis sortie.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">c) Je porte un masque chirurgical pour entrer dans la chambre d'une personne en précautions complémentaires air.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Insuffisant.</strong> Les précautions air imposent un appareil de protection respiratoire de type <strong>FFP2</strong>, mis avant d'entrer. Le masque chirurgical correspond aux précautions gouttelettes.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">d) Je mets des gants pour essuyer l'adaptable d'une personne en précautions standard seulement.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Pour une simple surface sans souillure biologique, les gants de soins ne sont pas justifiés au titre des précautions standard. En revanche, le protocole de votre établissement ou la fiche du produit d'entretien peuvent imposer des gants de ménage pour vous protéger du produit. Écrivez lequel des deux motifs s'applique.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">e) Après avoir nettoyé une chambre de personne porteuse d'un Clostridium difficile, je réalise une friction hydro-alcoolique.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>⛔ Insuffisant.</strong> Les spores résistent à l'alcool. Lavage au savon doux, rinçage, séchage, <strong>puis</strong> friction.</p></details>
-
-<div style="background:#E3F1F4;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 2.</strong> Chaque geste d'hygiène coupe un maillon de la chaîne ; votre « pourquoi » doit le dire. Les précautions standard s'appliquent à tous ; les précautions complémentaires s'ajoutent, sur décision de l'équipe. Des gants seulement s'il existe un risque de contact avec un liquide biologique ou une muqueuse, et jamais d'une chambre à l'autre. Clostridium difficile : savon, puis friction, et produit adapté selon le protocole.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Partie 3</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 3 · Le bionettoyage : principes, matériel, traçabilité <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">0:40 · 20&nbsp;min</span></div>
-
-<p>Le bionettoyage réduit la contamination des surfaces en associant un <strong>nettoyage</strong>, qui élimine les salissures, et une <strong>désinfection</strong>, qui détruit les micro-organismes. Ce qui le distingue d'un ménage, c'est la méthode : c'est elle que le jury cherche.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">3.1 · Les principes, un par un, avec leur pourquoi</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:34%;">Principe</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Pourquoi : la phrase à pouvoir dire au jury</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Nettoyer avant de désinfecter, ou employer un détergent-désinfectant selon le protocole</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Un désinfectant appliqué sur une surface sale est inefficace : les salissures protègent les germes. Soit vous nettoyez (détergent), rincez si besoin, puis désinfectez (désinfectant) ; soit le protocole prévoit un <strong>détergent-désinfectant</strong>, qui réalise les deux actions en un passage.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Le produit sur la lavette, jamais sur la surface</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">La pulvérisation sur la surface crée un aérosol que vous respirez, dépose le produit de façon inégale et le projette sur les surfaces voisines ou sur la personne. La lavette imprégnée assure une action mécanique et une répartition régulière.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Du propre vers le sale</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Pour ne pas transporter les germes d'une zone contaminée vers une zone moins contaminée. Les sanitaires se font après le mobilier de la chambre.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Du haut vers le bas</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Les poussières et les gouttes tombent : ce qui est nettoyé en bas en premier serait resali.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Du fond de la pièce vers la sortie</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Pour ne pas marcher sur le sol déjà nettoyé et pour sortir sans recontaminer la pièce.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Changer de face de lavette, puis de lavette</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Une face chargée de salissures redépose les germes. Vous changez de face après chaque surface ou chaque zone, et de lavette selon le protocole, notamment entre la chambre et les sanitaires. <strong>Une lavette ne revient jamais dans le seau ou le bac de produit propre.</strong></td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Respecter le temps de contact</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le désinfectant n'agit qu'après un certain temps, indiqué sur la fiche du produit et dans le protocole. Essuyer ou rincer trop tôt annule la désinfection. Ne citez pas de durée de mémoire : écrivez « le temps de contact prévu par le protocole ».</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Ne jamais mélanger deux produits</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Certains mélanges dégagent des gaz toxiques ; tous risquent de s'annuler. Un produit à la fois, sur une surface nettoyée et, si le protocole le prévoit, rincée.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Respecter la dilution et dater l'ouverture</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Trop dilué, le produit est inefficace ; trop concentré, il est toxique et abîme les surfaces. La dilution se prépare selon le protocole, avec le dispositif de dosage prévu, et le flacon ou le bidon porte la <strong>date de préparation ou d'ouverture</strong> : au-delà de la durée d'utilisation prévue par le protocole, il est éliminé.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>⚠️ Aucun chiffre inventé.</strong> Dilution, temps de contact, durée de conservation après ouverture, délai d'aération : ces valeurs dépendent du produit et du protocole de votre établissement. Dans votre livret, si vous ne les connaissez pas avec certitude, écrivez « selon le protocole du service » ou « selon la fiche technique du produit ». Un chiffre faux est plus grave qu'un renvoi exact au protocole, car le jury peut vous le demander.</p></div>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">3.2 · Le matériel du bionettoyage</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:26%;">Matériel</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce que vous devez savoir en dire</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Le chariot de ménage</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Il a une <strong>partie propre</strong> (lavettes et franges propres, produits, sacs neufs) et une <strong>partie sale</strong> (sac de lavettes et de franges usagées, sac de déchets). Il reste <strong>à la porte de la chambre</strong>, pas à l'intérieur ; il est lui-même nettoyé et désinfecté en fin de service.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Les lavettes</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Réutilisables en microfibre ou à usage unique, selon l'établissement. Un code couleur distingue souvent les zones (chambre, sanitaires) : citez celui de votre service sans l'inventer. Jamais réutilisées d'une chambre à l'autre.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Le balayage humide</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Réalisé avec une gaze ou une frange à usage unique ou lavable, il capte les poussières <strong>sans les mettre en suspension</strong>, contrairement au balai classique. Il précède le lavage du sol. Le balai à franges se passe sans le soulever, en « godille » ou en « S », du fond vers la sortie.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Le lavage des sols</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Frange imprégnée selon la méthode du service ; un panneau signale le sol humide, pour prévenir les chutes.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">3.3 · La traçabilité</p>
-
-<p>Un bionettoyage non tracé n'existe pas pour l'équipe qui arrive : la traçabilité garantit que la chambre peut accueillir une nouvelle personne et permet de retrouver ce qui a été fait si une infection survient. Selon l'établissement, vous tracez sur une <strong>fiche de traçabilité</strong> affichée dans la chambre ou au local, dans le logiciel du service, ou sur une étiquette apposée sur le matériel (par exemple « propre, désinfecté le… par… »). Dans votre livret, <strong>nommez le support</strong> et ce que vous y inscrivez : date, heure, type d'entretien (quotidien, de sortie, en précautions complémentaires), nom ou initiales.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;margin:24px 0 8px 0;">✍️ Exercice 3 (5&nbsp;min) · Remettez dans l'ordre les étapes d'un bionettoyage de sortie</p>
-<p>Voici dix étapes, dans le désordre. Numérotez-les sur votre feuille, puis ouvrez la correction étape par étape.</p>
-
-<div style="border:1px solid #B9DCE4;background:#F4FAFB;border-radius:10px;padding:16px 20px;margin:10px 0;">
-<p style="margin:0;"><strong>A.</strong> Balayage humide du sol, du fond vers la porte · <strong>B.</strong> Hygiène des mains et préparation du chariot à la porte · <strong>C.</strong> Bionettoyage du cabinet de toilette et des sanitaires, en finissant par la cuvette · <strong>D.</strong> Évacuation du linge sale et des déchets · <strong>E.</strong> Traçabilité et remise en service · <strong>F.</strong> Lavage du sol, du fond vers la porte · <strong>G.</strong> Bionettoyage du lit, du matelas et du mobilier, du haut vers le bas · <strong>H.</strong> Vérification du résultat · <strong>I.</strong> Aération de la pièce et retrait des objets de la personne partie · <strong>J.</strong> Bionettoyage des points de contact (sonnette, poignées, interrupteurs, télécommande)</p>
-</div>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">Étapes 1 et 2</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>1 · B</strong>, hygiène des mains et chariot préparé à la porte, avec des lavettes et des sacs en quantité suffisante. <strong>2 · I</strong>, aération et vérification que la chambre est vide des effets personnels de la personne, qui lui sont remis ou transmis selon la procédure.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">Étape 3</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>3 · D</strong>, évacuation du linge sale et des déchets. On retire d'abord ce qui est sale pour ne pas travailler au milieu, et pour pouvoir traiter les surfaces dégagées.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">Étapes 4 et 5</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>4 · G</strong>, lit, matelas et mobilier, du haut vers le bas et du propre vers le sale. <strong>5 · J</strong>, les points de contact. L'ordre entre ces deux étapes peut varier selon le protocole ; l'essentiel est de n'en oublier aucune et de changer de face de lavette entre chaque surface.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">Étape 6</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>6 · C</strong>, le cabinet de toilette et les sanitaires, <strong>après</strong> la chambre, avec une lavette dédiée : c'est la zone la plus contaminée. La cuvette des toilettes se fait en dernier.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">Étapes 7 et 8</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>7 · A</strong>, balayage humide, puis <strong>8 · F</strong>, lavage du sol, du fond vers la porte, pour ne pas marcher sur le sol propre.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">Étapes 9 et 10</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>9 · H</strong>, vérification du résultat (aucune trace, aucun oubli, matériel sec, anomalies signalées). <strong>10 · E</strong>, traçabilité, puis information de l'équipe que la chambre est prête. La remise en service vient <strong>après</strong> le contrôle, jamais avant.</p></details>
-
-<div style="background:#E3F1F4;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 3.</strong> Nettoyer avant de désinfecter, ou détergent-désinfectant selon le protocole. Le produit sur la lavette, jamais sur la surface. Du propre vers le sale, du haut vers le bas, du fond vers la sortie. Une face de lavette par surface, le temps de contact respecté, jamais de mélange, les dilutions datées. Les valeurs chiffrées viennent du protocole, pas de votre mémoire. Et un entretien se trace.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Partie 4</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 4 · La sortie de patient, le contexte imposé <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:00 · 15&nbsp;min</span></div>
-
-<p>La sortie de patient concentre tout ce que l'activité 8 veut vérifier : un entretien approfondi qui ne laisse aucune trace de la personne précédente, et un matériel remis en état pour la suivante. C'est aussi un moment de pression, parce qu'une entrée attend : c'est là que les raccourcis apparaissent.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">4.1 · L'ordre des opérations</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:26%;">Temps</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce que vous faites, et ce que vous en écrivez</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">1 · S'informer</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Vous vérifiez dans le dossier de soins et auprès de l'infirmier si la personne était en <strong>précautions complémentaires</strong>, et quel protocole de sortie s'applique. C'est le passage évaluatif avant d'agir, le temps le plus oublié des récits.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">2 · Préparer</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Tenue, hygiène des mains, chariot complet laissé à la porte, produits aux bonnes dilutions et datés, équipements de protection adaptés. Vous vérifiez que la personne est partie et que ses effets personnels ont été remis ou rangés selon la procédure.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">3 · Dégager</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Aérer. Retirer le linge sale (dans son sac, sans secouer), évacuer les déchets selon le tri, sortir la vaisselle et vider le réfrigérateur de la chambre. Retirer le matériel qui part au local de désinfection (fauteuil garde-robe, bassin, urinal).</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">4 · Entretenir les locaux</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Du haut vers le bas, du propre vers le sale : mobilier, points de contact, murs lavables au niveau des zones de contact selon le protocole, puis cabinet de toilette et sanitaires, et enfin le sol, du fond vers la sortie.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">5 · Entretenir le matériel</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Lit, matelas, adaptable, fauteuil, matériel de soins : dans la chambre ou au local de désinfection selon le matériel et le protocole.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">6 · Contrôler</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Aucune trace, aucune surface oubliée, matériel sec et fonctionnel. Toute anomalie est signalée et le matériel défectueux est retiré du circuit.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">7 · Tracer et remettre en service</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Fiche ou logiciel renseigné, lit refait avec du linge propre selon le protocole, chambre signalée comme prête à l'équipe.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">4.2 · Le volet locaux : la chambre, point par point</p>
-
-<ul style="margin:6px 0 8px 0;padding-left:20px;">
-<li><strong>Le mobilier</strong> : chevet vidé, placard, table, chaise, rebords de fenêtre.</li>
-<li><strong>Les points de contact</strong> : sonnette et son cordon, télécommande du lit et de la télévision, interrupteurs, poignées de porte et de placard, barres d'appui. Ce sont les surfaces les plus touchées par les mains, donc les plus contaminées : nommez-les, le jury y voit votre raisonnement.</li>
-<li><strong>Le cabinet de toilette</strong> : miroir et étagère, lavabo et robinetterie, douche, barres d'appui, siège de douche, puis la cuvette des toilettes en dernier, avec une lavette dédiée. Les distributeurs (savon, essuie-mains, produit hydro-alcoolique) sont vérifiés et réapprovisionnés.</li>
-<li><strong>Le sol</strong> : balayage humide puis lavage, en terminant par le cabinet de toilette ou selon l'organisation du protocole, toujours vers la sortie.</li>
-</ul>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">4.3 · Le volet matériel : les équipements à citer</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#0E4D5C;color:#FFFFFF;"><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;width:24%;">Matériel</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Entretien de sortie</th><th style="padding:9px;border:1px solid #0E4D5C;text-align:left;">Ce qui montre votre vigilance</th></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Lit</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Du haut vers le bas : tête de lit, barrières, commandes, sommier, pied de lit, roues en dernier.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Vous testez les commandes et les freins après l'entretien ; toute panne est signalée et le lit est retiré du circuit.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Matelas</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Housse nettoyée et désinfectée sur ses deux faces et ses côtés, selon le protocole ; séchage complet avant de refaire le lit.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Vous ouvrez la fermeture ou inspectez la housse : une housse fendue ou tachée à l'intérieur signale un matelas contaminé, à signaler et à retirer.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Adaptable</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Plateau, dessous du plateau, pied, roulettes.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le plateau reçoit les repas : c'est une surface qui touche le circuit alimentaire.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Fauteuil garde-robe</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Seau vidé et désinfecté au lave-bassin ; assise, accoudoirs, dossier et structure nettoyés et désinfectés, au local de désinfection ou selon le protocole.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Vous vérifiez les freins et l'état de l'assise avant de le remettre en service.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Matériel de soins dédié</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Tensiomètre, thermomètre, saturomètre, stéthoscope : désinfectés ou éliminés selon le protocole, surtout après des précautions complémentaires.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Vous distinguez le matériel à usage unique, qui s'élimine, du matériel réutilisable, qui s'entretient.</td></tr>
-<tr style="background:#F4FAFB;"><td style="padding:9px;border:1px solid #B9DCE4;font-weight:bold;vertical-align:top;">Chariot de soins ou de ménage</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Plans de travail et poignées nettoyés et désinfectés ; partie propre et partie sale respectées.</td><td style="padding:9px;border:1px solid #B9DCE4;vertical-align:top;">Le chariot circule dans tout le service : c'est un vecteur possible entre les chambres.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">4.4 · Après une personne en précautions complémentaires</p>
-
-<p>Le protocole de sortie est alors renforcé, et votre récit doit montrer <strong>ce qui change</strong>. « J'ai fait comme d'habitude, en plus soigneusement » ne prouve rien. Les points habituels :</p>
-<ul style="margin:6px 0 8px 0;padding-left:20px;">
-<li>les <strong>consommables entamés restés dans la chambre</strong> (boîte de gants, compresses, produits d'hygiène) sont éliminés selon le protocole, car ils ont pu être contaminés ;</li>
-<li>le matériel dédié est désinfecté ou éliminé, jamais remis directement dans le circuit ;</li>
-<li>le produit est celui prévu par le protocole pour ce germe, par exemple un produit sporicide pour le Clostridium difficile ;</li>
-<li>pour les précautions air, un délai d'aération peut être prévu avant l'entretien : il est fixé par le protocole, ne l'inventez pas ;</li>
-<li>le tri des déchets suit la règle du juste tri : les précautions complémentaires ne transforment pas automatiquement tous les déchets en DASRI (voir partie 5).</li>
-</ul>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">4.5 · Contrôler, tracer, remettre en service</p>
-
-<p>La boucle se ferme par un contrôle visuel méthodique, la vérification du fonctionnement du matériel (commandes du lit, sonnette, freins), la traçabilité et l'information de l'équipe. Une anomalie constatée se signale et se trace ; développée, elle relève de l'activité 9.</p>
-
-<div style="background:#E3F1F4;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 4.</strong> S'informer, préparer, dégager, entretenir les locaux, entretenir le matériel, contrôler, tracer. Nommez les points de contact et au moins un matériel en détail. Après des précautions complémentaires, dites ce qui change. La chambre n'est remise en service qu'après le contrôle.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Partie 5</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 5 · Circuits et juste tri des déchets <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:15 · 15&nbsp;min</span></div>
-
-<p>Un circuit organise le déplacement du linge, des matériels, des repas et des déchets pour que <strong>le propre et le sale ne se croisent jamais</strong> : c'est la marche en avant.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">5.1 · Le linge</p>
-
-<ul style="margin:6px 0 8px 0;padding-left:20px;">
-<li>Le linge sale est retiré <strong>en l'enroulant sur lui-même</strong>, face souillée à l'intérieur, <strong>sans le secouer</strong> (cela disperse germes et squames) et <strong>sans le plaquer contre sa tenue</strong>.</li>
-<li>Il va directement dans le <strong>sac du circuit</strong>, selon le code couleur et le tri de l'établissement ; il n'est jamais posé au sol, sur le lit ou sur le mobilier.</li>
-<li>Le sac est fermé, sans être surchargé, et évacué vers le local prévu par le circuit sale.</li>
-<li>Le linge propre est stocké à part, protégé, et manipulé avec des mains propres ; il n'entre dans la chambre qu'une fois l'entretien terminé.</li>
-<li>Après une personne en précautions complémentaires, le linge suit le circuit prévu par le protocole (sac spécifique, par exemple) : appliquez-le sans l'inventer.</li>
-</ul>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">5.2 · La vaisselle et le circuit alimentaire</p>
-
-<p>Le plateau et la vaisselle rejoignent le chariot ou l'office du circuit alimentaire, jamais le chariot de ménage. Le <strong>réfrigérateur de la chambre</strong> est vidé (denrées éliminées ou remises à la famille selon la procédure), nettoyé et désinfecté. Le circuit alimentaire fait partie de la compétence 8 : une phrase suffit, mais elle doit exister.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">5.3 · Le juste tri des déchets : DAOM ou DASRI</p>
-
-<p>Les <strong>DAOM</strong> sont les déchets assimilés aux ordures ménagères ; les <strong>DASRI</strong>, les déchets d'activités de soins à risques infectieux, qui suivent une filière spécifique. Trier « tout en DASRI par précaution » est une erreur de tri, et le jury la repère.</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr><th style="padding:10px;background:#2E7D32;color:#FFFFFF;border:1px solid #2E7D32;text-align:left;width:50%;">DAOM · la règle</th><th style="padding:10px;background:#C62828;color:#FFFFFF;border:1px solid #C62828;text-align:left;">DASRI · seulement si</th></tr>
-<tr><td style="padding:9px;border:1px solid #C8E6C9;background:#F1F8E9;vertical-align:top;">Gants, tabliers, masques, protections (changes) <strong>souillés de liquide biologique</strong>.<br><br>Emballages, papiers, essuie-mains, lavettes à usage unique, restes alimentaires.<br><br>Déchets d'une personne <strong>colonisée</strong>, y compris par une <strong>BMR ou une BHRe</strong>, sans infection.</td><td style="padding:9px;border:1px solid #FFCDD2;background:#FFEBEE;vertical-align:top;">① contact avec un <strong>foyer infectieux avéré ou suspecté</strong> ;<br><br>② <strong>imprégnation</strong> de sang ou de liquide biologique avec <strong>risque d'écoulement</strong> ;<br><br>③ objet <strong>piquant, coupant ou perforant</strong> : <strong>toujours</strong> en DASRI, dans un <strong>collecteur</strong> adapté, qu'il soit souillé ou non.</td></tr>
-</table>
-
-<div style="background:#FFEBEE;border-left:6px solid #C62828;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>🚨 Colonisation n'est pas infection.</strong> Une personne colonisée porte un germe sans en être malade. Elle justifie souvent des précautions complémentaires contact, pour éviter la transmission, mais ses déchets ne deviennent pas DASRI pour autant. Écrire « tous les déchets de la chambre de Mme R., porteuse d'une BMR, sont partis en DASRI » montre une règle mal comprise. Le bon réflexe : se demander, déchet par déchet, s'il répond à l'un des trois critères.</p></div>
-
-<p>Quelle que soit la filière : sacs fermés sans être tassés, jamais posés au sol dans le couloir, collecteurs fermés définitivement à la limite de remplissage, évacuation selon le circuit sale, puis hygiène des mains. Si votre établissement applique une règle plus large, écrivez que vous suivez son protocole, sans l'ériger en règle, et sachez expliquer au jury le juste tri, qui fait référence.</p>
-
-<p style="font-weight:bold;color:#0E4D5C;margin:24px 0 8px 0;">✍️ Exercice 4 (5&nbsp;min) · DAOM ou DASRI ?</p>
-<p>Pour chaque déchet, choisissez la filière, puis ouvrez la correction.</p>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">a) La protection (change) souillée de selles d'une résidente sans infection connue.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>DAOM.</strong> Souillée de liquide biologique, mais sans foyer infectieux et sans risque d'écoulement.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">b) Les gants et le tablier portés pour nettoyer la chambre d'un patient colonisé par une BMR, sans infection.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>DAOM.</strong> Colonisation n'est pas infection. Les précautions complémentaires contact s'appliquent pendant le séjour, mais le tri des déchets reste le tri habituel.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">c) La lancette d'autopiqueur retrouvée sur l'adaptable lors de l'entretien de sortie.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>DASRI, toujours, en collecteur.</strong> Tout objet piquant, coupant ou perforant va dans le collecteur, souillé ou non. Vous la saisissez avec précaution, sans la manipuler à mains nues, vous l'éliminez immédiatement et vous signalez qu'elle a été oubliée, car c'est un risque d'accident d'exposition au sang.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">d) Un rasoir jetable oublié dans le cabinet de toilette.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>DASRI, toujours, en collecteur.</strong> Objet coupant : collecteur, même s'il paraît propre.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">e) Une protection souillée de sang retirée du lit lors de l'entretien de sortie.</summary><p style="margin:10px 0 0 0;background:#FFF8E1;border-radius:6px;padding:10px;"><strong>⚠️ Sous conditions.</strong> Tout dépend du critère d'imprégnation : souillée sans risque d'écoulement, elle va en <strong>DAOM</strong> ; imprégnée au point de goutter quand vous la soulevez, elle va en <strong>DASRI</strong>. La présence de sang ne suffit pas à elle seule à décider de la filière.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">f) L'emballage d'une compresse stérile et l'essuie-mains de la friction.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>DAOM.</strong> Aucun contact avec un liquide biologique.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">g) Les gants et le tablier portés pour vider le fauteuil garde-robe d'une personne en précautions contact pour une diarrhée à Clostridium difficile.</summary><p style="margin:10px 0 0 0;background:#FFEBEE;border-radius:6px;padding:10px;"><strong>DASRI.</strong> Il s'agit cette fois d'une <strong>infection</strong> avérée, et d'un contact avec son foyer (les selles). Le critère ① est rempli.</p></details>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">5.4 · Adapter au domicile</p>
-
-<p>La compétence 8 inclut l'hygiène à domicile. Si vous y travaillez, la sortie peut être, par exemple, la fin d'une prise en charge, avec l'entretien du matériel mis à disposition avant sa restitution. Adapter, c'est :</p>
-<ul style="margin:6px 0 8px 0;padding-left:20px;">
-<li>utiliser les produits et le matériel disponibles, ou ceux fournis par le service, en respectant les mêmes principes (produit sur la lavette, propre vers sale, aucun mélange) ;</li>
-<li>apporter sa propre solution hydro-alcoolique et respecter l'hygiène des mains, même sans point d'eau adapté ;</li>
-<li>suivre la filière de déchets prévue par le service : collecte habituelle du domicile pour les déchets ménagers, collecteur pour les objets piquants et coupants ;</li>
-<li>respecter le domicile comme un lieu de vie : vous conseillez et vous négociez, vous ne réorganisez pas la maison de la personne.</li>
-</ul>
-
-<div style="background:#E3F1F4;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 5.</strong> Le propre et le sale ne se croisent jamais. Le linge s'enroule, ne se secoue pas et ne se plaque pas contre soi. La vaisselle suit le circuit alimentaire. Gants, tabliers et protections souillés vont en DAOM ; DASRI seulement si foyer infectieux avéré ou suspecté, imprégnation avec risque d'écoulement, ou objet piquant, coupant, perforant (toujours, en collecteur). Colonisation n'est pas infection.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Partie 6</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">PARTIE 6 · Deux situations modèles décortiquées, grille de détection et questions du jury <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:30 · 20&nbsp;min</span></div>
-
-<p style="font-size:13px;color:#546E7A;font-style:italic;">Les deux situations ci-dessous sont <strong>construites pour l'exemple</strong> et ne décrivent aucune personne réelle ; les initiales sont fictives. Elles montrent un niveau de rédaction, pas un texte à reprendre : votre livret doit raconter <em>vos</em> situations, avec <em>vos</em> mots, et citer les produits, dilutions et durées de <em>votre</em> protocole.</p>
-
-<!-- Situation A -->
-<div style="background:#13657A;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation A · Activité 8 (BC4) · Sortie d'un patient rentrant à domicile : chambre ET lit, matelas, adaptable</div>
-
-<div style="background:#F4FAFB;border:1px solid #B9DCE4;border-radius:10px;padding:16px 20px;">
-<p style="margin:0 0 8px 0;"><strong>La personne.</strong> M. G., 79 ans, est hospitalisé depuis huit jours dans un service de médecine pour un déséquilibre de son diabète de type 2. Il a aussi une hypertension artérielle. Traitements : un antidiabétique oral, ajusté par le médecin pendant le séjour, avec des glycémies capillaires réalisées par l'infirmière (surveillance : hypoglycémie et hyperglycémie) ; un antihypertenseur (surveillance : hypotension au lever, chutes). Il n'a jamais été placé en précautions complémentaires : seules les précautions standard s'appliquent. Ancien facteur, il vit avec son épouse en maison. Il se lève seul, marche sans aide technique et fait sa toilette seul au lavabo depuis trois jours. Sa sortie est prévue à 11 h, et une entrée est annoncée pour 14 h dans la même chambre.</p>
-<p style="margin:0;"><strong>La situation.</strong> À 10 h 45, je l'aide à rassembler ses affaires et je l'accompagne au fauteuil le temps que son épouse arrive ; je le fais se lever en deux temps, en raison de son antihypertenseur. À 11 h 10, après son départ, je vérifie dans le dossier qu'aucune précaution complémentaire n'était prescrite : le protocole de sortie standard s'applique. Je réalise une friction hydro-alcoolique et je prépare mon chariot, que je laisse à la porte : lavettes propres, détergent-désinfectant dilué selon le protocole et daté du matin, sacs neufs, panneau « sol mouillé ». J'ouvre la fenêtre. Le drap de dessous porte des traces d'urine : je mets des gants et un tablier, en raison du risque de contact avec ce liquide biologique, pour retirer les draps, que j'enroule sur eux-mêmes sans les secouer ni les plaquer contre ma tenue, et que je dépose directement dans le sac à linge sale du chariot. J'évacue les mouchoirs et les emballages en DAOM, puis je retire gants et tablier et je réalise une friction. En vidant le tiroir de l'adaptable, je trouve une lancette d'autopiqueur oubliée : j'apporte le collecteur du chariot de soins au plus près, j'enfile une paire de gants, je saisis la lancette par son corps, sans toucher la pointe, et je l'élimine aussitôt dans le collecteur, puis je retire mes gants et je réalise une friction ; je le signale à l'infirmière, car c'est un risque d'accident d'exposition au sang pour la personne suivante. Le plateau du petit-déjeuner part sur le chariot repas, et je vide le réfrigérateur de la chambre : un yaourt entamé, que j'élimine. Je mets mes gants de ménage. J'imprègne une lavette de détergent-désinfectant, jamais la surface, et je commence par le haut : tête de lit, barrières, télécommande, puis sommier et pied de lit, en changeant de face à chaque surface. Je nettoie la housse du matelas sur ses deux faces et ses côtés ; en l'inspectant, je constate qu'elle est intacte. J'entretiens l'adaptable (plateau, dessous, pied, roulettes), le chevet, le réfrigérateur, le placard, la chaise, puis les points de contact : sonnette et cordon, interrupteurs, poignées. Je laisse agir le produit le temps prévu par le protocole, sans essuyer. Avec une nouvelle lavette, réservée aux sanitaires, je traite le cabinet de toilette : miroir, lavabo, robinetterie, barre d'appui, douche, puis la cuvette en dernier. Je jette les lavettes usagées dans le sac sale du chariot. Je réalise le balayage humide puis le lavage du sol, du fond de la chambre vers la porte. À 12 h 20, je contrôle : aucune trace, housse sèche, commandes du lit et sonnette fonctionnelles. Je retire mes gants de ménage, je réalise une friction et je refais le lit avec du linge propre. Je complète la fiche de traçabilité de la chambre (date, heure, « entretien de sortie », mes initiales) et je préviens l'infirmière que la chambre est prête, soit une heure quarante avant l'entrée.</p>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #B9DCE4;background:#E3F1F4;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #B9DCE4;">Le <strong>contexte de sortie</strong> est posé, avec l'enjeu de temps. Le passage évaluatif est présent (vérifier l'absence de précautions complémentaires). Le <strong>volet locaux</strong> (chambre, points de contact, cabinet de toilette, sol) et le <strong>volet matériel</strong> (lit, matelas, adaptable) sont tous deux développés. Les principes sont appliqués et visibles : produit sur la lavette, haut vers bas, propre vers sale, changement de face, lavette dédiée aux sanitaires, temps de contact, sol vers la sortie. Les gants sont justifiés et retirés au bon moment, suivis d'une friction. Les circuits linge, alimentaire et déchets sont respectés. Le chaînage apparaît : diabète, donc lancettes, donc risque d'accident d'exposition au sang ; antihypertenseur, donc lever en deux temps. La boucle est fermée : contrôle, traçabilité, information de l'équipe.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;background:#E3F1F4;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #B9DCE4;">Les glycémies sont réalisées par l'infirmière ; la lancette oubliée lui est signalée. Le produit et sa dilution viennent du protocole, pas d'un choix personnel. La décision de précautions complémentaires appartient à l'équipe : le candidat vérifie qu'il n'y en a pas.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #B9DCE4;">« J'ai pulvérisé le produit sur le matelas et l'adaptable » : faute d'hygiène. « J'ai gardé mes gants du retrait des draps jusqu'à la fin du ménage » : faute d'hygiène. « J'ai commencé par les toilettes pour m'avancer » ou « une seule lavette pour toute la chambre » : propre et sale inversés. « J'ai jeté la lancette dans le sac des déchets » : risque d'accident d'exposition au sang, mise en danger. « J'ai mis tous les déchets en DASRI par sécurité » : erreur de tri. « J'ai ajouté un peu de Javel au détergent » : mélange interdit. Un récit sans matériel développé : l'attendu n'est pas honoré.</td></tr>
-</table>
-
-<!-- Situation B -->
-<div style="background:#13657A;color:#FFFFFF;border-radius:8px;padding:9px 16px;margin:24px 0 10px 0;font-weight:bold;">Situation B · Activité 8 (BC4) · Sortie d'une patiente en précautions complémentaires contact : chambre ET fauteuil garde-robe, matériel dédié</div>
-
-<div style="background:#F4FAFB;border:1px solid #B9DCE4;border-radius:10px;padding:16px 20px;">
-<p style="margin:0 0 8px 0;"><strong>La personne.</strong> Mme T., 84 ans, est hospitalisée depuis douze jours en service de médecine, à la suite d'une chute à domicile compliquée d'une infection urinaire, traitée par antibiotique. Elle a une insuffisance cardiaque traitée par diurétique (surveillance : diurèse, déshydratation, hypotension, chutes) et un anticoagulant (surveillance : saignements, hématomes, toute chute se transmet). Au sixième jour, j'ai constaté quatre selles liquides en une matinée, alors qu'elle n'en avait qu'une par jour ; je l'ai transmis à l'infirmière. Le médecin a fait rechercher un Clostridium difficile, qui a été confirmé, et a prescrit des précautions complémentaires contact. Mme T. utilisait un fauteuil garde-robe dédié la nuit. Ancienne couturière, veuve, elle vivait seule. Elle marche avec un déambulateur et l'aide d'un soignant, fait sa toilette au lavabo avec une aide partielle. Elle sort ce jeudi pour une entrée en soins de suite et de réadaptation, précautions maintenues, ce qui est inscrit dans le courrier de transfert rédigé par l'équipe.</p>
-<p style="margin:0;"><strong>La situation.</strong> À 14 h, après le départ de Mme T. en ambulance, je relis le protocole « sortie en précautions complémentaires contact, Clostridium difficile » affiché au local, et j'en parle avec l'infirmière : il prévoit un nettoyage au détergent, puis une désinfection avec le produit sporicide référencé par l'établissement, dilué selon la fiche. Je prépare le chariot à la porte, j'y ajoute le sporicide que je dilue avec le doseur, et j'inscris sur le flacon la date et l'heure de préparation. À la porte, je réalise une friction, mes mains étant propres, puis j'enfile une surblouse à manches longues et des gants à usage unique, comme le prévoient les précautions. J'ouvre la fenêtre. Je retire le linge en l'enroulant, sans le secouer, et je le dépose dans le sac prévu par le protocole pour les précautions complémentaires, que je ferme. J'élimine en DAOM les consommables entamés restés dans la chambre (boîte de gants, sachets de lingettes, rouleau de sacs), car ils ont pu être contaminés par les mains. Je conduis le fauteuil garde-robe, couvercle fermé, jusqu'au local de désinfection, une collègue m'ouvrant les portes pour que mes gants ne touchent aucune poignée : j'y vide le seau dans le lave-bassin et je lance le cycle. J'élimine en DASRI les gants et la surblouse qui ont été au contact du seau, puisqu'il s'agit du foyer infectieux avéré ; les emballages et les papiers sans contact avec les selles vont en DAOM. Je fais un lavage des mains au savon, un séchage, puis une friction. De retour à la porte de la chambre, j'enfile une nouvelle surblouse et des gants adaptés au sporicide, comme le prévoit sa fiche. Dans la chambre, je réalise d'abord le nettoyage au détergent, lavette imprégnée, du haut vers le bas et du propre vers le sale : lit, barrières, télécommande, adaptable, chevet, sonnette, poignées, interrupteurs, barre d'appui. Je rince selon le protocole, puis j'applique le sporicide avec une lavette propre, sur les mêmes surfaces, dans le même ordre, et je laisse agir le temps prévu sans essuyer. Je traite ensuite le cabinet de toilette avec des lavettes dédiées, cuvette en dernier, puis le sol, du fond vers la porte. Je nettoie puis je désinfecte au sporicide le tensiomètre dédié, laissé dans la chambre pendant tout le séjour, avant son retour au service. À 15 h 15, contrôle de la chambre : aucune trace, matériel sec, sonnette fonctionnelle. Je retire gants et surblouse avant de sortir, je les élimine en DAOM, car ils n'ont pas été au contact du foyer infectieux, et je fais un lavage des mains au savon puis une friction. Au local, avec une nouvelle paire de gants et un tablier, je nettoie puis je désinfecte au sporicide l'assise, les accoudoirs, le dossier et la structure du fauteuil garde-robe, dans le même ordre ; je remets en place le seau sorti du lave-bassin, je vérifie les freins et j'y colle l'étiquette « désinfecté », datée. Je retire gants et tablier, lavage des mains au savon, friction. Je complète la traçabilité (« sortie en précautions complémentaires contact », date, heure, produit utilisé, mes initiales) et je préviens l'infirmière, qui lève l'affichage de la porte selon la procédure.</p>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #B9DCE4;background:#E3F1F4;font-weight:bold;width:30%;">Ce qui prouve la compétence</td><td style="padding:9px;border:1px solid #B9DCE4;">Le contexte de sortie est posé, et le candidat montre <strong>ce que les précautions complémentaires changent</strong> : protocole spécifique relu, produit sporicide, surblouse, consommables éliminés, matériel dédié traité, lavage des mains au savon puis friction. Les deux volets sont développés : la chambre (locaux) et le fauteuil garde-robe et le tensiomètre (matériel). Le nettoyage précède la désinfection, et le candidat le dit. La dilution est datée, le temps de contact respecté, sans chiffre inventé. Le <strong>juste tri</strong> est raisonné, déchet par déchet : DASRI pour ce qui a touché le foyer infectieux, DAOM pour le reste. Le chaînage est présent en amont : antibiotique, donc surveillance des selles, qui a conduit au signalement. La boucle est fermée.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;background:#E3F1F4;font-weight:bold;">Où la limite est dite</td><td style="padding:9px;border:1px solid #B9DCE4;">Le candidat repère et transmet la diarrhée ; le médecin fait rechercher le germe et prescrit les précautions. Le produit est « référencé par l'établissement » et dilué « selon la fiche ». L'infirmière lève l'affichage. Le candidat applique, il ne décide pas.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;background:#FFEBEE;font-weight:bold;">Ce qui la ferait tomber</td><td style="padding:9px;border:1px solid #B9DCE4;">« J'ai fait une friction hydro-alcoolique en sortant » sans lavage au savon : faute d'hygiène face au Clostridium difficile. « J'ai rangé la boîte de gants entamée dans le chariot » : contamination du circuit propre. « J'ai remis le tensiomètre dans le service » sans l'avoir désinfecté : faute d'hygiène. « J'ai mélangé le sporicide au détergent pour aller plus vite » : mélange interdit. « J'ai vidé le seau dans les toilettes de la chambre et je l'ai rincé à la douchette » : projections, faute d'hygiène. « J'ai mis Mme T. en isolement » : décision qui ne vous appartient pas. Une orthographe approximative de « Clostridium difficile » : fragilisant.</td></tr>
-</table>
-
-<div style="background:#FFF8E1;border-left:6px solid #F9A825;border-radius:10px;padding:14px 20px;margin:16px 0;"><p style="margin:0;"><strong>⚠️ Et si Mme T. avait seulement été colonisée par une BMR ?</strong> Précautions complémentaires contact également, mais sans infection : pas de sporicide sauf si le protocole le prévoit, friction hydro-alcoolique comme technique de référence, et <strong>tous les déchets en DAOM</strong>, sauf objet piquant ou coupant. Savoir expliquer cette différence au jury vaut mieux que de tout trier en DASRI « par sécurité ».</p></div>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">6.1 · La grille de détection de l'activité 8</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px 0;">
-<tr style="background:#C62828;color:#FFFFFF;"><th style="padding:9px;border:1px solid #C62828;text-align:left;width:40%;">Si vous lisez…</th><th style="padding:9px;border:1px solid #C62828;text-align:left;">Diagnostic</th></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai pulvérisé le produit sur les surfaces », « j'ai vaporisé l'adaptable »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (hygiène).</strong> Le produit se met sur la lavette, jamais sur la surface.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai gardé mes gants », « avec les mêmes gants, je suis passé à la chambre suivante », « j'ai ouvert la porte avec mes gants »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (hygiène).</strong> Gants retirés avant toute surface propre, friction, jamais d'une chambre à l'autre.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai mélangé la Javel et le détergent », « j'ai ajouté un peu de désinfectant dans le seau »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (hygiène et mise en danger).</strong> Jamais de mélange de produits.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai commencé par les toilettes », « j'ai fait toute la chambre avec la même lavette », « je retrempe la lavette dans le seau »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (hygiène).</strong> Propre vers sale, changement de face et de lavette, jamais de retour dans le produit propre.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai secoué les draps », « j'ai posé le sac de linge sale sur le lit propre », « j'ai porté le linge contre moi »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (hygiène).</strong> Linge enroulé, ensaché directement, jamais plaqué contre la tenue.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai jeté l'aiguille (ou la lancette) dans la poubelle », « j'ai recapuchonné »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (mise en danger).</strong> Tout objet piquant, coupant ou perforant va immédiatement en collecteur.</td></tr>
-<tr><td style="padding:9px;border:1px solid #FFCDD2;font-style:italic;vertical-align:top;">« j'ai mis la patiente en isolement », « j'ai décidé des précautions contact »</td><td style="padding:9px;border:1px solid #FFCDD2;vertical-align:top;"><strong>Éliminatoire (hors champ)</strong> si c'est une décision ; écrivez que les précautions ont été décidées par l'équipe et que vous les avez appliquées.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« tous les déchets de la chambre sont partis en DASRI », « gants souillés en DASRI »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À clarifier.</strong> Justifiez par l'un des trois critères, sinon DAOM. Colonisation n'est pas infection.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« j'ai utilisé le produit habituel », « j'ai dilué à l'œil », une dilution ou une durée citée sans source</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À clarifier.</strong> Nommez la catégorie de produit et renvoyez au protocole ou à la fiche technique.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« j'ai fait le ménage de la chambre », « on a tout nettoyé »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À réécrire.</strong> Aucun principe n'est démontré, et votre part n'est pas précisée ; décrivez l'ordre, au « je », et justifiez chaque étape.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">un entretien quotidien de chambre occupée, sans départ de la personne</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>À réécrire.</strong> Le contexte imposé de la sortie de patient manque.</td></tr>
-<tr style="background:#FFF8E1;"><td style="padding:9px;border:1px solid #FFE082;font-style:italic;vertical-align:top;">« on n'a jamais le temps de respecter le temps de contact », « ici, on pulvérise, c'est plus rapide »</td><td style="padding:9px;border:1px solid #FFE082;vertical-align:top;"><strong>Fragilisant.</strong> Preuve à charge : l'usage du service remplace les bonnes pratiques. Supprimez, et réécrivez ce que vous faites réellement dans les règles.</td></tr>
-</table>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:22px 0 8px 0;">6.2 · Six questions du jury sur l'activité 8</p>
-<p>Chaque question part d'une phrase <em>citée</em> de votre livret. Entraînez-vous à y répondre à voix haute avant d'ouvrir l'attendu.</p>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">« Vous écrivez : "J'ai utilisé le détergent-désinfectant du service." Pourquoi celui-là, et pourquoi pas un désinfectant seul ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le produit est prévu par le protocole de sortie de votre établissement pour ce type de surface ; il nettoie et désinfecte en un passage, alors qu'un désinfectant seul sur une surface non nettoyée serait inefficace. Vous citez sa dilution et son temps de contact tels qu'ils figurent sur le protocole, ou vous dites que vous vous y référez. À éviter : « c'est celui qu'on a toujours ».</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">« Vous écrivez : "J'ai commencé par la tête de lit." Pourquoi pas par les sanitaires, qui sont les plus sales ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> on va du propre vers le sale, pour ne pas transporter les germes des sanitaires vers le mobilier ; et du haut vers le bas, parce que ce qui tombe resalirait ce qui est déjà nettoyé. Les sanitaires viennent après la chambre, avec une lavette dédiée, et le sol en dernier. À éviter : « c'est l'ordre du service ».</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">« Vous écrivez : "J'ai jeté mes gants et mon tablier en DAOM." Ils étaient souillés d'urine. Pourquoi pas en DASRI ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> les trois critères du DASRI (foyer infectieux avéré ou suspecté, imprégnation avec risque d'écoulement, objet piquant, coupant ou perforant) n'étaient pas réunis. Des gants souillés de liquide biologique relèvent des DAOM. À éviter : « j'aurais dû les mettre en DASRI par sécurité », qui montre que la règle n'est pas comprise.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">« Vous écrivez : "Mme T. était en précautions contact." Qu'est-ce que cela a changé dans votre entretien de sortie ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le protocole spécifique, le produit adapté au germe (sporicide pour le Clostridium difficile), la surblouse, l'élimination des consommables entamés, la désinfection du matériel dédié, le lavage des mains au savon puis la friction, le tri fondé sur le contact avec le foyer infectieux. Et qui a décidé des précautions : l'équipe, pas vous. À éviter : « j'ai fait comme d'habitude, mais plus soigneusement ».</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">« Vous écrivez : "J'ai laissé agir le produit." Combien de temps, et pourquoi ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le temps de contact prévu par le protocole ou la fiche du produit, que vous avez vérifié ; sans lui, le désinfectant n'a pas le temps de détruire les micro-organismes. Si vous ne connaissez pas la durée exacte, dites que vous vous référez au protocole : c'est une réponse professionnelle. À éviter : un chiffre au hasard.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">« Vous écrivez : "La chambre était prête à 12 h 20." Comment saviez-vous qu'elle était prête ? »</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Attendu :</strong> le contrôle visuel méthodique (aucune trace, aucune surface oubliée), la vérification du matériel (housse intacte et sèche, commandes, sonnette, freins), la traçabilité renseignée et l'information de l'équipe. C'est le troisième pilier du jury : le résultat. À éviter : « elle avait l'air propre ».</p></details>
-
-<div style="background:#E3F1F4;border-radius:10px;padding:14px 20px;margin:18px 0;"><p style="margin:0;"><strong>📌 À retenir de la partie 6.</strong> Une bonne situation d'activité 8 pose le contexte de sortie, vérifie les précautions en cours, développe les deux volets et justifie chaque principe au moment où elle l'applique. Elle trie les déchets critère par critère. Une seule phrase de la grille rouge suffit à faire tomber le bloc 4.</p></div></div>
-    </section>
-
-    <section class="slide">
-      <p class="eyebrow">MC11 · Clôture</p>
-      <div class="content-scroll"><div style="background:#0E4D5C;color:#FFFFFF;border-radius:10px;padding:13px 18px;margin:34px 0 14px 0;font-size:20px;font-weight:bold;">CLÔTURE · Auto-positionnement, l'essentiel, plan d'action <span style="display:inline-block;margin:4px 0 0 0;background:#FFFFFF;color:#0E4D5C;font-size:13px;padding:3px 10px;border-radius:12px;white-space:nowrap;">1:50 · 10&nbsp;min</span></div>
-
-<p><strong>Refaites l'auto-positionnement de l'ouverture</strong> et comparez avec votre premier score. Le quiz final ci-dessous se fait ensuite <strong>en travail personnel</strong>, après la masterclass (environ 15&nbsp;min).</p>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:20px 0 8px 0;">🧠 Quiz final · 15 questions · travail personnel</p>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">1. Quel est l'attendu officiel de l'activité 8 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Un volet locaux ET un volet matériel, dans le contexte imposé d'une sortie de patient.</strong></p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">2. Quelle est la phrase-clé ORACLE de l'activité 8 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>« Voilà comment j'entretiens l'environnement de soin selon un protocole raisonné. »</strong></p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">3. Un lit électrique en panne découvert lors d'un entretien de sortie, signalé, réparé et vérifié : activité 8 ou 9 ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Activité 9</strong> si la panne est le cœur du récit. Dans une activité 8, elle ne tient qu'en une phrase.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">4. Quelles sont les 5 indications de l'hygiène des mains ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Avant le contact avec la personne, avant un geste aseptique, après un risque d'exposition à un liquide biologique, après le contact avec la personne, après le contact avec son environnement.</strong></p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">5. Quand les gants de soins sont-ils justifiés au titre des précautions standard ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Seulement s'il existe un risque de contact avec un liquide biologique ou une muqueuse</strong> (ou une peau lésée), ou avec du linge, du matériel ou des surfaces souillés. Hygiène des mains avant et après.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">6. Précautions air : quel équipement respiratoire ? A. aucun · B. masque chirurgical · C. appareil de protection respiratoire FFP2</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>C.</strong> Mis avant d'entrer dans la chambre, retiré après en être sorti. Le masque chirurgical correspond aux précautions gouttelettes.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">7. Qui décide des précautions complémentaires ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>L'équipe</strong> (médecin, infirmier, équipe d'hygiène selon l'organisation). Vous repérez et signalez les signes, puis vous appliquez les mesures décidées.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">8. Pourquoi la friction seule ne suffit-elle pas face au Clostridium difficile ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Ses spores résistent à l'alcool.</strong> Lavage au savon doux pour les éliminer mécaniquement, séchage, puis friction ; entretien avec le produit adapté prévu par le protocole, souvent sporicide.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">9. Pourquoi met-on le produit sur la lavette et non sur la surface ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Pour éviter l'aérosol inhalé et les projections, et pour répartir le produit de façon régulière</strong> avec une action mécanique.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">10. Citez les trois règles de direction du bionettoyage.</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Du propre vers le sale, du haut vers le bas, du fond vers la sortie.</strong></p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">11. Un désinfectant appliqué sur une surface sale est-il efficace ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non.</strong> On nettoie avant de désinfecter, ou on emploie un détergent-désinfectant selon le protocole.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">12. Quelle est la règle pour le linge sale ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>L'enrouler sur lui-même, ne pas le secouer, ne pas le plaquer contre sa tenue, l'ensacher directement</strong>, jamais au sol ni sur le lit.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">13. Gants et tablier souillés d'urine, chez une personne sans infection connue : quelle filière ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>DAOM.</strong> Aucun des trois critères du DASRI n'est réuni.</p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">14. Quels sont les trois cas qui justifient un DASRI ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Contact avec un foyer infectieux avéré ou suspecté ; imprégnation avec risque d'écoulement ; objet piquant, coupant ou perforant, toujours, en collecteur.</strong></p></details>
-
-<details style="border:1px solid #B9DCE4;border-radius:8px;padding:11px 16px;margin:8px 0;background:#FFFFFF;"><summary style="cursor:pointer;font-weight:bold;color:#0E4D5C;">15. Une personne colonisée par une BHRe, sans infection : ses gants et tabliers vont-ils en DASRI ?</summary><p style="margin:10px 0 0 0;background:#E8F5E9;border-radius:6px;padding:10px;"><strong>Non, en DAOM.</strong> Colonisation n'est pas infection. Les précautions complémentaires contact s'appliquent, mais pas la filière DASRI, sauf objet piquant ou coupant.</p></details>
-
-<div style="background:linear-gradient(135deg,#0E4D5C 0%,#1B8199 100%);border-radius:12px;padding:22px 24px;margin:26px 0;color:#FFFFFF;">
-<p style="margin:0 0 10px 0;font-weight:bold;font-size:18px;">📌 L'essentiel de la masterclass 11</p>
-<ol style="margin:0;padding-left:22px;">
-<li>L'activité 8 demande un volet locaux et un volet matériel, dans le contexte imposé d'une sortie de patient.</li>
-<li>Elle entretient ; l'activité 9 traite une anomalie. Une panne découverte tient en une phrase.</li>
-<li>Chaque geste coupe un maillon de la chaîne de transmission : votre « pourquoi » doit le dire.</li>
-<li>Hygiène des mains aux 5 moments, gants seulement s'il existe un risque de contact avec un liquide biologique ou une muqueuse, jamais d'une chambre à l'autre.</li>
-<li>Les précautions complémentaires sont décidées par l'équipe ; dites ce qu'elles changent dans votre entretien. Clostridium difficile : savon, puis friction.</li>
-<li>Produit sur la lavette, propre vers sale, haut vers bas, fond vers sortie, temps de contact, jamais de mélange ; les chiffres viennent du protocole.</li>
-<li>Juste tri : DAOM par défaut ; DASRI seulement pour un foyer infectieux, une imprégnation avec risque d'écoulement ou un objet piquant, coupant, perforant.</li>
-<li>Contrôler, tracer, informer : la chambre n'est prête qu'après.</li>
-</ol>
-</div>
-
-<p style="font-weight:bold;color:#0E4D5C;font-size:17px;margin:20px 0 8px 0;">✅ Votre plan d'action avant la masterclass 12</p>
-<table style="width:100%;border-collapse:collapse;font-size:14px;">
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Choisir une vraie sortie de patient vécue, et non un entretien quotidien.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Vérifier que ma situation développe les deux volets : la chambre et au moins un matériel nommé.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Me procurer le protocole de bionettoyage de sortie de mon service et y relever la catégorie de produit, sa dilution, son temps de contact et sa durée d'utilisation après préparation.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Écrire, pour chaque étape, son pourquoi (maillon coupé, risque évité).</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Relire chaque mention des gants : motif, moment de l'enfilage, moment du retrait, friction.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Reprendre chaque déchet cité et vérifier sa filière avec les trois critères du DASRI.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Passer mon brouillon à la grille de détection de la partie 6 et chasser les « on ».</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Mettre à jour ma rubrique A : seulement les techniques d'entretien réellement pratiquées.</td></tr>
-<tr><td style="padding:9px;border:1px solid #B9DCE4;width:6%;text-align:center;">☐</td><td style="padding:9px;border:1px solid #B9DCE4;">Préparer à voix haute les six questions du jury de la partie 6.</td></tr>
-</table>
-
-<p style="margin:18px 0 0 0;font-size:13px;color:#546E7A;">📚 Livre du livret 2, chapitre 16 · Livre Bloc 4 · Fiches de révision B4</p></div>
-    </section>
-
-    <section class="slide">
-      <div class="hero-band" style="height: 160px;">
-        <div class="hero-tile"><div class="emoji">🎯</div></div>
-        <div class="hero-tile"><div class="emoji">✍️</div></div>
-        <div class="hero-tile"><div class="emoji">💡</div></div>
-        <div class="hero-tile"><div class="emoji">✅</div></div>
-        <div class="hero-tile"><div class="emoji">🏆</div></div>
-      </div>
-      <p class="eyebrow">Validation de la masterclass</p>
-      <h1 class="hero">Quiz : <span class="accent">validez vos acquis</span></h1>
-      <p class="subtitle">4 questions · correction immédiate · cliquez sur « Suivant »</p>
-    </section>
-
-    <section class="slide quiz-slide" data-q="0">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 1 / 4</p>
-        <p class="quiz-q">Combien de blocs de compétences composent le référentiel DEAS (réforme 2021) ?</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">3 blocs</button>
-        <button class="quiz-opt" data-correct="false">4 blocs</button>
-        <button class="quiz-opt" data-correct="true">5 blocs</button>
-        <button class="quiz-opt" data-correct="false">8 blocs</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Depuis 2021, le DEAS est structuré en 5 blocs de compétences." data-ko="Non. Le DEAS compte 5 blocs de compétences depuis la réforme 2021."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="1">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 2 / 4</p>
-        <p class="quiz-q">Le niveau de qualification du DEAS dans la nomenclature CNCP est :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">Niveau 3 (CAP / BEP)</button>
-        <button class="quiz-opt" data-correct="true">Niveau 4 (Bac / BT / BP)</button>
-        <button class="quiz-opt" data-correct="false">Niveau 5 (BTS)</button>
-        <button class="quiz-opt" data-correct="false">Niveau 6 (Licence)</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Niveau 4 CNCP depuis 2021 (équivalent Bac professionnel)." data-ko="Non. Le DEAS est classé Niveau 4 CNCP depuis 2021."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="2">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 3 / 4</p>
-        <p class="quiz-q">Dans le Livret 2, une situation professionnelle recevable doit contenir :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="false">Uniquement une description chronologique</button>
-        <button class="quiz-opt" data-correct="true">Un récit + une analyse réflexive + une mise en lien avec le référentiel</button>
-        <button class="quiz-opt" data-correct="false">Un diagnostic médical complet</button>
-        <button class="quiz-opt" data-correct="false">Une évaluation chiffrée des soins</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Récit situé, analyse de ce qui a été mobilisé, mise en lien avec une activité du référentiel." data-ko="Non. 3 temps attendus : récit, analyse réflexive, lien avec le référentiel."></div>
-      <button class="quiz-next" onclick="go(1)">Question suivante →</button>
-    </section>
-
-    <section class="slide quiz-slide" data-q="3">
-      <div class="quiz-head">
-        <p class="quiz-progress">Question 4 / 4</p>
-        <p class="quiz-q">Pour l'entretien d'une chambre après le départ d'une personne hospitalisée, on utilise :</p>
-      </div>
-      <div class="quiz-opts">
-        <button class="quiz-opt" data-correct="true">Un protocole de bionettoyage défini</button>
-        <button class="quiz-opt" data-correct="false">Un simple nettoyage à l'eau savonneuse</button>
-        <button class="quiz-opt" data-correct="false">Un balai et un seau</button>
-        <button class="quiz-opt" data-correct="false">Un produit choisi au hasard</button>
-      </div>
-      <div class="quiz-feedback" data-ok="Exact. Le bionettoyage suit un protocole précis : détergent/désinfectant, méthode, matériel dédié." data-ko="Non. L'entretien hospitalier suit un protocole de bionettoyage, pas un simple nettoyage ménager."></div>
-      <button class="quiz-next" onclick="go(1)">Voir mon score →</button>
-    </section>
-
-    <section class="slide" id="finalSlide">
-      <div class="result-circle" id="resultCircle"><span id="scoreTxt">0/4</span></div>
-      <h2 style="text-align:center;" id="scoreTitle">Résultat</h2>
-      <p class="subtitle" style="text-align:center;" id="scoreMsg">—</p>
-      <div style="text-align:center; margin-top: 20px;">
-        <button class="quiz-next show" onclick="restart()">Recommencer la masterclass</button>
-      </div>
-    </section>
+<div class="progress"><i id="prog"></i></div>
+<div class="dots" id="dots"></div>
+
+<section class="slide hero on" data-mod="Accueil">
+  <div class="bg"></div>
+  <div class="wrap">
+    <span class="kicker">Masterclass 11</span>
+    <h1>Activité 8 — Entretien locaux & matériel<em>Bloc 4 · récit 1 · piège : contexte SORTIE DE PATIENT exigé</em></h1>
+    <p class="sub">Bionettoyage, protocoles, précautions standard : hygiène des locaux ET du matériel.</p>
+    <div class="meta"><span>⏱ 1h30 à 2h</span><span>📚 5 modules</span><span>🎯 Quiz final 15 Q</span><span>🏆 DEAS Niveau 4</span></div>
+    <button class="cta" onclick="go(1)">Commencer la masterclass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
   </div>
-  <div class="progress-wrap">
-    <span id="progressLabel">1 / 1</span>
-    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-    <span id="progressPct">0%</span>
+  <div class="signature">Formation <strong>ORACLE VAE AS</strong> · Stéphane Forman — Architecte accompagnateur de parcours VAE</div>
+</section>
+
+<section class="slide std" data-mod="Accueil">
+  <div class="inner">
+    <div class="head"><div class="num">1</div><h2>Objectifs & cadre<small>Ce que vous saurez à l'issue de cette masterclass</small></h2></div>
+    <div class="obj"><div class="card"><div class="ico">📋</div><h3>Décoder la fiche</h3><p>Les 8 sections de la fiche ORACLE Activité 8 point par point.</p></div><div class="card"><div class="ico">✍</div><h3>Rédiger la bonne situation</h3><p>Choisir le résident, le contexte, l'adaptation. Éviter les erreurs qui coûtent le Bloc 4.</p></div><div class="card"><div class="ico">🎯</div><h3>Préparer l'oral</h3><p>Les 3 piliers appliqués à cette activité. Les phrases qui portent face au jury.</p></div><div class="duree">
+        <div><strong>5</strong><span>Blocs DEAS</span></div>
+        <div><strong>11</strong><span>Activités</span></div>
+        <div><strong>12</strong><span>Récits</span></div>
+        <div><strong>18</strong><span>Éléments</span></div>
+        <div><strong>27</strong><span>Domaines</span></div>
+      </div></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 1">
+  <div class="wrap">
+    <div class="big">01<em>Module</em></div>
+    <h1>L'activité au référentiel</h1>
+    <p>La fiche ORACLE Activité 8 décomposée en 8 sections — tout ce qu'il faut savoir sur cette activité.</p>
+    <div class="dura">⏱ 25 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 1">
+  <div class="inner">
+    <div class="head"><div class="num">2</div><h2>La fiche ORACLE Activité 8<small>Cliquez sur chaque pastille dorée pour explorer</small></h2></div>
+    <div class="fiche-wrap">
+      <div class="fiche-img">
+        <div class="ficheHolder">
+          <img src="assets/fiche-liv2-a08_entretien_locaux.webp" alt="Fiche ORACLE Activité 8 — Entretien locaux & matériel">
+          <button class="hot" style="top:14%;left:7%" onclick="openModal(1)">1</button>
+          <button class="hot" style="top:14%;left:57%" onclick="openModal(2)">2</button>
+          <button class="hot" style="top:33%;left:7%" onclick="openModal(3)">3</button>
+          <button class="hot" style="top:33%;left:57%" onclick="openModal(4)">4</button>
+          <button class="hot" style="top:52%;left:7%" onclick="openModal(5)">5</button>
+          <button class="hot" style="top:52%;left:57%" onclick="openModal(6)">6</button>
+          <button class="hot" style="top:71%;left:7%" onclick="openModal(7)">7</button>
+          <button class="hot" style="top:71%;left:57%" onclick="openModal(8)">8</button>
+        </div>
+      </div>
+      <div class="fiche-side">
+        <h3>Fiche de révision ORACLE</h3>
+        <p>Cette fiche condense les 8 points cruciaux de l'activité. Explorez chaque section pour comprendre les attentes du jury.</p>
+        <div class="ptip"><strong>💡 Méthode</strong><br>Explorez les 8 hotspots puis cochez les points clés plus loin. Le quiz final valide votre maîtrise.</div>
+        <div class="chapters"><button onclick="openModal(1)"><b>1</b>L'activité 8 au référentiel</button><button onclick="openModal(2)"><b>2</b>La partie A — ce qui est demandé</button><button onclick="openModal(3)"><b>3</b>La partie B — ce qui est demandé</button><button onclick="openModal(4)"><b>4</b>Les questions auxquelles répondre</button><button onclick="openModal(5)"><b>5</b>La situation qui convient</button><button onclick="openModal(6)"><b>6</b>Ce que le jury cherche</button><button onclick="openModal(7)"><b>7</b>Les erreurs qui coûtent le bloc</button><button onclick="openModal(8)"><b>8</b>Ce qui relève d'une autre activité</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Jury">
+  <div class="inner">
+    <div class="head"><div class="num">P</div><h2>Les 3 piliers du raisonnement clinique<small>Ce que le jury cherche derrière chaque geste</small></h2></div>
+    <div class="piliers">
+      <div class="pil"><div class="num">1</div><h3>POURQUOI ?</h3><div class="q"><em>Pourquoi</em> ce geste, <em>maintenant</em>, pour <em>cette</em> personne ?</div><p>Relier l'acte à l'état clinique, au PAP, à un signe d'alerte. Le geste n'est jamais une routine : il répond à un besoin identifié.</p></div>
+      <div class="pil"><div class="num">2</div><h3>COMMENT ?</h3><div class="q"><em>Comment</em> adaptez-vous à <em>cette</em> personne, à <em>ce</em> moment ?</div><p>L'adaptation est la preuve de votre expertise. Même geste réalisé différemment selon résident, contexte, habitudes.</p></div>
+      <div class="pil"><div class="num">3</div><h3>ET APRÈS ?</h3><div class="q"><em>Qu'avez-vous observé</em>, transmis, alerté <em>après</em> ?</div><p>Le rôle AS ne s'arrête pas au geste. Observation, DAR, alerte, ajustement PAP sont le prolongement obligatoire.</p></div>
+    </div>
+    <div style="margin-top:16px;background:var(--oracle-cream);border-radius:12px;padding:18px 22px;border:1px dashed var(--oracle-teal);font-size:14px;line-height:1.6;color:var(--ink-soft);text-align:center"><strong style="color:var(--oracle-teal-dark)">💡 Règle ORACLE</strong> — Chaque récit doit répondre aux 3 questions. L'absence d'une seule = compétence « à vérifier ».</div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 2">
+  <div class="wrap">
+    <div class="big">02<em>Module</em></div>
+    <h1>Rédiger la bonne situation</h1>
+    <p>Testez vos réflexes sur 12 situations de rédaction concrètes.</p>
+    <div class="dura">⏱ 25 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 2">
+  <div class="inner">
+    <div class="head"><div class="num">3</div><h2>12 situations à cadrer<small>Testez-vous — chaque réponse est argumentée</small></h2></div>
+    <div id="situs" class="situs"></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 3">
+  <div class="wrap">
+    <div class="big">03<em>Module</em></div>
+    <h1>Préparer l'oral</h1>
+    <p>Ancrage mémoire avec points clés et flashcards.</p>
+    <div class="dura">⏱ 20 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 3">
+  <div class="inner">
+    <div class="head"><div class="num">4</div><h2>Les 15 points clés à retenir<small>Cochez chaque point que vous maîtrisez</small></h2></div>
+    <div class="cles" id="cles"><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>L'activité 8 appartient au <b>Bloc 4</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je connais le <b>libellé exact</b> de l'activité 8 au référentiel 2022</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce qu'est demandé en <b>Rubrique A</b> (relevé d'exemples)</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais ce qu'est demandé en <b>Rubrique B</b> (situation analysée)</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je choisis <b>UNE situation</b>, datée, située</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je rédige la <b>présentation exhaustive</b> du résident</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je montre une <b>adaptation visible</b> pour ce résident</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'applique les <b>3 piliers</b> : POURQUOI, COMMENT, ET APRÈS</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je ne décris <b>aucun acte hors champ</b> comme réalisé</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je respecte les <b>protocoles d'hygiène</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je ne confonds pas cette activité avec les <b>activités voisines</b></p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>J'écris <b>JE</b>, jamais 'on' ou 'nous'</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je transmets en <b>DAR</b> ce que j'ai observé</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je me prépare à <b>défendre à l'oral</b> ce que j'ai écrit</p></div><div class="item" onclick="toggleCle(this)"><span class="cb">✓</span><p>Je sais que <b>le bloc se valide en entier</b>, pas par moyenne</p></div><div class="progress-m"><span>Progression</span><div class="pb"><i id="clesBar"></i></div><strong id="clesCnt">0 / 15</strong></div></div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 4">
+  <div class="wrap">
+    <div class="big">04<em>Module</em></div>
+    <h1>Mémorisation</h1>
+    <p>Flashcards pour ancrer les points durables en mémoire longue.</p>
+    <div class="dura">⏱ 15 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 4">
+  <div class="inner">
+    <div class="head"><div class="num">5</div><h2>10 flashcards à mémoriser<small>Cliquez sur la carte pour retourner</small></h2></div>
+    <div class="flashwrap">
+      <div class="flashbar"><button onclick="prevFC()">← Précédente</button><span id="fcLbl">Carte 1 / 10</span><button onclick="nextFC()">Suivante →</button></div>
+      <div class="flashcard" id="flashcard" onclick="this.classList.toggle('turned')">
+        <div class="flip">
+          <div class="face front"><div class="hint">Question</div><h3 id="fcFront"></h3><div class="tap">Cliquez pour la réponse</div></div>
+          <div class="face back"><h3 id="fcTitle"></h3><p id="fcBack"></p><div class="tap">Cliquez pour revenir</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide chapter" data-mod="Module 5">
+  <div class="wrap">
+    <div class="big">05<em>Module</em></div>
+    <h1>Évaluation</h1>
+    <p>Quiz final de 15 questions pour valider votre maîtrise de cette masterclass.</p>
+    <div class="dura">⏱ 10 minutes</div>
+  </div>
+</section>
+
+<section class="slide std" data-mod="Module 5">
+  <div class="inner">
+    <div class="head"><div class="num">6</div><h2>Quiz final — 15 questions<small>Validez vos acquis sur l'ensemble de MC11</small></h2></div>
+    <div class="qz" id="qz"></div>
+  </div>
+</section>
+
+<section class="slide end" data-mod="Fin">
+  <div class="wrap">
+    <div class="ok">🏆</div>
+    <h1>Masterclass 11 terminée<em>Activité 8 — Entretien locaux & matériel</em></h1>
+    <p>Vous savez maintenant comment aborder l'Activité 8. Appliquez la méthode à votre récit, puis passez à l'activité suivante.</p>
+    <button class="nxt" onclick="location.href='MC12.html'">Activité 9 — Anomalies locaux & matériels <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+    <div class="mini">
+      <a href="index.html">📚 Toutes les masterclasses</a>
+      <a href="#" onclick="go(0);return false">↺ Revoir MC11</a>
+    </div>
+  </div>
+</section>
+
+</div>
+<div class="nav">
+  <button onclick="go(current-1)" id="prevB">←</button>
+  <button class="menu" onclick="location.href='index.html'">☰ Catalogue</button>
+  <button onclick="go(current+1)" id="nextB">→</button>
+</div>
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mhead"><div class="mnum" id="mnum">1</div><h3 id="mtitle">—</h3><button class="mclose" onclick="closeModal()">✕</button></div>
+    <div class="mbody" id="mbody"></div>
   </div>
 </div>
-
 <script>
-(function(){
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const total = slides.length;
-  const fill = document.getElementById('progressFill');
-  const label = document.getElementById('progressLabel');
-  const pct = document.getElementById('progressPct');
-  const prevBtn = document.querySelector('.nav-arrow.prev');
-  const nextBtn = document.querySelector('.nav-arrow.next');
-  let idx = 0, score = 0;
-  const answered = new Set();
-  const QUIZ_LEN = 4;
+const CHAPTERS = {"1": {"title": "L'activité 8 au référentiel", "body": ["Activité 8 sur 11 · Bloc 4 · Formulaire ASP 0637 04 22", "Arrêté du 28 mars 2022 — le formulaire fait foi.", "Le libellé officiel diffère souvent de ce qu'on retient : relisez-le avant d'écrire."], "tip": "Avant toute rédaction, relire l'intitulé exact du référentiel pour l'activité 8."}, "2": {"title": "La partie A — ce qui est demandé", "body": ["Donnez des exemples de ce que vous avez réalisé dans votre pratique.", "C'est un RELEVÉ d'exemples, pas un récit linéaire.", "La partie A ouvre sur l'activité : elle montre que vous l'avez bien pratiquée."], "tip": "Partie A = exemples concrets avec contextes et fréquences. Pas de narration."}, "3": {"title": "La partie B — ce qui est demandé", "body": ["Décrivez UNE situation, précise, datée, située.", "Comment avez-vous fait ? Comment avez-vous adapté à CETTE personne ?", "L'adaptation est le cœur de l'évaluation."], "tip": "Partie B = une situation, un résident, une adaptation visible."}, "4": {"title": "Les questions auxquelles répondre", "body": ["Qui est le résident ? (présentation exhaustive)", "Quelle est la situation précise ?", "Qu'avez-vous fait, dans l'ordre ?", "Qu'avez-vous observé, transmis, modifié ?"], "tip": "Avant d'écrire : noter les 4 réponses sur un papier. Si incomplètes, choisir une autre situation."}, "5": {"title": "La situation qui convient", "body": ["Un résident dont l'autonomie bouge (c'est ce qui rend l'adaptation visible).", "Un soin du quotidien suffit : la plus simple est souvent la meilleure.", "Un contexte clair : lieu, heure, qui est présent, matériel utilisé.", "Évitez le soin parfait : le jury cherche l'ajustement."], "tip": "Préférez le soin ordinaire bien analysé au geste exceptionnel mal décrit."}, "6": {"title": "Ce que le jury cherche", "body": ["Que vous OBSERVIEZ avant d'agir.", "Que vous sachiez NOMMER ce que vous observez.", "Que vous ADAPTIEZ à cette personne précise.", "Que vous TRANSMETTIEZ ce que vous avez vu."], "tip": "Le jury évalue le raisonnement clinique, pas la technique seule."}, "7": {"title": "Les erreurs qui coûtent le bloc", "body": ["Décrire une journée type au lieu d'une situation.", "Décrire le geste sans dire pourquoi ce geste.", "Employer « on » ou « nous » : seul VOTRE geste compte.", "Les 3 éliminatoires : hors champ, hygiène, mise en danger."], "tip": "Règle d'or : JE, ici et maintenant, pour cette personne."}, "8": {"title": "Ce qui relève d'une autre activité", "body": ["Vérifiez que votre récit reste dans le périmètre de l'activité 8.", "Si vous débordez sur une autre activité, resserrez.", "Chaque élément de contenu doit être au bon endroit du Livret 2."], "tip": "Un récit qui déborde dilue la preuve. Resserrez sur l'activité ciblée."}};
+const SITUS = [{"q": "Un soin du quotidien suffit pour l'activité 8.", "ok": true, "why": "La situation simple bien analysée bat le soin exceptionnel mal décrit."}, {"q": "Décrire ce qui est habituel sans adaptation visible.", "ok": false, "why": "Le jury cherche l'adaptation. Sans elle, compétence 'à vérifier'."}, {"q": "Employer « on » dans le récit Partie B.", "ok": false, "why": "Seul VOTRE geste compte. 'Je' obligatoire."}, {"q": "Dater et situer précisément la situation choisie.", "ok": true, "why": "Date + lieu + heure = situation ancrée dans votre expérience."}, {"q": "Décrire la présentation exhaustive du résident.", "ok": true, "why": "État civil + anthropométrie + histoire de vie + autonomie : incontournable."}, {"q": "Raconter une journée type au lieu d'une situation.", "ok": false, "why": "La partie B exige UNE situation, pas une journée."}, {"q": "Nommer ce que vous avez observé avec vos 5 sens.", "ok": true, "why": "L'observation est le cœur du rôle AS évalué."}, {"q": "Décrire un acte hors champ comme réalisé.", "ok": false, "why": "CRITÈRE ÉLIMINATOIRE — tout le dossier tombe."}, {"q": "Transmettre ce qui a été observé en DAR.", "ok": true, "why": "La transmission ferme la boucle du rôle AS."}, {"q": "Oublier d'expliquer POURQUOI vous avez agi ainsi.", "ok": false, "why": "Sans POURQUOI, le raisonnement clinique n'est pas démontré."}, {"q": "Faire AVEC le résident, pas À sa place.", "ok": true, "why": "Maintien d'autonomie = socle du rôle propre."}, {"q": "Oublier la boucle d'observation après le geste.", "ok": false, "why": "Sans ET APRÈS, le geste n'est pas 'soignant'."}];
+const CLES = ["L'activité 8 appartient au <b>Bloc 4</b>", "Je connais le <b>libellé exact</b> de l'activité 8 au référentiel 2022", "Je sais ce qu'est demandé en <b>Rubrique A</b> (relevé d'exemples)", "Je sais ce qu'est demandé en <b>Rubrique B</b> (situation analysée)", "Je choisis <b>UNE situation</b>, datée, située", "Je rédige la <b>présentation exhaustive</b> du résident", "Je montre une <b>adaptation visible</b> pour ce résident", "J'applique les <b>3 piliers</b> : POURQUOI, COMMENT, ET APRÈS", "Je ne décris <b>aucun acte hors champ</b> comme réalisé", "Je respecte les <b>protocoles d'hygiène</b>", "Je ne confonds pas cette activité avec les <b>activités voisines</b>", "J'écris <b>JE</b>, jamais 'on' ou 'nous'", "Je transmets en <b>DAR</b> ce que j'ai observé", "Je me prépare à <b>défendre à l'oral</b> ce que j'ai écrit", "Je sais que <b>le bloc se valide en entier</b>, pas par moyenne"];
+const FLASHCARDS = [{"q": "À quel bloc appartient l'activité 8 ?", "t": "BLOC", "a": "Bloc 4. Le libellé officiel est fixé par l'arrêté du 28 mars 2022."}, {"q": "Qu'exige la Partie A ?", "t": "PARTIE A", "a": "Un relevé d'exemples de ce que vous avez réalisé. Pas une narration — des exemples avec fréquence et contexte."}, {"q": "Qu'exige la Partie B ?", "t": "PARTIE B", "a": "UNE situation, datée, située, avec un résident précis et une adaptation visible."}, {"q": "Les 4 questions avant d'écrire ?", "t": "MÉTHODE", "a": "Qui ? (résident) · Quelle situation ? · Qu'avez-vous fait dans l'ordre ? · Qu'avez-vous observé/transmis ?"}, {"q": "Les 3 piliers du raisonnement ?", "t": "RAISONNEMENT", "a": "POURQUOI (justification clinique) + COMMENT (adaptation) + ET APRÈS (observation, transmission)."}, {"q": "Pourquoi écrire 'je' et pas 'on' ?", "t": "RÉDACTION", "a": "Seul VOTRE geste est évalué. 'On' = compétence non attribuée = non validable."}, {"q": "Les 3 critères éliminatoires ?", "t": "ÉLIMINATION", "a": "Acte hors champ + non-respect hygiène + mise en danger. Un seul = tout le bloc tombe."}, {"q": "DAR : définition ?", "t": "TRANSMISSION", "a": "Données (observables) + Actions (menées) + Résultats (observés)."}, {"q": "Un bloc se valide-t-il à la moyenne ?", "t": "VALIDATION", "a": "Non. En entier ou pas. Pas de compensation entre les blocs."}, {"q": "Mon mémo pour l'activité 8 ?", "t": "MÉMO", "a": "Résident précis · Partie A relevé · Partie B situation + adaptation · 3 piliers · DAR · Pas de 'on'."}];
+const QUIZ = [{"q": "À quel bloc appartient l'activité 8 ?", "opts": ["Bloc 3", "Bloc 4", "Bloc 5"], "ok": 1, "x": "Activité 8 = Bloc 4."}, {"q": "Quelle est la fonction de la Partie A ?", "opts": ["Situation analysée", "Relevé d'exemples", "Présentation du résident"], "ok": 1, "x": "Partie A = relevé d'exemples. Partie B = situation analysée."}, {"q": "Que demande la Partie B ?", "opts": ["Journée type", "UNE situation analysée", "Liste de soins"], "ok": 1, "x": "B = UNE situation précise, datée, située, avec adaptation visible."}, {"q": "Les 3 piliers du raisonnement sont :", "opts": ["Voir-Agir-Dire", "Pourquoi-Comment-Et après", "Hygiène-Confort-Transmettre"], "ok": 1, "x": "POURQUOI + COMMENT + ET APRÈS. Grille universelle ORACLE."}, {"q": "Dans votre récit, vous écrivez :", "opts": ["« On »", "« Je »", "« Nous »"], "ok": 1, "x": "Toujours 'je'. Jamais 'on' ni 'nous'."}, {"q": "Un critère éliminatoire :", "opts": ["Récit trop court", "Acte hors champ réalisé", "Mauvaise orthographe"], "ok": 1, "x": "3 éliminatoires : hors champ + hygiène + mise en danger."}, {"q": "La présentation du résident contient :", "opts": ["Nom et âge", "9 éléments obligatoires", "Juste le GIR"], "ok": 1, "x": "9 éléments : état civil + anthropométrie + motif + antécédents + traitements + histoire + autonomie + nutritionnel + cutané."}, {"q": "Faire 'avec' le résident signifie :", "opts": ["Faire tout seul", "Stimuler et accompagner son autonomie", "Lui dire de faire seul"], "ok": 1, "x": "Stimuler ce qu'il peut encore faire, accompagner sans se substituer."}, {"q": "L'AS peut-il faire une injection ?", "opts": ["Oui si formé", "Non jamais", "Oui en urgence"], "ok": 1, "x": "Jamais d'injection AS. Acte IDE exclusif."}, {"q": "La transmission se fait en :", "opts": ["Texte libre", "DAR", "Vidéo"], "ok": 1, "x": "DAR = Données + Actions + Résultats."}, {"q": "Combien de récits pour 11 activités ?", "opts": ["11", "12", "18"], "ok": 1, "x": "12 récits : activités 9 et 11 doublent, 10 = inventaire."}, {"q": "L'arrêté actuel du DEAS :", "opts": ["2021", "28 mars 2022", "2023"], "ok": 1, "x": "28 mars 2022."}, {"q": "Niveau du DEAS :", "opts": ["3", "4", "5"], "ok": 1, "x": "Niveau 4 CNCP."}, {"q": "Un bloc se valide :", "opts": ["À la moyenne", "Par activité", "En entier ou pas"], "ok": 2, "x": "Un bloc = tout validé ou rien. Pas de compensation."}, {"q": "Pour l'activité 8, le mot clé est :", "opts": ["Rapidité", "Adaptation", "Technique"], "ok": 1, "x": "L'adaptation à la personne précise est le cœur de l'évaluation."}];
+const LAZY_IDX = {"situs": 6, "fc": 10, "quiz": 12};
 
-  function render() {
-    slides.forEach((s, i) => {
-      s.classList.remove('active', 'leaving');
-      if (i === idx) s.classList.add('active');
-      else if (i < idx) s.classList.add('leaving');
-    });
-    const p = Math.round(((idx + 1) / total) * 100);
-    fill.style.width = p + '%';
-    label.textContent = (idx + 1) + ' / ' + total;
-    pct.textContent = p + '%';
-    prevBtn.disabled = (idx === 0);
-    nextBtn.disabled = (idx === total - 1);
-    if (idx === total - 1) renderFinal();
+let fcIdx=0;
+function renderFC(){
+  if(!FLASHCARDS.length)return;
+  const c=FLASHCARDS[fcIdx];
+  document.getElementById('fcFront').textContent=c.q;
+  document.getElementById('fcTitle').textContent=c.t;
+  document.getElementById('fcBack').textContent=c.a;
+  document.getElementById('fcLbl').textContent='Carte '+(fcIdx+1)+' / '+FLASHCARDS.length;
+  document.getElementById('flashcard').classList.remove('turned');
+}
+function prevFC(){fcIdx=(fcIdx-1+FLASHCARDS.length)%FLASHCARDS.length;renderFC()}
+function nextFC(){fcIdx=(fcIdx+1)%FLASHCARDS.length;renderFC()}
+
+function renderSitus(){
+  const c=document.getElementById('situs');
+  if(!c)return;
+  c.innerHTML=SITUS.map((s,i)=>`<div class="situ"><p><b>${i+1}.</b>${s.q}</p><div class="btns"><button class="sb y" onclick="situClick(${i},true,this)">✓ Oui</button><button class="sb n" onclick="situClick(${i},false,this)">✕ Non</button></div><div class="sfb"></div></div>`).join('');
+}
+function situClick(i,ans,btn){
+  const parent=btn.parentElement.parentElement;
+  const fb=parent.querySelector('.sfb');
+  const s=SITUS[i];
+  const good=ans===s.ok;
+  parent.querySelectorAll('.sb').forEach(b=>b.disabled=true);
+  btn.style.borderColor=good?'#2ea84f':'#d65757';btn.style.borderWidth='3px';
+  fb.style.display='block';
+  fb.style.background=good?'#dcf5e4':'#fde3e3';
+  fb.style.color=good?'#0e5e2a':'#8a1a1a';
+  fb.innerHTML=(good?'✓ ':'✗ ')+'<b>'+(s.ok?'OUI':'NON')+'</b> — '+s.why;
+}
+
+let qIdx=0, qScore=0, qAns=null;
+function renderQuiz(){
+  const el=document.getElementById('qz');
+  if(!el||!QUIZ.length)return;
+  if(qIdx>=QUIZ.length){
+    const pct=Math.round(qScore/QUIZ.length*100);
+    let cls='ok', msg='Excellent — module validé.';
+    if(pct<50){cls='ko';msg='Révisez avant de passer à la suite.';}
+    else if(pct<80){cls='mid';msg='Bien, quelques points à consolider.';}
+    el.innerHTML=`<div class="score"><div class="big">${qScore}<em>/${QUIZ.length}</em></div><div class="label ${cls}">${pct}% de bonnes réponses</div><p class="msg">${msg}</p><button class="again" onclick="qIdx=0;qScore=0;renderQuiz()">↺ Recommencer</button></div>`;
+    return;
   }
-  window.go = function(delta) {
-    const next = idx + delta;
-    if (next < 0 || next >= total) return;
-    idx = next; render();
-  };
-  window.restart = function(){
-    idx = 0; score = 0; answered.clear();
-    document.querySelectorAll('.quiz-opt').forEach(b => { b.classList.remove('correct', 'wrong'); b.disabled = false; });
-    document.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
-    document.querySelectorAll('.quiz-next').forEach(b => b.classList.remove('show'));
-    render();
-  };
-  function renderFinal() {
-    const txt = document.getElementById('scoreTxt');
-    const msg = document.getElementById('scoreMsg');
-    const title = document.getElementById('scoreTitle');
-    const circle = document.getElementById('resultCircle');
-    if (!txt) return;
-    txt.textContent = score + '/' + QUIZ_LEN;
-    const ratio = (score / QUIZ_LEN) * 100;
-    circle.style.background = `conic-gradient(var(--accent) ${ratio}%, var(--surface) 0%)`;
-    if (score === QUIZ_LEN) { title.textContent = '🏆 Parfait !'; msg.textContent = 'Vous maîtrisez cette masterclass. Prêt·e pour la suivante.'; }
-    else if (score >= Math.ceil(QUIZ_LEN * 0.6)) { title.textContent = '👍 Bien joué'; msg.textContent = 'Base solide. Relisez les points manqués.'; }
-    else { title.textContent = 'À consolider'; msg.textContent = 'Reprenez les sections et relancez le quiz.'; }
-  }
-  document.querySelectorAll('.quiz-slide').forEach(slide => {
-    const opts = slide.querySelectorAll('.quiz-opt');
-    const feedback = slide.querySelector('.quiz-feedback');
-    const nxt = slide.querySelector('.quiz-next');
-    opts.forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (answered.has(slide)) return;
-        answered.add(slide);
-        const isCorrect = btn.dataset.correct === 'true';
-        opts.forEach(b => {
-          b.disabled = true;
-          if (b.dataset.correct === 'true') b.classList.add('correct');
-          else if (b === btn) b.classList.add('wrong');
-        });
-        if (isCorrect) { score++; feedback.textContent = feedback.dataset.ok; feedback.classList.add('ok', 'show'); }
-        else { feedback.textContent = feedback.dataset.ko; feedback.classList.add('ko', 'show'); }
-        nxt.classList.add('show');
-      });
-    });
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
-  });
-  render();
-})();
+  const q=QUIZ[qIdx];
+  qAns=null;
+  el.innerHTML=`<div class="count">Question ${qIdx+1} / ${QUIZ.length}</div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button onclick="qPick(${i},this)"><span class="letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div><div class="expl" id="qexpl"><strong>Explication</strong><br>${q.x}</div><button class="nextq" id="qnext" onclick="qIdx++;renderQuiz()">Question suivante →</button>`;
+}
+function qPick(i,btn){
+  if(qAns!==null) return;
+  qAns=i; const q=QUIZ[qIdx];
+  const btns=btn.parentElement.querySelectorAll('button');
+  btns.forEach((b,bi)=>{b.classList.add('disabled');if(bi===q.ok)b.classList.add('ok');else if(bi===i)b.classList.add('ko')});
+  if(i===q.ok) qScore++;
+  document.getElementById('qexpl').classList.add('on');
+  document.getElementById('qnext').classList.add('on');
+  if(qIdx===QUIZ.length-1) document.getElementById('qnext').textContent='Voir mon score →';
+}
+
+function toggleCle(el){
+  el.classList.toggle('ok');
+  const items=document.querySelectorAll('.cles .item');
+  const done=document.querySelectorAll('.cles .item.ok').length;
+  document.getElementById('clesBar').style.width=(done/items.length*100)+'%';
+  document.getElementById('clesCnt').textContent=done+' / '+items.length;
+}
+
+function openModal(n){
+  const ch=CHAPTERS[n];
+  if(!ch)return;
+  document.getElementById('mnum').textContent=n;
+  document.getElementById('mtitle').textContent=ch.title;
+  let html='<ul>'+ch.body.map(b=>`<li>${b}</li>`).join('')+'</ul>';
+  if(ch.tip) html+='<div class="tip"><strong>💡 Astuce</strong> '+ch.tip+'</div>';
+  document.getElementById('mbody').innerHTML=html;
+  document.getElementById('mbody').scrollTop=0;
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){document.getElementById('modal').classList.remove('on')}
+
+const slides=document.querySelectorAll('.slide');
+const TOTAL=slides.length;
+let current=0;
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  slides[current].classList.remove('on');
+  current=n;
+  slides[current].classList.add('on');
+  document.getElementById('counter').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prog').style.width=((current+1)/TOTAL*100)+'%';
+  document.getElementById('prevB').disabled=current===0;
+  document.getElementById('nextB').disabled=current===TOTAL-1;
+  document.getElementById('modLbl').textContent=slides[current].dataset.mod||'';
+  document.querySelectorAll('.dots span').forEach((d,i)=>d.classList.toggle('on',i===current));
+  if(LAZY_IDX.situs===current)renderSitus();
+  if(LAZY_IDX.fc===current)renderFC();
+  if(LAZY_IDX.quiz===current){qIdx=0;qScore=0;renderQuiz()}
+  closeModal();
+  slides[current].querySelector('.inner')?.scrollTo(0,0);
+}
+document.getElementById('dots').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span onclick="go(${i})"></span>`).join('');
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('modal').classList.contains('on')){if(e.key==='Escape')closeModal();return}
+  if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+  else if(e.key==='ArrowLeft')go(current-1);
+  else if(e.key==='Escape')go(0);
+  else if(e.key==='Home')go(0);
+  else if(e.key==='End')go(TOTAL-1);
+});
+go(0);
 </script>
 </body>
 </html>
