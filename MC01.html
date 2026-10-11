@@ -196,9 +196,9 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent
 .col.collab ul li::before{content:"◆";position:absolute;left:4px;color:#8a6a00;font-weight:900}
 
 /* Rôle quotidien */
-.role-split{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:16px;flex:1;overflow:auto;align-items:start}
-.role-split .pic{background:#fff;border-radius:14px;padding:14px;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center}
-.role-split .pic img{max-width:100%;width:auto;height:auto;display:block;object-fit:contain}
+.role-split{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:28px;margin-top:16px;flex:1;min-height:0;align-items:start}
+.role-split .pic{background:#fff;border-radius:14px;padding:12px;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;max-height:calc(100vh - 190px)}
+.role-split .pic img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;object-fit:contain}
 .role-split .list{display:flex;flex-direction:column;gap:12px}
 .role-split .list .ch{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm)}
 .role-split .list .ch.c1{border-left:4px solid var(--oracle-teal-light)}
@@ -592,9 +592,9 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:transparent
 <section class="slide std" data-mod="Module 1">
   <div class="inner">
     <div class="head"><div class="num">7</div><h2>La collaboration AS/IDE en pratique<small>Fiche ORACLE Collaboration — la zone grise, décodée</small></h2></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:16px;flex:1;overflow:auto;align-items:start">
-      <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center">
-        <img src="assets/fiche-collaboration.webp" alt="Fiche Collaboration AS/IDE ORACLE" style="max-width:100%;width:auto;height:auto;display:block;object-fit:contain">
+    <div style="display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:28px;margin-top:16px;flex:1;min-height:0;align-items:start">
+      <div style="background:#fff;border-radius:14px;padding:12px;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;max-height:calc(100vh - 190px)">
+        <img src="assets/fiche-collaboration.webp" alt="Fiche Collaboration AS/IDE ORACLE" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;object-fit:contain">
       </div>
       <div style="display:flex;flex-direction:column;gap:14px">
         <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border-left:4px solid var(--oracle-teal-light)">
