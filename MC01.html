@@ -286,7 +286,7 @@ a{color:inherit}
     <div class="meta">
       <span>⏱ 25 min</span>
       <span>📚 8 chapitres</span>
-      <span>🎯 Quiz final 10 questions</span>
+      <span>🎯 Quiz final 12 questions</span>
       <span>🏆 Niveau DEAS</span>
     </div>
     <button class="cta" onclick="go(1)">Commencer la masterclass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
@@ -320,8 +320,9 @@ a{color:inherit}
     <div class="duree">
       <div><strong>5</strong><span>Blocs DEAS</span></div>
       <div><strong>11</strong><span>Activités</span></div>
-      <div><strong>8</strong><span>Chapitres MC01</span></div>
-      <div><strong>10</strong><span>Questions quiz</span></div>
+      <div><strong>12</strong><span>Récits à produire</span></div>
+      <div><strong>18</strong><span>Éléments total</span></div>
+      <div><strong>27</strong><span>Domaines savoir</span></div>
     </div>
   </div>
 </section>
@@ -407,7 +408,7 @@ a{color:inherit}
         </div>
         <div class="bc">2 activités</div>
       </div>
-      <div class="bloc-detail"><strong>Activité 8</strong> — Entretenir les locaux et le matériel (bionettoyage, protocoles).<br><strong>Activité 9</strong> — Repérer et signaler les anomalies des locaux et matériels.</div>
+      <div class="bloc-detail"><strong>Activité 8</strong> — Entretenir les locaux et le matériel (bionettoyage, protocoles). <em style="color:var(--oracle-pink)">Piège : contexte SORTIE DE PATIENT exigé.</em><br><strong>Activité 9</strong> — Repérer et signaler les anomalies des locaux et matériels. <em style="color:var(--oracle-pink)">Spécificité : compte DOUBLE (deux récits). Jamais le corps du patient.</em></div>
 
       <div class="bloc" onclick="toggleBloc(this)">
         <div class="bn">5</div>
@@ -417,7 +418,7 @@ a{color:inherit}
         </div>
         <div class="bc">2 activités</div>
       </div>
-      <div class="bloc-detail"><strong>Activité 10</strong> — Transmettre les informations (DAR, orales, écrites).<br><strong>Activité 11</strong> — Participer à l'organisation d'équipe et à la démarche qualité.</div>
+      <div class="bloc-detail"><strong>Activité 10</strong> — Transmettre les informations (DAR, orales, écrites). <em style="color:var(--oracle-pink)">Spécificité : traitée par un INVENTAIRE, pas par un récit.</em><br><strong>Activité 11</strong> — Participer à l'organisation d'équipe et à la démarche qualité. <em style="color:var(--oracle-pink)">Spécificité : compte DOUBLE (deux récits à produire).</em></div>
     </div>
   </div>
 </section>
@@ -551,7 +552,7 @@ a{color:inherit}
 <!-- SLIDE 10 — QUIZ FINAL -->
 <section class="slide std">
   <div class="inner">
-    <div class="head"><div class="num">9</div><h2>Quiz final — 10 questions<small>Validez vos acquis sur le référentiel décodé</small></h2></div>
+    <div class="head"><div class="num">9</div><h2>Quiz final — 12 questions<small>Validez vos acquis sur le référentiel décodé</small></h2></div>
     <div class="qz" id="qz"></div>
   </div>
 </section>
@@ -599,7 +600,7 @@ const CHAPTERS = {
     <ul>
       <li><strong>Article R.4311-4</strong> du Code de la santé publique → définit le champ d'intervention de l'<strong>aide-soignant</strong> : collabore aux soins infirmiers, exerce sous la responsabilité de l'IDE.</li>
       <li><strong>Article R.4311-5</strong> → liste les actes du <strong>rôle propre infirmier</strong>. L'AS n'a pas ces actes en propre, il peut en collaborer selon décret du 10/06/2021.</li>
-      <li><strong>Arrêté du 10 juin 2021</strong> → fixe le référentiel d'activités et de compétences du DEAS actuel.</li>
+      <li><strong>Arrêté du 28 mars 2022</strong> → fixe le référentiel d'activités et de compétences du DEAS actuel (formulaire ASP 0637 04 22, RNCP 40692, DEAS Niveau 4 CNCP).</li>
       <li>Diplôme d'État d'aide-soignant → <strong>5 blocs de compétences, 11 activités</strong>.</li>
     </ul>
     <h4>⚠️ Piège classique en jury</h4>
@@ -618,28 +619,29 @@ const CHAPTERS = {
     </div>
   `},
   2:{title:"Les 5 blocs du DEAS",body:`
-    <h4>Référentiel 2021 — 5 blocs, 11 activités</h4>
+    <h4>Référentiel 2022 — 5 blocs, 11 activités</h4>
     <ul>
-      <li><strong>Bloc 1</strong> : Accompagnement dans les activités de la vie quotidienne et sociale → <strong>Activités 1 et 2</strong></li>
-      <li><strong>Bloc 2</strong> : Évaluation de l'état clinique et réalisation de soins adaptés → <strong>Activités 3, 4 et 5</strong></li>
-      <li><strong>Bloc 3</strong> : Information et accompagnement des personnes et des apprenants → <strong>Activités 6 et 7</strong></li>
-      <li><strong>Bloc 4</strong> : Entretien de l'environnement immédiat et des matériels → <strong>Activités 8 et 9</strong></li>
-      <li><strong>Bloc 5</strong> : Travail en équipe, traitement des informations, qualité et risques → <strong>Activités 10 et 11</strong></li>
+      <li><strong>Bloc 1</strong> → Activités 1 et 2 — <em>2 récits</em></li>
+      <li><strong>Bloc 2</strong> → Activités 3, 4 et 5 — <em>3 récits</em> (le plus lourd : 13 des 27 domaines de savoir)</li>
+      <li><strong>Bloc 3</strong> → Activités 6 et 7 — <em>2 récits</em></li>
+      <li><strong>Bloc 4</strong> → Activités 8 et 9 — <em>3 récits</em> (activité 9 compte DOUBLE)</li>
+      <li><strong>Bloc 5</strong> → Activités 10 et 11 — <em>2 récits</em> (activité 10 = INVENTAIRE ; activité 11 compte DOUBLE)</li>
     </ul>
-    <h4>Dans le Livret 2</h4>
+    <h4>Les bons chiffres à retenir</h4>
     <ul>
-      <li>Vous allez décrire <strong>une situation professionnelle par activité</strong> — soit 11 situations.</li>
-      <li>Chaque situation doit prouver que vous mobilisez les compétences du bloc correspondant.</li>
+      <li><strong>5 blocs · 11 activités · 12 récits · 18 éléments à produire · 27 domaines de savoir</strong></li>
+      <li>⚠️ Ne pas déduire le nombre de récits du nombre d'activités : <strong>11 activités ne font pas 11 récits</strong>.</li>
+      <li>Base légale : arrêté du 28 mars 2022 · formulaire ASP 0637 04 22 · RNCP 40692 · DEAS Niveau 4.</li>
     </ul>
     <div class="q">
-      <p>Combien d'activités en tout, dans le DEAS 2021 ?</p>
+      <p>Combien de RÉCITS devez-vous produire dans le Livret 2 ?</p>
       <div class="opts">
-        <button onclick="qa(this,false)">A. 8</button>
-        <button onclick="qa(this,true)">B. 11</button>
-        <button onclick="qa(this,false)">C. 14</button>
+        <button onclick="qa(this,false)">A. 11, un par activité</button>
+        <button onclick="qa(this,true)">B. 12 — activités 9 et 11 doublent, activité 10 = inventaire</button>
+        <button onclick="qa(this,false)">C. 18, un par élément à produire</button>
       </div>
-      <div class="fb good">✓ Exact. <strong>11 activités</strong> réparties sur 5 blocs. Vous les retrouverez une par une dans MC03 à MC14.</div>
-      <div class="fb bad">✗ Révisez : le DEAS 2021 compte <strong>5 blocs</strong> et <strong>11 activités</strong>. Ce ne sont pas les 14 besoins de Virginia Henderson.</div>
+      <div class="fb good">✓ Exact. <strong>12 récits</strong> : les activités 9 et 11 comptent chacune pour 2 récits, l'activité 10 se traite par un inventaire (pas un récit).</div>
+      <div class="fb bad">✗ Piège classique : <strong>12 récits</strong>, pas 11 ni 18. Les activités 9 et 11 doublent, l'activité 10 est un inventaire.</div>
     </div>
   `},
   3:{title:"Ce que l'AS FAIT",body:`
@@ -833,7 +835,7 @@ function situClick(i,ans,btn){
 // ===== Quiz final 10 questions =====
 const QUIZ = [
  {q:"Quel article définit le champ d'intervention de l'AS ?",opts:["R.4311-5","R.4311-4","L.4321-1"],ok:1,x:"R.4311-4 définit l'AS, R.4311-5 définit le rôle propre IDE. L'erreur classique."},
- {q:"Combien de blocs de compétences dans le DEAS 2021 ?",opts:["4","5","6"],ok:1,x:"5 blocs, 11 activités, arrêté du 10 juin 2021."},
+ {q:"Combien de blocs de compétences dans le DEAS (arrêté 28 mars 2022) ?",opts:["4","5","6"],ok:1,x:"5 blocs, 11 activités, 12 récits à produire. DEAS = Niveau 4 CNCP."},
  {q:"L'AS a-t-il un rôle propre ?",opts:["Oui, autonome","Non, il collabore au rôle propre IDE","Oui, sur prescription médicale"],ok:1,x:"L'AS collabore au rôle propre IDE (R.4311-5). Il n'en a pas en propre."},
  {q:"Un AS peut-il faire une injection sous-cutanée d'insuline ?",opts:["Oui, si formé","Non, jamais","Oui, en urgence"],ok:1,x:"Jamais d'injection AS. Même urgence, même formation, c'est acte IDE exclusif."},
  {q:"Qui peut préparer un pilulier ?",opts:["L'AS si formé","L'IDE uniquement","L'aide médico-psychologique"],ok:1,x:"Préparation du pilulier = IDE exclusivement. L'AS peut aider à la prise si formé et habilité."},
@@ -841,7 +843,9 @@ const QUIZ = [
  {q:"Dépasser son champ de compétence expose à :",opts:["Un simple rappel","Civil + pénal + disciplinaire","Sanction pénale uniquement"],ok:1,x:"Trois responsabilités : civile (indemnisation), pénale (exercice illégal), disciplinaire (sanction employeur)."},
  {q:"Qui prescrit une contention ?",opts:["L'AS si urgence","Le médecin","L'IDE sur protocole"],ok:1,x:"La contention est une prescription médicale, jamais une décision AS ou IDE isolée."},
  {q:"« Faire AVEC le résident, pas À SA PLACE » signifie :",opts:["L'abandonner","Stimuler et accompagner son autonomie","Refuser de l'aider"],ok:1,x:"Maintenir l'autonomie = aider à faire, pas se substituer. C'est le socle du prendre soin."},
- {q:"Un résident refuse sa toilette. Que faites-vous ?",opts:["Je passe outre, c'est important","J'écoute, je trace, je renégocie, j'alerte si refus persistant","Je ne fais rien et je reviens demain"],ok:1,x:"Respecter le refus, tracer, chercher à comprendre, alerter l'IDE si refus persistant. Jamais passer en force."}
+ {q:"Un résident refuse sa toilette. Que faites-vous ?",opts:["Je passe outre, c'est important","J'écoute, je trace, je renégocie, j'alerte si refus persistant","Je ne fais rien et je reviens demain"],ok:1,x:"Respecter le refus, tracer, chercher à comprendre, alerter l'IDE si refus persistant. Jamais passer en force."},
+ {q:"Combien de récits devez-vous rédiger dans le Livret 2 ?",opts:["11, un par activité","12 — activités 9 et 11 doublent, activité 10 = inventaire","18, un par élément à produire"],ok:1,x:"12 récits : les activités 9 et 11 valent 2 récits chacune, l'activité 10 se traite par un INVENTAIRE. Piège de méthode classique."},
+ {q:"Quel est le niveau de qualification du DEAS ?",opts:["Niveau 3 (CAP/BEP)","Niveau 4 (Bac/BT/BP)","Niveau 5 (Bac+2)"],ok:1,x:"DEAS = Niveau 4 CNCP depuis la nomenclature 2019 (équivalent Bac/BT/BP/CAPA). Pas niveau 3."}
 ];
 
 let qIdx=0, qScore=0, qAns=null;
